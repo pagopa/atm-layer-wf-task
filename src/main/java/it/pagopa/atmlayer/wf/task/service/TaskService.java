@@ -1,25 +1,22 @@
 package it.pagopa.atmlayer.wf.task.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse;
 
-import it.pagopa.atmlayer.wf.task.bean.Button;
 import it.pagopa.atmlayer.wf.task.bean.Command;
 import it.pagopa.atmlayer.wf.task.bean.CommandTask;
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.Scene;
 import it.pagopa.atmlayer.wf.task.bean.ScreenTask;
 import it.pagopa.atmlayer.wf.task.bean.State;
-import it.pagopa.atmlayer.wf.task.client.ProcessProxy;
+import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
 import it.pagopa.atmlayer.wf.task.client.bean.DeviceInfo;
 import it.pagopa.atmlayer.wf.task.client.bean.DeviceType;
+import it.pagopa.atmlayer.wf.task.client.bean.Task;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
 import it.pagopa.atmlayer.wf.task.util.Constants;
@@ -31,8 +28,9 @@ public class TaskService {
 
 	@Inject
 	@RestClient
-	ProcessProxy processProxy;
+	ProcessRestClient processProxy;
 
+	@SuppressWarnings("unchecked")
 	public Scene buildMain(String functionId, String transactionId, State state) {
 		/*
 		 * Lettura del modello BPMN via client microservizio
@@ -60,55 +58,53 @@ public class TaskService {
 			scene.setTransactionId(transactionId);
 		}
 
-		DeviceInfo deviceInfo = convertDeviceInDeviceInfo(state.getDevice());
-
-		TaskRequest taskRequest = new TaskRequest();
-		taskRequest.setDeviceInfo(deviceInfo);
-		taskRequest.setTransactionId(scene.getTransactionId());
-		Map<String, Object> variables = new HashMap<>();
-		state.getDevice().getPeripherals()
-				.stream().forEach(per -> variables.put(per.getId(), per.getStatus()));
-
-		taskRequest.setVariables(variables);
-		RestResponse<TaskResponse> restResponse = processProxy.startProcess(taskRequest);
+		RestResponse<TaskResponse> restResponse = processProxy.startProcess(buildTaskRequest(state, transactionId));
 
 		if (restResponse.getStatus() == 200) {
 			TaskResponse response = restResponse.getEntity();
-			if (response.getVariables().containsKey(Constants.SCREEN_TASK_VARIABLE)) {
-				ScreenTask screenTask = new ScreenTask();
-				// List<KeyPair> variablesList = new ArrayList<>();
-				// response.getVariables().entrySet().stream()
-				// .forEach(k -> variablesList.add(new KeyPair(k.getKey(), (String)
-				// k.getValue())));
-				// screenTask.setData(variablesList);
+			Task workingTask = new Task();
+			boolean isScreenTask = false;
+			for (Task task : response.getTasks()) {
+				workingTask = task;
+				if (task.getForm() != null && !task.getForm().isEmpty()) {
+					isScreenTask = true;
+					break;
+				}
+			}
 
+			if (isScreenTask) {
+				ScreenTask screenTask = new ScreenTask();
+				Map<String, Object> variables = workingTask.getVariables();
+				if (variables.get(Constants.ERROR_VARIABLES) instanceof Map) {
+					screenTask.setOnError((Map<String, String>) variables.get(Constants.ERROR_VARIABLES));
+					variables.remove(Constants.ERROR_VARIABLES);
+				}
+
+				if (variables.get(Constants.TIMEOUT_VARIABLES) instanceof Map) {
+					screenTask.setOnTimeout((Map<String, String>) variables.get(Constants.TIMEOUT_VARIABLES));
+					variables.remove(Constants.TIMEOUT_VARIABLES);
+				}
+
+				screenTask.setTimeout((int) variables.get(Constants.TIMEOUT_VALUE));
+				variables.remove(Constants.TIMEOUT_VALUE);
+
+				if (!variables.isEmpty()) {
+					screenTask.setData(variables.get(Constants.DATA_VARIABLES) == null ? new HashMap<String, String>()
+							: (Map<String, String>) variables.get(Constants.DATA_VARIABLES));
+					variables.remove(Constants.DATA_VARIABLES);
+					variables.entrySet().stream()
+							.forEach(k -> screenTask.getData().put(k.getKey(), (String) k.getValue()));
+				}
+				screenTask.setId(workingTask.getId());
+				screenTask.setTemplate(workingTask.getForm());
 				scene.setScreenTask(screenTask);
-				// screenTask.setData();
+			} else {
+				CommandTask commandTask = new CommandTask();
+				// TODO
 			}
 
 		}
 
-		ScreenTask screenTask = new ScreenTask();
-		screenTask.setTimeout(120);
-		screenTask.setTemplate("stampanteKO.html");
-		screenTask.setId("Activity_1");
-		LinkedList<Button> buttons = new LinkedList<>();
-		Button button = new Button();
-		button.setId("idButtonProcedere");
-		Map<String, String> data = new HashMap<>();
-		data.put("procedere", "true");
-		button.setData(data);
-		buttons.addLast(button);
-		screenTask.setButtons(buttons);
-		// scene.setCommandTask(new CommandTask(Command.AUTHORIZE, null, null));
-		scene.setScreenTask(screenTask);
-		data = new HashMap<>();
-		data.put("error", "Error on stampanteKO.html");
-		screenTask.setOnError(data);
-
-		data = new HashMap<>();
-		data.put("error", "timeout on stampanteKO.html");
-		screenTask.setOnTimeout(data);
 		return scene;
 	}
 
@@ -121,7 +117,6 @@ public class TaskService {
 		data.put("type", "QRcode");
 		commandTask.setData(data);
 		commandTask.setOutcomeVarName("scansioneResult");
-		commandTask.setTimeout(120);
 
 		data = new HashMap<>();
 		data.put("error", "Error on QRcode scanning");
@@ -147,20 +142,19 @@ public class TaskService {
 		return deviceInfo;
 	}
 
-	public static void main(String[] args) {
-		/*
-		 * 
-		 * List<KeyPair> list = new ArrayList<>();
-		 * Map<String, Object> variables = new HashMap<>();
-		 * variables.put("Ollare2", "Ollare2");
-		 * variables.put("Timeout", "timeout");
-		 * variables.put("Ollare3", "Ollare3");
-		 * variables.entrySet().stream()
-		 * .filter(k -> !k.getKey().equals(Constants.TIMEOUT_VARIABLE))
-		 * .forEach(k -> list.add(new KeyPair(k.getKey(), (String) k.getValue())));
-		 * variables.entrySet().removeAll(list);
-		 * System.out.println("List: " + list + "\nMAP: " + variables);
-		 */
+	private TaskRequest buildTaskRequest(State state, String transactionId) {
+		DeviceInfo deviceInfo = convertDeviceInDeviceInfo(state.getDevice());
+
+		TaskRequest taskRequest = new TaskRequest();
+		taskRequest.setDeviceInfo(deviceInfo);
+		taskRequest.setTransactionId(transactionId);
+		Map<String, Object> variables = new HashMap<>();
+		state.getDevice().getPeripherals()
+				.stream().forEach(per -> variables.put(per.getId(), per.getStatus()));
+
+		taskRequest.setVariables(variables);
+
+		return taskRequest;
 	}
 
 }

@@ -1,7 +1,6 @@
 package it.pagopa.atmlayer.wf.task.client.bean;
 
 import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,12 +18,9 @@ import lombok.NoArgsConstructor;
 public class TaskResponse {
 
     @JsonProperty(value = "tasks")
-    private List<String> tasks;
+    private List<Task> tasks;
 
     @JsonProperty(value = "transactionId")
     private String transactionId;
-
-    @JsonProperty(value = "variables")
-    private Map<String, Object> variables;
 
 }

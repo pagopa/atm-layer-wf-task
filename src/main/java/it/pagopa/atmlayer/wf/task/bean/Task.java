@@ -28,6 +28,7 @@ public abstract class Task {
 	@Schema(description = "The key/value data map on Error")
 	private Map<String, String> onError;
 
+	@Schema(description = "The timeout value")
 	private int timeout;
 
 	@Schema(description = "The key/value data map on Timeout")

@@ -2,8 +2,12 @@ package it.pagopa.atmlayer.wf.task.util;
 
 public class Constants {
 
-    public final static String SCREEN_TASK_VARIABLE = "TEST";
+    public final static String TIMEOUT_VARIABLES = "onTimeout";
 
-    public final static String TIMEOUT_VARIABLE = "Timeout";
+    public final static String TIMEOUT_VALUE = "timeout";
+
+    public final static String ERROR_VARIABLES = "onError";
+
+    public final static String DATA_VARIABLES = "data";
 
 }
