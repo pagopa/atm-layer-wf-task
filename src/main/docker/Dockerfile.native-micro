@@ -10,11 +10,11 @@
 #
 # Then, build the image with:
 #
-# docker build -f src/main/docker/Dockerfile.native-micro -t quarkus/workflow-router .
+# docker build -f src/main/docker/Dockerfile.native-micro -t quarkus/workflow-task .
 #
 # Then run the container using:
 #
-# docker run -i --rm -p 8080:8080 quarkus/workflow-router
+# docker run -i --rm -p 8080:8080 quarkus/workflow-task
 #
 ###
 FROM quay.io/quarkus/quarkus-micro-image:2.0
