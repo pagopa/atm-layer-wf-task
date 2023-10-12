@@ -10,7 +10,7 @@ import jakarta.ws.rs.Path;
 
 @RegisterRestClient
 @Path("/api/v1/processes")
-public interface ProcessProxy {
+public interface ProcessRestClient {
 
     @POST
     RestResponse<TaskResponse> startProcess(TaskRequest taskRequest);

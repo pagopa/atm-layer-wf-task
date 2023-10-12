@@ -28,7 +28,7 @@ public class TaskService {
 
 	@Inject
 	@RestClient
-	ProcessRestClient processProxy;
+	ProcessRestClient processRestClient;
 
 	@SuppressWarnings("unchecked")
 	public Scene buildMain(String functionId, String transactionId, State state) {
@@ -58,7 +58,8 @@ public class TaskService {
 			scene.setTransactionId(transactionId);
 		}
 
-		RestResponse<TaskResponse> restResponse = processProxy.startProcess(buildTaskRequest(state, transactionId));
+		RestResponse<TaskResponse> restResponse = processRestClient
+				.startProcess(buildTaskRequest(state, transactionId));
 
 		if (restResponse.getStatus() == 200) {
 			TaskResponse response = restResponse.getEntity();
