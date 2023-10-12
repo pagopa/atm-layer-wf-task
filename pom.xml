@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.pagopa.atmlayer</groupId>
@@ -12,8 +14,11 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
 		<quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
-		<quarkus.platform.version>3.4.1</quarkus.platform.version>
 		<lombok.version>1.18.28</lombok.version>
+		<skipITs>true</skipITs>
+		<surefire-plugin.version>3.1.2</surefire-plugin.version>
+		<lombok.version>1.18.30</lombok.version>
+		<quarkus.platform.version>3.4.2</quarkus.platform.version>
 		<skipITs>true</skipITs>
 		<surefire-plugin.version>3.1.2</surefire-plugin.version>
 	</properties>
@@ -31,7 +36,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>io.quarkus</groupId>
-			<artifactId>quarkus-resteasy-reactive-jackson</artifactId>
+			<artifactId>quarkus-rest-client-reactive-jackson</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.quarkus</groupId>
@@ -40,6 +45,10 @@
 		<dependency>
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-resteasy-reactive</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-resteasy-reactive-jsonb</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.quarkus</groupId>
