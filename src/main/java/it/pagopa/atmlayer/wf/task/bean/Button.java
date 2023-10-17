@@ -15,5 +15,5 @@ public class Button {
 	@Schema(description = "The button id.")
 	private String id;
 
-	private Map<String, String> data;
+	private Map<String, Object> data;
 }

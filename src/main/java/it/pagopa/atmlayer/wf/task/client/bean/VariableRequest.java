@@ -1,6 +1,7 @@
 package it.pagopa.atmlayer.wf.task.client.bean;
 
-import io.quarkus.runtime.annotations.RegisterForReflection;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,15 +11,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@RegisterForReflection
-public class TaskRequest {
-
-    private String functionId;
+public class VariableRequest {
 
     private String taskId;
 
-    private String transactionId;
+    private List<String> buttons;
 
-    private DeviceInfo deviceInfo;
+    private List<String> variables;
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -54,10 +55,8 @@ public class Device {
 	/*
 	 * Terminal operation timestamp.
 	 */
-	//@Schema(description = "Timestamp della richiesta", implementation = String.class, format = "timestamp", pattern = "dd/MM/yyyy HH:mm")
-	//@Schema(description = "Timestamp della richiesta", pattern = "dd/MM/yyyy HH:mm")
-	//@JsonFormat(pattern = "dd-MM-yyyy HH:mm")
-	@JsonProperty("op_timestamp")
+	@Schema(description = "Timestamp della richiesta", format = "timestamp", pattern = "dd/MM/yyyy HH:mm")
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	@JsonIgnore
 	private Instant opTimestamp;
 
@@ -66,6 +65,6 @@ public class Device {
 	 */
 	@Schema(description = "Identificativo del canale del dispositivo")
 	private Channel channel;
-	
+
 	private List<Peripheral> peripherals;
 }

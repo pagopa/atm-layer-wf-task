@@ -1,6 +1,6 @@
 package it.pagopa.atmlayer.wf.task.client.bean;
 
-import java.util.List;
+import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaskResponse {
+public class VariableResponse {
 
-    private List<Task> tasks;
+    private Map<String, Object> buttons;
 
-    private String transactionId;
+    private Map<String, Object> variables;
 
 }

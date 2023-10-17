@@ -6,6 +6,8 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.jboss.logging.Logger;
+import org.jboss.resteasy.reactive.RestResponse;
+import org.jboss.resteasy.reactive.RestResponse.Status;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,18 +40,17 @@ public class TaskResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Restituisce la scena principale della funzione selezionata", description = "CREATE della scena prinicpale con la lista dei task dato l'ID della funzione selezionata.")
 	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. Restituisce l'oggetto Scene nel body della risposta.", content = @Content(schema = @Schema(implementation = Scene.class)))
-	public Response createMainScene(
+	public RestResponse<Scene> createMainScene(
 			@Parameter(description = "ID della funzione selezionata", example = "PAGAMENTO_SPONTANEO") @NotNull @PathParam("functionId") String functionId,
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 
-		// System.out.println(requestBody);
 		logRequest(state);
 
-		Scene scene = taskService.buildMain(functionId, null, state);
+		Scene scene = taskService.buildFirst(functionId, null, state);
 
 		logResponse(scene);
 
-		return Response.status(201).entity(scene).build();
+		return RestResponse.status(Status.CREATED, scene);
 	}
 
 	@Path("/main/{functionId}/trns/{trnId}")
@@ -58,19 +59,18 @@ public class TaskResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Restituisce la scena principale della funzione selezionata", description = "CREATE della scena principale con la lista dei task dato l'ID del flusso BPMN della funzione selezionata.")
 	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. Restituisce l'oggetto Scene nel body della risposta.", content = @Content(schema = @Schema(implementation = Scene.class)))
-	public Response createMainScene(
+	public RestResponse<Scene> createMainScene(
 			@Parameter(description = "ID della funzione selezionata", example = "PAGAMENTO_SPONTANEO") @NotNull @PathParam("functionId") String functionId,
 			@Parameter(description = "ID della transazione. Può essere generato dal Device alla richiesta della prima scena oppure generato dal server alla risposta della prima scena. Resta invariato fino al termine della funzione.", example = "b197bbd0-0459-4d0f-9d4a-45cdd369c018") @NotNull @PathParam("trnId") String transactionId,
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 
-		// System.out.println(requestBody);
 		logRequest(state);
 
-		Scene scene = taskService.buildMain(functionId, transactionId, state);
+		Scene scene = taskService.buildFirst(functionId, transactionId, state);
 
 		logResponse(scene);
 
-		return Response.status(201).entity(taskService.buildMain(functionId, transactionId, state)).build();
+		return RestResponse.status(Status.CREATED, scene);
 	}
 
 	@Path("/next/trns/{trnId}")
@@ -79,17 +79,17 @@ public class TaskResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Restituisce la scena successiva con la lista dei task dato l'ID del flusso.", description = "CREATE dello step successivo a quello corrente dato l'ID del flusso.")
 	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. restituisce l'oggetto Task nel body della risposta.", content = @Content(schema = @Schema(implementation = Scene.class)))
-	public Response createNextScene(
+	public RestResponse<Scene> createNextScene(
 			@Parameter(description = "ID della transazione") @NotNull @PathParam("trnId") String transactionId,
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 
 		logRequest(state);
 
-		Scene scene = taskService.buildNext(transactionId);
+		Scene scene = taskService.buildNext(transactionId, state);
 
 		logResponse(scene);
 
-		return Response.ok().entity(taskService.buildNext(transactionId)).build();
+		return RestResponse.status(Status.CREATED, scene);
 	}
 
 	private void logRequest(Object object) {

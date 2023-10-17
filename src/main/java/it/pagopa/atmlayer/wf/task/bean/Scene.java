@@ -14,35 +14,12 @@ import lombok.NoArgsConstructor;
 @JsonInclude(Include.NON_NULL)
 @Schema(description = "L'oggetto Scene che rappresenta un Task di tipo ScreenTask o CommandTask")
 public class Scene {
-	/**
-	 * 
-	 * @param screenTask
-	 */
-	public Scene(ScreenTask screenTask) {
-		this.screenTask = screenTask;
-	}
 
-	public Scene(CommandTask commandTask) {
-		this.commandTask = commandTask;
-	}
-
-	@JsonProperty("screen_task")
-	private ScreenTask screenTask;
-
-	@JsonProperty("command_task")
-	private CommandTask commandTask;
+	@JsonProperty("task")
+	private Task task;
 
 	@Schema(required = true, description = "ID della transazione. Può essere generato dal Device alla richiesta della prima scena oppure generato dal server alla risposta della prima scena. Resta invariato fino al termine della funzione.", example = "b197bbd0-0459-4d0f-9d4a-45cdd369c018")
 	@JsonProperty("trn_id")
 	private String transactionId;
 
-	public void setScreenTask(ScreenTask screenTask) {
-		this.screenTask = screenTask;
-		commandTask = null;
-	}
-
-	public void setCommandTask(CommandTask commandTask) {
-		this.commandTask = commandTask;
-		screenTask = null;
-	}
 }

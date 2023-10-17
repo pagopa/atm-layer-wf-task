@@ -1,17 +1,26 @@
 package it.pagopa.atmlayer.wf.task.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.RestResponse;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import it.pagopa.atmlayer.wf.task.bean.Command;
-import it.pagopa.atmlayer.wf.task.bean.CommandTask;
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.Scene;
-import it.pagopa.atmlayer.wf.task.bean.ScreenTask;
 import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
 import it.pagopa.atmlayer.wf.task.client.bean.DeviceInfo;
@@ -19,7 +28,10 @@ import it.pagopa.atmlayer.wf.task.client.bean.DeviceType;
 import it.pagopa.atmlayer.wf.task.client.bean.Task;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
+import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
+import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.util.Constants;
+import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -30,106 +42,125 @@ public class TaskService {
 	@RestClient
 	ProcessRestClient processRestClient;
 
+	private static final Logger LOG = Logger.getLogger(TaskService.class);
+
+	private static final String VARIABLES_REGEX = "\\$\\{(.*?)\\}";
+
+	private static final String BUTTON_TAG = "button";
+
 	@SuppressWarnings("unchecked")
-	public Scene buildMain(String functionId, String transactionId, State state) {
-		/*
-		 * Lettura del modello BPMN via client microservizio
-		 */
+	public it.pagopa.atmlayer.wf.task.bean.Task buildTask(String functionId, String transactionId, State state) {
 
-		/*
-		 * TODO: Parsing del file BPMN
-		 */
-
-		/*
-		 * TODO: Crea l'istanza del processo.
-		 */
-
-		/*
-		 * TODO: Valutazione delle condizione in base alle variabilidi input
-		 */
-
-		/*
-		 * TODO: Creazione dell'oggetto Scene
-		 */
-		Scene scene = new Scene();
-		if (transactionId == null) {
-			scene.setTransactionId(UUID.randomUUID().toString());
+		TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
+		RestResponse<TaskResponse> restTaskResponse = null;
+		if (state.getTaskId() != null) {
+			restTaskResponse = processRestClient.nextTasks(taskRequest);
 		} else {
-			scene.setTransactionId(transactionId);
+			restTaskResponse = processRestClient.startProcess(taskRequest);
 		}
 
-		RestResponse<TaskResponse> restResponse = processRestClient
-				.startProcess(buildTaskRequest(state, transactionId));
+		it.pagopa.atmlayer.wf.task.bean.Task atmTask = null;
 
-		if (restResponse.getStatus() == 200) {
-			TaskResponse response = restResponse.getEntity();
+		if (restTaskResponse != null && restTaskResponse.getStatus() == 200) {
+			TaskResponse response = restTaskResponse.getEntity();
 			Task workingTask = new Task();
-			boolean isScreenTask = false;
-			for (Task task : response.getTasks()) {
-				workingTask = task;
-				if (task.getForm() != null && !task.getForm().isEmpty()) {
-					isScreenTask = true;
-					break;
+			Collections.sort(response.getTasks(), Comparator.comparingInt(Task::getPriority));
+
+			// Recupero il primo task ordinato per priorità
+			workingTask = response.getTasks().get(0);
+
+			VariableRequest variableRequest = new VariableRequest();
+			if (workingTask.getForm() != null) {
+				try {
+					String htmlString = new String(Files.readAllBytes(Paths.get(workingTask.getForm())));
+					List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
+					if (placeholders != null && !placeholders.isEmpty())
+						variableRequest.setVariables(placeholders);
+					variableRequest.setButtons(getIdOfTag(htmlString, BUTTON_TAG));
+				} catch (IOException e) {
+					LOG.error("- ERROR", e);
 				}
 			}
 
-			if (isScreenTask) {
-				ScreenTask screenTask = new ScreenTask();
-				Map<String, Object> variables = workingTask.getVariables();
+			variableRequest.setTaskId(workingTask.getId());
+
+			RestResponse<VariableResponse> restVariableResponse = processRestClient
+					.retrieveVariables(variableRequest);
+
+			if (restVariableResponse.getStatus() == 200) {
+				VariableResponse variableResponse = restVariableResponse.getEntity();
+				atmTask = new it.pagopa.atmlayer.wf.task.bean.Task();
+
+				// Managing generic variables
+				Map<String, Object> variables = variableResponse.getVariables();
+
 				if (variables.get(Constants.ERROR_VARIABLES) instanceof Map) {
-					screenTask.setOnError((Map<String, String>) variables.get(Constants.ERROR_VARIABLES));
+					LOG.debug("Getting error variables...");
+					atmTask.setOnError((Map<String, String>) variables.get(Constants.ERROR_VARIABLES));
 					variables.remove(Constants.ERROR_VARIABLES);
 				}
 
 				if (variables.get(Constants.TIMEOUT_VARIABLES) instanceof Map) {
-					screenTask.setOnTimeout((Map<String, String>) variables.get(Constants.TIMEOUT_VARIABLES));
+					LOG.debug("Getting timeout variables...");
+					atmTask.setOnTimeout((Map<String, String>) variables.get(Constants.TIMEOUT_VARIABLES));
 					variables.remove(Constants.TIMEOUT_VARIABLES);
 				}
 
-				screenTask.setTimeout((int) variables.get(Constants.TIMEOUT_VALUE));
+				LOG.debug("Getting timout value...");
+				atmTask.setTimeout((int) variables.get(Constants.TIMEOUT_VALUE));
 				variables.remove(Constants.TIMEOUT_VALUE);
 
+				LOG.debug("Getting command value...");
+				atmTask.setCommand(Command.valueOf((String) variables.get(Constants.COMMAND_VARIABLE_VALUE)));
+				variables.remove(Constants.COMMAND_VARIABLE_VALUE);
+
+				LOG.debug("Getting outcomeVarName value...");
+				atmTask.setOutcomeVarName((String) variables.get(Constants.OUTCOME_VAR_NAME));
+				variables.remove(Constants.OUTCOME_VAR_NAME);
+
+				LOG.debug("Getting recepitTemplate value...");
+				atmTask.setReceiptTemplate((String) variables.get(Constants.RECEIPT_TEMPLATE));
+				variables.remove(Constants.RECEIPT_TEMPLATE);
+
 				if (!variables.isEmpty()) {
-					screenTask.setData(variables.get(Constants.DATA_VARIABLES) == null ? new HashMap<String, String>()
+					LOG.debug("Getting generic variables...");
+					atmTask.setData(variables.get(Constants.DATA_VARIABLES) == null ? new HashMap<String, String>()
 							: (Map<String, String>) variables.get(Constants.DATA_VARIABLES));
 					variables.remove(Constants.DATA_VARIABLES);
-					variables.entrySet().stream()
-							.forEach(k -> screenTask.getData().put(k.getKey(), (String) k.getValue()));
+					for (String key : variables.keySet()) {
+						atmTask.getData().put(key, (String) variables.get(key));
+					}
+
 				}
-				screenTask.setId(workingTask.getId());
-				screenTask.setTemplate(workingTask.getForm());
-				scene.setScreenTask(screenTask);
-			} else {
-				CommandTask commandTask = new CommandTask();
-				// TODO
+				// Managing buttons variables
+
 			}
 
 		}
 
+		return atmTask;
+	}
+
+	public it.pagopa.atmlayer.wf.task.bean.Task buildTask(String transactionId, State state) {
+		return buildTask(null, transactionId, state);
+	}
+
+	public Scene buildNext(String transactionId, State state) {
+		Scene scene = new Scene();
+		scene.setTask(buildTask(transactionId, state));
+		scene.setTransactionId(transactionId);
 		return scene;
 	}
 
-	public Scene buildNext(String transactionId) {
+	public Scene buildFirst(String functionId, String transactionId, State state) {
 		Scene scene = new Scene();
-		CommandTask commandTask = new CommandTask();
-		commandTask.setCommand(Command.SCAN_BIIL_DATA);
-		commandTask.setId("Activity_2");
-		Map<String, String> data = new HashMap<>();
-		data.put("type", "QRcode");
-		commandTask.setData(data);
-		commandTask.setOutcomeVarName("scansioneResult");
-
-		data = new HashMap<>();
-		data.put("error", "Error on QRcode scanning");
-		commandTask.setOnError(data);
-
-		data = new HashMap<>();
-		data.put("error", "Timeout on QRcode scanning");
-		commandTask.setOnTimeout(data);
-
-		scene.setCommandTask(commandTask);
-		scene.setTransactionId(transactionId);
-
+		if (transactionId == null) {
+			scene.setTransactionId(UUID.randomUUID().toString());
+			LOG.debug("TransactionId generated: " + scene.getTransactionId());
+		} else {
+			scene.setTransactionId(transactionId);
+		}
+		scene.setTask(buildTask(functionId, scene.getTransactionId(), state));
 		return scene;
 	}
 
@@ -143,19 +174,25 @@ public class TaskService {
 		return deviceInfo;
 	}
 
-	private TaskRequest buildTaskRequest(State state, String transactionId) {
+	private TaskRequest buildTaskRequest(State state, String transactionId, String functionId) {
 		DeviceInfo deviceInfo = convertDeviceInDeviceInfo(state.getDevice());
 
 		TaskRequest taskRequest = new TaskRequest();
 		taskRequest.setDeviceInfo(deviceInfo);
 		taskRequest.setTransactionId(transactionId);
-		Map<String, Object> variables = new HashMap<>();
-		state.getDevice().getPeripherals()
-				.stream().forEach(per -> variables.put(per.getId(), per.getStatus()));
-
-		taskRequest.setVariables(variables);
+		taskRequest.setFunctionId(functionId);
 
 		return taskRequest;
+	}
+
+	private static List<String> getIdOfTag(String htmlString, String tag) {
+		List<String> buttons = new ArrayList<>();
+
+		Document doc = Jsoup.parse(htmlString);
+
+		doc.getElementsByTag(tag).stream().forEach(e -> buttons.add(e.id()));
+
+		return buttons;
 	}
 
 }
