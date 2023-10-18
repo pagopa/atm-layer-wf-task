@@ -1,7 +1,6 @@
 package it.pagopa.atmlayer.wf.task.test;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse;
