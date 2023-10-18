@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
@@ -43,8 +41,6 @@ public class TaskService {
 	private static final Logger LOG = Logger.getLogger(TaskService.class);
 
 	private static final String VARIABLES_REGEX = "\\$\\{(.*?)\\}";
-
-	private static final String VARIABLES_REPLACE_REGEX = "\\$\\{[^}]+\\}";
 
 	private static final String BUTTON_TAG = "button";
 
