@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import it.pagopa.atmlayer.wf.task.bean.Scene;
 import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
+import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.Consumes;
@@ -44,11 +45,11 @@ public class TaskResource {
 			@Parameter(description = "ID della funzione selezionata", example = "PAGAMENTO_SPONTANEO") @NotNull @PathParam("functionId") String functionId,
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 
-		logRequest(state);
+		LOG.info("RequestBody:\n" + Utility.getJson(state));
 
 		Scene scene = taskService.buildFirst(functionId, null, state);
 
-		logResponse(scene);
+		LOG.info("ResponseBody:\n" + Utility.getJson(scene));
 
 		return RestResponse.status(Status.CREATED, scene);
 	}
@@ -64,11 +65,11 @@ public class TaskResource {
 			@Parameter(description = "ID della transazione. Può essere generato dal Device alla richiesta della prima scena oppure generato dal server alla risposta della prima scena. Resta invariato fino al termine della funzione.", example = "b197bbd0-0459-4d0f-9d4a-45cdd369c018") @NotNull @PathParam("trnId") String transactionId,
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 
-		logRequest(state);
+		LOG.info("RequestBody:\n" + Utility.getJson(state));
 
 		Scene scene = taskService.buildFirst(functionId, transactionId, state);
 
-		logResponse(scene);
+		LOG.info("ResponseBody:\n" + Utility.getJson(scene));
 
 		return RestResponse.status(Status.CREATED, scene);
 	}
@@ -83,34 +84,13 @@ public class TaskResource {
 			@Parameter(description = "ID della transazione") @NotNull @PathParam("trnId") String transactionId,
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 
-		logRequest(state);
+		LOG.info("RequestBody:\n" + Utility.getJson(state));
 
 		Scene scene = taskService.buildNext(transactionId, state);
 
-		logResponse(scene);
+		LOG.info("ResponseBody:\n" + Utility.getJson(scene));
 
 		return RestResponse.status(Status.CREATED, scene);
 	}
 
-	private void logRequest(Object object) {
-		ObjectMapper om = new ObjectMapper();
-		om.enable(SerializationFeature.WRAP_ROOT_VALUE);
-		try {
-			LOG.info("\nRequestBody:\n" + om.writerWithDefaultPrettyPrinter().writeValueAsString(object));
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	private void logResponse(Object object) {
-		ObjectMapper om = new ObjectMapper();
-		om.enable(SerializationFeature.WRAP_ROOT_VALUE);
-		try {
-			LOG.info("\nResponseBody:\n" + om.writerWithDefaultPrettyPrinter().writeValueAsString(object));
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }

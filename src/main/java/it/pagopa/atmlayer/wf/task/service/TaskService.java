@@ -3,20 +3,18 @@ package it.pagopa.atmlayer.wf.task.service;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.RestResponse;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 import it.pagopa.atmlayer.wf.task.bean.Command;
 import it.pagopa.atmlayer.wf.task.bean.Device;
@@ -46,14 +44,15 @@ public class TaskService {
 
 	private static final String VARIABLES_REGEX = "\\$\\{(.*?)\\}";
 
+	private static final String VARIABLES_REPLACE_REGEX = "\\$\\{[^}]+\\}";
+
 	private static final String BUTTON_TAG = "button";
 
-	@SuppressWarnings("unchecked")
 	public it.pagopa.atmlayer.wf.task.bean.Task buildTask(String functionId, String transactionId, State state) {
 
 		TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
 		RestResponse<TaskResponse> restTaskResponse = null;
-		if (state.getTaskId() != null) {
+		if (taskRequest.getTaskId() != null) {
 			restTaskResponse = processRestClient.nextTasks(taskRequest);
 		} else {
 			restTaskResponse = processRestClient.startProcess(taskRequest);
@@ -67,73 +66,21 @@ public class TaskService {
 			Collections.sort(response.getTasks(), Comparator.comparingInt(Task::getPriority));
 
 			// Recupero il primo task ordinato per priorità
-			workingTask = response.getTasks().get(0);
+			if (!response.getTasks().isEmpty()) {
+				workingTask = response.getTasks().get(0);
+				VariableRequest variableRequest = createVariableRequest(workingTask);
 
-			VariableRequest variableRequest = new VariableRequest();
-			if (workingTask.getForm() != null) {
-				try {
-					String htmlString = new String(Files.readAllBytes(Paths.get(workingTask.getForm())));
-					List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
-					if (placeholders != null && !placeholders.isEmpty())
-						variableRequest.setVariables(placeholders);
-					variableRequest.setButtons(getIdOfTag(htmlString, BUTTON_TAG));
-				} catch (IOException e) {
-					LOG.error("- ERROR", e);
-				}
-			}
+				RestResponse<VariableResponse> restVariableResponse = processRestClient
+						.retrieveVariables(variableRequest);
 
-			variableRequest.setTaskId(workingTask.getId());
+				if (restVariableResponse.getStatus() == 200) {
+					VariableResponse variableResponse = restVariableResponse.getEntity();
+					atmTask = new it.pagopa.atmlayer.wf.task.bean.Task();
+					atmTask.setId(workingTask.getId());
 
-			RestResponse<VariableResponse> restVariableResponse = processRestClient
-					.retrieveVariables(variableRequest);
-
-			if (restVariableResponse.getStatus() == 200) {
-				VariableResponse variableResponse = restVariableResponse.getEntity();
-				atmTask = new it.pagopa.atmlayer.wf.task.bean.Task();
-
-				// Managing generic variables
-				Map<String, Object> variables = variableResponse.getVariables();
-
-				if (variables.get(Constants.ERROR_VARIABLES) instanceof Map) {
-					LOG.debug("Getting error variables...");
-					atmTask.setOnError((Map<String, String>) variables.get(Constants.ERROR_VARIABLES));
-					variables.remove(Constants.ERROR_VARIABLES);
-				}
-
-				if (variables.get(Constants.TIMEOUT_VARIABLES) instanceof Map) {
-					LOG.debug("Getting timeout variables...");
-					atmTask.setOnTimeout((Map<String, String>) variables.get(Constants.TIMEOUT_VARIABLES));
-					variables.remove(Constants.TIMEOUT_VARIABLES);
-				}
-
-				LOG.debug("Getting timout value...");
-				atmTask.setTimeout((int) variables.get(Constants.TIMEOUT_VALUE));
-				variables.remove(Constants.TIMEOUT_VALUE);
-
-				LOG.debug("Getting command value...");
-				atmTask.setCommand(Command.valueOf((String) variables.get(Constants.COMMAND_VARIABLE_VALUE)));
-				variables.remove(Constants.COMMAND_VARIABLE_VALUE);
-
-				LOG.debug("Getting outcomeVarName value...");
-				atmTask.setOutcomeVarName((String) variables.get(Constants.OUTCOME_VAR_NAME));
-				variables.remove(Constants.OUTCOME_VAR_NAME);
-
-				LOG.debug("Getting recepitTemplate value...");
-				atmTask.setReceiptTemplate((String) variables.get(Constants.RECEIPT_TEMPLATE));
-				variables.remove(Constants.RECEIPT_TEMPLATE);
-
-				if (!variables.isEmpty()) {
-					LOG.debug("Getting generic variables...");
-					atmTask.setData(variables.get(Constants.DATA_VARIABLES) == null ? new HashMap<String, String>()
-							: (Map<String, String>) variables.get(Constants.DATA_VARIABLES));
-					variables.remove(Constants.DATA_VARIABLES);
-					for (String key : variables.keySet()) {
-						atmTask.getData().put(key, (String) variables.get(key));
-					}
+					setVariablesInAtmTask(atmTask, variableResponse.getVariables());
 
 				}
-				// Managing buttons variables
-
 			}
 
 		}
@@ -169,6 +116,7 @@ public class TaskService {
 				.bankId(device.getBankId())
 				.branchId(device.getBranchId())
 				.code(device.getCode())
+				.terminalId(device.getTerminalId())
 				.deviceType(DeviceType.valueOf(device.getChannel().name()))
 				.opTimestamp(device.getOpTimestamp()).build();
 		return deviceInfo;
@@ -177,22 +125,115 @@ public class TaskService {
 	private TaskRequest buildTaskRequest(State state, String transactionId, String functionId) {
 		DeviceInfo deviceInfo = convertDeviceInDeviceInfo(state.getDevice());
 
-		TaskRequest taskRequest = new TaskRequest();
-		taskRequest.setDeviceInfo(deviceInfo);
-		taskRequest.setTransactionId(transactionId);
-		taskRequest.setFunctionId(functionId);
-
+		TaskRequest taskRequest = TaskRequest.builder()
+				.deviceInfo(deviceInfo)
+				.transactionId(transactionId)
+				.functionId(functionId)
+				.taskId(state.getTaskId()).build();
+		taskRequest.setVariables(new HashMap<String, Object>());
+		state.getDevice().getPeripherals().stream()
+				.forEach(per -> taskRequest.getVariables().put(per.getId(), per.getStatus().name()));
+		if (state.getData() != null) {
+			taskRequest.getVariables().putAll(state.getData());
+		}
 		return taskRequest;
 	}
 
-	private static List<String> getIdOfTag(String htmlString, String tag) {
-		List<String> buttons = new ArrayList<>();
+	@SuppressWarnings("unchecked")
+	private void setVariablesInAtmTask(it.pagopa.atmlayer.wf.task.bean.Task atmTask, Map<String, Object> variables) {
+		Map<String, Object> workingVariables = variables;
+		if (workingVariables.get(Constants.ERROR_VARIABLES) instanceof Map) {
+			LOG.debug("Getting error variables...");
+			atmTask.setOnError((Map<String, String>) workingVariables.get(Constants.ERROR_VARIABLES));
+			workingVariables.remove(Constants.ERROR_VARIABLES);
+		}
 
-		Document doc = Jsoup.parse(htmlString);
+		if (workingVariables.get(Constants.TIMEOUT_VARIABLES) instanceof Map) {
+			LOG.debug("Getting timeout variables...");
+			atmTask.setOnTimeout((Map<String, String>) workingVariables.get(Constants.TIMEOUT_VARIABLES));
+			workingVariables.remove(Constants.TIMEOUT_VARIABLES);
+		}
 
-		doc.getElementsByTag(tag).stream().forEach(e -> buttons.add(e.id()));
+		LOG.debug("Getting timout value...");
+		atmTask.setTimeout((int) workingVariables.get(Constants.TIMEOUT_VALUE));
+		workingVariables.remove(Constants.TIMEOUT_VALUE);
 
-		return buttons;
+		LOG.debug("Getting command value...");
+		if (workingVariables.get(Constants.COMMAND_VARIABLE_VALUE) != null) {
+			atmTask.setCommand(Command.valueOf((String) workingVariables.get(Constants.COMMAND_VARIABLE_VALUE)));
+			workingVariables.remove(Constants.COMMAND_VARIABLE_VALUE);
+		}
+
+		LOG.debug("Getting outcomeVarName value...");
+		atmTask.setOutcomeVarName((String) workingVariables.get(Constants.OUTCOME_VAR_NAME));
+		workingVariables.remove(Constants.OUTCOME_VAR_NAME);
+
+		LOG.debug("Getting recepitTemplate value...");
+		atmTask.setReceiptTemplate((String) workingVariables.get(Constants.RECEIPT_TEMPLATE));
+		workingVariables.remove(Constants.RECEIPT_TEMPLATE);
+
+		if (!workingVariables.isEmpty()) {
+			LOG.debug("Getting generic variables...");
+			atmTask.setData(workingVariables.get(Constants.DATA_VARIABLES) == null ? new HashMap<String, String>()
+					: (Map<String, String>) workingVariables.get(Constants.DATA_VARIABLES));
+			workingVariables.remove(Constants.DATA_VARIABLES);
+			for (String key : workingVariables.keySet()) {
+				atmTask.getData().put(key, (String) workingVariables.get(key));
+			}
+		}
+	}
+
+	private VariableRequest createVariableRequest(Task task) {
+		VariableRequest variableRequest = new VariableRequest();
+		if (task.getForm() != null) {
+			try {
+				LOG.debug("Finding variables in html form...");
+				String htmlString = new String(Files.readAllBytes(Paths.get(task.getForm())));
+				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
+				if (placeholders != null && !placeholders.isEmpty()) {
+					LOG.debug("Number of variables found in html form: " + placeholders.size());
+					variableRequest.setVariables(placeholders);
+				}
+				variableRequest.setButtons(Utility.getIdOfTag(htmlString, BUTTON_TAG));
+			} catch (IOException e) {
+				LOG.error("- ERROR", e);
+			}
+		}
+		// Find variables in receipt template
+		if (task.getVariables() != null
+				&& task.getVariables().get(Constants.RECEIPT_TEMPLATE) != null) {
+			try {
+				String htmlString = new String(Files.readAllBytes(
+						Paths.get((String) task.getVariables().get(Constants.RECEIPT_TEMPLATE))));
+				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
+				if (placeholders != null && !placeholders.isEmpty()) {
+					LOG.debug("Number of variables found in receipt template: " + placeholders.size());
+					variableRequest.setVariables(placeholders);
+				}
+			} catch (IOException e) {
+				LOG.error("- ERROR", e);
+			}
+		}
+		variableRequest.setTaskId(task.getId());
+		return variableRequest;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void replaceVarValue(it.pagopa.atmlayer.wf.task.bean.Task task, Map<String, Object> variables) {
+		for (String var : Utility.findStringsByGroup(task.getTemplate(), VARIABLES_REGEX)) {
+			Object value = variables.get(var);
+			if (value instanceof Map) {
+				value = ((Map<String, Object>) value).get(var);
+			}
+		}
+		/*
+		 * placeholders.stream().forEach(var -> {
+		 * variables.keySet().stream().filter(variables.get(var) instanceof Map ==
+		 * true);
+		 * task.getTemplate().replace("${" + var + "}", (String) variables.get(var))}
+		 * );
+		 */
+
 	}
 
 }

@@ -12,8 +12,8 @@ public class Constants {
 
     public final static String COMMAND_VARIABLE_VALUE = "command";
 
-    public final static String OUTCOME_VAR_NAME = "outcomeVarName";
+    public final static String OUTCOME_VAR_NAME = "outcome_var_name";
 
-    public final static String RECEIPT_TEMPLATE = "receiptTemplate";
+    public final static String RECEIPT_TEMPLATE = "receipt_template";
 
 }
