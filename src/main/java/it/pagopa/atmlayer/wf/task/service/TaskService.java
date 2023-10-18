@@ -49,8 +49,10 @@ public class TaskService {
 		TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
 		RestResponse<TaskResponse> restTaskResponse = null;
 		if (taskRequest.getTaskId() != null) {
+			LOG.info("Calling next task after for task id: [" + taskRequest.getTaskId() + "]");
 			restTaskResponse = processRestClient.nextTasks(taskRequest);
 		} else {
+			LOG.info("Calling start process of function: [" + functionId + "]");
 			restTaskResponse = processRestClient.startProcess(taskRequest);
 		}
 
@@ -65,7 +67,7 @@ public class TaskService {
 			if (!response.getTasks().isEmpty()) {
 				workingTask = response.getTasks().get(0);
 				VariableRequest variableRequest = createVariableRequest(workingTask);
-
+				LOG.info("Calling retrieve variables for task id: [" + workingTask.getId() + "]");
 				RestResponse<VariableResponse> restVariableResponse = processRestClient
 						.retrieveVariables(variableRequest);
 
@@ -75,7 +77,7 @@ public class TaskService {
 					atmTask.setId(workingTask.getId());
 
 					setVariablesInAtmTask(atmTask, variableResponse.getVariables());
-
+					replaceVarValue(atmTask, variableResponse.getVariables());
 				}
 			}
 
@@ -216,20 +218,15 @@ public class TaskService {
 
 	@SuppressWarnings("unchecked")
 	private void replaceVarValue(it.pagopa.atmlayer.wf.task.bean.Task task, Map<String, Object> variables) {
-		for (String var : Utility.findStringsByGroup(task.getTemplate(), VARIABLES_REGEX)) {
-			Object value = variables.get(var);
-			if (value instanceof Map) {
-				value = ((Map<String, Object>) value).get(var);
-			}
+		if (task.getTemplate() != null) {
+			Utility.findStringsByGroup(task.getTemplate(), VARIABLES_REGEX).stream().forEach(var -> {
+				Object value = variables.get(var);
+				if (value instanceof Map) {
+					value = ((Map<String, Object>) value).get(var);
+				}
+				task.getTemplate().replace("${" + var + "}", String.valueOf(value));
+			});
 		}
-		/*
-		 * placeholders.stream().forEach(var -> {
-		 * variables.keySet().stream().filter(variables.get(var) instanceof Map ==
-		 * true);
-		 * task.getTemplate().replace("${" + var + "}", (String) variables.get(var))}
-		 * );
-		 */
-
 	}
 
 }
