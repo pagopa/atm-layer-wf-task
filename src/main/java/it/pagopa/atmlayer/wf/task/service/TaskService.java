@@ -26,6 +26,7 @@ import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.util.Constants;
+import it.pagopa.atmlayer.wf.task.util.Properties;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -38,6 +39,9 @@ public class TaskService {
 	@Inject
 	@RestClient
 	ProcessRestClient processRestClient;
+
+	@Inject
+	Properties properties;
 
 	private static final String VARIABLES_REGEX = "\\$\\{(.*?)\\}";
 
@@ -141,13 +145,13 @@ public class TaskService {
 		Map<String, Object> workingVariables = variables;
 		if (workingVariables.get(Constants.ERROR_VARIABLES) instanceof Map) {
 			log.debug("Getting error variables...");
-			atmTask.setOnError((Map<String, String>) workingVariables.get(Constants.ERROR_VARIABLES));
+			atmTask.setOnError((Map<String, Object>) workingVariables.get(Constants.ERROR_VARIABLES));
 			workingVariables.remove(Constants.ERROR_VARIABLES);
 		}
 
 		if (workingVariables.get(Constants.TIMEOUT_VARIABLES) instanceof Map) {
 			log.debug("Getting timeout variables...");
-			atmTask.setOnTimeout((Map<String, String>) workingVariables.get(Constants.TIMEOUT_VARIABLES));
+			atmTask.setOnTimeout((Map<String, Object>) workingVariables.get(Constants.TIMEOUT_VARIABLES));
 			workingVariables.remove(Constants.TIMEOUT_VARIABLES);
 		}
 
@@ -171,8 +175,8 @@ public class TaskService {
 
 		if (!workingVariables.isEmpty()) {
 			log.debug("Getting generic variables...");
-			atmTask.setData(workingVariables.get(Constants.DATA_VARIABLES) == null ? new HashMap<String, String>()
-					: (Map<String, String>) workingVariables.get(Constants.DATA_VARIABLES));
+			atmTask.setData(workingVariables.get(Constants.DATA_VARIABLES) == null ? new HashMap<String, Object>()
+					: (Map<String, Object>) workingVariables.get(Constants.DATA_VARIABLES));
 			workingVariables.remove(Constants.DATA_VARIABLES);
 			for (String key : workingVariables.keySet()) {
 				atmTask.getData().put(key, (String) workingVariables.get(key));
@@ -185,7 +189,8 @@ public class TaskService {
 		if (task.getForm() != null) {
 			try {
 				log.debug("Finding variables in html form...");
-				String htmlString = new String(Files.readAllBytes(Paths.get(task.getForm())));
+				String htmlString = new String(
+						Files.readAllBytes(Paths.get(properties.templatePath() + task.getForm())));
 				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
 				if (placeholders != null && !placeholders.isEmpty()) {
 					log.debug("Number of variables found in html form: " + placeholders.size());
@@ -193,7 +198,7 @@ public class TaskService {
 				}
 				variableRequest.setButtons(Utility.getIdOfTag(htmlString, BUTTON_TAG));
 			} catch (IOException e) {
-				log.error("- ERROR", e);
+				log.error("- ERROR: File: {} not found!", properties.templatePath() + task.getForm());
 			}
 		}
 		// Find variables in receipt template
@@ -201,14 +206,15 @@ public class TaskService {
 				&& task.getVariables().get(Constants.RECEIPT_TEMPLATE) != null) {
 			try {
 				String htmlString = new String(Files.readAllBytes(
-						Paths.get((String) task.getVariables().get(Constants.RECEIPT_TEMPLATE))));
+						Paths.get((String) task.getVariables()
+								.get(properties.templatePath() + Constants.RECEIPT_TEMPLATE))));
 				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
 				if (placeholders != null && !placeholders.isEmpty()) {
 					log.debug("Number of variables found in receipt template: " + placeholders.size());
 					variableRequest.setVariables(placeholders);
 				}
 			} catch (IOException e) {
-				log.error("- ERROR", e);
+				log.error("- ERROR: File: {} not found!", properties.templatePath() + task.getForm());
 			}
 		}
 		variableRequest.setTaskId(task.getId());

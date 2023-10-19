@@ -48,7 +48,7 @@ public class Device {
 	/*
 	 * Terminal operation timestamp.
 	 */
-	@Schema(description = "Timestamp della richiesta", format = "timestamp", pattern = "dd/MM/yyyy HH:mm")
+	@Schema(description = "Timestamp della richiesta", format = "timestamp", pattern = "dd/MM/yyyy HH:mm", example = "19/10/2023 14:41")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
 	private Date opTimestamp;
 

@@ -24,16 +24,16 @@ public class Task {
 	private String id;
 
 	@Schema(description = "Mappa delle variabili server --> client")
-	private Map<String, String> data;
+	private Map<String, Object> data;
 
 	@Schema(description = "The key/value data map on Error")
-	private Map<String, String> onError;
+	private Map<String, Object> onError;
 
 	@Schema(description = "The timeout value")
 	private int timeout;
 
 	@Schema(description = "The key/value data map on Timeout")
-	private Map<String, String> onTimeout;
+	private Map<String, Object> onTimeout;
 
 	@Schema(description = "Template html")
 	private String template;

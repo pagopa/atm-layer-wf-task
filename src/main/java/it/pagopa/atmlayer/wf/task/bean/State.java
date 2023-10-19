@@ -22,5 +22,5 @@ public class State {
 	private String taskId;
 
 	@Schema(description = "Mappa delle variabili inviate dal Device")
-	private Map<String, String> data;
+	private Map<String, Object> data;
 }
