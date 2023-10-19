@@ -5,7 +5,6 @@ import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
-import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.RestResponse.Status;
 
@@ -21,14 +20,14 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import lombok.extern.slf4j.Slf4j;
 
 @Path("/api/v1/tasks")
+@Slf4j
 public class TaskResource {
 
 	@Inject
 	TaskService taskService;
-
-	private static final Logger LOG = Logger.getLogger(TaskResource.class);
 
 	@Path("/main/{functionId}")
 	@POST
@@ -40,11 +39,11 @@ public class TaskResource {
 			@Parameter(description = "ID della funzione selezionata", example = "PAGAMENTO_SPONTANEO") @NotNull @PathParam("functionId") String functionId,
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 
-		LOG.info("RequestBody:\n" + Utility.getJson(state));
+		log.info("RequestBody:\n{}", Utility.getJson(state));
 
 		Scene scene = taskService.buildFirst(functionId, null, state);
 
-		LOG.info("ResponseBody:\n" + Utility.getJson(scene));
+		log.info("ResponseBody:\n{}", Utility.getJson(scene));
 
 		return RestResponse.status(Status.CREATED, scene);
 	}
@@ -60,11 +59,11 @@ public class TaskResource {
 			@Parameter(description = "ID della transazione. Può essere generato dal Device alla richiesta della prima scena oppure generato dal server alla risposta della prima scena. Resta invariato fino al termine della funzione.", example = "b197bbd0-0459-4d0f-9d4a-45cdd369c018") @NotNull @PathParam("trnId") String transactionId,
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 
-		LOG.info("RequestBody:\n" + Utility.getJson(state));
+		log.info("RequestBody:\n{}", Utility.getJson(state));
 
 		Scene scene = taskService.buildFirst(functionId, transactionId, state);
 
-		LOG.info("ResponseBody:\n" + Utility.getJson(scene));
+		log.info("ResponseBody:\n{}", Utility.getJson(scene));
 
 		return RestResponse.status(Status.CREATED, scene);
 	}
@@ -79,11 +78,11 @@ public class TaskResource {
 			@Parameter(description = "ID della transazione") @NotNull @PathParam("trnId") String transactionId,
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 
-		LOG.info("RequestBody:\n" + Utility.getJson(state));
+		log.info("RequestBody:\n{}", Utility.getJson(state));
 
 		Scene scene = taskService.buildNext(transactionId, state);
 
-		LOG.info("ResponseBody:\n" + Utility.getJson(scene));
+		log.info("ResponseBody:\n{}", Utility.getJson(scene));
 
 		return RestResponse.status(Status.CREATED, scene);
 	}

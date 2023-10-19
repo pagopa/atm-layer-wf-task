@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.RestResponse;
 
 import it.pagopa.atmlayer.wf.task.bean.Command;
@@ -30,15 +29,15 @@ import it.pagopa.atmlayer.wf.task.util.Constants;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 
 @ApplicationScoped
+@Slf4j
 public class TaskService {
 
 	@Inject
 	@RestClient
 	ProcessRestClient processRestClient;
-
-	private static final Logger LOG = Logger.getLogger(TaskService.class);
 
 	private static final String VARIABLES_REGEX = "\\$\\{(.*?)\\}";
 
@@ -49,10 +48,10 @@ public class TaskService {
 		TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
 		RestResponse<TaskResponse> restTaskResponse = null;
 		if (taskRequest.getTaskId() != null) {
-			LOG.info("Calling next task after for task id: [" + taskRequest.getTaskId() + "]");
+			log.info("Calling next task after for task id: [{}]", taskRequest.getTaskId());
 			restTaskResponse = processRestClient.nextTasks(taskRequest);
 		} else {
-			LOG.info("Calling start process of function: [" + functionId + "]");
+			log.info("Calling start process of function: [{}]", functionId);
 			restTaskResponse = processRestClient.startProcess(taskRequest);
 		}
 
@@ -67,7 +66,7 @@ public class TaskService {
 			if (!response.getTasks().isEmpty()) {
 				workingTask = response.getTasks().get(0);
 				VariableRequest variableRequest = createVariableRequest(workingTask);
-				LOG.info("Calling retrieve variables for task id: [" + workingTask.getId() + "]");
+				log.info("Calling retrieve variables for task id: [{}]", workingTask.getId());
 				RestResponse<VariableResponse> restVariableResponse = processRestClient
 						.retrieveVariables(variableRequest);
 
@@ -101,7 +100,7 @@ public class TaskService {
 		Scene scene = new Scene();
 		if (transactionId == null) {
 			scene.setTransactionId(UUID.randomUUID().toString());
-			LOG.debug("TransactionId generated: " + scene.getTransactionId());
+			log.debug("TransactionId generated [{}]", scene.getTransactionId());
 		} else {
 			scene.setTransactionId(transactionId);
 		}
@@ -141,37 +140,37 @@ public class TaskService {
 	private void setVariablesInAtmTask(it.pagopa.atmlayer.wf.task.bean.Task atmTask, Map<String, Object> variables) {
 		Map<String, Object> workingVariables = variables;
 		if (workingVariables.get(Constants.ERROR_VARIABLES) instanceof Map) {
-			LOG.debug("Getting error variables...");
+			log.debug("Getting error variables...");
 			atmTask.setOnError((Map<String, String>) workingVariables.get(Constants.ERROR_VARIABLES));
 			workingVariables.remove(Constants.ERROR_VARIABLES);
 		}
 
 		if (workingVariables.get(Constants.TIMEOUT_VARIABLES) instanceof Map) {
-			LOG.debug("Getting timeout variables...");
+			log.debug("Getting timeout variables...");
 			atmTask.setOnTimeout((Map<String, String>) workingVariables.get(Constants.TIMEOUT_VARIABLES));
 			workingVariables.remove(Constants.TIMEOUT_VARIABLES);
 		}
 
-		LOG.debug("Getting timout value...");
+		log.debug("Getting timout value...");
 		atmTask.setTimeout((int) workingVariables.get(Constants.TIMEOUT_VALUE));
 		workingVariables.remove(Constants.TIMEOUT_VALUE);
 
-		LOG.debug("Getting command value...");
+		log.debug("Getting command value...");
 		if (workingVariables.get(Constants.COMMAND_VARIABLE_VALUE) != null) {
 			atmTask.setCommand(Command.valueOf((String) workingVariables.get(Constants.COMMAND_VARIABLE_VALUE)));
 			workingVariables.remove(Constants.COMMAND_VARIABLE_VALUE);
 		}
 
-		LOG.debug("Getting outcomeVarName value...");
+		log.debug("Getting outcomeVarName value...");
 		atmTask.setOutcomeVarName((String) workingVariables.get(Constants.OUTCOME_VAR_NAME));
 		workingVariables.remove(Constants.OUTCOME_VAR_NAME);
 
-		LOG.debug("Getting recepitTemplate value...");
+		log.debug("Getting recepitTemplate value...");
 		atmTask.setReceiptTemplate((String) workingVariables.get(Constants.RECEIPT_TEMPLATE));
 		workingVariables.remove(Constants.RECEIPT_TEMPLATE);
 
 		if (!workingVariables.isEmpty()) {
-			LOG.debug("Getting generic variables...");
+			log.debug("Getting generic variables...");
 			atmTask.setData(workingVariables.get(Constants.DATA_VARIABLES) == null ? new HashMap<String, String>()
 					: (Map<String, String>) workingVariables.get(Constants.DATA_VARIABLES));
 			workingVariables.remove(Constants.DATA_VARIABLES);
@@ -185,16 +184,16 @@ public class TaskService {
 		VariableRequest variableRequest = new VariableRequest();
 		if (task.getForm() != null) {
 			try {
-				LOG.debug("Finding variables in html form...");
+				log.debug("Finding variables in html form...");
 				String htmlString = new String(Files.readAllBytes(Paths.get(task.getForm())));
 				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
 				if (placeholders != null && !placeholders.isEmpty()) {
-					LOG.debug("Number of variables found in html form: " + placeholders.size());
+					log.debug("Number of variables found in html form: " + placeholders.size());
 					variableRequest.setVariables(placeholders);
 				}
 				variableRequest.setButtons(Utility.getIdOfTag(htmlString, BUTTON_TAG));
 			} catch (IOException e) {
-				LOG.error("- ERROR", e);
+				log.error("- ERROR", e);
 			}
 		}
 		// Find variables in receipt template
@@ -205,11 +204,11 @@ public class TaskService {
 						Paths.get((String) task.getVariables().get(Constants.RECEIPT_TEMPLATE))));
 				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
 				if (placeholders != null && !placeholders.isEmpty()) {
-					LOG.debug("Number of variables found in receipt template: " + placeholders.size());
+					log.debug("Number of variables found in receipt template: " + placeholders.size());
 					variableRequest.setVariables(placeholders);
 				}
 			} catch (IOException e) {
-				LOG.error("- ERROR", e);
+				log.error("- ERROR", e);
 			}
 		}
 		variableRequest.setTaskId(task.getId());
