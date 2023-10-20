@@ -16,4 +16,6 @@ public class Constants {
 
     public final static String RECEIPT_TEMPLATE = "receipt_template";
 
+    public final static String BUTTON_VARIABLES = "buttons";
+
 }

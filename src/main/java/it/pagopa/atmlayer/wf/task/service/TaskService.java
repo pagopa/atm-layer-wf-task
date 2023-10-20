@@ -1,8 +1,10 @@
 package it.pagopa.atmlayer.wf.task.service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -13,6 +15,7 @@ import java.util.UUID;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse;
 
+import it.pagopa.atmlayer.wf.task.bean.Button;
 import it.pagopa.atmlayer.wf.task.bean.Command;
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.Scene;
@@ -164,6 +167,19 @@ public class TaskService {
 			atmTask.setCommand(Command.valueOf((String) workingVariables.get(Constants.COMMAND_VARIABLE_VALUE)));
 			workingVariables.remove(Constants.COMMAND_VARIABLE_VALUE);
 		}
+		log.debug("Getting command value...");
+		if (workingVariables.get(Constants.BUTTON_VARIABLES) != null) {
+			Map<String, Object> buttons = (Map<String, Object>) workingVariables.get(Constants.ERROR_VARIABLES);
+			List<Button> buttonsList = new ArrayList<>();
+			for (String key : buttons.keySet()) {
+				Button button = new Button();
+				button.setData((Map<String, Object>) workingVariables.get(key));
+				button.setId(key);
+				buttonsList.add(button);
+			}
+			atmTask.setButtons(buttonsList);
+			workingVariables.remove(Constants.BUTTON_VARIABLES);
+		}
 
 		log.debug("Getting outcomeVarName value...");
 		atmTask.setOutcomeVarName((String) workingVariables.get(Constants.OUTCOME_VAR_NAME));
@@ -187,10 +203,14 @@ public class TaskService {
 	private VariableRequest createVariableRequest(Task task) {
 		VariableRequest variableRequest = new VariableRequest();
 		if (task.getForm() != null) {
+
 			try {
 				log.debug("Finding variables in html form...");
-				String htmlString = new String(
-						Files.readAllBytes(Paths.get(properties.templatePath() + task.getForm())));
+				/*
+				 * String htmlString = new String(
+				 * Files.readAllBytes(Paths.get(properties.templatePath() + task.getForm())));
+				 */
+				String htmlString = new String(getFileAsIOStream(task.getForm()).readAllBytes());
 				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
 				if (placeholders != null && !placeholders.isEmpty()) {
 					log.debug("Number of variables found in html form: " + placeholders.size());
@@ -232,6 +252,17 @@ public class TaskService {
 				task.getTemplate().replace("${" + var + "}", String.valueOf(value));
 			});
 		}
+	}
+
+	private InputStream getFileAsIOStream(final String fileName) {
+		InputStream ioStream = this.getClass()
+				.getClassLoader()
+				.getResourceAsStream(fileName);
+
+		if (ioStream == null) {
+			throw new IllegalArgumentException(fileName + " is not found");
+		}
+		return ioStream;
 	}
 
 }
