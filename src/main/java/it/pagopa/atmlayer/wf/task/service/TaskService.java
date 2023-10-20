@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -85,7 +86,14 @@ public class TaskService {
 					setVariablesInAtmTask(atmTask, variableResponse.getVariables());
 					setButtonInAtmTask(atmTask, variableResponse.getButtons());
 					replaceVarValue(atmTask, variableResponse.getVariables());
-					// atmTask.setTemplate(transactionId);
+					if (workingTask.getForm() != null) {
+						try {
+							atmTask.setTemplate(Base64.getEncoder()
+									.encodeToString(getFileAsIOStream(workingTask.getForm()).readAllBytes()));
+						} catch (IOException e) {
+							log.error("File not found {}", workingTask.getForm());
+						}
+					}
 				}
 			}
 
@@ -97,19 +105,16 @@ public class TaskService {
 	@SuppressWarnings("unchecked")
 	private void setButtonInAtmTask(it.pagopa.atmlayer.wf.task.bean.Task atmTask, Map<String, Object> buttons) {
 		if (buttons != null) {
-			Map<String, Object> workingVariables = buttons;
 			log.debug("Getting buttons value...");
 			List<Button> buttonsList = new ArrayList<>();
-			log.debug("buttons: {}", workingVariables);
+			log.debug("buttons: {}", buttons);
 			for (String key : buttons.keySet()) {
 				Button button = new Button();
-				button.setData((Map<String, Object>) workingVariables.get(key));
+				button.setData((Map<String, Object>) buttons.get(key));
 				button.setId(key);
 				buttonsList.add(button);
-
-				atmTask.setButtons(buttonsList);
-				workingVariables.remove(Constants.BUTTON_VARIABLES);
 			}
+			atmTask.setButtons(buttonsList);
 		}
 	}
 
@@ -263,6 +268,7 @@ public class TaskService {
 	}
 
 	private InputStream getFileAsIOStream(final String fileName) {
+
 		InputStream ioStream = this.getClass()
 				.getClassLoader()
 				.getResourceAsStream(fileName);
