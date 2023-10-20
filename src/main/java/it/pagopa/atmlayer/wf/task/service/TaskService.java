@@ -85,6 +85,7 @@ public class TaskService {
 					setVariablesInAtmTask(atmTask, variableResponse.getVariables());
 					setButtonInAtmTask(atmTask, variableResponse.getButtons());
 					replaceVarValue(atmTask, variableResponse.getVariables());
+					// atmTask.setTemplate(transactionId);
 				}
 			}
 
@@ -95,18 +96,20 @@ public class TaskService {
 
 	@SuppressWarnings("unchecked")
 	private void setButtonInAtmTask(it.pagopa.atmlayer.wf.task.bean.Task atmTask, Map<String, Object> buttons) {
-		Map<String, Object> workingVariables = buttons;
-		log.debug("Getting buttons value...");
-		List<Button> buttonsList = new ArrayList<>();
-		log.debug("buttons: {}", workingVariables);
-		for (String key : buttons.keySet()) {
-			Button button = new Button();
-			button.setData((Map<String, Object>) workingVariables.get(key));
-			button.setId(key);
-			buttonsList.add(button);
+		if (buttons != null) {
+			Map<String, Object> workingVariables = buttons;
+			log.debug("Getting buttons value...");
+			List<Button> buttonsList = new ArrayList<>();
+			log.debug("buttons: {}", workingVariables);
+			for (String key : buttons.keySet()) {
+				Button button = new Button();
+				button.setData((Map<String, Object>) workingVariables.get(key));
+				button.setId(key);
+				buttonsList.add(button);
 
-			atmTask.setButtons(buttonsList);
-			workingVariables.remove(Constants.BUTTON_VARIABLES);
+				atmTask.setButtons(buttonsList);
+				workingVariables.remove(Constants.BUTTON_VARIABLES);
+			}
 		}
 	}
 
