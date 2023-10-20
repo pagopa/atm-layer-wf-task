@@ -83,6 +83,7 @@ public class TaskService {
 					atmTask.setId(workingTask.getId());
 
 					setVariablesInAtmTask(atmTask, variableResponse.getVariables());
+					setButtonInAtmTask(atmTask, variableResponse.getButtons());
 					replaceVarValue(atmTask, variableResponse.getVariables());
 				}
 			}
@@ -90,6 +91,23 @@ public class TaskService {
 		}
 
 		return atmTask;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void setButtonInAtmTask(it.pagopa.atmlayer.wf.task.bean.Task atmTask, Map<String, Object> buttons) {
+		Map<String, Object> workingVariables = buttons;
+		log.debug("Getting buttons value...");
+		List<Button> buttonsList = new ArrayList<>();
+		log.debug("buttons: {}", workingVariables);
+		for (String key : buttons.keySet()) {
+			Button button = new Button();
+			button.setData((Map<String, Object>) workingVariables.get(key));
+			button.setId(key);
+			buttonsList.add(button);
+
+			atmTask.setButtons(buttonsList);
+			workingVariables.remove(Constants.BUTTON_VARIABLES);
+		}
 	}
 
 	public it.pagopa.atmlayer.wf.task.bean.Task buildTask(String transactionId, State state) {
@@ -166,19 +184,6 @@ public class TaskService {
 		if (workingVariables.get(Constants.COMMAND_VARIABLE_VALUE) != null) {
 			atmTask.setCommand(Command.valueOf((String) workingVariables.get(Constants.COMMAND_VARIABLE_VALUE)));
 			workingVariables.remove(Constants.COMMAND_VARIABLE_VALUE);
-		}
-		log.debug("Getting command value...");
-		if (workingVariables.get(Constants.BUTTON_VARIABLES) != null) {
-			Map<String, Object> buttons = (Map<String, Object>) workingVariables.get(Constants.ERROR_VARIABLES);
-			List<Button> buttonsList = new ArrayList<>();
-			for (String key : buttons.keySet()) {
-				Button button = new Button();
-				button.setData((Map<String, Object>) workingVariables.get(key));
-				button.setId(key);
-				buttonsList.add(button);
-			}
-			atmTask.setButtons(buttonsList);
-			workingVariables.remove(Constants.BUTTON_VARIABLES);
 		}
 
 		log.debug("Getting outcomeVarName value...");
