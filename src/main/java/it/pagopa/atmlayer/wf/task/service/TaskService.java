@@ -139,7 +139,7 @@ public class TaskService {
 				.branchId(device.getBranchId())
 				.code(device.getCode())
 				.terminalId(device.getTerminalId())
-				.deviceType(DeviceType.valueOf(device.getChannel().name()))
+				.channel(DeviceType.valueOf(device.getChannel().name()))
 				.opTimestamp(device.getOpTimestamp()).build();
 		return deviceInfo;
 	}

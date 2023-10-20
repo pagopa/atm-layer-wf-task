@@ -59,6 +59,6 @@ public class DeviceInfo {
      * Type of device.
      */
     @Schema(description = "Identificativo del tipo di device")
-    private DeviceType deviceType;
+    private DeviceType channel;
 
 }
