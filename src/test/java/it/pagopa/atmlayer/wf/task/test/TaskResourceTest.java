@@ -10,7 +10,7 @@ import io.restassured.http.ContentType;
 @QuarkusTest
 public class TaskResourceTest {
 
-    private String test = "{\"device\":{\"bank_id\":\"02008\",\"branch_id\":\"12345\",\"code\":\"0001\",\"terminal_id\":\"ABCD1234\",\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"Receipt printer\",\"status\":\"OK\"}],\"opTimestamp\":\"2022-03-10T16:15:50Z\"},\"task_id\":\"string\",\"data\":{\"additionalProp1\":\"string\",\"additionalProp2\":\"string\",\"additionalProp3\":\"string\"}}";
+    private String test = "{\"device\":{\"bankId\":\"02008\",\"branchId\":\"12345\",\"code\":\"0001\",\"terminalId\":\"ABCD1234\",\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"Receipt printer\",\"status\":\"OK\"}],\"opTimestamp\":\"23/10/2023 16:15\"},\"taskId\":\"string\",\"data\":{\"additionalProp1\":\"string\",\"additionalProp2\":\"string\",\"additionalProp3\":\"string\"}}";
 
     @Test
     public void testHelloEndpoint() {
