@@ -82,9 +82,7 @@ public class TaskService {
 					VariableResponse variableResponse = restVariableResponse.getEntity();
 					atmTask = new it.pagopa.atmlayer.wf.task.bean.Task();
 					atmTask.setId(workingTask.getId());
-
-					setVariablesInAtmTask(atmTask, variableResponse.getVariables());
-					setButtonInAtmTask(atmTask, variableResponse.getButtons());
+					Map<String, Object> workingVariables = variableResponse.getVariables();
 					if (workingTask.getForm() != null) {
 						try {
 							atmTask.setTemplate(new String(getFileAsIOStream(workingTask.getForm()).readAllBytes()));
@@ -92,10 +90,16 @@ public class TaskService {
 							log.error("File not found {}", workingTask.getForm());
 						}
 					}
-					replaceVarValue(atmTask, variableResponse.getVariables());
+					// Replaceing variables with values
+					replaceVarValue(atmTask, workingVariables);
 					if (atmTask.getTemplate() != null) {
 						atmTask.setTemplate(Base64.getEncoder().encodeToString(atmTask.getTemplate().getBytes()));
 					}
+					if (variableRequest.getVariables() != null) {
+						workingVariables.keySet().removeAll(variableRequest.getVariables());
+					}
+					setVariablesInAtmTask(atmTask, workingVariables);
+					setButtonInAtmTask(atmTask, variableResponse.getButtons());
 				}
 			}
 
@@ -172,8 +176,8 @@ public class TaskService {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void setVariablesInAtmTask(it.pagopa.atmlayer.wf.task.bean.Task atmTask, Map<String, Object> variables) {
-		Map<String, Object> workingVariables = variables;
+	private void setVariablesInAtmTask(it.pagopa.atmlayer.wf.task.bean.Task atmTask,
+			Map<String, Object> workingVariables) {
 		if (workingVariables.get(Constants.ERROR_VARIABLES) instanceof Map) {
 			log.debug("Getting error variables...");
 			atmTask.setOnError((Map<String, Object>) workingVariables.get(Constants.ERROR_VARIABLES));
@@ -229,6 +233,7 @@ public class TaskService {
 				 */
 				String htmlString = new String(getFileAsIOStream(task.getForm()).readAllBytes());
 				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
+				log.debug("Placeholders found: {}", placeholders);
 				if (placeholders != null && !placeholders.isEmpty()) {
 					log.debug("Number of variables found in html form: " + placeholders.size());
 					variableRequest.setVariables(placeholders);
@@ -266,7 +271,7 @@ public class TaskService {
 				if (value instanceof Map) {
 					value = ((Map<String, Object>) value).get(var);
 				}
-				log.info("Var value {}", var);
+				log.info("Var name {} -> {}", var, value);
 				task.setTemplate(task.getTemplate().replace("${" + var + "}", String.valueOf(value)));
 			});
 		}
