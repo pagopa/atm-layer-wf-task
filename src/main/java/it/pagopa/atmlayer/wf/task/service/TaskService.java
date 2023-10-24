@@ -85,14 +85,16 @@ public class TaskService {
 
 					setVariablesInAtmTask(atmTask, variableResponse.getVariables());
 					setButtonInAtmTask(atmTask, variableResponse.getButtons());
-					replaceVarValue(atmTask, variableResponse.getVariables());
 					if (workingTask.getForm() != null) {
 						try {
-							atmTask.setTemplate(Base64.getEncoder()
-									.encodeToString(getFileAsIOStream(workingTask.getForm()).readAllBytes()));
+							atmTask.setTemplate(new String(getFileAsIOStream(workingTask.getForm()).readAllBytes()));
 						} catch (IOException e) {
 							log.error("File not found {}", workingTask.getForm());
 						}
+					}
+					replaceVarValue(atmTask, variableResponse.getVariables());
+					if (atmTask.getTemplate() != null) {
+						atmTask.setTemplate(Base64.getEncoder().encodeToString(atmTask.getTemplate().getBytes()));
 					}
 				}
 			}
@@ -105,8 +107,8 @@ public class TaskService {
 	@SuppressWarnings("unchecked")
 	private void setButtonInAtmTask(it.pagopa.atmlayer.wf.task.bean.Task atmTask, Map<String, Object> buttons) {
 		if (buttons != null) {
-			log.debug("Getting buttons value...");
 			List<Button> buttonsList = new ArrayList<>();
+			log.debug("Getting buttons value...");
 			log.debug("buttons: {}", buttons);
 			for (String key : buttons.keySet()) {
 				Button button = new Button();
@@ -185,8 +187,10 @@ public class TaskService {
 		}
 
 		log.debug("Getting timout value...");
-		atmTask.setTimeout((int) workingVariables.get(Constants.TIMEOUT_VALUE));
-		workingVariables.remove(Constants.TIMEOUT_VALUE);
+		if (workingVariables.get(Constants.TIMEOUT_VALUE) != null) {
+			atmTask.setTimeout((int) workingVariables.get(Constants.TIMEOUT_VALUE));
+			workingVariables.remove(Constants.TIMEOUT_VALUE);
+		}
 
 		log.debug("Getting command value...");
 		if (workingVariables.get(Constants.COMMAND_VARIABLE_VALUE) != null) {
@@ -262,7 +266,8 @@ public class TaskService {
 				if (value instanceof Map) {
 					value = ((Map<String, Object>) value).get(var);
 				}
-				task.getTemplate().replace("${" + var + "}", String.valueOf(value));
+				log.info("Var value {}", var);
+				task.setTemplate(task.getTemplate().replace("${" + var + "}", String.valueOf(value)));
 			});
 		}
 	}
