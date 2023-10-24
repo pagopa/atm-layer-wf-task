@@ -14,12 +14,9 @@ import it.pagopa.atmlayer.wf.task.service.TaskService;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.NotNull;
-import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
 import lombok.extern.slf4j.Slf4j;
 
 @Path("/api/v1/tasks")
@@ -31,8 +28,6 @@ public class TaskResource {
 
 	@Path("/main/{functionId}")
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Restituisce la scena principale della funzione selezionata", description = "CREATE della scena prinicpale con la lista dei task dato l'ID della funzione selezionata.")
 	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. Restituisce l'oggetto Scene nel body della risposta.", content = @Content(schema = @Schema(implementation = Scene.class)))
 	public RestResponse<Scene> createMainScene(
@@ -50,8 +45,6 @@ public class TaskResource {
 
 	@Path("/main/{functionId}/trns/{trnId}")
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Restituisce la scena principale della funzione selezionata", description = "CREATE della scena principale con la lista dei task dato l'ID del flusso BPMN della funzione selezionata.")
 	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. Restituisce l'oggetto Scene nel body della risposta.", content = @Content(schema = @Schema(implementation = Scene.class)))
 	public RestResponse<Scene> createMainScene(
@@ -70,8 +63,6 @@ public class TaskResource {
 
 	@Path("/next/trns/{trnId}")
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
 	@Operation(summary = "Restituisce la scena successiva con la lista dei task dato l'ID del flusso.", description = "CREATE dello step successivo a quello corrente dato l'ID del flusso.")
 	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. restituisce l'oggetto Task nel body della risposta.", content = @Content(schema = @Schema(implementation = Scene.class)))
 	public RestResponse<Scene> createNextScene(

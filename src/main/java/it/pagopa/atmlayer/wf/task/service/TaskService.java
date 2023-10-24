@@ -1,8 +1,11 @@
 package it.pagopa.atmlayer.wf.task.service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -13,6 +16,7 @@ import java.util.UUID;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse;
 
+import it.pagopa.atmlayer.wf.task.bean.Button;
 import it.pagopa.atmlayer.wf.task.bean.Command;
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.Scene;
@@ -26,6 +30,7 @@ import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.util.Constants;
+import it.pagopa.atmlayer.wf.task.util.Properties;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -38,6 +43,9 @@ public class TaskService {
 	@Inject
 	@RestClient
 	ProcessRestClient processRestClient;
+
+	@Inject
+	Properties properties;
 
 	private static final String VARIABLES_REGEX = "\\$\\{(.*?)\\}";
 
@@ -76,13 +84,40 @@ public class TaskService {
 					atmTask.setId(workingTask.getId());
 
 					setVariablesInAtmTask(atmTask, variableResponse.getVariables());
+					setButtonInAtmTask(atmTask, variableResponse.getButtons());
+					if (workingTask.getForm() != null) {
+						try {
+							atmTask.setTemplate(new String(getFileAsIOStream(workingTask.getForm()).readAllBytes()));
+						} catch (IOException e) {
+							log.error("File not found {}", workingTask.getForm());
+						}
+					}
 					replaceVarValue(atmTask, variableResponse.getVariables());
+					if (atmTask.getTemplate() != null) {
+						atmTask.setTemplate(Base64.getEncoder().encodeToString(atmTask.getTemplate().getBytes()));
+					}
 				}
 			}
 
 		}
 
 		return atmTask;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void setButtonInAtmTask(it.pagopa.atmlayer.wf.task.bean.Task atmTask, Map<String, Object> buttons) {
+		if (buttons != null) {
+			List<Button> buttonsList = new ArrayList<>();
+			log.debug("Getting buttons value...");
+			log.debug("buttons: {}", buttons);
+			for (String key : buttons.keySet()) {
+				Button button = new Button();
+				button.setData((Map<String, Object>) buttons.get(key));
+				button.setId(key);
+				buttonsList.add(button);
+			}
+			atmTask.setButtons(buttonsList);
+		}
 	}
 
 	public it.pagopa.atmlayer.wf.task.bean.Task buildTask(String transactionId, State state) {
@@ -114,7 +149,7 @@ public class TaskService {
 				.branchId(device.getBranchId())
 				.code(device.getCode())
 				.terminalId(device.getTerminalId())
-				.deviceType(DeviceType.valueOf(device.getChannel().name()))
+				.channel(DeviceType.valueOf(device.getChannel().name()))
 				.opTimestamp(device.getOpTimestamp()).build();
 		return deviceInfo;
 	}
@@ -141,19 +176,21 @@ public class TaskService {
 		Map<String, Object> workingVariables = variables;
 		if (workingVariables.get(Constants.ERROR_VARIABLES) instanceof Map) {
 			log.debug("Getting error variables...");
-			atmTask.setOnError((Map<String, String>) workingVariables.get(Constants.ERROR_VARIABLES));
+			atmTask.setOnError((Map<String, Object>) workingVariables.get(Constants.ERROR_VARIABLES));
 			workingVariables.remove(Constants.ERROR_VARIABLES);
 		}
 
 		if (workingVariables.get(Constants.TIMEOUT_VARIABLES) instanceof Map) {
 			log.debug("Getting timeout variables...");
-			atmTask.setOnTimeout((Map<String, String>) workingVariables.get(Constants.TIMEOUT_VARIABLES));
+			atmTask.setOnTimeout((Map<String, Object>) workingVariables.get(Constants.TIMEOUT_VARIABLES));
 			workingVariables.remove(Constants.TIMEOUT_VARIABLES);
 		}
 
 		log.debug("Getting timout value...");
-		atmTask.setTimeout((int) workingVariables.get(Constants.TIMEOUT_VALUE));
-		workingVariables.remove(Constants.TIMEOUT_VALUE);
+		if (workingVariables.get(Constants.TIMEOUT_VALUE) != null) {
+			atmTask.setTimeout((int) workingVariables.get(Constants.TIMEOUT_VALUE));
+			workingVariables.remove(Constants.TIMEOUT_VALUE);
+		}
 
 		log.debug("Getting command value...");
 		if (workingVariables.get(Constants.COMMAND_VARIABLE_VALUE) != null) {
@@ -171,8 +208,8 @@ public class TaskService {
 
 		if (!workingVariables.isEmpty()) {
 			log.debug("Getting generic variables...");
-			atmTask.setData(workingVariables.get(Constants.DATA_VARIABLES) == null ? new HashMap<String, String>()
-					: (Map<String, String>) workingVariables.get(Constants.DATA_VARIABLES));
+			atmTask.setData(workingVariables.get(Constants.DATA_VARIABLES) == null ? new HashMap<String, Object>()
+					: (Map<String, Object>) workingVariables.get(Constants.DATA_VARIABLES));
 			workingVariables.remove(Constants.DATA_VARIABLES);
 			for (String key : workingVariables.keySet()) {
 				atmTask.getData().put(key, (String) workingVariables.get(key));
@@ -183,9 +220,14 @@ public class TaskService {
 	private VariableRequest createVariableRequest(Task task) {
 		VariableRequest variableRequest = new VariableRequest();
 		if (task.getForm() != null) {
+
 			try {
 				log.debug("Finding variables in html form...");
-				String htmlString = new String(Files.readAllBytes(Paths.get(task.getForm())));
+				/*
+				 * String htmlString = new String(
+				 * Files.readAllBytes(Paths.get(properties.templatePath() + task.getForm())));
+				 */
+				String htmlString = new String(getFileAsIOStream(task.getForm()).readAllBytes());
 				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
 				if (placeholders != null && !placeholders.isEmpty()) {
 					log.debug("Number of variables found in html form: " + placeholders.size());
@@ -193,7 +235,7 @@ public class TaskService {
 				}
 				variableRequest.setButtons(Utility.getIdOfTag(htmlString, BUTTON_TAG));
 			} catch (IOException e) {
-				log.error("- ERROR", e);
+				log.error("- ERROR: File: {} not found!", properties.templatePath() + task.getForm());
 			}
 		}
 		// Find variables in receipt template
@@ -201,14 +243,15 @@ public class TaskService {
 				&& task.getVariables().get(Constants.RECEIPT_TEMPLATE) != null) {
 			try {
 				String htmlString = new String(Files.readAllBytes(
-						Paths.get((String) task.getVariables().get(Constants.RECEIPT_TEMPLATE))));
+						Paths.get((String) task.getVariables()
+								.get(properties.templatePath() + Constants.RECEIPT_TEMPLATE))));
 				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
 				if (placeholders != null && !placeholders.isEmpty()) {
 					log.debug("Number of variables found in receipt template: " + placeholders.size());
 					variableRequest.setVariables(placeholders);
 				}
 			} catch (IOException e) {
-				log.error("- ERROR", e);
+				log.error("- ERROR: File: {} not found!", properties.templatePath() + task.getForm());
 			}
 		}
 		variableRequest.setTaskId(task.getId());
@@ -223,9 +266,22 @@ public class TaskService {
 				if (value instanceof Map) {
 					value = ((Map<String, Object>) value).get(var);
 				}
-				task.getTemplate().replace("${" + var + "}", String.valueOf(value));
+				log.info("Var value {}", var);
+				task.setTemplate(task.getTemplate().replace("${" + var + "}", String.valueOf(value)));
 			});
 		}
+	}
+
+	private InputStream getFileAsIOStream(final String fileName) {
+
+		InputStream ioStream = this.getClass()
+				.getClassLoader()
+				.getResourceAsStream(fileName);
+
+		if (ioStream == null) {
+			throw new IllegalArgumentException(fileName + " is not found");
+		}
+		return ioStream;
 	}
 
 }

@@ -25,7 +25,7 @@ public class MockProcess implements ProcessRestClient {
         task.setPriority(1);
         taskResponse.setTasks(new ArrayList<Task>());
         taskResponse.getTasks().add(task);
-        taskResponse.setTransactionId("trnId1");
+        taskResponse.setTransactionId("1234");
         return RestResponse.ok(taskResponse);
     }
 

@@ -9,11 +9,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Schema(description = "The button object.")
+@Schema(description = "Oggetto bottone")
 public class Button {
 
-	@Schema(description = "The button id.")
+	@Schema(description = "Id del bottone")
 	private String id;
 
+	@Schema(description = "Mappa delle variabili del bottone")
 	private Map<String, Object> data;
 }

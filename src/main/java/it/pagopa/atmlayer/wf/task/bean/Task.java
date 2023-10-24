@@ -18,35 +18,36 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(Include.NON_NULL)
+@Schema(description = "Oggetto che rappresenta un task")
 public class Task {
 
 	@Schema(required = true, description = "Identificativo del Task")
 	private String id;
 
-	@Schema(description = "Mappa delle variabili server --> client")
-	private Map<String, String> data;
+	@Schema(description = "Mappa delle variabili generiche")
+	private Map<String, Object> data;
 
-	@Schema(description = "The key/value data map on Error")
-	private Map<String, String> onError;
+	@Schema(description = "Mappa delle variabili da consultare in caso di errore")
+	private Map<String, Object> onError;
 
-	@Schema(description = "The timeout value")
+	@Schema(description = "Valore di durata prima di andare in timeout")
 	private int timeout;
 
-	@Schema(description = "The key/value data map on Timeout")
-	private Map<String, String> onTimeout;
+	@Schema(description = "Mappa delle variabili da consultare in caso di timeout")
+	private Map<String, Object> onTimeout;
 
 	@Schema(description = "Template html")
 	private String template;
 
-	@Schema(description = "Command to execute")
+	@Schema(description = "Comando da eseguire")
 	private Command command;
 
-	@Schema(description = "Nome del template HTML della ricevuta oppure dell'HTML embedded (CDATA ???)")
+	@Schema(description = "Template dello scontrino")
 	private String receiptTemplate;
 
 	@Schema(description = "Nome della variabile in cui il Device setterà l'esito del Command")
 	private String outcomeVarName;
 
-	@Schema(description = "List of buttons")
+	@Schema(description = "Lista dei bottoni")
 	private List<Button> buttons;
 }
