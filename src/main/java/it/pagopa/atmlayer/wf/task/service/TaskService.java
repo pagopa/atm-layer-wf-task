@@ -271,7 +271,7 @@ public class TaskService {
 				if (value instanceof Map) {
 					value = ((Map<String, Object>) value).get(var);
 				}
-				log.info("Var name {} -> {}", var, value);
+				log.info("Var {} replaced -> {}", var, value);
 				task.setTemplate(task.getTemplate().replace("${" + var + "}", String.valueOf(value)));
 			});
 		}
