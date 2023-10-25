@@ -11,11 +11,17 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Schema(description = "Informazioni del device")
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonInclude(Include.NON_NULL)
+@Builder
 public class Device {
 	/*
 	 * Device bank ID.
