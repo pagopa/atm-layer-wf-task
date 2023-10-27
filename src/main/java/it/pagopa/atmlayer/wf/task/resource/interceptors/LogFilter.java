@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @Provider
 @Slf4j
 public class LogFilter implements ContainerRequestFilter, ContainerResponseFilter {
+
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
