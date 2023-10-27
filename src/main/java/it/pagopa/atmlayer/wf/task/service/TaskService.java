@@ -2,8 +2,6 @@ package it.pagopa.atmlayer.wf.task.service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
@@ -67,12 +65,11 @@ public class TaskService {
 
 		if (restTaskResponse != null && restTaskResponse.getStatus() == 200) {
 			TaskResponse response = restTaskResponse.getEntity();
-			Task workingTask = new Task();
 			Collections.sort(response.getTasks(), Comparator.comparingInt(Task::getPriority));
 
 			// Recupero il primo task ordinato per priorità
 			if (!response.getTasks().isEmpty()) {
-				workingTask = response.getTasks().get(0);
+				Task workingTask = response.getTasks().get(0);
 				VariableRequest variableRequest = createVariableRequest(workingTask);
 				log.info("Calling retrieve variables for task id: [{}]", workingTask.getId());
 				RestResponse<VariableResponse> restVariableResponse = processRestClient
@@ -83,6 +80,7 @@ public class TaskService {
 					atmTask = new it.pagopa.atmlayer.wf.task.bean.Task();
 					atmTask.setId(workingTask.getId());
 					Map<String, Object> workingVariables = variableResponse.getVariables();
+
 					if (workingTask.getForm() != null) {
 						try {
 							atmTask.setTemplate(new String(getFileAsIOStream(workingTask.getForm()).readAllBytes()));
@@ -90,15 +88,17 @@ public class TaskService {
 							log.error("File not found {}", workingTask.getForm());
 						}
 					}
-					// Replaceing variables with values
-					replaceVarValue(atmTask, workingVariables);
+					if (workingVariables != null) {
+						// Replaceing variables with values
+						replaceVarValue(atmTask, workingVariables);
+						if (variableRequest.getVariables() != null) {
+							workingVariables.keySet().removeAll(variableRequest.getVariables());
+						}
+						setVariablesInAtmTask(atmTask, workingVariables);
+					}
 					if (atmTask.getTemplate() != null) {
 						atmTask.setTemplate(Base64.getEncoder().encodeToString(atmTask.getTemplate().getBytes()));
 					}
-					if (variableRequest.getVariables() != null) {
-						workingVariables.keySet().removeAll(variableRequest.getVariables());
-					}
-					setVariablesInAtmTask(atmTask, workingVariables);
 					setButtonInAtmTask(atmTask, variableResponse.getButtons());
 				}
 			}
@@ -231,7 +231,8 @@ public class TaskService {
 				 * String htmlString = new String(
 				 * Files.readAllBytes(Paths.get(properties.templatePath() + task.getForm())));
 				 */
-				String htmlString = new String(getFileAsIOStream(task.getForm()).readAllBytes());
+				String htmlString = new String(getFileAsIOStream(task.getForm()).readAllBytes(),
+						properties.htmlCharset());
 				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
 				log.debug("Placeholders found: {}", placeholders);
 				if (placeholders != null && !placeholders.isEmpty()) {
@@ -240,23 +241,28 @@ public class TaskService {
 				}
 				variableRequest.setButtons(Utility.getIdOfTag(htmlString, BUTTON_TAG));
 			} catch (IOException e) {
-				log.error("- ERROR: File: {} not found!", properties.templatePath() + task.getForm());
+				log.error("- ERROR: File: {} not found!", task.getForm());
 			}
 		}
 		// Find variables in receipt template
 		if (task.getVariables() != null
 				&& task.getVariables().get(Constants.RECEIPT_TEMPLATE) != null) {
 			try {
-				String htmlString = new String(Files.readAllBytes(
-						Paths.get((String) task.getVariables()
-								.get(properties.templatePath() + Constants.RECEIPT_TEMPLATE))));
+				/*
+				 * String htmlString = new String(Files.readAllBytes(
+				 * Paths.get((String) task.getVariables()
+				 * .get(Constants.RECEIPT_TEMPLATE))));
+				 */
+				String htmlString = new String(getFileAsIOStream((String) task.getVariables()
+						.get(Constants.RECEIPT_TEMPLATE)).readAllBytes(),
+						properties.htmlCharset());
 				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
 				if (placeholders != null && !placeholders.isEmpty()) {
 					log.debug("Number of variables found in receipt template: " + placeholders.size());
 					variableRequest.setVariables(placeholders);
 				}
 			} catch (IOException e) {
-				log.error("- ERROR: File: {} not found!", properties.templatePath() + task.getForm());
+				log.error("- ERROR: File: {} not found!", task.getForm());
 			}
 		}
 		variableRequest.setTaskId(task.getId());

@@ -21,7 +21,8 @@ public class Utility {
         ObjectMapper om = new ObjectMapper();
         // (om.enable(SerializationFeature.WRAP_ROOT_VALUE);
         try {
-            result = om.writerWithDefaultPrettyPrinter().writeValueAsString(object);
+            // result = om.writerWithDefaultPrettyPrinter().writeValueAsString(object);
+            result = om.writer().writeValueAsString(object);
         } catch (JsonProcessingException e) {
             Log.error(" - ERROR", e);
         }
