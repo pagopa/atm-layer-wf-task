@@ -2,6 +2,7 @@ package it.pagopa.atmlayer.wf.task.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
@@ -83,7 +84,8 @@ public class TaskService {
 
 					if (workingTask.getForm() != null) {
 						try {
-							atmTask.setTemplate(new String(getFileAsIOStream(workingTask.getForm()).readAllBytes()));
+							atmTask.setTemplate(new String(getFileAsIOStream(workingTask.getForm()).readAllBytes(),
+									properties.htmlCharset()));
 						} catch (IOException e) {
 							log.error("File not found {}", workingTask.getForm());
 						}
@@ -97,7 +99,13 @@ public class TaskService {
 						setVariablesInAtmTask(atmTask, workingVariables);
 					}
 					if (atmTask.getTemplate() != null) {
-						atmTask.setTemplate(Base64.getEncoder().encodeToString(atmTask.getTemplate().getBytes()));
+						try {
+							atmTask.setTemplate(Base64.getEncoder()
+									.encodeToString(atmTask.getTemplate().getBytes(properties.htmlCharset())));
+						} catch (UnsupportedEncodingException e) {
+							log.error(" - ERROR:", e);
+						}
+
 					}
 					setButtonInAtmTask(atmTask, variableResponse.getButtons());
 				}
