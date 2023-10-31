@@ -121,7 +121,6 @@ public class TaskService {
 		if (buttons != null) {
 			List<Button> buttonsList = new ArrayList<>();
 			log.debug("Getting buttons value...");
-			log.debug("buttons: {}", buttons);
 			for (String key : buttons.keySet()) {
 				Button button = new Button();
 				button.setData((Map<String, Object>) buttons.get(key));
@@ -145,12 +144,7 @@ public class TaskService {
 
 	public Scene buildFirst(String functionId, String transactionId, State state) {
 		Scene scene = new Scene();
-		if (transactionId == null) {
-			scene.setTransactionId(UUID.randomUUID().toString());
-			log.debug("TransactionId generated [{}]", scene.getTransactionId());
-		} else {
-			scene.setTransactionId(transactionId);
-		}
+		scene.setTransactionId(generateTransactionId(state.getDevice()));
 		scene.setTask(buildTask(functionId, scene.getTransactionId(), state));
 		return scene;
 	}
@@ -224,7 +218,8 @@ public class TaskService {
 					: (Map<String, Object>) workingVariables.get(Constants.DATA_VARIABLES));
 			workingVariables.remove(Constants.DATA_VARIABLES);
 			for (String key : workingVariables.keySet()) {
-				atmTask.getData().put(key, (String) workingVariables.get(key));
+				log.info("Variable {}", key);
+				atmTask.getData().put(key, String.valueOf(workingVariables.get(key)));
 			}
 		}
 	}
@@ -277,18 +272,20 @@ public class TaskService {
 		return variableRequest;
 	}
 
-	@SuppressWarnings("unchecked")
 	private void replaceVarValue(it.pagopa.atmlayer.wf.task.bean.Task task, Map<String, Object> variables) {
 		if (task.getTemplate() != null) {
+			log.info("-----START replacing variables in html-----");
 			Utility.findStringsByGroup(task.getTemplate(), VARIABLES_REGEX).stream().forEach(var -> {
 				Object value = variables.get(var);
-				if (value instanceof Map) {
-					value = ((Map<String, Object>) value).get(var);
-				}
 				log.info("Var {} replaced -> {}", var, value);
 				task.setTemplate(task.getTemplate().replace("${" + var + "}", String.valueOf(value)));
 			});
+			log.info("-----END replacing variables in html-----");
 		}
+	}
+
+	private String generateTransactionId(Device device) {
+		return UUID.randomUUID().toString();
 	}
 
 	private InputStream getFileAsIOStream(final String fileName) {

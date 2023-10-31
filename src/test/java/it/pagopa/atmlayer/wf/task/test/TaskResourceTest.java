@@ -2,22 +2,110 @@ package it.pagopa.atmlayer.wf.task.test;
 
 import static io.restassured.RestAssured.given;
 
-import org.junit.jupiter.api.Test;
+import java.util.UUID;
 
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.jboss.resteasy.reactive.RestResponse;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.mockito.Mockito;
+
+import io.quarkus.test.InjectMock;
+import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.http.ContentType;
+import io.quarkus.test.junit.mockito.MockitoConfig;
+import io.restassured.response.Response;
+import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
+import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
+import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
+import it.pagopa.atmlayer.wf.task.resource.TaskResource;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response.Status;
 
 @QuarkusTest
+@TestHTTPEndpoint(TaskResource.class)
+@TestInstance(Lifecycle.PER_CLASS)
 public class TaskResourceTest {
 
-    private String test = "{\"device\":{\"bankId\":\"02008\",\"branchId\":\"12345\",\"code\":\"0001\",\"terminalId\":\"ABCD1234\",\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"Receipt printer\",\"status\":\"OK\"}],\"opTimestamp\":\"23/10/2023 16:15\"},\"taskId\":\"string\",\"data\":{\"additionalProp1\":\"string\",\"additionalProp2\":\"string\",\"additionalProp3\":\"string\"}}";
+        @InjectMock
+        @RestClient
+        @MockitoConfig(convertScopes = true)
+        ProcessRestClient processRestClient;
 
-    @Test
-    public void testHelloEndpoint() {
-        given().contentType(ContentType.JSON).body(test)
-                .when().post("/api/v1/tasks/main/123/trns/1234")
-                .then()
-                .statusCode(201);
-    }
+        @Test
+        public void startProcessOk() {
+
+                Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK, UtilityTest.createTaskResponse(1)));
+
+                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK, UtilityTest.createVariableResponseNoData()));
+
+                Response response = given().body(UtilityTest.createStateRequestStart())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .when().post("/main/{functionId}", "demo23")
+                                .then()
+                                .extract().response();
+
+                Assertions.assertEquals(201, response.statusCode());
+        }
+
+        @Test
+        public void variableResponseWithData() {
+
+                Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK, UtilityTest.createTaskResponse(1)));
+
+                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                UtilityTest.createVariableResponseWithData()));
+
+                Response response = given().body(UtilityTest.createStateRequestStart())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .when().post("/main/{functionId}", "demo23")
+                                .then()
+                                .extract().response();
+
+                Assertions.assertEquals(201, response.statusCode());
+        }
+
+        @Test
+        public void nextTaskOk() {
+
+                Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK, UtilityTest.createTaskResponse(1)));
+
+                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK, UtilityTest.createVariableResponseNoData()));
+
+                Response response = given().body(UtilityTest.createStateRequestNext())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .when().post("/next/trns/{trnId}", UUID.randomUUID().toString())
+                                .then()
+                                .extract().response();
+
+                Assertions.assertEquals(201, response.statusCode());
+        }
+
+        @Test
+        public void templateNotFound() {
+
+                Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                UtilityTest.createTaskResponseMissingHtml(1)));
+
+                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK, UtilityTest.createVariableResponseNoData()));
+
+                Response response = given().body(UtilityTest.createStateRequestNext())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .when().post("/next/trns/{trnId}", UUID.randomUUID().toString())
+                                .then()
+                                .extract().response();
+
+                Assertions.assertEquals(500, response.statusCode());
+        }
 
 }
