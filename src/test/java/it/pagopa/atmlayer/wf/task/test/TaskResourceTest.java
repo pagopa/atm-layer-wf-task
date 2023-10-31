@@ -82,7 +82,7 @@ public class TaskResourceTest {
 
                 Response response = given().body(UtilityTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .when().post("/next/trns/{trnId}", UUID.randomUUID().toString())
+                                .when().post("/next/trns/{transactionId}", UUID.randomUUID().toString())
                                 .then()
                                 .extract().response();
 
@@ -101,7 +101,7 @@ public class TaskResourceTest {
 
                 Response response = given().body(UtilityTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .when().post("/next/trns/{trnId}", UUID.randomUUID().toString())
+                                .when().post("/next/trns/{transactionId}", UUID.randomUUID().toString())
                                 .then()
                                 .extract().response();
 

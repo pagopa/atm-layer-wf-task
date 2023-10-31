@@ -38,26 +38,12 @@ public class TaskResource {
 		return RestResponse.status(Status.CREATED, scene);
 	}
 
-	@Path("/main/{functionId}/trns/{transactionId}")
-	@POST
-	@Operation(summary = "Restituisce la scena principale della funzione selezionata", description = "CREATE della scena principale con la lista dei task dato l'ID del flusso BPMN della funzione selezionata.")
-	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. Restituisce l'oggetto Scene nel body della risposta.", content = @Content(schema = @Schema(implementation = Scene.class)))
-	public RestResponse<Scene> createMainScene(
-			@Parameter(description = "ID della funzione selezionata", example = "PAGAMENTO_SPONTANEO") @NotNull @PathParam("functionId") String functionId,
-			@Parameter(description = "ID della transazione. Può essere generato dal Device alla richiesta della prima scena oppure generato dal server alla risposta della prima scena. Resta invariato fino al termine della funzione.", example = "b197bbd0-0459-4d0f-9d4a-45cdd369c018") @NotNull @PathParam("trnId") String transactionId,
-			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
-
-		Scene scene = taskService.buildFirst(functionId, transactionId, state);
-
-		return RestResponse.status(Status.CREATED, scene);
-	}
-
-	@Path("/next/trns/{trnId}")
+	@Path("/next/trns/{transactionId}")
 	@POST
 	@Operation(summary = "Restituisce la scena successiva con la lista dei task dato l'ID del flusso.", description = "CREATE dello step successivo a quello corrente dato l'ID del flusso.")
 	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. restituisce l'oggetto Task nel body della risposta.", content = @Content(schema = @Schema(implementation = Scene.class)))
 	public RestResponse<Scene> createNextScene(
-			@Parameter(description = "ID della transazione") @NotNull @PathParam("trnId") String transactionId,
+			@Parameter(description = "ID della transazione") @NotNull @PathParam("transactionId") String transactionId,
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 
 		if (state.getTaskId() == null || state.getTaskId().isEmpty()) {
