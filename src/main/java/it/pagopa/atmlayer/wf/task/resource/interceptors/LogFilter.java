@@ -33,7 +33,7 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
 
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
-        if (requestContext.getUriInfo().getPath() != "/") {
+        if (requestContext.getUriInfo().getPath().isEmpty()) {
             log.info("============== RESPONSE ==============");
             log.info("Response: Status: {}", responseContext.getStatus());
             if (responseContext.getEntity() != null) {
