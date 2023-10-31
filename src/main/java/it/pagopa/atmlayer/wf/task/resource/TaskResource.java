@@ -36,7 +36,7 @@ public class TaskResource {
 		return RestResponse.status(Status.CREATED, scene);
 	}
 
-	@Path("/main/{functionId}/trns/{trnId}")
+	@Path("/main/{functionId}/trns/{transactionId}")
 	@POST
 	@Operation(summary = "Restituisce la scena principale della funzione selezionata", description = "CREATE della scena principale con la lista dei task dato l'ID del flusso BPMN della funzione selezionata.")
 	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. Restituisce l'oggetto Scene nel body della risposta.", content = @Content(schema = @Schema(implementation = Scene.class)))
