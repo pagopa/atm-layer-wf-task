@@ -6,21 +6,23 @@
 	<div id="title_page">Inserimento dati bollettino</div>
 	<div id="subtitle">Inserimento dati manuale</div>
 		
-	 <button class="exit" id="CANCEL">
+	
+	
+	<label class="large">Codice Atto
+      <input type="text" name="codiceAtto" id="codiceAtto" value="012345678901234567" pattern="^\d{8,18}$" />
+	 </label>
+
+	 <label class="medium">Codice Ente   
+		<input type="text" name="codiceEnte" id="codiceEnte" value="00000000201" pattern="^\d{11,13}$"  />
+	 </label>	
+	 
+	  <button class="exit" id="CANCEL">
       <span>Esci</span>
     </button>
 	
 	<button class="confirm" >
       <span>Prosegui</span>
     </button>	
-	
-	<label class="large">Codice Atto
-      <input type="text" name="codiceAtto" id="codiceAtto" value="5000070018002" pattern="^\d{8,18}$" />
-	 </label>
-
-	 <label class="medium">Codice Ente   
-		<input type="text" name="codiceEnte" id="codiceEnte" value="5000070018002" pattern="^\d{11,13}$"  />
-	 </label>	
 	
 	</body>
 	
