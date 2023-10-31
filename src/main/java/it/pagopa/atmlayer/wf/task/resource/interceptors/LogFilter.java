@@ -32,21 +32,15 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
     }
 
     @Override
-    public void filter(ContainerRequestContext requestContext,
-            ContainerResponseContext responseContext) {
-        log.info("============== RESPONSE ==============");
-        if (requestContext.getUriInfo().getPathParameters() != null
-                && !requestContext.getUriInfo().getPathParameters().isEmpty()) {
-            log.info("QUERY PARAMS: {}",
-                    requestContext.getUriInfo().getPathParameters());
+    public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
+        if (requestContext.getUriInfo().getPath() != "/") {
+            log.info("============== RESPONSE ==============");
+            log.info("Response: Status: {}", responseContext.getStatus());
+            if (responseContext.getEntity() != null) {
+                log.info("Body: {}", Utility.getJson(responseContext.getEntity()));
+            }
+            log.info("============== RESPONSE ==============");
         }
-        log.info("PATH: {}", requestContext.getUriInfo().getPath());
-        log.info("METHOD: {}", requestContext.getMethod());
-        log.info("Response: Status: {}", responseContext.getStatus());
-        if (responseContext.getEntity() != null) {
-            log.info("Body: {}", Utility.getJson(responseContext.getEntity()));
-        }
-        log.info("============== RESPONSE ==============");
     }
 
 }
