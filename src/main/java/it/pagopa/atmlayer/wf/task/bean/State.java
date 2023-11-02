@@ -7,12 +7,14 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 @JsonInclude(Include.NON_NULL)
 @Schema(description = "Oggetto che rappresenta lo stato di una transazione")
+@RegisterForReflection
 public class State {
 
 	@NotNull(message = "Device non può essere null")

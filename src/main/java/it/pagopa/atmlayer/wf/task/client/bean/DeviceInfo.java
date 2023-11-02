@@ -4,11 +4,9 @@ import java.util.Date;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-//import jakarta.json.bind.annotation.JsonbDateFormat;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -51,8 +49,7 @@ public class DeviceInfo {
     /*
      * Terminal operation timestamp.
      */
-    @Schema(description = "Timestamp della richiesta", format = "timestamp", pattern = "dd/MM/yyyy HH:mm")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
+    @Schema(description = "Timestamp della richiesta", format = "timestamp", pattern = "yyyy-MM-ddTHH:mm:ss", example = "2023-10-31T17:30:00")
     private Date opTimestamp;
 
     /*

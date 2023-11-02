@@ -5,17 +5,22 @@ import java.util.List;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Schema(description = "Informazioni del device")
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonInclude(Include.NON_NULL)
+@Builder
 public class Device {
 	/*
 	 * Device bank ID.
@@ -48,8 +53,7 @@ public class Device {
 	/*
 	 * Terminal operation timestamp.
 	 */
-	@Schema(description = "Timestamp della richiesta", format = "timestamp", pattern = "dd/MM/yyyy HH:mm", example = "19/10/2023 14:41")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
+	@Schema(description = "Timestamp della richiesta", format = "timestamp", pattern = "yyyy-MM-ddTHH:mm:ss", example = "2023-10-31T17:30:00")
 	private Date opTimestamp;
 
 	/*
