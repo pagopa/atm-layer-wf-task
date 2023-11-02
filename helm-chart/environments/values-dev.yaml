@@ -10,6 +10,8 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest
 
+namespace: pagopa
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -26,8 +28,7 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: xxxxx
-  namespace: pagopa
+  name: pagopa-dev-atm-layer-wf-task
 
 podAnnotations: {}
 
@@ -43,19 +44,17 @@ securityContext: {}
   # runAsUser: 1000
 
 deployment:
-  name: xxxxx
-  namespace: pagopa
+  name: pagopa-dev-atm-layer-wf-task
 
 service:
-  name: xxxxx
-  namespace: pagopa
+  name: pagopa-dev-atm-layer-wf-task
   type: NodePort
   port: 8080
 
 ingress:
   enabled: true
   className: ""
-  name: xxxxx
+  name: pagopa-dev-atm-layer-wf-task
   annotations: 
     kubernetes.io/ingress.class: "alb"
     alb.ingress.kubernetes.io/scheme: "internal"
