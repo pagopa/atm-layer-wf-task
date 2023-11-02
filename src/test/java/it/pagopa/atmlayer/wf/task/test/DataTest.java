@@ -19,7 +19,7 @@ import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.util.Constants;
 
-public class UtilityTest {
+public class DataTest {
 
     public static TaskResponse createTaskResponse(int numberOfTasks) {
         TaskResponse taskResponse = new TaskResponse();

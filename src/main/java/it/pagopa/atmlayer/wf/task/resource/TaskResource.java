@@ -33,7 +33,7 @@ public class TaskResource {
 			@Parameter(description = "ID della funzione selezionata", example = "PAGAMENTO_SPONTANEO") @NotNull @PathParam("functionId") String functionId,
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 
-		Scene scene = taskService.buildFirst(functionId, null, state);
+		Scene scene = taskService.buildFirst(functionId, state);
 
 		return RestResponse.status(Status.CREATED, scene);
 	}

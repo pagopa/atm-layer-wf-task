@@ -12,13 +12,21 @@ import org.jsoup.nodes.Document;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.quarkus.logging.Log;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Slf4j
 public class Utility {
 
+    /**
+    * Converts an object to a JSON representation.
+    *
+    * This method serializes an object into its JSON representation using the Jackson ObjectMapper.
+    * The resulting JSON string represents the provided object's state.
+    * The method returns the JSON string or null if an error occurs during the conversion.
+    *
+    * @param object The object to be converted to a JSON string.
+    * @return A JSON string representing the provided object, or null if an error occurs.
+    */
     public static String getJson(Object object) {
         String result = null;
         ObjectMapper om = new ObjectMapper();
@@ -27,11 +35,22 @@ public class Utility {
             // result = om.writerWithDefaultPrettyPrinter().writeValueAsString(object);
             result = om.writer().writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            Log.error(" - ERROR", e);
+            log.error(" - ERROR", e);
         }
         return result;
     }
 
+    /**
+    * Finds and extracts substrings from an input string using a regular expression.
+    *
+    * This method searches the provided input string for substrings that match the specified regular expression and returns them as a list of strings.
+    * It iterates through the input string, finds all matching substrings, and collects them into a list.
+    * The regular expression defines the pattern to search for within the input string.
+    *
+    * @param inputString The input string in which to search for matching substrings.
+    * @param regex The regular expression pattern used to identify matching substrings.
+    * @return A list of strings representing the substrings found in the input string that match the given regular expression.
+    */
     public static List<String> findStringsByGroup(String inputString, String regex) {
         List<String> groups = new LinkedList<>();
         Pattern pattern = Pattern.compile(regex);
@@ -45,6 +64,16 @@ public class Utility {
         return groups;
     }
 
+    /**
+    * Finds and extracts matched substrings from an input string using a regular expression.
+    *
+    * This method searches the provided input string for substrings that match the specified regular expression and returns them as a list of strings.
+    * It iterates through the input string, identifies all matching substrings based on the regular expression, and adds them to a list.
+    *
+    * @param inputString The input string in which to search for matching substrings.
+    * @param regex The regular expression pattern used to identify matching substrings.
+    * @return A list of strings representing the substrings found in the input string that match the given regular expression.
+    */
     public static List<String> findStrings(String inputString, String regex) {
         List<String> matches = new LinkedList<>();
         Pattern pattern = Pattern.compile(regex);
@@ -55,6 +84,17 @@ public class Utility {
         return matches;
     }
 
+    /**
+    * Retrieves the IDs of HTML elements with a specific tag in the given HTML string.
+    *
+    * This method parses the provided HTML string and identifies elements with a specified HTML tag.
+    * It then extracts and returns the IDs of those elements as a list of strings.
+    * The method is useful for collecting the IDs of HTML elements, such as buttons, with a particular tag in the HTML content.
+    *
+    * @param htmlString The HTML string to search for elements with the specified tag.
+    * @param tag The HTML tag used to identify the elements.
+    * @return A list of strings containing the IDs of HTML elements with the specified tag in the HTML string.
+    */
     public static List<String> getIdOfTag(String htmlString, String tag) {
         List<String> buttons = new ArrayList<>();
 

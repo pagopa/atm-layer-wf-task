@@ -38,16 +38,17 @@ public class TaskResourceTest {
         public void startProcessOk() {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK, UtilityTest.createTaskResponse(1)));
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createTaskResponse(1)));
 
-                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK, UtilityTest.createVariableResponseNoData()));
+                Mockito.when(processRestClient
+                                .retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createVariableResponseNoData()));
 
-                Response response = given().body(UtilityTest.createStateRequestStart())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .when().post("/main/{functionId}", "demo23")
-                                .then()
-                                .extract().response();
+                Response response = given().body(DataTest.createStateRequestStart())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/main/{functionId}", "demo23").then().extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
         }
@@ -56,17 +57,17 @@ public class TaskResourceTest {
         public void variableResponseWithData() {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK, UtilityTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                UtilityTest.createVariableResponseWithData()));
+                                                DataTest.createTaskResponse(1)));
 
-                Response response = given().body(UtilityTest.createStateRequestStart())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .when().post("/main/{functionId}", "demo23")
-                                .then()
-                                .extract().response();
+                Mockito.when(processRestClient
+                                .retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createVariableResponseWithData()));
+
+                Response response = given().body(DataTest.createStateRequestStart())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/main/{functionId}", "demo23").then().extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
         }
@@ -75,16 +76,18 @@ public class TaskResourceTest {
         public void nextTaskOk() {
 
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK, UtilityTest.createTaskResponse(1)));
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createTaskResponse(1)));
 
-                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK, UtilityTest.createVariableResponseNoData()));
+                Mockito.when(processRestClient
+                                .retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createVariableResponseNoData()));
 
-                Response response = given().body(UtilityTest.createStateRequestNext())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .when().post("/next/trns/{transactionId}", UUID.randomUUID().toString())
-                                .then()
-                                .extract().response();
+                Response response = given().body(DataTest.createStateRequestNext())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/next/trns/{transactionId}", UUID.randomUUID().toString())
+                                .then().extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
         }
@@ -94,16 +97,17 @@ public class TaskResourceTest {
 
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                UtilityTest.createTaskResponseMissingHtml(1)));
+                                                DataTest.createTaskResponseMissingHtml(1)));
 
-                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK, UtilityTest.createVariableResponseNoData()));
+                Mockito.when(processRestClient
+                                .retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createVariableResponseNoData()));
 
-                Response response = given().body(UtilityTest.createStateRequestNext())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .when().post("/next/trns/{transactionId}", UUID.randomUUID().toString())
-                                .then()
-                                .extract().response();
+                Response response = given().body(DataTest.createStateRequestNext())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/next/trns/{transactionId}", UUID.randomUUID().toString())
+                                .then().extract().response();
 
                 Assertions.assertEquals(500, response.statusCode());
         }
