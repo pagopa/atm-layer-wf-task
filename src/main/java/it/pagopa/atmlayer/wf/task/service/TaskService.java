@@ -355,9 +355,9 @@ public class TaskService {
 	private InputStream getFileAsIOStream(String fileName) {
 
 		InputStream ioStream = null;
-		log.info("Getting HTML template [{}] from {}", fileName, properties.htmlResourcesPath());
+		log.info("Getting HTML template [{}] from {}", fileName, properties.cdnUrl() + properties.htmlResourcesPath());
 		try {
-			ioStream = new URL(properties.htmlResourcesPath() + fileName).openStream();
+			ioStream = new URL(properties.cdnUrl() + properties.htmlResourcesPath() + fileName).openStream();
 		} catch (IOException e) {
 			log.error("ERROR: {}", e);
 			throw new ErrorException(ErrorBean.GENERIC_ERROR);
@@ -417,8 +417,4 @@ public class TaskService {
 		return atmTask;
 	}
 
-	public static void main(String[] args) throws IOException {
-		InputStream input = new URL("https://d2xduy7tbgu2d3.cloudfront.net/files/HTML/datiAvviso.html").openStream();
-		System.out.println(new String(input.readAllBytes()));
-	}
 }

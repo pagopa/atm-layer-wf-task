@@ -17,6 +17,10 @@ public interface Properties {
     String htmlCharset();
 
     @WithConverter(ConverterImplement.class)
+    @ConfigProperty(name = "cdn-url")
+    String cdnUrl();
+
+    @WithConverter(ConverterImplement.class)
     @ConfigProperty(name = "html-resources-path")
     String htmlResourcesPath();
 
