@@ -21,6 +21,8 @@ processService:
 
 logLevel: DEBUG
 
+htmlResourcesPath: https://d2xduy7tbgu2d3.cloudfront.net
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true

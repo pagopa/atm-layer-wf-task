@@ -31,6 +31,8 @@ spec:
               value: "{{ .Values.processService.address }}"
             - name: WF_TASK_LOG_LEVEL
               value: "{{ .Values.logLevel }}"
+            - name: HTML_RESOURCES_PATH
+              value: "{{ .Values.htmlResourcesPath }}"
 
   strategy:
     type: Recreate
