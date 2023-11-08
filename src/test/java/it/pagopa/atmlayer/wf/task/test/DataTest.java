@@ -110,10 +110,31 @@ public class DataTest {
         per.setName("PRINTER");
         per.setStatus(PeripheralStatus.OK);
         perList.add(per);
-        Device deviceInfo = Device.builder().bankId(RandomStringUtils.randomAlphanumeric(5))
-                .branchId(RandomStringUtils.randomAlphanumeric(5))
+        Device deviceInfo = Device.builder().bankId("00001")
+                .branchId("0002")
                 .channel(Channel.ATM)
-                .code(RandomStringUtils.randomNumeric(5))
+                .code("12345")
+                .terminalId("1234567890")
+                .opTimestamp(new Date())
+                .peripherals(perList)
+                .build();
+        State state = new State();
+        state.setDevice(deviceInfo);
+        Map<String, Object> variablesData = new HashMap<>();
+        variablesData.put("var1", "test");
+        state.setData(variablesData);
+        return state;
+    }
+
+    public static State createStateRequestStartWithoutDeviceData() {
+        List<Peripheral> perList = new ArrayList<>();
+        Peripheral per = new Peripheral();
+        per.setId("PRINTER");
+        per.setName("PRINTER");
+        per.setStatus(PeripheralStatus.OK);
+        perList.add(per);
+        Device deviceInfo = Device.builder().bankId("00001")
+                .channel(Channel.ATM)
                 .opTimestamp(new Date())
                 .peripherals(perList)
                 .build();

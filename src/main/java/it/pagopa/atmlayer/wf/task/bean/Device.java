@@ -32,7 +32,6 @@ public class Device {
 	/*
 	 * Device branch ID.
 	 */
-	@NotNull(message = "BranchID non può essere null")
 	@Schema(required = true, description = "Il codice identificativo della filiale (o codice CAB)", example = "12345")
 	private String branchId;
 

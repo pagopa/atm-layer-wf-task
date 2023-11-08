@@ -3,6 +3,7 @@ package it.pagopa.atmlayer.wf.task.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
@@ -20,6 +21,8 @@ import it.pagopa.atmlayer.wf.task.bean.Command;
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.Scene;
 import it.pagopa.atmlayer.wf.task.bean.State;
+import it.pagopa.atmlayer.wf.task.bean.Exceptions.ErrorBean;
+import it.pagopa.atmlayer.wf.task.bean.Exceptions.ErrorException;
 import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
 import it.pagopa.atmlayer.wf.task.client.bean.DeviceInfo;
 import it.pagopa.atmlayer.wf.task.client.bean.DeviceType;
@@ -74,58 +77,12 @@ public class TaskService {
 			restTaskResponse = processRestClient.startProcess(taskRequest);
 		}
 
-		it.pagopa.atmlayer.wf.task.bean.Task atmTask = null;
-
-		if (restTaskResponse != null && restTaskResponse.getStatus() == 200) {
-			TaskResponse response = restTaskResponse.getEntity();
-			Collections.sort(response.getTasks(), Comparator.comparingInt(Task::getPriority));
-
-			// Recupero il primo task ordinato per priorità
-			if (!response.getTasks().isEmpty()) {
-				Task workingTask = response.getTasks().get(0);
-				VariableRequest variableRequest = createVariableRequest(workingTask);
-				log.info("Calling retrieve variables for task id: [{}]", workingTask.getId());
-				RestResponse<VariableResponse> restVariableResponse = processRestClient
-						.retrieveVariables(variableRequest);
-
-				if (restVariableResponse.getStatus() == 200) {
-					VariableResponse variableResponse = restVariableResponse.getEntity();
-					atmTask = new it.pagopa.atmlayer.wf.task.bean.Task();
-					atmTask.setId(workingTask.getId());
-					Map<String, Object> workingVariables = variableResponse.getVariables();
-
-					if (workingTask.getForm() != null) {
-						try {
-							atmTask.setTemplate(new String(getFileAsIOStream(workingTask.getForm()).readAllBytes(),
-									properties.htmlCharset()));
-						} catch (IOException e) {
-							log.error("File not found {}", workingTask.getForm());
-						}
-					}
-					if (workingVariables != null) {
-						// Replaceing variables with values
-						replaceVarValue(atmTask, workingVariables);
-						if (variableRequest.getVariables() != null) {
-							workingVariables.keySet().removeAll(variableRequest.getVariables());
-						}
-						setVariablesInAtmTask(atmTask, workingVariables);
-					}
-					if (atmTask.getTemplate() != null) {
-						try {
-							atmTask.setTemplate(Base64.getEncoder()
-									.encodeToString(atmTask.getTemplate().getBytes(properties.htmlCharset())));
-						} catch (UnsupportedEncodingException e) {
-							log.error(" - ERROR:", e);
-						}
-
-					}
-					setButtonInAtmTask(atmTask, variableResponse.getButtons());
-				}
-			}
-
+		if (restTaskResponse.getStatus() == 200) {
+			return manageOkResponse(restTaskResponse.getEntity());
+		} else {
+			throw new ErrorException(ErrorBean.GET_TASKS_ERROR);
 		}
 
-		return atmTask;
 	}
 
 	/**
@@ -326,6 +283,7 @@ public class TaskService {
 				variableRequest.setButtons(Utility.getIdOfTag(htmlString, BUTTON_TAG));
 			} catch (IOException e) {
 				log.error("- ERROR: File: {} not found!", task.getForm());
+				throw new ErrorException(ErrorBean.GENERIC_ERROR);
 			}
 		}
 		// Find variables in receipt template
@@ -346,6 +304,7 @@ public class TaskService {
 				}
 			} catch (IOException e) {
 				log.error("- ERROR: File: {} not found!", task.getForm());
+				throw new ErrorException(ErrorBean.GENERIC_ERROR);
 			}
 		}
 		variableRequest.setTaskId(task.getId());
@@ -385,17 +344,81 @@ public class TaskService {
 	* @return A unique transaction ID in UUID format.
 	*/
 	private String generateTransactionId(Device device) {
-		return UUID.randomUUID().toString();
+		return (device.getBankId()
+				+ "-" + (device.getBranchId() != null ? device.getBranchId() : "")
+				+ "-" + (device.getCode() != null ? device.getCode() : "")
+				+ "-" + (device.getTerminalId() != null ? device.getTerminalId() : "")
+				+ "-" + (device.getOpTimestamp().getTime())
+				+ "-" + UUID.randomUUID().toString()).substring(0, Constants.TRANSACTION_ID_LENGTH);
 	}
 
-	private InputStream getFileAsIOStream(final String fileName) {
+	private InputStream getFileAsIOStream(String fileName) {
 
-		InputStream ioStream = this.getClass().getClassLoader().getResourceAsStream(fileName);
-
-		if (ioStream == null) {
-			throw new IllegalArgumentException(fileName + " is not found");
+		InputStream ioStream = null;
+		log.info("Getting HTML template [{}] from {}", fileName, properties.htmlResourcesPath());
+		try {
+			ioStream = new URL(properties.htmlResourcesPath() + fileName).openStream();
+		} catch (IOException e) {
+			log.error("ERROR: {}", e);
+			throw new ErrorException(ErrorBean.GENERIC_ERROR);
 		}
 		return ioStream;
 	}
 
+	private it.pagopa.atmlayer.wf.task.bean.Task manageOkResponse(TaskResponse response) {
+		it.pagopa.atmlayer.wf.task.bean.Task atmTask = null;
+		Collections.sort(response.getTasks(), Comparator.comparingInt(Task::getPriority));
+
+		// Recupero il primo task ordinato per priorità
+		if (!response.getTasks().isEmpty()) {
+			Task workingTask = response.getTasks().get(0);
+			VariableRequest variableRequest = createVariableRequest(workingTask);
+			log.info("Calling retrieve variables for task id: [{}]", workingTask.getId());
+			RestResponse<VariableResponse> restVariableResponse = processRestClient.retrieveVariables(variableRequest);
+
+			if (restVariableResponse.getStatus() == 200) {
+				VariableResponse variableResponse = restVariableResponse.getEntity();
+				atmTask = new it.pagopa.atmlayer.wf.task.bean.Task();
+				atmTask.setId(workingTask.getId());
+				Map<String, Object> workingVariables = variableResponse.getVariables();
+
+				if (workingTask.getForm() != null) {
+					try {
+						atmTask.setTemplate(new String(getFileAsIOStream(workingTask.getForm()).readAllBytes(),
+								properties.htmlCharset()));
+					} catch (IOException e) {
+						log.error("File not found {}", workingTask.getForm());
+						throw new ErrorException(ErrorBean.GENERIC_ERROR);
+					}
+				}
+				if (workingVariables != null) {
+					// Replaceing variables with values
+					replaceVarValue(atmTask, workingVariables);
+					if (variableRequest.getVariables() != null) {
+						workingVariables.keySet().removeAll(variableRequest.getVariables());
+					}
+					setVariablesInAtmTask(atmTask, workingVariables);
+				}
+				if (atmTask.getTemplate() != null) {
+					try {
+						atmTask.setTemplate(Base64.getEncoder()
+								.encodeToString(atmTask.getTemplate().getBytes(properties.htmlCharset())));
+					} catch (UnsupportedEncodingException e) {
+						log.error(" - ERROR:", e);
+						throw new ErrorException(ErrorBean.GENERIC_ERROR);
+					}
+
+				}
+				setButtonInAtmTask(atmTask, variableResponse.getButtons());
+			} else {
+				throw new ErrorException(ErrorBean.GET_VARIABLES_ERROR);
+			}
+		}
+		return atmTask;
+	}
+
+	public static void main(String[] args) throws IOException {
+		InputStream input = new URL("https://d2xduy7tbgu2d3.cloudfront.net/files/HTML/datiAvviso.html").openStream();
+		System.out.println(new String(input.readAllBytes()));
+	}
 }

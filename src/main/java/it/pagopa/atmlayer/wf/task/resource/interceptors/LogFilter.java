@@ -18,7 +18,7 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
-        log.info("============== RECEIVED REQUEST ==============");
+        log.info("============== REQUEST ==============");
         if (requestContext.getUriInfo().getPathParameters() != null
                 && !requestContext.getUriInfo().getPathParameters().isEmpty()) {
             log.info("QUERY PARAMS: {}",
@@ -28,7 +28,7 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
         byte[] entity = requestContext.getEntityStream().readAllBytes();
         log.info("BODY: {}", new String(entity));
         requestContext.setEntityStream(new ByteArrayInputStream(entity));
-        log.info("============== RECEIVED REQUEST ==============");
+        log.info("============== REQUEST ==============");
     }
 
     @Override

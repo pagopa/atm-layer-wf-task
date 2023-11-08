@@ -18,4 +18,6 @@ public class Constants {
 
     public final static String BUTTON_VARIABLES = "buttons";
 
+    public final static int TRANSACTION_ID_LENGTH = 50;
+
 }
