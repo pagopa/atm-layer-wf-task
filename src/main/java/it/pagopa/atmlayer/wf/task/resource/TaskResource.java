@@ -33,6 +33,7 @@ public class TaskResource {
 	@POST
 	@Operation(summary = "Restituisce la scena principale della funzione selezionata", description = "CREATE della scena prinicpale con la lista dei task dato l'ID della funzione selezionata.")
 	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. Restituisce l'oggetto Scene nel body della risposta.", content = @Content(schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "400", description = "Richiesta malformata, la descrizione può fornire dettagli sull'errore")
 	@APIResponse(responseCode = "500", description = "Errore generico, la descrizione può fornire dettagli sull'errore", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
 	@APIResponse(responseCode = "502", description = "Errore durante la chiamata ad altri microservizi, la descrizione può fornire dettagli sull'errore", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
 	public RestResponse<Scene> createMainScene(
@@ -64,7 +65,7 @@ public class TaskResource {
 			throw new ErrorException(ErrorBean.MISSING_TASK_ID);
 		}
 
-		String transactionIdParts[] = transactionId.split("-");
+		String[] transactionIdParts = transactionId.split("-");
 		if (!transactionIdParts[0].equals(state.getDevice().getBankId())) {
 			log.error("TransactionId not valid -> [BankId]");
 			throw new ErrorException(ErrorBean.INVALID_TRANSACTION_ID);

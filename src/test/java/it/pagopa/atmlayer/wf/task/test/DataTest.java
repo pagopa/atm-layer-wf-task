@@ -41,6 +41,25 @@ public class DataTest {
         return taskResponse;
     }
 
+    public static TaskResponse createTaskResponseNoForm(int numberOfTasks) {
+        TaskResponse taskResponse = new TaskResponse();
+        taskResponse.setTasks(new ArrayList<Task>());
+        for (int i = 0; i <= numberOfTasks; i++) {
+            Task task = new Task();
+            task.setId(RandomStringUtils.randomAlphanumeric(10));
+            task.setPriority(i);
+
+            taskResponse.getTasks().add(task);
+        }
+
+        Map<String, Object> templateMap = new HashMap<>();
+        templateMap.put(Constants.RECEIPT_TEMPLATE, "riepilogoCommissioni.html");
+        taskResponse.getTasks().get(0).setVariables(templateMap);
+        taskResponse.setTransactionId("1000");
+
+        return taskResponse;
+    }
+
     public static TaskResponse createTaskResponseMissingHtml(int numberOfTasks) {
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setTasks(new ArrayList<Task>());
@@ -103,6 +122,11 @@ public class DataTest {
         return variableResponse;
     }
 
+    public static VariableResponse createVariableResponseNoButtons() {
+        VariableResponse variableResponse = new VariableResponse();
+        return variableResponse;
+    }
+
     public static State createStateRequestStart() {
         List<Peripheral> perList = new ArrayList<>();
         Peripheral per = new Peripheral();
@@ -149,6 +173,24 @@ public class DataTest {
     public static State createStateRequestNext() {
         State state = createStateRequestStart();
         state.setTaskId("1");
+        return state;
+    }
+
+    public static State createStateRequestNextNoBranchId() {
+        State state = createStateRequestNext();
+        state.getDevice().setBranchId(null);
+        return state;
+    }
+
+    public static State createStateRequestNextNoCode() {
+        State state = createStateRequestNext();
+        state.getDevice().setCode(null);
+        return state;
+    }
+
+    public static State createStateRequestNextNoTerminalId() {
+        State state = createStateRequestNext();
+        state.getDevice().setTerminalId(null);
         return state;
     }
 }

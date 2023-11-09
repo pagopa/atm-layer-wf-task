@@ -1,9 +1,7 @@
 package it.pagopa.atmlayer.wf.task.service;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
@@ -36,13 +34,13 @@ import it.pagopa.atmlayer.wf.task.util.Properties;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.WebApplicationException;
 import lombok.extern.slf4j.Slf4j;
 
 @ApplicationScoped
 @Slf4j
 public class TaskService {
 
-	@Inject
 	@RestClient
 	ProcessRestClient processRestClient;
 
@@ -69,12 +67,17 @@ public class TaskService {
 
 		TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
 		RestResponse<TaskResponse> restTaskResponse = null;
-		if (taskRequest.getTaskId() != null) {
-			log.info("Calling next task after for task id: [{}]", taskRequest.getTaskId());
-			restTaskResponse = processRestClient.nextTasks(taskRequest);
-		} else {
-			log.info("Calling start process of function: [{}]", functionId);
-			restTaskResponse = processRestClient.startProcess(taskRequest);
+		try {
+			if (taskRequest.getTaskId() != null) {
+				log.info("Calling next task after for task id: [{}]", taskRequest.getTaskId());
+				restTaskResponse = processRestClient.nextTasks(taskRequest);
+			} else {
+				log.info("Calling start process of function: [{}]", functionId);
+				restTaskResponse = processRestClient.startProcess(taskRequest);
+			}
+		} catch (WebApplicationException e) {
+			log.error("Error calling process service", e);
+			throw new ErrorException(ErrorBean.GET_TASKS_ERROR);
 		}
 
 		if (restTaskResponse.getStatus() == 200) {
@@ -100,10 +103,10 @@ public class TaskService {
 		if (buttons != null) {
 			List<Button> buttonsList = new ArrayList<>();
 			log.debug("Getting buttons value...");
-			for (String key : buttons.keySet()) {
+			for (Map.Entry<String, Object> entry : buttons.entrySet()) {
 				Button button = new Button();
-				button.setData((Map<String, Object>) buttons.get(key));
-				button.setId(key);
+				button.setData((Map<String, Object>) entry.getValue());
+				button.setId(entry.getKey());
 				buttonsList.add(button);
 			}
 			atmTask.setButtons(buttonsList);
@@ -150,14 +153,13 @@ public class TaskService {
 	}
 
 	private DeviceInfo convertDeviceInDeviceInfo(Device device) {
-		DeviceInfo deviceInfo = DeviceInfo.builder()
+		return DeviceInfo.builder()
 				.bankId(device.getBankId())
 				.branchId(device.getBranchId())
 				.code(device.getCode())
 				.terminalId(device.getTerminalId())
 				.channel(DeviceType.valueOf(device.getChannel().name()))
 				.opTimestamp(device.getOpTimestamp()).build();
-		return deviceInfo;
 	}
 
 	/**
@@ -180,7 +182,7 @@ public class TaskService {
 				.transactionId(transactionId)
 				.functionId(functionId)
 				.taskId(state.getTaskId()).build();
-		taskRequest.setVariables(new HashMap<String, Object>());
+		taskRequest.setVariables(new HashMap<>());
 		// Populate the variable map with peripheral information
 		state.getDevice().getPeripherals().stream().forEach(
 				per -> taskRequest.getVariables().put(per.getId(), per.getStatus().name()));
@@ -242,9 +244,9 @@ public class TaskService {
 			atmTask.setData(workingVariables.get(Constants.DATA_VARIABLES) == null ? new HashMap<String, Object>()
 					: (Map<String, Object>) workingVariables.get(Constants.DATA_VARIABLES));
 			workingVariables.remove(Constants.DATA_VARIABLES);
-			for (String key : workingVariables.keySet()) {
-				log.info("Variable {}", key);
-				atmTask.getData().put(key, String.valueOf(workingVariables.get(key)));
+			for (Map.Entry<String, Object> entry : workingVariables.entrySet()) {
+				log.info("Variable {}", entry.getKey());
+				atmTask.getData().put(entry.getKey(), String.valueOf(entry.getValue()));
 			}
 		}
 	}
@@ -268,11 +270,9 @@ public class TaskService {
 
 			try {
 				log.debug("Finding variables in html form...");
-				/*
-				 * String htmlString = new String(
-				 * Files.readAllBytes(Paths.get(properties.templatePath() + task.getForm())));
-				 */
-				String htmlString = new String(getFileAsIOStream(task.getForm()).readAllBytes(),
+				String htmlString = new String(
+						Utility.getFileFromCdn(properties.cdnUrl() + properties.htmlResourcesPath() + task.getForm())
+								.readAllBytes(),
 						properties.htmlCharset());
 				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
 				log.debug("Placeholders found: {}", placeholders);
@@ -282,7 +282,7 @@ public class TaskService {
 				}
 				variableRequest.setButtons(Utility.getIdOfTag(htmlString, BUTTON_TAG));
 			} catch (IOException e) {
-				log.error("- ERROR: File: {} not found!", task.getForm());
+				log.error("- ERROR: File: {} not found!", task.getForm(), e);
 				throw new ErrorException(ErrorBean.GENERIC_ERROR);
 			}
 		}
@@ -290,12 +290,11 @@ public class TaskService {
 		if (task.getVariables() != null
 				&& task.getVariables().get(Constants.RECEIPT_TEMPLATE) != null) {
 			try {
-				/*
-				 * String htmlString = new String(Files.readAllBytes( Paths.get((String)
-				 * task.getVariables() .get(Constants.RECEIPT_TEMPLATE))));
-				 */
-				String htmlString = new String(getFileAsIOStream((String) task.getVariables()
-						.get(Constants.RECEIPT_TEMPLATE)).readAllBytes(),
+				String htmlString = new String(
+						Utility.getFileFromCdn(properties.cdnUrl() + properties.htmlResourcesPath()
+								+ (String) task.getVariables()
+										.get(Constants.RECEIPT_TEMPLATE))
+								.readAllBytes(),
 						properties.htmlCharset());
 				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
 				if (placeholders != null && !placeholders.isEmpty()) {
@@ -303,7 +302,7 @@ public class TaskService {
 					variableRequest.setVariables(placeholders);
 				}
 			} catch (IOException e) {
-				log.error("- ERROR: File: {} not found!", task.getForm());
+				log.error("- ERROR: File: {} not found!", task.getForm(), e);
 				throw new ErrorException(ErrorBean.GENERIC_ERROR);
 			}
 		}
@@ -325,10 +324,10 @@ public class TaskService {
 		if (task.getTemplate() != null) {
 			log.info("-----START replacing variables in html-----");
 			Utility.findStringsByGroup(task.getTemplate(), VARIABLES_REGEX).stream()
-					.forEach(var -> {
-						Object value = variables.get(var);
-						log.info("Var {} replaced -> {}", var, value);
-						task.setTemplate(task.getTemplate().replace("${" + var + "}", String.valueOf(value)));
+					.forEach(variable -> {
+						Object value = variables.get(variable);
+						log.info("Var {} replaced -> {}", variable, value);
+						task.setTemplate(task.getTemplate().replace("${" + variable + "}", String.valueOf(value)));
 					});
 			log.info("-----END replacing variables in html-----");
 		}
@@ -352,19 +351,18 @@ public class TaskService {
 				+ "-" + UUID.randomUUID().toString()).substring(0, Constants.TRANSACTION_ID_LENGTH);
 	}
 
-	private InputStream getFileAsIOStream(String fileName) {
-
-		InputStream ioStream = null;
-		log.info("Getting HTML template [{}] from {}", fileName, properties.cdnUrl() + properties.htmlResourcesPath());
-		try {
-			ioStream = new URL(properties.cdnUrl() + properties.htmlResourcesPath() + fileName).openStream();
-		} catch (IOException e) {
-			log.error("ERROR: {}", e);
-			throw new ErrorException(ErrorBean.GENERIC_ERROR);
-		}
-		return ioStream;
-	}
-
+	/**
+	* Processes a successful response and manages the resulting Task object.
+	*
+	* This method takes a TaskResponse as input, sorts the tasks by priority, retrieves variables for the highest-priority task,
+	* and constructs an it.pagopa.atmlayer.wf.task.bean.Task based on the response data. 
+	* he constructed Task object may include template content, variable values, and buttons.
+	*
+	* @param response The TaskResponse containing information about tasks and their priorities.
+	* @return An it.pagopa.atmlayer.wf.task.bean.Task object representing the highest-priority task with associated data. Returns null if there are no tasks in the response.
+	* @throws ErrorException If an error occurs during the processing of the response or any required data retrieval, 
+	* an ErrorException is thrown with appropriate error codes, such as 'GENERIC_ERROR' or 'GET_VARIABLES_ERROR'.
+	*/
 	private it.pagopa.atmlayer.wf.task.bean.Task manageOkResponse(TaskResponse response) {
 		it.pagopa.atmlayer.wf.task.bean.Task atmTask = null;
 		Collections.sort(response.getTasks(), Comparator.comparingInt(Task::getPriority));
@@ -384,10 +382,14 @@ public class TaskService {
 
 				if (workingTask.getForm() != null) {
 					try {
-						atmTask.setTemplate(new String(getFileAsIOStream(workingTask.getForm()).readAllBytes(),
-								properties.htmlCharset()));
+						atmTask.setTemplate(
+								new String(
+										Utility.getFileFromCdn(properties.cdnUrl()
+												+ properties.htmlResourcesPath()
+												+ workingTask.getForm()).readAllBytes(),
+										properties.htmlCharset()));
 					} catch (IOException e) {
-						log.error("File not found {}", workingTask.getForm());
+						log.error("File not found {}", workingTask.getForm(), e);
 						throw new ErrorException(ErrorBean.GENERIC_ERROR);
 					}
 				}

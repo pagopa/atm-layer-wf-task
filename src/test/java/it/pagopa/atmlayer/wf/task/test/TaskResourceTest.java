@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 
 import io.quarkus.test.InjectMock;
@@ -25,7 +27,7 @@ import jakarta.ws.rs.core.Response.Status;
 @QuarkusTest
 @TestHTTPEndpoint(TaskResource.class)
 @TestInstance(Lifecycle.PER_CLASS)
-public class TaskResourceTest {
+class TaskResourceTest {
 
         @InjectMock
         @RestClient
@@ -33,7 +35,7 @@ public class TaskResourceTest {
         ProcessRestClient processRestClient;
 
         @Test
-        public void startProcessOk() {
+        void startProcessOk() {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -52,7 +54,7 @@ public class TaskResourceTest {
         }
 
         @Test
-        public void startProcessOkWithoutDeviceData() {
+        void startProcessOkWithoutDeviceData() {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -71,7 +73,45 @@ public class TaskResourceTest {
         }
 
         @Test
-        public void startProcessKoOnStart() {
+        void taskWithoutButtons() {
+
+                Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createTaskResponse(1)));
+
+                Mockito.when(processRestClient
+                                .retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createVariableResponseNoButtons()));
+
+                Response response = given().body(DataTest.createStateRequestStartWithoutDeviceData())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/main/{functionId}", "demo23").then().extract().response();
+
+                Assertions.assertEquals(201, response.statusCode());
+        }
+
+        @Test
+        void taskWithoutForm() {
+
+                Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createTaskResponseNoForm(1)));
+
+                Mockito.when(processRestClient
+                                .retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createVariableResponseWithData()));
+
+                Response response = given().body(DataTest.createStateRequestStartWithoutDeviceData())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/main/{functionId}", "demo23").then().extract().response();
+
+                Assertions.assertEquals(201, response.statusCode());
+        }
+
+        @Test
+        void startProcessKoOnStart() {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.INTERNAL_SERVER_ERROR));
@@ -89,7 +129,7 @@ public class TaskResourceTest {
         }
 
         @Test
-        public void startProcessKoOnVariables() {
+        void startProcessKoOnVariables() {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK, DataTest.createTaskResponse(1)));
@@ -106,7 +146,7 @@ public class TaskResourceTest {
         }
 
         @Test
-        public void variableResponseWithData() {
+        void variableResponseWithData() {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -125,7 +165,7 @@ public class TaskResourceTest {
         }
 
         @Test
-        public void nextTaskOk() {
+        void nextTaskOk() {
 
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -145,7 +185,7 @@ public class TaskResourceTest {
         }
 
         @Test
-        public void templateNotFound() {
+        void templateNotFound() {
 
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -165,7 +205,7 @@ public class TaskResourceTest {
         }
 
         @Test
-        public void noTaskIdOnNext() {
+        void noTaskIdOnNext() {
 
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -178,14 +218,18 @@ public class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/next/trns/{transactionId}", "10001-0002-12345-1234567890-aaaaaaaaaaaaa")
+                                .post("/next/trns/{transactionId}", "00001-0002-12345-1234567890-aaaaaaaaaaaa")
                                 .then().extract().response();
 
                 Assertions.assertEquals(400, response.statusCode());
         }
 
-        @Test
-        public void invalidTransactionIdBankId() {
+        @ParameterizedTest
+        @ValueSource(strings = { "10001-0002-12345-1234567890-aaaaaaaaaaaaa",
+                        "00001-1002-12345-1234567890-aaaaaaaaaaaaa",
+                        "00001-0002-12346-1234567890-aaaaaaaaaaaaa",
+                        "00001-0002-12345-1234567891-aaaaaaaaaaaaa" })
+        void wrongTransactionIdOnNext(String transactionId) {
 
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -198,14 +242,14 @@ public class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/next/trns/{transactionId}", "10001-0002-12345-1234567890-aaaaaaaaaaaaa")
+                                .post("/next/trns/{transactionId}", transactionId)
                                 .then().extract().response();
 
                 Assertions.assertEquals(400, response.statusCode());
         }
 
         @Test
-        public void invalidTransactionIdBranchId() {
+        void noBranchIdTransactionIdOnNext() {
 
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -214,18 +258,18 @@ public class TaskResourceTest {
                 Mockito.when(processRestClient
                                 .retrieveVariables(Mockito.any(VariableRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createVariableResponseWithData()));
 
-                Response response = given().body(DataTest.createStateRequestNext())
+                Response response = given().body(DataTest.createStateRequestNextNoBranchId())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/next/trns/{transactionId}", "00001-1002-12345-1234567890-aaaaaaaaaaaaa")
+                                .post("/next/trns/{transactionId}", "00001--12345-1234567890-aaaaaaaaaaaaa")
                                 .then().extract().response();
 
-                Assertions.assertEquals(400, response.statusCode());
+                Assertions.assertEquals(201, response.statusCode());
         }
 
         @Test
-        public void invalidTransactionIdCode() {
+        void noCodeTransactionIdOnNext() {
 
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -234,18 +278,18 @@ public class TaskResourceTest {
                 Mockito.when(processRestClient
                                 .retrieveVariables(Mockito.any(VariableRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createVariableResponseWithData()));
 
-                Response response = given().body(DataTest.createStateRequestNext())
+                Response response = given().body(DataTest.createStateRequestNextNoCode())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/next/trns/{transactionId}", "00001-0002-12346-1234567890-aaaaaaaaaaaaa")
+                                .post("/next/trns/{transactionId}", "00001-0002--1234567890-aaaaaaaaaaaaa")
                                 .then().extract().response();
 
-                Assertions.assertEquals(400, response.statusCode());
+                Assertions.assertEquals(201, response.statusCode());
         }
 
         @Test
-        public void invalidTransactionIdTerminalId() {
+        void noTerminalIdTransactionIdOnNext() {
 
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -254,14 +298,14 @@ public class TaskResourceTest {
                 Mockito.when(processRestClient
                                 .retrieveVariables(Mockito.any(VariableRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createVariableResponseWithData()));
 
-                Response response = given().body(DataTest.createStateRequestNext())
+                Response response = given().body(DataTest.createStateRequestNextNoTerminalId())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/next/trns/{transactionId}", "00001-0002-12345-1234567891-aaaaaaaaaaaaa")
+                                .post("/next/trns/{transactionId}", "00001-0002-12345--aaaaaaaaaaaaa")
                                 .then().extract().response();
 
-                Assertions.assertEquals(400, response.statusCode());
+                Assertions.assertEquals(201, response.statusCode());
         }
 
 }

@@ -1,5 +1,8 @@
 package it.pagopa.atmlayer.wf.task.util;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,9 +33,7 @@ public class Utility {
     public static String getJson(Object object) {
         String result = null;
         ObjectMapper om = new ObjectMapper();
-        // (om.enable(SerializationFeature.WRAP_ROOT_VALUE);
         try {
-            // result = om.writerWithDefaultPrettyPrinter().writeValueAsString(object);
             result = om.writer().writeValueAsString(object);
         } catch (JsonProcessingException e) {
             log.error(" - ERROR", e);
@@ -103,5 +104,25 @@ public class Utility {
         doc.getElementsByTag(tag).stream().forEach(e -> buttons.add(e.id()));
 
         return buttons;
+    }
+
+    /**
+    * Retrieves an InputStream for a specified file from a remote location.
+    *
+    * This method constructs a URL using the provided 'path'.
+    * It then attempts to open an InputStream from the constructed URL, allowing access to the content of the remote file.
+    *
+    * @param path The name of the file to retrieve.
+    * @return An InputStream that provides access to the content of the specified file.
+    * @throws IOException
+    */
+    public static InputStream getFileFromCdn(String path) throws IOException {
+
+        InputStream ioStream = null;
+        log.info("Getting file [{}]", path);
+
+        ioStream = new URL(path).openStream();
+
+        return ioStream;
     }
 }
