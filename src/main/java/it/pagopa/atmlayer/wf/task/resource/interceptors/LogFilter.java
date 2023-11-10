@@ -18,22 +18,24 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
-        log.info("============== REQUEST ==============");
-        if (requestContext.getUriInfo().getPathParameters() != null
-                && !requestContext.getUriInfo().getPathParameters().isEmpty()) {
-            log.info("QUERY PARAMS: {}",
-                    requestContext.getUriInfo().getPathParameters());
+        if (!requestContext.getUriInfo().getPath().startsWith("/health")) {
+            log.info("============== REQUEST ==============");
+            if (requestContext.getUriInfo().getPathParameters() != null
+                    && !requestContext.getUriInfo().getPathParameters().isEmpty()) {
+                log.info("QUERY PARAMS: {}",
+                        requestContext.getUriInfo().getPathParameters());
+            }
+            log.info("METHOD: {}", requestContext.getMethod());
+            byte[] entity = requestContext.getEntityStream().readAllBytes();
+            log.info("BODY: {}", new String(entity));
+            requestContext.setEntityStream(new ByteArrayInputStream(entity));
+            log.info("============== REQUEST ==============");
         }
-        log.info("METHOD: {}", requestContext.getMethod());
-        byte[] entity = requestContext.getEntityStream().readAllBytes();
-        log.info("BODY: {}", new String(entity));
-        requestContext.setEntityStream(new ByteArrayInputStream(entity));
-        log.info("============== REQUEST ==============");
     }
 
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
-        if (!requestContext.getUriInfo().getPath().equals("/")) {
+        if (!requestContext.getUriInfo().getPath().startsWith("/health")) {
             log.info("============== RESPONSE ==============");
             log.info("Response: Status: {}", responseContext.getStatus());
             if (responseContext.getEntity() != null) {
