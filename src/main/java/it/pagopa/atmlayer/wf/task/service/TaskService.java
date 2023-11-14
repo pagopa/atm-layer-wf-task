@@ -184,8 +184,10 @@ public class TaskService {
 				.taskId(state.getTaskId()).build();
 		taskRequest.setVariables(new HashMap<>());
 		// Populate the variable map with peripheral information
-		state.getDevice().getPeripherals().stream().forEach(
-				per -> taskRequest.getVariables().put(per.getId(), per.getStatus().name()));
+		if (state.getDevice().getPeripherals() != null) {
+			state.getDevice().getPeripherals().stream().forEach(
+					per -> taskRequest.getVariables().put(per.getId(), per.getStatus().name()));
+		}
 
 		// If additional data is available in the state, include it in the variable map
 		if (state.getData() != null) {
