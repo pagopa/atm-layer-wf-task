@@ -18,7 +18,7 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
-        if (!requestContext.getUriInfo().getPath().startsWith("/health")) {
+        if (requestContext.getUriInfo().getPath().startsWith("/api/v1")) {
             log.info("============== REQUEST ==============");
             if (requestContext.getUriInfo().getPathParameters() != null
                     && !requestContext.getUriInfo().getPathParameters().isEmpty()) {
@@ -35,7 +35,7 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
 
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
-        if (!requestContext.getUriInfo().getPath().startsWith("/health")) {
+        if (requestContext.getUriInfo().getPath().startsWith("/api/v1")) {
             log.info("============== RESPONSE ==============");
             log.info("Response: Status: {}", responseContext.getStatus());
             if (responseContext.getEntity() != null) {
