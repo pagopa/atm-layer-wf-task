@@ -2,6 +2,7 @@ package it.pagopa.atmlayer.wf.task.service;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
@@ -324,13 +325,19 @@ public class TaskService {
 	*/
 	private void replaceVarValue(it.pagopa.atmlayer.wf.task.bean.Task task, Map<String, Object> variables) {
 		if (task.getTemplate() != null) {
+			List<String> placeholders = Utility.findStringsByGroup(task.getTemplate(), VARIABLES_REGEX);
 			log.info("-----START replacing variables in html-----");
-			Utility.findStringsByGroup(task.getTemplate(), VARIABLES_REGEX).stream()
+			placeholders.stream()
 					.forEach(variable -> {
 						Object value = variables.get(variable);
 						log.info("Var {} replaced -> {}", variable, value);
 						task.setTemplate(task.getTemplate().replace("${" + variable + "}", String.valueOf(value)));
 					});
+			placeholders = Utility.findStringsByGroup(task.getTemplate(), VARIABLES_REGEX);
+			if (!placeholders.isEmpty()) {
+				log.error("value not found for placeholders: {}", placeholders);
+				throw new ErrorException(ErrorBean.GENERIC_ERROR);
+			}
 			log.info("-----END replacing variables in html-----");
 		}
 	}
