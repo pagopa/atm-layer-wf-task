@@ -118,6 +118,11 @@ public class DataTest {
         Map<String, Object> data = new HashMap<>();
         data.put("test1", "data1");
         variableResponse.getVariables().put("data", data);
+        variableResponse.getVariables().put("company", "Auriga");
+        variableResponse.getVariables().put("description", "descrizione");
+        variableResponse.getVariables().put("amount", 10000);
+        variableResponse.getVariables().put("fee", 2.30);
+        variableResponse.getVariables().put("totale", 2.30);
 
         return variableResponse;
     }

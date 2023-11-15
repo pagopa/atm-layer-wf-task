@@ -325,17 +325,21 @@ public class TaskService {
 	*/
 	private void replaceVarValue(it.pagopa.atmlayer.wf.task.bean.Task task, Map<String, Object> variables) {
 		if (task.getTemplate() != null) {
-			List<String> placeholders = Utility.findStringsByGroup(task.getTemplate(), VARIABLES_REGEX);
 			log.info("-----START replacing variables in html-----");
-			placeholders.stream()
-					.forEach(variable -> {
-						Object value = variables.get(variable);
-						log.info("Var {} replaced -> {}", variable, value);
-						task.setTemplate(task.getTemplate().replace("${" + variable + "}", String.valueOf(value)));
-					});
-			placeholders = Utility.findStringsByGroup(task.getTemplate(), VARIABLES_REGEX);
+
+			variables.entrySet().stream().forEach(value -> {
+				for (String variable : Utility.findStringsByGroup(task.getTemplate(), VARIABLES_REGEX)) {
+					if (value.getKey().equals(variable)) {
+						log.info("Var {} replaced -> {}", variable, value.getValue());
+						task.setTemplate(
+								task.getTemplate().replace("${" + variable + "}", String.valueOf(value.getValue())));
+						break;
+					}
+				}
+			});
+			List<String> placeholders = Utility.findStringsByGroup(task.getTemplate(), VARIABLES_REGEX);
 			if (!placeholders.isEmpty()) {
-				log.error("value not found for placeholders: {}", placeholders);
+				log.error("Value not found for placeholders: {}", placeholders);
 				throw new ErrorException(ErrorBean.GENERIC_ERROR);
 			}
 			log.info("-----END replacing variables in html-----");
