@@ -339,7 +339,7 @@ public class TaskService {
 			});
 			List<String> placeholders = Utility.findStringsByGroup(task.getTemplate(), VARIABLES_REGEX);
 			if (!placeholders.isEmpty()) {
-				log.error("value not found for placeholders: {}", placeholders);
+				log.error("Value not found for placeholders: {}", placeholders);
 				throw new ErrorException(ErrorBean.GENERIC_ERROR);
 			}
 			log.info("-----END replacing variables in html-----");
