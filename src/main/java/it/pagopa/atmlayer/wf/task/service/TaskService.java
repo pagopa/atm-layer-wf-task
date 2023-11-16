@@ -323,6 +323,7 @@ public class TaskService {
 					}
 				}
 			});
+      
 			task.setTemplate(task.getTemplate().replace(Constants.CDN_PLACEHOLDER, properties.cdnUrl()));
 			List<String> placeholders = Utility.findStringsByGroup(task.getTemplate(), VARIABLES_REGEX);
 			if (!placeholders.isEmpty()) {
