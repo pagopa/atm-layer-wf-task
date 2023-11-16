@@ -18,6 +18,8 @@ public class Constants {
 
     public final static String BUTTON_VARIABLES = "buttons";
 
+    public final static String CDN_PLACEHOLDER = "CDN_URL";
+
     public final static int TRANSACTION_ID_LENGTH = 50;
 
 }
