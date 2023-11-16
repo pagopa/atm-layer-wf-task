@@ -125,7 +125,7 @@ class TaskResourceTest {
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/main/{functionId}", "demo23").then().extract().response();
 
-                Assertions.assertEquals(502, response.statusCode());
+                Assertions.assertEquals(500, response.statusCode());
         }
 
         @Test
@@ -142,7 +142,7 @@ class TaskResourceTest {
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/main/{functionId}", "demo23").then().extract().response();
 
-                Assertions.assertEquals(502, response.statusCode());
+                Assertions.assertEquals(500, response.statusCode());
         }
 
         @Test

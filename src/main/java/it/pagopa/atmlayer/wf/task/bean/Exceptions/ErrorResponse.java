@@ -1,4 +1,4 @@
-package it.pagopa.atmlayer.wf.task.bean.Exceptions;
+package it.pagopa.atmlayer.wf.task.bean.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
