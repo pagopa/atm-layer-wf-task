@@ -97,13 +97,13 @@ public class Utility {
     * @return A list of strings containing the IDs of HTML elements with the specified tag in the HTML string.
     */
     public static List<String> getIdOfTag(String htmlString, String tag) {
-        List<String> buttons = new ArrayList<>();
+        List<String> idList = new ArrayList<>();
 
         Document doc = Jsoup.parse(htmlString);
 
-        doc.getElementsByTag(tag).stream().forEach(e -> buttons.add(e.id()));
+        doc.getElementsByTag(tag).stream().forEach(e -> idList.add(e.id()));
 
-        return buttons;
+        return idList;
     }
 
     /**

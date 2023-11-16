@@ -2,7 +2,6 @@ package it.pagopa.atmlayer.wf.task.service;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
@@ -52,6 +51,8 @@ public class TaskService {
 
 	private static final String BUTTON_TAG = "button";
 
+	private static final String LI_TAG = "li";
+
 	/**
 	* Builds and retrieves a task based on the provided parameters.
 	*
@@ -80,13 +81,11 @@ public class TaskService {
 			log.error("Error calling process service", e);
 			throw new ErrorException(ErrorBean.GET_TASKS_ERROR);
 		}
-
 		if (restTaskResponse.getStatus() == 200) {
 			return manageOkResponse(restTaskResponse.getEntity());
 		} else {
 			throw new ErrorException(ErrorBean.GET_TASKS_ERROR);
 		}
-
 	}
 
 	/**
@@ -114,25 +113,10 @@ public class TaskService {
 		}
 	}
 
-	/**
-	* Constructs and retrieves a task object for further processing based on transaction and state.
-	*
-	* This method is an overloaded version of the `buildTask` method that omits the function ID,
-	* allowing the construction of a task based solely on the transaction ID and the current state.
-	* It internally calls the main `buildTask` method with a null function ID and the provided transaction ID and state to simplify the task construction process.
-	*
-	* @param transactionId The unique identifier for the transaction associated with the task.
-	* @param state The current state of the task.
-	* @return A task object representing the next available task, or null if no task is available or if there is an error during the process.
-	*/
-	public it.pagopa.atmlayer.wf.task.bean.Task buildTask(String transactionId, State state) {
-		return buildTask(null, transactionId, state);
-	}
-
 	public Scene buildNext(String transactionId, State state) {
 		Scene scene = new Scene();
-		scene.setTask(buildTask(transactionId, state));
 		scene.setTransactionId(transactionId);
+		scene.setTask(buildTask(null, transactionId, state));
 		return scene;
 	}
 
@@ -278,6 +262,7 @@ public class TaskService {
 								.readAllBytes(),
 						properties.htmlCharset());
 				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
+				placeholders.addAll(Utility.getIdOfTag(htmlString, LI_TAG));
 				log.debug("Placeholders found: {}", placeholders);
 				if (placeholders != null && !placeholders.isEmpty()) {
 					log.debug("Number of variables found in html form: {}", placeholders.size());
@@ -300,6 +285,7 @@ public class TaskService {
 								.readAllBytes(),
 						properties.htmlCharset());
 				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
+				placeholders.addAll(Utility.getIdOfTag(htmlString, LI_TAG));
 				if (placeholders != null && !placeholders.isEmpty()) {
 					log.debug("Number of variables found in receipt template: {}", placeholders.size());
 					variableRequest.setVariables(placeholders);
@@ -337,6 +323,8 @@ public class TaskService {
 					}
 				}
 			});
+      
+			task.setTemplate(task.getTemplate().replace(Constants.CDN_PLACEHOLDER, properties.cdnUrl()));
 			List<String> placeholders = Utility.findStringsByGroup(task.getTemplate(), VARIABLES_REGEX);
 			if (!placeholders.isEmpty()) {
 				log.error("Value not found for placeholders: {}", placeholders);
@@ -431,5 +419,4 @@ public class TaskService {
 		}
 		return atmTask;
 	}
-
 }
