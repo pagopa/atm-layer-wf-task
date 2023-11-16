@@ -325,7 +325,7 @@ public class TaskService {
 			});
 
 			task.setTemplate(
-					task.getTemplate().replaceAll("${" + Constants.CDN_PLACEHOLDER + "}", properties.cdnUrl()));
+					task.getTemplate().replace("${" + Constants.CDN_PLACEHOLDER + "}", properties.cdnUrl()));
 			List<String> placeholders = Utility.findStringsByGroup(task.getTemplate(), VARIABLES_REGEX);
 			if (!placeholders.isEmpty()) {
 				log.error("Value not found for placeholders: {}", placeholders);
