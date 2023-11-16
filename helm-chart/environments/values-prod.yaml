@@ -21,13 +21,21 @@ processService:
 
 logLevel: DEBUG
 
-cdnUrl: https://d2xduy7tbgu2d3.cloudfront.net
+cdn:
+  credentialsSecretName: "pagopa-prod-atm-layer-model-cdn-base-path"
+  credentialsSecretKeys:
+    cdn_base_path: CDN_BASE_PATH
+
+secretProviderClass:
+  name: atm-layer-wf-task-secrets
+  env: prod
 
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
   # Annotations to add to the service account
-  annotations: {}
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::00000000000:role/pagopa-dev-atm-layer-xxxxxx-serviceaccount-role
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: pagopa-prod-atm-layer-wf-task
@@ -47,6 +55,9 @@ securityContext: {}
 
 deployment:
   name: pagopa-prod-atm-layer-wf-task
+  annotations:
+    reloader.stakater.com/auto: "true"
+    secret.reloader.stakater.com/reload: pagopa-prod-atm-layer-model-cdn-base-path
 
 service:
   name: pagopa-prod-atm-layer-wf-task

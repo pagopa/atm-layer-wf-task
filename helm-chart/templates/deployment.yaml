@@ -20,6 +20,13 @@ spec:
         force-recreate: {{ randAlphaNum 5 | quote }}
     spec:
       serviceAccountName: {{ include "chart-1.serviceAccountName" . }}
+      volumes:
+      - name: secrets-store-inline
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true 
+          volumeAttributes:
+            secretProviderClass: {{ .Values.secretProviderClass.name }}
       containers:
         - name: {{ .Values.deployment.name }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
@@ -32,7 +39,15 @@ spec:
             - name: WF_TASK_LOG_LEVEL
               value: "{{ .Values.logLevel }}"
             - name: CDN_URL
-              value: "{{ .Values.cdnUrl }}"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.cdn.credentialsSecretName }}
+                  key: {{ .Values.cdn.credentialsSecretKeys.cdn_base_path }}
+
+          volumeMounts:
+          - name: secrets-store-inline
+            mountPath: "/mnt/secrets-store"
+            readOnly: true
 
   strategy:
     type: Recreate
