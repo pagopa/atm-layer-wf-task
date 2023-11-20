@@ -421,37 +421,4 @@ public class TaskService {
 		}
 		return atmTask;
 	}
-
-	public static void main(String[] args) {
-		System.out.println(Utility.getIdOfTag("<?xml version=\"1.0\" encoding=\"iso-8859-1\" ?>\r\n" + //
-				"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n"
-				+ //
-				"<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n" + //
-				"<head></head>\r\n" + //
-				"<body>\r\n" + //
-				"\t<div id=\"title_page\"><img src=\"${CDN_URL}ICON/logo-pagoPA.svg\" />Servizi Pagopa </div>\r\n" + //
-				"\t<div id=\"subtitle\">MENU</div>\r\n" + //
-				"\t\r\n" + //
-				"\t\r\n" + //
-				"\t\r\n" + //
-				"\t<ul id=\"menu\">\r\n" + //
-				"\t\t<li id=\"pagamentoAviso\" >\t\r\n" + //
-				"\t\t\t<span>Pagamento spontaneo</span>\r\n" + //
-				"\t\t\t<img src=\"${CDN_URL}ICON/logo-pagoPA-nero.svg\"/>\r\n" + //
-				"\t\t</li>\r\n" + //
-				"\t\t<li id=\"button02\">\r\n" + //
-				"\t\t\t<span>Pagamento spontaneo 2</span>\r\n" + //
-				"\t\t\t<img src=\"${CDN_URL}ICON/logo-pagoPA-nero.svg\" />\r\n" + //
-				"\t\t\t<img src=\"${CDN_URL}ICON/logo-pagoPA-nero.svg\" />\r\n" + //
-				"\t\t</li>\r\n" + //
-				"\t</ul>\r\n" + //
-				"\t\r\n" + //
-				"    <button class=\"exit\" id=\"cancel\">\r\n" + //
-				"      <span>Esci</span>\r\n" + //
-				"    </button>\r\n" + //
-				"\r\n" + //
-				"\t</body>\r\n" + //
-				"\t\r\n" + //
-				"</html>", LI_TAG));
-	}
 }

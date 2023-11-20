@@ -95,8 +95,8 @@ public class DataTest {
 
         variableResponse.getVariables().put(Constants.ERROR_VARIABLES, errorMap);
         variableResponse.getVariables().put(Constants.TIMEOUT_VARIABLES, timeoutMap);
-        variableResponse.getVariables().put("company", "Auriga");
         variableResponse.getVariables().put(Constants.TIMEOUT_VALUE, 50);
+        variableResponse.getVariables().put("company", "Auriga");
         variableResponse.getVariables().put("description", "descrizione");
         variableResponse.getVariables().put("amount", 10000);
         variableResponse.getVariables().put("fee", 2.30);
@@ -198,4 +198,45 @@ public class DataTest {
         state.getDevice().setTerminalId(null);
         return state;
     }
+
+    public static State createStateRequestNextEmptyTaskId() {
+        State state = createStateRequestStart();
+        state.setTaskId("");
+        return state;
+    }
+
+    public static State createStateRequestNoPeripheral() {
+        State state = createStateRequestStart();
+        state.getDevice().setPeripherals(null);
+        return state;
+    }
+
+    public static State createStateRequestNoData() {
+        State state = createStateRequestStart();
+        state.setData(null);
+        return state;
+    }
+
+    public static TaskResponse createTaskResponseNoTasks() {
+        return TaskResponse.builder().tasks(new ArrayList<Task>()).build();
+    }
+
+    public static VariableResponse createvaVariableResponseDefaultVariables() {
+        VariableResponse varResponse = createVariableResponseWithData();
+        varResponse.setVariables(new HashMap<String, Object>());
+        varResponse.getVariables().put(Constants.ERROR_VARIABLES, new HashMap<>());
+        varResponse.getVariables().put(Constants.TIMEOUT_VARIABLES, new HashMap<>());
+        varResponse.getVariables().put(Constants.TIMEOUT_VALUE, 1);
+        varResponse.getVariables().put(Constants.COMMAND_VARIABLE_VALUE, "END");
+        varResponse.getVariables().put(Constants.OUTCOME_VAR_NAME, "a");
+        varResponse.getVariables().put(Constants.RECEIPT_TEMPLATE, "a");
+        varResponse.getVariables().put("company", "Auriga");
+        varResponse.getVariables().put("description", "descrizione");
+        varResponse.getVariables().put("amount", 10000);
+        varResponse.getVariables().put("fee", 2.30);
+        varResponse.getVariables().put("totale", 11.50);
+
+        return varResponse;
+    }
+
 }

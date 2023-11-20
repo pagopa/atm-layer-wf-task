@@ -20,8 +20,7 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
 
         if (requestContext.getUriInfo().getPath().startsWith("/api/v1")) {
             log.info("============== REQUEST ==============");
-            if (requestContext.getUriInfo().getPathParameters() != null
-                    && !requestContext.getUriInfo().getPathParameters().isEmpty()) {
+            if (requestContext.getUriInfo().getPathParameters() != null) {
                 log.info("QUERY PARAMS: {}",
                         requestContext.getUriInfo().getPathParameters());
             }
