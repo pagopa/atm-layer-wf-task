@@ -1,8 +1,6 @@
 package it.pagopa.atmlayer.wf.task.test.utility;
 
-import static io.restassured.RestAssured.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,11 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 
 import io.quarkus.test.junit.QuarkusTest;
 import it.pagopa.atmlayer.wf.task.bean.Channel;
