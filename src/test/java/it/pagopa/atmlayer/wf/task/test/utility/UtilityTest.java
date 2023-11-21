@@ -1,13 +1,25 @@
 package it.pagopa.atmlayer.wf.task.test.utility;
 
+import static io.restassured.RestAssured.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import io.quarkus.test.junit.QuarkusTest;
+import it.pagopa.atmlayer.wf.task.bean.Channel;
+import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 
@@ -74,6 +86,44 @@ public class UtilityTest {
         List<String> result = new ArrayList<>();
         result.add("cancel");
         assertEquals(result, Utility.getIdOfTag(htmlString, "button"));
+    }
+
+    @Test
+    void testGetObject() throws ParseException {
+
+        String json = "{\r\n" + //
+                "    \"device\": {\r\n" + //
+                "        \"bankId\": \"06789\",\r\n" + //
+                "        \"branchId\": \"12345\",\r\n" + //
+                "        \"code\": \"0001\",\r\n" + //
+                "        \"terminalId\": \"64874412\",\r\n" + //
+                "        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n" + //
+                "        \"channel\": \"ATM\"" +
+                "}}";
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date date = sdf.parse("2023-10-31T17:30:00");
+        State state = new State();
+        Device device = Device.builder().bankId("06789").branchId("12345").channel(Channel.ATM).code("0001")
+                .terminalId("64874412").opTimestamp(date).build();
+        state.setDevice(device);
+        assertEquals(state, Utility.getObject(json, State.class));
+    }
+
+    @Test
+    void testGetObjectKo() throws ParseException {
+
+        String json = "{\r\n" + //
+                "    \"device\": {\r\n" + //
+                "        \"bankId\": \"06789\",\r\n" + //
+                "        \"branchId\": \"12345\",\r\n" + //
+                "        \"code\": \"0001\",\r\n" + //
+                "        \"terminalId\": \"64874412\",\r\n" + //
+                "        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n" + //
+                "        \"channel\": \"ATM\"" +
+                "}";
+
+        assertEquals(null, Utility.getObject(json, State.class));
     }
 
 }

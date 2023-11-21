@@ -19,10 +19,9 @@ class LogFilterTest {
     void testLogFilter() {
         Response response = given().contentType(MediaType.APPLICATION_JSON)
                 .when()
-                .post("/api")
-                .then()
-                .statusCode(StatusCode.NOT_FOUND).extract().response();
-        assertEquals(404, response.getStatusCode());
+                .post("/health/v1/task")
+                .then().extract().response();
+        assertEquals(200, response.getStatusCode());
 
     }
 
@@ -31,8 +30,7 @@ class LogFilterTest {
         Response response = given().contentType(MediaType.APPLICATION_JSON)
                 .when()
                 .post("/api/v1/tasks/main/")
-                .then()
-                .statusCode(StatusCode.NOT_FOUND).extract().response();
+                .then().extract().response();
 
         assertEquals(404, response.getStatusCode());
     }

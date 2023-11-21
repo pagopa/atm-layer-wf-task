@@ -1,6 +1,9 @@
 package it.pagopa.atmlayer.wf.task.test.resource;
 
 import static io.restassured.RestAssured.given;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse;
@@ -21,7 +24,9 @@ import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
 import it.pagopa.atmlayer.wf.task.resource.TaskResource;
+import it.pagopa.atmlayer.wf.task.service.TaskService;
 import it.pagopa.atmlayer.wf.task.test.DataTest;
+import jakarta.ws.rs.ProcessingException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response.Status;
@@ -440,6 +445,51 @@ class TaskResourceTest {
                                 .post("/main/{functionId}", "demo23").then().extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
+        }
+
+        @Test
+        void testConnectionProblemWithProcessOnStart() {
+
+                TaskService ts = Mockito.mock(TaskService.class);
+                when(ts.buildFirst(anyString(), any())).thenThrow(ProcessingException.class);
+
+                Response response = given().body(DataTest.createStateRequestStart())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/main/{functionId}", "demo23").then().extract().response();
+
+                Assertions.assertEquals(500, response.statusCode());
+        }
+
+        @Test
+        void testConnectionProblemWithProcessOnNext() {
+
+                TaskService ts = Mockito.mock(TaskService.class);
+                when(ts.buildNext(anyString(), any())).thenThrow(ProcessingException.class);
+
+                Response response = given().body(DataTest.createStateRequestNext())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/next/trns/{transactionId}", "00001-0002-12345-1234567890-aaaaaaaaaaaaa").then()
+                                .extract().response();
+
+                Assertions.assertEquals(500, response.statusCode());
+        }
+
+        @Test
+        void testMissingReceipt() {
+
+                Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createTaskResponseMissingReceipt(1)));
+
+                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createvaVariableResponseDefaultVariables()));
+
+                Response response = given().body(DataTest.createStateRequestStart())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/main/{functionId}", "demo23").then().extract().response();
+
+                Assertions.assertEquals(500, response.statusCode());
         }
 
 }

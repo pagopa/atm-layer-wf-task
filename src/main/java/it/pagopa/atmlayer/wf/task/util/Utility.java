@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,8 +14,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import it.pagopa.atmlayer.wf.task.bean.Device;
+import it.pagopa.atmlayer.wf.task.bean.State;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -39,6 +43,36 @@ public class Utility {
             log.error(" - ERROR", e);
         }
         return result;
+    }
+
+    public static Object getObject(String json, Class<?> clazz) {
+        Object result = null;
+        ObjectMapper om = new ObjectMapper();
+        try {
+            result = om.readValue(json, clazz);
+        } catch (JsonProcessingException e) {
+            log.error("Error deserializing: {}", e);
+        }
+        return result;
+    }
+
+    /**
+    * Generates a unique transaction ID for a device.
+    *
+    * This method creates a unique transaction ID using the UUID (Universally Unique Identifier) generator.
+    * The generated transaction ID is intended to uniquely identify a transaction associated with a specific device.
+    *
+    * @param device The device for which the transaction ID is being generated.
+    * @return A unique transaction ID in UUID format.
+    */
+    public static String generateTransactionId(Object object) {
+        Device device = ((State) object).getDevice();
+        return (device.getBankId()
+                + "-" + (device.getBranchId() != null ? device.getBranchId() : "")
+                + "-" + (device.getCode() != null ? device.getCode() : "")
+                + "-" + (device.getTerminalId() != null ? device.getTerminalId() : "")
+                + "-" + (device.getOpTimestamp().getTime())
+                + "-" + UUID.randomUUID().toString()).substring(0, Constants.TRANSACTION_ID_LENGTH);
     }
 
     /**

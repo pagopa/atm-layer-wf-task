@@ -41,6 +41,26 @@ public class DataTest {
         return taskResponse;
     }
 
+    public static TaskResponse createTaskResponseMissingReceipt(int numberOfTasks) {
+        TaskResponse taskResponse = new TaskResponse();
+        taskResponse.setTasks(new ArrayList<Task>());
+        for (int i = 0; i <= numberOfTasks; i++) {
+            Task task = new Task();
+            task.setId(RandomStringUtils.randomAlphanumeric(10));
+            task.setPriority(i);
+
+            taskResponse.getTasks().add(task);
+        }
+
+        taskResponse.getTasks().get(0).setForm("riepilogoCommissioni.html");
+        Map<String, Object> templateMap = new HashMap<>();
+        templateMap.put(Constants.RECEIPT_TEMPLATE, "aa.html");
+        taskResponse.getTasks().get(0).setVariables(templateMap);
+        taskResponse.setTransactionId("1000");
+
+        return taskResponse;
+    }
+
     public static TaskResponse createTaskResponseNoForm(int numberOfTasks) {
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setTasks(new ArrayList<Task>());
@@ -229,7 +249,7 @@ public class DataTest {
         varResponse.getVariables().put(Constants.TIMEOUT_VALUE, 1);
         varResponse.getVariables().put(Constants.COMMAND_VARIABLE_VALUE, "END");
         varResponse.getVariables().put(Constants.OUTCOME_VAR_NAME, "a");
-        varResponse.getVariables().put(Constants.RECEIPT_TEMPLATE, "a");
+        varResponse.getVariables().put(Constants.RECEIPT_TEMPLATE, "a.html");
         varResponse.getVariables().put("company", "Auriga");
         varResponse.getVariables().put("description", "descrizione");
         varResponse.getVariables().put("amount", 10000);

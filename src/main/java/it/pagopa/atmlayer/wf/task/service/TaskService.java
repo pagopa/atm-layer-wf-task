@@ -9,7 +9,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse;
@@ -132,7 +131,6 @@ public class TaskService {
 	*/
 	public Scene buildFirst(String functionId, State state) {
 		Scene scene = new Scene();
-		scene.setTransactionId(generateTransactionId(state.getDevice()));
 		scene.setTask(buildTask(functionId, scene.getTransactionId(), state));
 		return scene;
 	}
@@ -292,7 +290,7 @@ public class TaskService {
 					variableRequest.setVariables(placeholders);
 				}
 			} catch (IOException e) {
-				log.error("- ERROR: File: {} not found!", task.getForm(), e);
+				log.error("- ERROR: File: {} not found!", task.getVariables().get(Constants.RECEIPT_TEMPLATE), e);
 				throw new ErrorException(ErrorBean.GENERIC_ERROR);
 			}
 		}
@@ -334,24 +332,6 @@ public class TaskService {
 			}
 			log.info("-----END replacing variables in html-----");
 		}
-	}
-
-	/**
-	* Generates a unique transaction ID for a device.
-	*
-	* This method creates a unique transaction ID using the UUID (Universally Unique Identifier) generator.
-	* The generated transaction ID is intended to uniquely identify a transaction associated with a specific device.
-	*
-	* @param device The device for which the transaction ID is being generated.
-	* @return A unique transaction ID in UUID format.
-	*/
-	private String generateTransactionId(Device device) {
-		return (device.getBankId()
-				+ "-" + (device.getBranchId() != null ? device.getBranchId() : "")
-				+ "-" + (device.getCode() != null ? device.getCode() : "")
-				+ "-" + (device.getTerminalId() != null ? device.getTerminalId() : "")
-				+ "-" + (device.getOpTimestamp().getTime())
-				+ "-" + UUID.randomUUID().toString()).substring(0, Constants.TRANSACTION_ID_LENGTH);
 	}
 
 	/**
@@ -415,6 +395,8 @@ public class TaskService {
 
 				}
 				setButtonInAtmTask(atmTask, variableResponse.getButtons());
+			} else if (restVariableResponse.getStatus() == 102) {
+				throw new ErrorException(ErrorBean.PROCESS_STILL_RUNNING);
 			} else {
 				throw new ErrorException(ErrorBean.GET_VARIABLES_ERROR);
 			}

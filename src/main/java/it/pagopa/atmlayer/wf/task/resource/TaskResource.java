@@ -43,7 +43,7 @@ public class TaskResource {
 			Scene scene = taskService.buildFirst(functionId, state);
 			return RestResponse.status(Status.CREATED, scene);
 		} catch (ProcessingException e) {
-			log.error("Impossibile stabilire la connessione", e);
+			log.error("Unable to establish connection", e);
 			throw new ErrorException(ErrorBean.GENERIC_ERROR);
 		}
 

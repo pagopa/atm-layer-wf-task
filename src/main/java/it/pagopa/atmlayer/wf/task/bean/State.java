@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -26,4 +27,7 @@ public class State {
 
 	@Schema(description = "Mappa delle variabili inviate dal Device")
 	private Map<String, Object> data;
+
+	@JsonIgnore
+	private String transactionId;
 }
