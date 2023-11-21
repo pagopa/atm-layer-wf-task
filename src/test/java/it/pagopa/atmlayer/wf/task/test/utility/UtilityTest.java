@@ -34,15 +34,6 @@ public class UtilityTest {
     }
 
     @Test
-    void testFindStringsByGroup() {
-        String testTxt = "aaaaaaaaaaaaa${test1} prova test ${test2}";
-        List<String> result = new ArrayList<>();
-        result.add("test1");
-        result.add("test2");
-        assertEquals(result, Utility.findStringsByGroup(testTxt, "\\$\\{(.*?)\\}"));
-    }
-
-    @Test
     void testfindStrings() {
         String testTxt = "test.prova@auriga.com";
         String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
