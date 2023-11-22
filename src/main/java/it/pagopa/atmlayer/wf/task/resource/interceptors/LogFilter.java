@@ -1,10 +1,7 @@
 package it.pagopa.atmlayer.wf.task.resource.interceptors;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 import org.slf4j.MDC;
 
@@ -24,7 +21,7 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
 
     private static final String TRANSACTION_ID_LOG_CONFIGURATION = "transactionId";
 
-    private static final String TRANSACTION_ID_HEADER_NAME = "transactionId";
+    private static final String TRANSACTION_ID_PATH_PARAM_NAME = "transactionId";
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -32,8 +29,8 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
         if (requestContext.getUriInfo().getPath().startsWith("/api/v1")) {
             String transactionId = null;
             MultivaluedMap<String, String> pathParameters = requestContext.getUriInfo().getPathParameters();
-            if (pathParameters != null && pathParameters.get(TRANSACTION_ID_HEADER_NAME) != null) {
-                transactionId = pathParameters.get(TRANSACTION_ID_HEADER_NAME).get(0);
+            if (pathParameters != null && pathParameters.get(TRANSACTION_ID_PATH_PARAM_NAME) != null) {
+                transactionId = pathParameters.get(TRANSACTION_ID_PATH_PARAM_NAME).get(0);
             }
             byte[] entity = requestContext.getEntityStream().readAllBytes();
             if (transactionId == null) {

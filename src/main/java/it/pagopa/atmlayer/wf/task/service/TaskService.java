@@ -82,6 +82,8 @@ public class TaskService {
 		}
 		if (restTaskResponse.getStatus() == 200) {
 			return manageOkResponse(restTaskResponse.getEntity());
+		} else if (restTaskResponse.getStatus() == 202) {
+			throw new ErrorException(ErrorBean.PROCESS_STILL_RUNNING);
 		} else {
 			throw new ErrorException(ErrorBean.GET_TASKS_ERROR);
 		}
@@ -396,8 +398,6 @@ public class TaskService {
 
 				}
 				setButtonInAtmTask(atmTask, variableResponse.getButtons());
-			} else if (restVariableResponse.getStatus() == 100) {
-				throw new ErrorException(ErrorBean.PROCESS_STILL_RUNNING);
 			} else {
 				throw new ErrorException(ErrorBean.GET_VARIABLES_ERROR);
 			}

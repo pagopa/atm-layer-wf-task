@@ -492,4 +492,21 @@ class TaskResourceTest {
                 Assertions.assertEquals(500, response.statusCode());
         }
 
+        @Test
+        void testReturn100Process() {
+
+                Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
+                                .thenReturn(RestResponse.status(100));
+
+                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createvaVariableResponseDefaultVariables()));
+
+                Response response = given().body(DataTest.createStateRequestStart())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/main/{functionId}", "demo23").then().extract().response();
+
+                Assertions.assertEquals(500, response.statusCode());
+        }
+
 }

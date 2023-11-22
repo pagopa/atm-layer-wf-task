@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.junit.jupiter.api.Test;
 
@@ -86,6 +87,7 @@ public class UtilityTest {
                 "}}";
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date date = sdf.parse("2023-10-31T16:30:00");
         State state = new State();
         Device device = Device.builder().bankId("06789").branchId("12345").channel(Channel.ATM).code("0001")
