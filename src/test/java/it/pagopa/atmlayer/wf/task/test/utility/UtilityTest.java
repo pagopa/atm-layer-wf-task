@@ -86,7 +86,7 @@ public class UtilityTest {
                 "}}";
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date date = sdf.parse("2023-10-31T17:30:00");
+        Date date = sdf.parse("2023-10-31T16:30:00");
         State state = new State();
         Device device = Device.builder().bankId("06789").branchId("12345").channel(Channel.ATM).code("0001")
                 .terminalId("64874412").opTimestamp(date).build();
