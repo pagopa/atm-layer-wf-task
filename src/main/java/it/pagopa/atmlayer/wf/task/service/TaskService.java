@@ -131,6 +131,7 @@ public class TaskService {
 	*/
 	public Scene buildFirst(String functionId, State state) {
 		Scene scene = new Scene();
+		scene.setTransactionId(state.getTransactionId());
 		scene.setTask(buildTask(functionId, scene.getTransactionId(), state));
 		return scene;
 	}
