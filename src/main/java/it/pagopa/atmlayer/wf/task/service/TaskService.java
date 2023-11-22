@@ -396,7 +396,7 @@ public class TaskService {
 
 				}
 				setButtonInAtmTask(atmTask, variableResponse.getButtons());
-			} else if (restVariableResponse.getStatus() == 102) {
+			} else if (restVariableResponse.getStatus() == 100) {
 				throw new ErrorException(ErrorBean.PROCESS_STILL_RUNNING);
 			} else {
 				throw new ErrorException(ErrorBean.GET_VARIABLES_ERROR);

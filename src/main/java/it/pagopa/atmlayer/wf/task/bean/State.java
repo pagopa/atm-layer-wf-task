@@ -28,6 +28,5 @@ public class State {
 	@Schema(description = "Mappa delle variabili inviate dal Device")
 	private Map<String, Object> data;
 
-	@JsonIgnore
 	private String transactionId;
 }
