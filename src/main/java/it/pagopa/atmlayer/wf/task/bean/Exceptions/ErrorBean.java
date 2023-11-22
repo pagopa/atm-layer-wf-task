@@ -10,7 +10,7 @@ public enum ErrorBean {
     INVALID_TRANSACTION_ID("MALFORMED_TRANSACTION_ID", "Transaction id not valid", 400),
     GET_TASKS_ERROR("TASK_ERROR", "Error retrieve next step", 500),
     GET_VARIABLES_ERROR("VARIABLE_ERROR", "Error retrieve variables on next step", 500),
-    PROCESS_STILL_RUNNING("PROCESS_STILL_RUNNING", "Process still running, retry later", 102),
+    PROCESS_STILL_RUNNING("PROCESS_STILL_RUNNING", "Process still running, retry later", 202),
     CONNECTION_PROBLEM("CONNECTION_PROBLEM", "Could not connect to other microservices", 500);
 
     private final String errorCode;
