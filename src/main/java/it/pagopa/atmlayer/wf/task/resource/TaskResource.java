@@ -14,6 +14,7 @@ import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorEnum;
 import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorException;
 import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorResponse;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeEnum;
+import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeResponse;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.NotNull;
@@ -88,6 +89,10 @@ public class TaskResource {
 			Scene scene = taskService.buildNext(transactionId, state);
 			if (OutcomeEnum.PROCESSING.equals(scene.getOutcome().getOutcomeEnum())) {
 				return RestResponse.status(Status.ACCEPTED, scene);
+			}
+			if (scene.getTask() == null) {
+				scene.setOutcome(new OutcomeResponse(OutcomeEnum.END));
+				return RestResponse.status(Status.OK, scene);
 			}
 			return RestResponse.status(Status.CREATED, scene);
 		} catch (ProcessingException e) {
