@@ -18,22 +18,22 @@ public class OutcomeResponse {
     private String description;
 
     @JsonIgnore
-    private OutcomeEnum outcome;
+    private OutcomeEnum outcomeEnum;
 
     public OutcomeResponse(OutcomeEnum outcomeEnum) {
         this.result = outcomeEnum.getValue();
         this.description = outcomeEnum.getDescription();
-        this.outcome = outcomeEnum;
+        this.outcomeEnum = outcomeEnum;
     }
 
     public void setOutcomeEnum(OutcomeEnum outcomeEnum) {
         this.result = outcomeEnum.getValue();
         this.description = outcomeEnum.getDescription();
-        this.outcome = outcomeEnum;
+        this.outcomeEnum = outcomeEnum;
     }
 
     public OutcomeEnum getOutcomeEnum() {
-        return outcome;
+        return outcomeEnum;
     }
 
 }

@@ -1,7 +1,5 @@
 package it.pagopa.atmlayer.wf.task.resource;
 
-import java.net.ConnectException;
-
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
