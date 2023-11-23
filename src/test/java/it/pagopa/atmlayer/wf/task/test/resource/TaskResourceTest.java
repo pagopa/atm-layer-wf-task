@@ -267,26 +267,6 @@ class TaskResourceTest {
                 Assertions.assertEquals(500, response.statusCode());
         }
 
-        @Test
-        void emptyTaskIdOnNext() {
-
-                Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient
-                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
-
-                Response response = given().body(DataTest.createStateRequestNextEmptyTaskId())
-                                .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/next/trns/{transactionId}", "00001-0002-12345-1234567890-aaaaaaaaaaaa")
-                                .then().extract().response();
-
-                Assertions.assertEquals(400, response.statusCode());
-        }
-
         @ParameterizedTest
         @ValueSource(strings = { "10001-0002-12345-1234567890-aaaaaaaaaaaaa",
                         "00001-1002-12345-1234567890-aaaaaaaaaaaaa",

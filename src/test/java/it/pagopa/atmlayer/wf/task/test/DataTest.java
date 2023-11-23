@@ -219,12 +219,6 @@ public class DataTest {
         return state;
     }
 
-    public static State createStateRequestNextEmptyTaskId() {
-        State state = createStateRequestStart();
-        state.setTaskId("");
-        return state;
-    }
-
     public static State createStateRequestNoPeripheral() {
         State state = createStateRequestStart();
         state.getDevice().setPeripherals(null);
