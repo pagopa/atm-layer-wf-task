@@ -60,11 +60,6 @@ public class TaskResource {
 			@Parameter(description = "ID della transazione") @NotNull @PathParam("transactionId") String transactionId,
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 
-		if (state.getTaskId() == null || state.getTaskId().isEmpty()) {
-			log.error("Task id is null or empty");
-			throw new ErrorException(ErrorBean.MISSING_TASK_ID);
-		}
-
 		String[] transactionIdParts = transactionId.split("-");
 		if (!transactionIdParts[0].equals(state.getDevice().getBankId())) {
 			log.error("TransactionId not valid -> [BankId]");

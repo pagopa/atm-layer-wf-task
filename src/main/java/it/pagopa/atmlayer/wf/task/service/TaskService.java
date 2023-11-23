@@ -64,22 +64,8 @@ public class TaskService {
 	* @param state The current state of the task.
 	* @return A task object representing the next available task, or null if no task is available or an error occurs during the process.
 	*/
-	public it.pagopa.atmlayer.wf.task.bean.Task buildTask(String functionId, String transactionId, State state) {
+	public it.pagopa.atmlayer.wf.task.bean.Task manageTaskResponse(RestResponse<TaskResponse> restTaskResponse) {
 
-		TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
-		RestResponse<TaskResponse> restTaskResponse = null;
-		try {
-			if (taskRequest.getTaskId() != null) {
-				log.info("Calling next task after for task id: [{}]", taskRequest.getTaskId());
-				restTaskResponse = processRestClient.nextTasks(taskRequest);
-			} else {
-				log.info("Calling start process of function: [{}]", functionId);
-				restTaskResponse = processRestClient.startProcess(taskRequest);
-			}
-		} catch (WebApplicationException e) {
-			log.error("Error calling process service", e);
-			throw new ErrorException(ErrorBean.GET_TASKS_ERROR);
-		}
 		if (restTaskResponse.getStatus() == 200) {
 			return manageOkResponse(restTaskResponse.getEntity());
 		} else if (restTaskResponse.getStatus() == 202) {
@@ -117,8 +103,34 @@ public class TaskService {
 	public Scene buildNext(String transactionId, State state) {
 		Scene scene = new Scene();
 		scene.setTransactionId(transactionId);
-		scene.setTask(buildTask(null, transactionId, state));
+		scene.setTask(buildTaskNext(transactionId, state));
 		return scene;
+	}
+
+	public it.pagopa.atmlayer.wf.task.bean.Task buildTaskNext(String transactionId, State state) {
+		TaskRequest taskRequest = buildTaskRequest(state, transactionId, null);
+		RestResponse<TaskResponse> restTaskResponse = null;
+		try {
+			log.info("Calling next task after for task id: [{}]", taskRequest.getTaskId());
+			restTaskResponse = processRestClient.nextTasks(taskRequest);
+		} catch (WebApplicationException e) {
+			log.error("Error calling process service", e);
+			throw new ErrorException(ErrorBean.GET_TASKS_ERROR);
+		}
+		return manageTaskResponse(restTaskResponse);
+	}
+
+	public it.pagopa.atmlayer.wf.task.bean.Task buildTaskStart(String functionId, String transactionId, State state) {
+		TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
+		RestResponse<TaskResponse> restTaskResponse = null;
+		try {
+			log.info("Calling next task after for task id: [{}]", taskRequest.getTaskId());
+			restTaskResponse = processRestClient.startProcess(taskRequest);
+		} catch (WebApplicationException e) {
+			log.error("Error calling process service", e);
+			throw new ErrorException(ErrorBean.GET_TASKS_ERROR);
+		}
+		return manageTaskResponse(restTaskResponse);
 	}
 
 	/**
@@ -134,7 +146,7 @@ public class TaskService {
 	public Scene buildFirst(String functionId, State state) {
 		Scene scene = new Scene();
 		scene.setTransactionId(state.getTransactionId());
-		scene.setTask(buildTask(functionId, scene.getTransactionId(), state));
+		scene.setTask(buildTaskStart(functionId, scene.getTransactionId(), state));
 		return scene;
 	}
 
@@ -382,9 +394,7 @@ public class TaskService {
 				if (workingVariables != null) {
 					// Replaceing variables with values
 					replaceVarValue(atmTask, workingVariables);
-					if (variableRequest.getVariables() != null) {
-						workingVariables.keySet().removeAll(variableRequest.getVariables());
-					}
+					workingVariables.keySet().removeAll(variableRequest.getVariables());
 					setVariablesInAtmTask(atmTask, workingVariables);
 				}
 				if (atmTask.getTemplate() != null) {
