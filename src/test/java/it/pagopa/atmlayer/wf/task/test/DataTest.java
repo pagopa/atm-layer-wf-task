@@ -253,4 +253,18 @@ public class DataTest {
         return varResponse;
     }
 
+    public static TaskResponse createTaskResponseNoVariablesRequest(int numberOfTasks) {
+        TaskResponse taskResponse = createTaskResponse(numberOfTasks);
+        taskResponse.getTasks().get(0).setForm("arrivederci.html");
+        taskResponse.getTasks().get(0).setVariables(null);
+        return taskResponse;
+    }
+
+    public static TaskResponse createTaskResponseEndProcess() {
+        TaskResponse taskResponse = new TaskResponse();
+        taskResponse.setTasks(new ArrayList<Task>());
+        taskResponse.setTransactionId("1000");
+        return taskResponse;
+    }
+
 }
