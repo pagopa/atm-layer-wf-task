@@ -48,7 +48,7 @@ public class TaskResource {
 			return RestResponse.status(Status.CREATED, scene);
 		} catch (ProcessingException e) {
 			log.error("Unable to establish connection", e);
-			throw new ErrorException(ErrorEnum.GENERIC_ERROR);
+			throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
 		}
 
 	}
