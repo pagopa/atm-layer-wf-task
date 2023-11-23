@@ -18,8 +18,10 @@ import it.pagopa.atmlayer.wf.task.bean.Command;
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.Scene;
 import it.pagopa.atmlayer.wf.task.bean.State;
-import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorBean;
+import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorEnum;
 import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorException;
+import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeEnum;
+import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeResponse;
 import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
 import it.pagopa.atmlayer.wf.task.client.bean.DeviceInfo;
 import it.pagopa.atmlayer.wf.task.client.bean.DeviceType;
@@ -64,14 +66,17 @@ public class TaskService {
 	* @param state The current state of the task.
 	* @return A task object representing the next available task, or null if no task is available or an error occurs during the process.
 	*/
-	public it.pagopa.atmlayer.wf.task.bean.Task manageTaskResponse(RestResponse<TaskResponse> restTaskResponse) {
-
+	public Scene manageTaskResponse(RestResponse<TaskResponse> restTaskResponse) {
+		Scene scene = new Scene();
 		if (restTaskResponse.getStatus() == 200) {
-			return manageOkResponse(restTaskResponse.getEntity());
+			scene.setOutcome(new OutcomeResponse(OutcomeEnum.OK));
+			scene.setTask(manageOkResponse(restTaskResponse.getEntity()));
+			return scene;
 		} else if (restTaskResponse.getStatus() == 202) {
-			throw new ErrorException(ErrorBean.PROCESS_STILL_RUNNING);
+			scene.setOutcome(new OutcomeResponse(OutcomeEnum.PROCESSING));
+			return scene;
 		} else {
-			throw new ErrorException(ErrorBean.GET_TASKS_ERROR);
+			throw new ErrorException(ErrorEnum.GET_TASKS_ERROR);
 		}
 	}
 
@@ -101,13 +106,12 @@ public class TaskService {
 	}
 
 	public Scene buildNext(String transactionId, State state) {
-		Scene scene = new Scene();
+		Scene scene = buildSceneNext(transactionId, state);
 		scene.setTransactionId(transactionId);
-		scene.setTask(buildTaskNext(transactionId, state));
 		return scene;
 	}
 
-	public it.pagopa.atmlayer.wf.task.bean.Task buildTaskNext(String transactionId, State state) {
+	public Scene buildSceneNext(String transactionId, State state) {
 		TaskRequest taskRequest = buildTaskRequest(state, transactionId, null);
 		RestResponse<TaskResponse> restTaskResponse = null;
 		try {
@@ -115,12 +119,12 @@ public class TaskService {
 			restTaskResponse = processRestClient.nextTasks(taskRequest);
 		} catch (WebApplicationException e) {
 			log.error("Error calling process service", e);
-			throw new ErrorException(ErrorBean.GET_TASKS_ERROR);
+			throw new ErrorException(ErrorEnum.GET_TASKS_ERROR);
 		}
 		return manageTaskResponse(restTaskResponse);
 	}
 
-	public it.pagopa.atmlayer.wf.task.bean.Task buildTaskStart(String functionId, String transactionId, State state) {
+	public Scene buildSceneStart(String functionId, String transactionId, State state) {
 		TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
 		RestResponse<TaskResponse> restTaskResponse = null;
 		try {
@@ -128,7 +132,7 @@ public class TaskService {
 			restTaskResponse = processRestClient.startProcess(taskRequest);
 		} catch (WebApplicationException e) {
 			log.error("Error calling process service", e);
-			throw new ErrorException(ErrorBean.GET_TASKS_ERROR);
+			throw new ErrorException(ErrorEnum.GET_TASKS_ERROR);
 		}
 		return manageTaskResponse(restTaskResponse);
 	}
@@ -144,9 +148,8 @@ public class TaskService {
 	* @return A Scene object containing the task and transaction information for the next scene.
 	*/
 	public Scene buildFirst(String functionId, State state) {
-		Scene scene = new Scene();
+		Scene scene = buildSceneStart(functionId, state.getTransactionId(), state);
 		scene.setTransactionId(state.getTransactionId());
-		scene.setTask(buildTaskStart(functionId, scene.getTransactionId(), state));
 		return scene;
 	}
 
@@ -285,7 +288,7 @@ public class TaskService {
 				variableRequest.setButtons(buttonList);
 			} catch (IOException e) {
 				log.error("- ERROR: File: {} not found!", task.getForm(), e);
-				throw new ErrorException(ErrorBean.GENERIC_ERROR);
+				throw new ErrorException(ErrorEnum.GENERIC_ERROR);
 			}
 		}
 		// Find variables in receipt template
@@ -306,7 +309,7 @@ public class TaskService {
 				}
 			} catch (IOException e) {
 				log.error("- ERROR: File: {} not found!", task.getVariables().get(Constants.RECEIPT_TEMPLATE), e);
-				throw new ErrorException(ErrorBean.GENERIC_ERROR);
+				throw new ErrorException(ErrorEnum.GENERIC_ERROR);
 			}
 		}
 		variableRequest.setTaskId(task.getId());
@@ -343,7 +346,7 @@ public class TaskService {
 			List<String> placeholders = Utility.findStringsByGroup(task.getTemplate(), VARIABLES_REGEX);
 			if (!placeholders.isEmpty()) {
 				log.error("Value not found for placeholders: {}", placeholders);
-				throw new ErrorException(ErrorBean.GENERIC_ERROR);
+				throw new ErrorException(ErrorEnum.GENERIC_ERROR);
 			}
 			log.info("-----END replacing variables in html-----");
 		}
@@ -388,7 +391,7 @@ public class TaskService {
 										properties.htmlCharset()));
 					} catch (IOException e) {
 						log.error("File not found {}", workingTask.getForm(), e);
-						throw new ErrorException(ErrorBean.GENERIC_ERROR);
+						throw new ErrorException(ErrorEnum.GENERIC_ERROR);
 					}
 				}
 				if (workingVariables != null) {
@@ -403,13 +406,13 @@ public class TaskService {
 								.encodeToString(atmTask.getTemplate().getBytes(properties.htmlCharset())));
 					} catch (UnsupportedEncodingException e) {
 						log.error(" - ERROR:", e);
-						throw new ErrorException(ErrorBean.GENERIC_ERROR);
+						throw new ErrorException(ErrorEnum.GENERIC_ERROR);
 					}
 
 				}
 				setButtonInAtmTask(atmTask, variableResponse.getButtons());
 			} else {
-				throw new ErrorException(ErrorBean.GET_VARIABLES_ERROR);
+				throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
 			}
 		}
 		return atmTask;

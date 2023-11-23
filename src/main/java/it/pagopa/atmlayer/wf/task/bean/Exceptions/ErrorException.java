@@ -5,7 +5,7 @@ import jakarta.ws.rs.core.Response;
 
 public class ErrorException extends WebApplicationException {
 
-    public ErrorException(ErrorBean error) {
+    public ErrorException(ErrorEnum error) {
         super(Response.status(error.getStatus()).entity(ErrorResponse.builder()
                 .status(error.getStatus())
                 .description(error.getDescription())

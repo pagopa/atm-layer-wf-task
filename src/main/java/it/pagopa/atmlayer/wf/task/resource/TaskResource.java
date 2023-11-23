@@ -1,5 +1,7 @@
 package it.pagopa.atmlayer.wf.task.resource;
 
+import java.net.ConnectException;
+
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -10,9 +12,10 @@ import org.jboss.resteasy.reactive.RestResponse.Status;
 
 import it.pagopa.atmlayer.wf.task.bean.Scene;
 import it.pagopa.atmlayer.wf.task.bean.State;
-import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorBean;
+import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorEnum;
 import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorException;
 import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorResponse;
+import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeEnum;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.NotNull;
@@ -41,10 +44,13 @@ public class TaskResource {
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 		try {
 			Scene scene = taskService.buildFirst(functionId, state);
+			if (OutcomeEnum.PROCESSING.equals(scene.getOutcome().getOutcomeEnum())) {
+				return RestResponse.status(Status.ACCEPTED, scene);
+			}
 			return RestResponse.status(Status.CREATED, scene);
 		} catch (ProcessingException e) {
 			log.error("Unable to establish connection", e);
-			throw new ErrorException(ErrorBean.GENERIC_ERROR);
+			throw new ErrorException(ErrorEnum.GENERIC_ERROR);
 		}
 
 	}
@@ -63,29 +69,32 @@ public class TaskResource {
 		String[] transactionIdParts = transactionId.split("-");
 		if (!transactionIdParts[0].equals(state.getDevice().getBankId())) {
 			log.error("TransactionId not valid -> [BankId]");
-			throw new ErrorException(ErrorBean.INVALID_TRANSACTION_ID);
+			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
 		}
 		if (state.getDevice().getBranchId() != null
 				&& !transactionIdParts[1].equals(state.getDevice().getBranchId())) {
 			log.error("TransactionId not valid -> [BranchId]");
-			throw new ErrorException(ErrorBean.INVALID_TRANSACTION_ID);
+			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
 		}
 		if (state.getDevice().getCode() != null
 				&& !transactionIdParts[2].equals(state.getDevice().getCode())) {
 			log.error("TransactionId not valid -> [Code]");
-			throw new ErrorException(ErrorBean.INVALID_TRANSACTION_ID);
+			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
 		}
 		if (state.getDevice().getTerminalId() != null
 				&& !transactionIdParts[3].equals(state.getDevice().getTerminalId())) {
 			log.error("TransactionId not valid -> [TerminalId]");
-			throw new ErrorException(ErrorBean.INVALID_TRANSACTION_ID);
+			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
 		}
 		try {
 			Scene scene = taskService.buildNext(transactionId, state);
+			if (OutcomeEnum.PROCESSING.equals(scene.getOutcome().getOutcomeEnum())) {
+				return RestResponse.status(Status.ACCEPTED, scene);
+			}
 			return RestResponse.status(Status.CREATED, scene);
 		} catch (ProcessingException e) {
 			log.error("Unable to establish connection", e);
-			throw new ErrorException(ErrorBean.CONNECTION_PROBLEM);
+			throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
 		}
 
 	}

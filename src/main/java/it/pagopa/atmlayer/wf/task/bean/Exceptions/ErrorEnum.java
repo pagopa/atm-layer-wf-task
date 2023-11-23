@@ -3,7 +3,7 @@ package it.pagopa.atmlayer.wf.task.bean.exceptions;
 import lombok.Getter;
 
 @Getter
-public enum ErrorBean {
+public enum ErrorEnum {
 
     GENERIC_ERROR("GENERIC_ERROR", "A generic error occurred", 500),
     MISSING_TASK_ID("TASK_ID", "Task id is null or empty", 400),
@@ -17,7 +17,7 @@ public enum ErrorBean {
     private final String description;
     private final int status;
 
-    ErrorBean(String errorCode, String description, int status) {
+    ErrorEnum(String errorCode, String description, int status) {
         this.errorCode = errorCode;
         this.status = status;
         this.description = description;
