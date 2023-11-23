@@ -397,7 +397,9 @@ public class TaskService {
 				if (workingVariables != null) {
 					// Replaceing variables with values
 					replaceVarValue(atmTask, workingVariables);
-					workingVariables.keySet().removeAll(variableRequest.getVariables());
+					if (variableRequest.getVariables() != null) {
+						workingVariables.keySet().removeAll(variableRequest.getVariables());
+					}
 					setVariablesInAtmTask(atmTask, workingVariables);
 				}
 				if (atmTask.getTemplate() != null) {
