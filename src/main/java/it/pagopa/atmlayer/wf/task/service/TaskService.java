@@ -124,7 +124,7 @@ public class TaskService {
 		TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
 		RestResponse<TaskResponse> restTaskResponse = null;
 		try {
-			log.info("Calling next task after for task id: [{}]", taskRequest.getTaskId());
+			log.info("Calling start process of function: [{}]", functionId);
 			restTaskResponse = processRestClient.startProcess(taskRequest);
 		} catch (WebApplicationException e) {
 			log.error("Error calling process service", e);
