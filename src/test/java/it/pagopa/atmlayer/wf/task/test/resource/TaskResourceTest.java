@@ -174,11 +174,11 @@ class TaskResourceTest {
         void startProcessKoOnVariables503() {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
-                                .thenThrow(new WebApplicationException(Status.SERVICE_UNAVAILABLE));
+                                .thenReturn(RestResponse.status(Status.OK, DataTest.createTaskResponse(1)));
 
                 Mockito.when(processRestClient
                                 .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.INTERNAL_SERVER_ERROR));
+                                .thenReturn(RestResponse.status(Status.SERVICE_UNAVAILABLE));
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
