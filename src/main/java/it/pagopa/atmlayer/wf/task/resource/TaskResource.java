@@ -50,9 +50,6 @@ public class TaskResource {
 		} catch (ProcessingException e) {
 			log.error("Unable to establish connection", e);
 			throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
-		} catch (RuntimeException e) {
-			log.error("ERROR: ", e);
-			throw new ErrorException(ErrorEnum.GENERIC_ERROR);
 		}
 
 	}
@@ -101,9 +98,6 @@ public class TaskResource {
 		} catch (ProcessingException e) {
 			log.error("Unable to establish connection", e);
 			throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
-		} catch (RuntimeException e) {
-			log.error("ERROR: ", e);
-			throw new ErrorException(ErrorEnum.GENERIC_ERROR);
 		}
 
 	}

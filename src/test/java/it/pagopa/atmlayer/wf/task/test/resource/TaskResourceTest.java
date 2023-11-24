@@ -118,7 +118,7 @@ class TaskResourceTest {
         }
 
         @Test
-        void startProcessKoOnStart() {
+        void startProcessKoOnStart500() {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.INTERNAL_SERVER_ERROR));
@@ -136,7 +136,25 @@ class TaskResourceTest {
         }
 
         @Test
-        void startProcessKoOnVariables() {
+        void startProcessKoOnStart503() {
+
+                Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
+                                .thenThrow(new WebApplicationException(Status.SERVICE_UNAVAILABLE));
+
+                Mockito.when(processRestClient
+                                .retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createVariableResponseNoData()));
+
+                Response response = given().body(DataTest.createStateRequestStart())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/main/{functionId}", "demo23").then().extract().response();
+
+                Assertions.assertEquals(204, response.statusCode());
+        }
+
+        @Test
+        void startProcessKoOnVariables500() {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK, DataTest.createTaskResponse(1)));
@@ -150,6 +168,23 @@ class TaskResourceTest {
                                 .post("/main/{functionId}", "demo23").then().extract().response();
 
                 Assertions.assertEquals(500, response.statusCode());
+        }
+
+        @Test
+        void startProcessKoOnVariables503() {
+
+                Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
+                                .thenThrow(new WebApplicationException(Status.SERVICE_UNAVAILABLE));
+
+                Mockito.when(processRestClient
+                                .retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.INTERNAL_SERVER_ERROR));
+
+                Response response = given().body(DataTest.createStateRequestStart())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/main/{functionId}", "demo23").then().extract().response();
+
+                Assertions.assertEquals(204, response.statusCode());
         }
 
         @Test
@@ -191,10 +226,10 @@ class TaskResourceTest {
         }
 
         @Test
-        void nextTaskKoOnNextTask() {
+        void nextTaskKoOnNextTask500() {
 
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
-                                .thenThrow(new WebApplicationException());
+                                .thenThrow(new WebApplicationException(Status.INTERNAL_SERVER_ERROR));
 
                 Response response = given().body(DataTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -205,14 +240,28 @@ class TaskResourceTest {
         }
 
         @Test
-        void nextTaskKoOnVariables() {
+        void nextTaskKoOnNextTask503() {
+
+                Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
+                                .thenThrow(new WebApplicationException(Status.SERVICE_UNAVAILABLE));
+
+                Response response = given().body(DataTest.createStateRequestNext())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/next/trns/{transactionId}", "00001-0002-12345-1234567890-aaaaaaaaaaaaa")
+                                .then().extract().response();
+
+                Assertions.assertEquals(204, response.statusCode());
+        }
+
+        @Test
+        void nextTaskKoOnVariables500() {
 
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createTaskResponse(1)));
 
                 Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenThrow(new WebApplicationException());
+                                .thenThrow(new WebApplicationException(Status.INTERNAL_SERVER_ERROR));
 
                 Response response = given().body(DataTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -220,6 +269,24 @@ class TaskResourceTest {
                                 .then().extract().response();
 
                 Assertions.assertEquals(500, response.statusCode());
+        }
+
+        @Test
+        void nextTaskKoOnVariables503() {
+
+                Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createTaskResponse(1)));
+
+                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenThrow(new WebApplicationException(Status.SERVICE_UNAVAILABLE));
+
+                Response response = given().body(DataTest.createStateRequestNext())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/next/trns/{transactionId}", "00001-0002-12345-1234567890-aaaaaaaaaaaaa")
+                                .then().extract().response();
+
+                Assertions.assertEquals(204, response.statusCode());
         }
 
         @Test
@@ -259,7 +326,7 @@ class TaskResourceTest {
                                 .post("/next/trns/{transactionId}", "00001-0002-12345-1234567890-aaaaaaaaaaaaa")
                                 .then().extract().response();
 
-                Assertions.assertEquals(500, response.statusCode());
+                Assertions.assertEquals(204, response.statusCode());
         }
 
         @ParameterizedTest
@@ -417,7 +484,7 @@ class TaskResourceTest {
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/main/{functionId}", "demo23").then().extract().response();
 
-                Assertions.assertEquals(500, response.statusCode());
+                Assertions.assertEquals(204, response.statusCode());
         }
 
         @Test
@@ -493,16 +560,29 @@ class TaskResourceTest {
         }
 
         @Test
-        void startProcessKoFromProcess() {
+        void startProcessKoFromProcess500() {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
-                                .thenThrow(new WebApplicationException());
+                                .thenThrow(new WebApplicationException(Status.INTERNAL_SERVER_ERROR));
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/main/{functionId}", "demo23").then().extract().response();
 
                 Assertions.assertEquals(500, response.statusCode());
+        }
+
+        @Test
+        void startProcessKoFromProcess503() {
+
+                Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
+                                .thenThrow(new WebApplicationException(Status.SERVICE_UNAVAILABLE));
+
+                Response response = given().body(DataTest.createStateRequestStart())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/main/{functionId}", "demo23").then().extract().response();
+
+                Assertions.assertEquals(204, response.statusCode());
         }
 
 }
