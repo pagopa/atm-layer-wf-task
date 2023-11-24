@@ -18,7 +18,7 @@ import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 
 @QuarkusTest
-public class UtilityTest {
+class UtilityTest {
 
     @Test
     void testGetJson() {

@@ -124,7 +124,7 @@ public class TaskService {
 			if (e.getResponse().getStatus() == StatusCode.INTERNAL_SERVER_ERROR) {
 				throw new ErrorException(ErrorEnum.GET_TASKS_ERROR);
 			}
-			throw new ErrorException(ErrorEnum.DESIGN_ERROR);
+			throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 		}
 		return manageTaskResponse(restTaskResponse);
 	}
@@ -140,7 +140,7 @@ public class TaskService {
 			if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
 				throw new ErrorException(ErrorEnum.GET_TASKS_ERROR);
 			}
-			throw new ErrorException(ErrorEnum.DESIGN_ERROR);
+			throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 		}
 		return manageTaskResponse(restTaskResponse);
 	}
@@ -295,7 +295,7 @@ public class TaskService {
 				variableRequest.setButtons(buttonList);
 			} catch (IOException e) {
 				log.error("- ERROR: File: {} not found!", task.getForm(), e);
-				throw new ErrorException(ErrorEnum.DESIGN_ERROR);
+				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
 		}
 		// Find variables in receipt template
@@ -316,7 +316,7 @@ public class TaskService {
 				}
 			} catch (IOException e) {
 				log.error("- ERROR: File: {} not found!", task.getVariables().get(Constants.RECEIPT_TEMPLATE), e);
-				throw new ErrorException(ErrorEnum.DESIGN_ERROR);
+				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
 		}
 		variableRequest.setTaskId(task.getId());
@@ -353,7 +353,7 @@ public class TaskService {
 			List<String> placeholders = Utility.findStringsByGroup(task.getTemplate(), VARIABLES_REGEX);
 			if (!placeholders.isEmpty()) {
 				log.error("Value not found for placeholders: {}", placeholders);
-				throw new ErrorException(ErrorEnum.DESIGN_ERROR);
+				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
 			log.info("-----END replacing variables in html-----");
 		}
@@ -388,7 +388,7 @@ public class TaskService {
 				if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
 					throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
 				}
-				throw new ErrorException(ErrorEnum.DESIGN_ERROR);
+				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
 
 			if (restVariableResponse.getStatus() == 200) {
@@ -407,7 +407,7 @@ public class TaskService {
 			} else if (restVariableResponse.getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
 				throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
 			} else {
-				throw new ErrorException(ErrorEnum.DESIGN_ERROR);
+				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
 		}
 		return atmTask;
@@ -448,7 +448,7 @@ public class TaskService {
 								properties.htmlCharset()));
 			} catch (IOException e) {
 				log.error("File not found {}", workingTask.getForm(), e);
-				throw new ErrorException(ErrorEnum.DESIGN_ERROR);
+				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
 		}
 	}
