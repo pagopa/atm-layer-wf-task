@@ -23,5 +23,6 @@ public class Scene {
 	@Schema(required = true, description = "ID della transazione. Può essere generato dal Device alla richiesta della prima scena oppure generato dal server alla risposta della prima scena. Resta invariato fino al termine della funzione.", example = "b197bbd0-0459-4d0f-9d4a-45cdd369c018")
 	private String transactionId;
 
+	@Schema(required = true, description = "Esito dell' operazione")
 	private OutcomeResponse outcome;
 }

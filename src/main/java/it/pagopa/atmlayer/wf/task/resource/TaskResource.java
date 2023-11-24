@@ -34,10 +34,11 @@ public class TaskResource {
 	@Path("/main/{functionId}")
 	@POST
 	@Operation(summary = "Restituisce la scena principale della funzione selezionata", description = "CREATE della scena prinicpale con la lista dei task dato l'ID della funzione selezionata.")
-	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. Restituisce l'oggetto Scene nel body della risposta.", content = @Content(schema = @Schema(implementation = Scene.class)))
-	@APIResponse(responseCode = "400", description = "Richiesta malformata, la descrizione può fornire dettagli sull'errore")
+	@APIResponse(responseCode = "200", description = "Operazione eseguita con successo. Il processo è terminato.", content = @Content(schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. Restituisce l'oggetto Task nel body della risposta.", content = @Content(schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "202", description = "Operazione eseguita con successo. Il processo è in esecuzione.", content = @Content(schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "400", description = "Richiesta malformata, la descrizione può fornire dettagli sull'errore", content = @Content(schema = @Schema(implementation = Scene.class)))
 	@APIResponse(responseCode = "500", description = "Errore generico, la descrizione può fornire dettagli sull'errore", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-	@APIResponse(responseCode = "502", description = "Errore durante la chiamata ad altri microservizi, la descrizione può fornire dettagli sull'errore", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
 	public RestResponse<Scene> createMainScene(
 			@Parameter(description = "ID della funzione selezionata", example = "PAGAMENTO_SPONTANEO") @NotNull @PathParam("functionId") String functionId,
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
@@ -45,6 +46,10 @@ public class TaskResource {
 			Scene scene = taskService.buildFirst(functionId, state);
 			if (OutcomeEnum.PROCESSING.equals(scene.getOutcome().getOutcomeEnum())) {
 				return RestResponse.status(Status.ACCEPTED, scene);
+			}
+			if (scene.getTask() == null) {
+				scene.setOutcome(new OutcomeResponse(OutcomeEnum.END));
+				return RestResponse.status(Status.OK, scene);
 			}
 			return RestResponse.status(Status.CREATED, scene);
 		} catch (ProcessingException e) {
@@ -57,10 +62,11 @@ public class TaskResource {
 	@Path("/next/trns/{transactionId}")
 	@POST
 	@Operation(summary = "Restituisce la scena successiva con la lista dei task dato l'ID del flusso.", description = "CREATE dello step successivo a quello corrente dato l'ID del flusso.")
-	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. restituisce l'oggetto Task nel body della risposta.", content = @Content(schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "200", description = "Operazione eseguita con successo. Il processo è terminato.", content = @Content(schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. Restituisce l'oggetto Task nel body della risposta.", content = @Content(schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "202", description = "Operazione eseguita con successo. Il processo è in esecuzione.", content = @Content(schema = @Schema(implementation = Scene.class)))
 	@APIResponse(responseCode = "400", description = "Richiesta malformata, la descrizione può fornire dettagli sull'errore", content = @Content(schema = @Schema(implementation = Scene.class)))
 	@APIResponse(responseCode = "500", description = "Errore generico, la descrizione può fornire dettagli sull'errore", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-	@APIResponse(responseCode = "502", description = "Errore durante la chiamata ad altri microservizi, la descrizione può fornire dettagli sull'errore", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
 	public RestResponse<Scene> createNextScene(
 			@Parameter(description = "ID della transazione") @NotNull @PathParam("transactionId") String transactionId,
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {

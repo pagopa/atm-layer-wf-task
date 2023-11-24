@@ -1,5 +1,7 @@
 package it.pagopa.atmlayer.wf.task.bean.outcome;
 
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -13,8 +15,10 @@ import lombok.Data;
 @RegisterForReflection
 public class OutcomeResponse {
 
+    @Schema(required = true, description = "Risultato dell'operazione")
     private String result;
 
+    @Schema(required = true, description = "Descrizione dell'esito dell'operazione")
     private String description;
 
     @JsonIgnore

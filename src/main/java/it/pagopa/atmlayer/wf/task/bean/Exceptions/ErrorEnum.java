@@ -6,7 +6,6 @@ import lombok.Getter;
 public enum ErrorEnum {
 
     GENERIC_ERROR("GENERIC_ERROR", "A generic error occurred", 500),
-    MISSING_TASK_ID("TASK_ID", "Task id is null or empty", 400),
     INVALID_TRANSACTION_ID("MALFORMED_TRANSACTION_ID", "Transaction id not valid", 400),
     GET_TASKS_ERROR("TASK_ERROR", "Error retrieve next step", 500),
     GET_VARIABLES_ERROR("VARIABLE_ERROR", "Error retrieve variables on next step", 500),
