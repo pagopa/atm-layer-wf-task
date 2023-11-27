@@ -12,9 +12,9 @@ public class Constants {
 
     public static final String COMMAND_VARIABLE_VALUE = "command";
 
-    public static final String OUTCOME_VAR_NAME = "outcome_var_name";
+    public static final String OUTCOME_VAR_NAME = "outcomeVarName";
 
-    public static final String RECEIPT_TEMPLATE = "receipt_template";
+    public static final String RECEIPT_TEMPLATE = "receiptTemplate";
 
     public static final String BUTTON_VARIABLES = "buttons";
 

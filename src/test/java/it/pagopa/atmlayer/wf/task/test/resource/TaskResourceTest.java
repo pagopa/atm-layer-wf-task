@@ -1,9 +1,6 @@
 package it.pagopa.atmlayer.wf.task.test.resource;
 
 import static io.restassured.RestAssured.given;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse;
@@ -24,9 +21,8 @@ import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
 import it.pagopa.atmlayer.wf.task.resource.TaskResource;
-import it.pagopa.atmlayer.wf.task.service.TaskService;
 import it.pagopa.atmlayer.wf.task.test.DataTest;
-import jakarta.ws.rs.ProcessingException;
+import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response.Status;
@@ -585,4 +581,7 @@ class TaskResourceTest {
                 Assertions.assertEquals(204, response.statusCode());
         }
 
+        public static void main(String[] args) {
+                System.out.println(Utility.getJson(DataTest.createVariableResponseWithData()));
+        }
 }

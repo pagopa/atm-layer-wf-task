@@ -18,6 +18,7 @@ import it.pagopa.atmlayer.wf.task.client.bean.Task;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.util.Constants;
+import it.pagopa.atmlayer.wf.task.util.Utility;
 
 public class DataTest {
 
@@ -267,4 +268,7 @@ public class DataTest {
         return taskResponse;
     }
 
+    public static void main(String[] args) {
+        System.out.println(Utility.getJson(createTaskResponse(1)));
+    }
 }
