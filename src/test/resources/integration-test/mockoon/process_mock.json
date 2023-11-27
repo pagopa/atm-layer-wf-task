@@ -104,6 +104,35 @@
             ],
             "enabled": true,
             "responseMode": null
+        },
+        {
+            "uuid": "6485797a-372f-4191-aa8d-bc9f0ff42291",
+            "type": "http",
+            "documentation": "",
+            "method": "post",
+            "endpoint": "next",
+            "responses": [
+                {
+                    "uuid": "e24fb5ab-218d-4329-beeb-b9dc1e7228f3",
+                    "body": "{\n  \"tasks\": [\n    {\n      \"id\": \"1\",\n      \"variables\": {\n        \"receipt_template\": \"riepilogoCommissioni.html\"\n      },\n      \"form\": \"riepilogoCommissioni.html\",\n      \"priority\": 0\n    },\n    {\n      \"id\": \"2\",\n      \"priority\": 1\n    }\n  ],\n  \"transactionId\": \"1000\"\n}",
+                    "latency": 0,
+                    "statusCode": 200,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": true,
+                    "crudKey": "id"
+                }
+            ],
+            "enabled": true,
+            "responseMode": null
         }
     ],
     "rootChildren": [
@@ -113,11 +142,15 @@
         },
         {
             "type": "route",
+            "uuid": "4559a912-7e86-4aa2-a739-a84e24f90be6"
+        },
+        {
+            "type": "route",
             "uuid": "399ddeff-cddd-4f91-82c3-f185aa4ef61f"
         },
         {
             "type": "route",
-            "uuid": "4559a912-7e86-4aa2-a739-a84e24f90be6"
+            "uuid": "6485797a-372f-4191-aa8d-bc9f0ff42291"
         }
     ],
     "proxyMode": false,
