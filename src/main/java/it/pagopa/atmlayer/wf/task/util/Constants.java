@@ -16,6 +16,8 @@ public class Constants {
 
     public static final String RECEIPT_TEMPLATE = "receiptTemplate";
 
+    public static final String EPP_MODE = "eppMode";
+
     public static final String BUTTON_VARIABLES = "buttons";
 
     public static final String CDN_PLACEHOLDER = "CDN_URL";

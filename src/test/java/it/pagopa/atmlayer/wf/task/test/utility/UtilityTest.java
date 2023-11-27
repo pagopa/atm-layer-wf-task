@@ -2,8 +2,6 @@ package it.pagopa.atmlayer.wf.task.test.utility;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,9 +12,9 @@ import java.util.TimeZone;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
-import it.pagopa.atmlayer.wf.task.bean.Channel;
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.State;
+import it.pagopa.atmlayer.wf.task.bean.enumartive.Channel;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 
 @QuarkusTest

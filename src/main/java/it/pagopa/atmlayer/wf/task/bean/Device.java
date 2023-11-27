@@ -1,6 +1,5 @@
 package it.pagopa.atmlayer.wf.task.bean;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +8,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import it.pagopa.atmlayer.wf.task.bean.enumartive.Channel;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;

@@ -8,12 +8,13 @@ import java.util.Map;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
-import it.pagopa.atmlayer.wf.task.bean.Channel;
-import it.pagopa.atmlayer.wf.task.bean.Command;
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.Peripheral;
-import it.pagopa.atmlayer.wf.task.bean.PeripheralStatus;
 import it.pagopa.atmlayer.wf.task.bean.State;
+import it.pagopa.atmlayer.wf.task.bean.enumartive.Channel;
+import it.pagopa.atmlayer.wf.task.bean.enumartive.Command;
+import it.pagopa.atmlayer.wf.task.bean.enumartive.EppMode;
+import it.pagopa.atmlayer.wf.task.bean.enumartive.PeripheralStatus;
 import it.pagopa.atmlayer.wf.task.client.bean.Task;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
@@ -117,6 +118,7 @@ public class DataTest {
         variableResponse.getVariables().put(Constants.ERROR_VARIABLES, errorMap);
         variableResponse.getVariables().put(Constants.TIMEOUT_VARIABLES, timeoutMap);
         variableResponse.getVariables().put(Constants.TIMEOUT_VALUE, 50);
+        variableResponse.getVariables().put(Constants.EPP_MODE, EppMode.DATA.name());
         variableResponse.getVariables().put("company", "Auriga");
         variableResponse.getVariables().put("description", "descrizione");
         variableResponse.getVariables().put("amount", 10000);
