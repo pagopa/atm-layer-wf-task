@@ -54,7 +54,7 @@ public class Utility {
     * @param object The object to be converted to a JSON string.
     * @return A JSON string representing the provided object, or null if an error occurs.
     */
-    public static String getJsonForLog(Object object) {
+    public static String getObscuredJson(Object object) {
         String result = null;
         ObjectMapper om = new ObjectMapper();
         try {

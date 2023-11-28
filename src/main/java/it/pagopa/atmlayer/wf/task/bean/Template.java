@@ -15,14 +15,11 @@ import lombok.Data;
 @Schema(description = "Oggetto che rappresenta il template da visualizzare")
 public class Template {
 
-    @JsonView(ObscureLog.class)
+    @JsonView(ObscureView.class)
     @Schema(description = "Rappresenta il Base64 della pagina HTML da visualizzare")
     private String content;
 
     @Schema(description = "Tipo di visualizzazione della schermata HTML")
     private String type;
-
-    public static class ObscureLog {
-    }
 
 }
