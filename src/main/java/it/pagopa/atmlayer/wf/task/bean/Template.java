@@ -19,7 +19,7 @@ public class Template {
     @Schema(description = "Rappresenta il Base64 della pagina HTML da visualizzare")
     private String content;
 
-    @Schema(description = "Tipo di visualizzazione della schermata HTML")
+    @Schema(description = "Tipo di visualizzazione della schermata HTML", example = "FULL_SCREEN")
     private String type;
 
 }
