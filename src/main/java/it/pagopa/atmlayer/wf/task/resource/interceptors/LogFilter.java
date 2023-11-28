@@ -7,6 +7,7 @@ import org.slf4j.MDC;
 
 import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.util.Utility;
+import it.pagopa.atmlayer.wf.task.util.securestring.SecureString;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.container.ContainerResponseContext;
@@ -46,6 +47,7 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
             }
             log.info("HEADERS: {}", requestContext.getHeaders());
             log.info("METHOD: {}", requestContext.getMethod());
+
             log.info("BODY: {}", new String(entity));
 
             requestContext.setEntityStream(new ByteArrayInputStream(entity));
@@ -59,7 +61,7 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
             log.info("============== RESPONSE ==============");
             log.info("Response: Status: {}", responseContext.getStatus());
             if (responseContext.getEntity() != null) {
-                log.info("Body: {}", Utility.getJson(responseContext.getEntity()));
+                log.info("Body: {}", SecureString.getInstance(Utility.getJson(responseContext.getEntity()), "content"));
             }
             log.info("============== RESPONSE ==============");
             MDC.remove(TRANSACTION_ID_LOG_CONFIGURATION);

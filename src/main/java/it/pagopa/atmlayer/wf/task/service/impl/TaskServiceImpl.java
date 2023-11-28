@@ -312,20 +312,21 @@ public class TaskServiceImpl implements TaskService {
 			log.info("-----START replacing variables in html-----");
 
 			variables.entrySet().stream().forEach(value -> {
-				for (String variable : Utility.findStringsByGroup(task.getTemplate().getData(), VARIABLES_REGEX)) {
+				for (String variable : Utility.findStringsByGroup(task.getTemplate().getContent(), VARIABLES_REGEX)) {
 					if (value.getKey().equals(variable)) {
 						log.info("Var {} replaced -> {}", variable, value.getValue());
-						task.getTemplate().setData(
-								task.getTemplate().getData().replace("${" + variable + "}",
+						task.getTemplate().setContent(
+								task.getTemplate().getContent().replace("${" + variable + "}",
 										String.valueOf(value.getValue())));
 						break;
 					}
 				}
 			});
 
-			task.getTemplate().setData(
-					task.getTemplate().getData().replace("${" + Constants.CDN_PLACEHOLDER + "}", properties.cdnUrl()));
-			List<String> placeholders = Utility.findStringsByGroup(task.getTemplate().getData(), VARIABLES_REGEX);
+			task.getTemplate().setContent(
+					task.getTemplate().getContent().replace("${" + Constants.CDN_PLACEHOLDER + "}",
+							properties.cdnUrl()));
+			List<String> placeholders = Utility.findStringsByGroup(task.getTemplate().getContent(), VARIABLES_REGEX);
 			if (!placeholders.isEmpty()) {
 				log.error("Value not found for placeholders: {}", placeholders);
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
@@ -337,8 +338,8 @@ public class TaskServiceImpl implements TaskService {
 	private void updateTemplate(it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
 		if (atmTask.getTemplate() != null) {
 			try {
-				atmTask.getTemplate().setData(Base64.getEncoder()
-						.encodeToString(atmTask.getTemplate().getData().getBytes(properties.htmlCharset())));
+				atmTask.getTemplate().setContent(Base64.getEncoder()
+						.encodeToString(atmTask.getTemplate().getContent().getBytes(properties.htmlCharset())));
 			} catch (UnsupportedEncodingException e) {
 				log.error(" - ERROR:", e);
 				throw new ErrorException(ErrorEnum.GENERIC_ERROR);
@@ -363,7 +364,7 @@ public class TaskServiceImpl implements TaskService {
 		if (workingTask.getForm() != null) {
 			try {
 				atmTask.setTemplate(new Template());
-				atmTask.getTemplate().setData(
+				atmTask.getTemplate().setContent(
 						new String(Utility.getFileFromCdn(properties.cdnUrl()
 								+ properties.htmlResourcesPath()
 								+ workingTask.getForm()).readAllBytes(),

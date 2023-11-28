@@ -2,7 +2,6 @@ package it.pagopa.atmlayer.wf.task.bean;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -16,13 +15,9 @@ import lombok.Data;
 public class Template {
 
     @Schema(description = "Rappresenta il Base64 della pagina HTML da visualizzare")
-    private String data;
+    private String content;
 
     @Schema(description = "Tipo di visualizzazione della schermata HTML")
     private String type;
 
-    @JsonIgnore
-    public String getData() {
-        return data;
-    }
 }
