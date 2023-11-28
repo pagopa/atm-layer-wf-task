@@ -1,7 +1,7 @@
-package it.pagopa.atmlayer.wf.task.bean;
+package it.pagopa.atmlayer.wf.task.bean.enumartive;
 
 public enum Command {
-	
+
 	AUTHORIZE, // Fase di autorizzazione dell'importo del bollettino (transazione di monetica)
 	PRINT_RECEIPT, // Stampa dello scontrino
 	SCAN_BIIL_DATA, // Scansione QR code o Data matrix (o Bar code)

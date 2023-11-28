@@ -8,6 +8,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import it.pagopa.atmlayer.wf.task.bean.enumartive.Channel;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ import lombok.NoArgsConstructor;
 @JsonInclude(Include.NON_NULL)
 @Builder
 public class Device {
+
 	/*
 	 * Device bank ID.
 	 */
@@ -32,7 +34,6 @@ public class Device {
 	/*
 	 * Device branch ID.
 	 */
-	@NotNull(message = "BranchID non può essere null")
 	@Schema(required = true, description = "Il codice identificativo della filiale (o codice CAB)", example = "12345")
 	private String branchId;
 

@@ -1,0 +1,188 @@
+{
+    "uuid": "9d9de47d-f4f7-4b2c-a6bb-6e65158ea2a9",
+    "lastMigration": 29,
+    "name": "Process mock",
+    "endpointPrefix": "",
+    "latency": 0,
+    "port": 3001,
+    "hostname": "",
+    "folders": [],
+    "routes": [
+        {
+            "uuid": "ecf2158b-edaa-4f34-baf1-b61d34fc0d39",
+            "type": "http",
+            "documentation": "",
+            "method": "post",
+            "endpoint": "start",
+            "responses": [
+                {
+                    "uuid": "13faea42-3071-4cf2-8e23-748a69f74580",
+                    "body": "{\n  \"tasks\": [\n    {\n      \"id\": \"1\",\n      \"variables\": {\n        \"receipt_template\": \"riepilogoCommissioni.html\"\n      },\n      \"form\": \"riepilogoCommissioni.html\",\n      \"priority\": 0\n    },\n    {\n      \"id\": \"2\",\n      \"priority\": 1\n    }\n  ],\n  \"transactionId\": \"1000\"\n}",
+                    "latency": 0,
+                    "statusCode": 200,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": true,
+                    "crudKey": "id"
+                }
+            ],
+            "enabled": true,
+            "responseMode": null
+        },
+        {
+            "uuid": "399ddeff-cddd-4f91-82c3-f185aa4ef61f",
+            "type": "http",
+            "documentation": "",
+            "method": "get",
+            "endpoint": "files/HTML/riepilogoCommissioni.html",
+            "responses": [
+                {
+                    "uuid": "0180dfb0-c55f-4fa0-ae35-2b38f9fa56f9",
+                    "body": "<?xml version=\"1.0\" encoding=\"iso-8859-1\" ?>\r\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head><link rel=\"stylesheet\" href=\"css/emulatore.css\" /></head>\r\n<body>\r\n\t<img id=\"logo\" src=\"https://d2xduy7tbgu2d3.cloudfront.net/files/ICON/default_logo.svg\"/>\r\n\t<h1>Servizi di pubblica utilit&agrave;</h1>\t\r\n\t\r\n\t<h2>Riepilogo del pagamento</h2>\r\n\t\r\n\t<table id=\"table\">\r\n\t<thead>\r\n\t <tr>\r\n\t\t<th>\r\n\t\t\t<span>${company}</span>\r\n\t\t</th>\r\n\t\t<th class=\"right\">\r\n\t\t\t<span>${amount} &euro;</span>\r\n\t\t</th>\t\t\r\n\t  </tr>\r\n\t</thead>\r\n\r\n\t<tbody>\t\r\n\t  <tr>\r\n\t\t<td><span>Commissioni</span></td>\r\n\t\t<td class=\"right\">\t\t\t\r\n\t\t\t<span>${fee} &euro;</span>\r\n\t\t</td>\t\t\r\n\t  </tr>\t  \r\n\t </tbody>\t\r\n\t <tfoot>\r\n\t\t<tr>\r\n\t\t\t<td><span  class=\"large\">Totale</span>\t</td>\r\n\t\t\t<td class=\"right\"><span class=\"large\">${totale} &euro;</span></td>\t\t\r\n\t\t</tr>\r\n\t  </tfoot>\r\n\r\n\t \r\n\t</table>\t\r\n \r\n    <button class=\"negative\" data-fdk=\"S4\" id=\"back\">\r\n      <span>Indietro</span>\r\n    </button>\r\n\t\r\n\t<button class=\"negative\"  id=\"exit\">\r\n      <span>Esci</span>\r\n    </button>\r\n\t\r\n\t<button class=\"positive\" data-fdk=\"S8\" id=\"confirm\">\r\n      <span>Paga  ${totale} &euro;</span>\r\n\t</button>\r\n\t\r\n\t\r\n\r\n\t</body>\r\n\t\r\n</html>",
+                    "latency": 0,
+                    "statusCode": 200,
+                    "label": "",
+                    "headers": [
+                        {
+                            "key": "Content-Type",
+                            "value": "application/octet-stream"
+                        }
+                    ],
+                    "bodyType": "INLINE",
+                    "filePath": "C:\\Users\\smiccoli\\Desktop\\PAGOPA\\Template\\datiAvviso.html",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": true,
+                    "crudKey": "id"
+                }
+            ],
+            "enabled": true,
+            "responseMode": null
+        },
+        {
+            "uuid": "4559a912-7e86-4aa2-a739-a84e24f90be6",
+            "type": "http",
+            "documentation": "",
+            "method": "post",
+            "endpoint": "variables",
+            "responses": [
+                {
+                    "uuid": "88ee9a52-6bbc-4553-bea8-ebcb90feabc8",
+                    "body": "{\n  \"buttons\": {\n    \"button1\": {\n      \"error\": \"Auriga\"\n    }\n  },\n  \"variables\": {\n    \"variable1\": \"11.50\",\n    \"amount\": 10000,\n    \"onError\": {\n      \"error\": \"Auriga\"\n    },\n    \"totale\": 11.5,\n    \"onTimeout\": {\n      \"error\": \"Auriga\"\n    },\n    \"data\": {\n      \"test1\": \"data1\"\n    },\n    \"fee\": 2.3,\n    \"description\": \"descrizione\",\n    \"company\": \"Auriga\",\n    \"timeout\": 50,\n    \"command\": \"PRINT_RECEIPT\"\n  }\n}",
+                    "latency": 0,
+                    "statusCode": 200,
+                    "label": "",
+                    "headers": [
+                        {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                        }
+                    ],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": true,
+                    "crudKey": "id"
+                }
+            ],
+            "enabled": true,
+            "responseMode": null
+        },
+        {
+            "uuid": "6485797a-372f-4191-aa8d-bc9f0ff42291",
+            "type": "http",
+            "documentation": "",
+            "method": "post",
+            "endpoint": "next",
+            "responses": [
+                {
+                    "uuid": "e24fb5ab-218d-4329-beeb-b9dc1e7228f3",
+                    "body": "{\n  \"tasks\": [\n    {\n      \"id\": \"1\",\n      \"variables\": {\n        \"receipt_template\": \"riepilogoCommissioni.html\"\n      },\n      \"form\": \"riepilogoCommissioni.html\",\n      \"priority\": 0\n    },\n    {\n      \"id\": \"2\",\n      \"priority\": 1\n    }\n  ],\n  \"transactionId\": \"1000\"\n}",
+                    "latency": 0,
+                    "statusCode": 200,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": true,
+                    "crudKey": "id"
+                }
+            ],
+            "enabled": true,
+            "responseMode": null
+        }
+    ],
+    "rootChildren": [
+        {
+            "type": "route",
+            "uuid": "ecf2158b-edaa-4f34-baf1-b61d34fc0d39"
+        },
+        {
+            "type": "route",
+            "uuid": "4559a912-7e86-4aa2-a739-a84e24f90be6"
+        },
+        {
+            "type": "route",
+            "uuid": "399ddeff-cddd-4f91-82c3-f185aa4ef61f"
+        },
+        {
+            "type": "route",
+            "uuid": "6485797a-372f-4191-aa8d-bc9f0ff42291"
+        }
+    ],
+    "proxyMode": false,
+    "proxyHost": "",
+    "proxyRemovePrefix": false,
+    "tlsOptions": {
+        "enabled": false,
+        "type": "CERT",
+        "pfxPath": "",
+        "certPath": "",
+        "keyPath": "",
+        "caPath": "",
+        "passphrase": ""
+    },
+    "cors": true,
+    "headers": [
+        {
+            "key": "Content-Type",
+            "value": "application/json"
+        }
+    ],
+    "proxyReqHeaders": [
+        {
+            "key": "",
+            "value": ""
+        }
+    ],
+    "proxyResHeaders": [
+        {
+            "key": "",
+            "value": ""
+        }
+    ],
+    "data": []
+}

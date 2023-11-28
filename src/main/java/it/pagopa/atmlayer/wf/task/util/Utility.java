@@ -1,8 +1,12 @@
 package it.pagopa.atmlayer.wf.task.util;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,6 +16,8 @@ import org.jsoup.nodes.Document;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import it.pagopa.atmlayer.wf.task.bean.Device;
+import it.pagopa.atmlayer.wf.task.bean.State;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -30,14 +36,42 @@ public class Utility {
     public static String getJson(Object object) {
         String result = null;
         ObjectMapper om = new ObjectMapper();
-        // (om.enable(SerializationFeature.WRAP_ROOT_VALUE);
         try {
-            // result = om.writerWithDefaultPrettyPrinter().writeValueAsString(object);
             result = om.writer().writeValueAsString(object);
         } catch (JsonProcessingException e) {
             log.error(" - ERROR", e);
         }
         return result;
+    }
+
+    public static Object getObject(String json, Class<?> clazz) {
+        Object result = null;
+        ObjectMapper om = new ObjectMapper();
+        try {
+            result = om.readValue(json, clazz);
+        } catch (JsonProcessingException e) {
+            log.error("Error deserializing: {}", e);
+        }
+        return result;
+    }
+
+    /**
+    * Generates a unique transaction ID for a device.
+    *
+    * This method creates a unique transaction ID using the UUID (Universally Unique Identifier) generator.
+    * The generated transaction ID is intended to uniquely identify a transaction associated with a specific device.
+    *
+    * @param device The device for which the transaction ID is being generated.
+    * @return A unique transaction ID in UUID format.
+    */
+    public static String generateTransactionId(Object object) {
+        Device device = ((State) object).getDevice();
+        return (device.getBankId()
+                + "-" + (device.getBranchId() != null ? device.getBranchId() : "")
+                + "-" + (device.getCode() != null ? device.getCode() : "")
+                + "-" + (device.getTerminalId() != null ? device.getTerminalId() : "")
+                + "-" + (device.getOpTimestamp().getTime())
+                + "-" + UUID.randomUUID().toString()).substring(0, Constants.TRANSACTION_ID_LENGTH);
     }
 
     /**
@@ -96,12 +130,32 @@ public class Utility {
     * @return A list of strings containing the IDs of HTML elements with the specified tag in the HTML string.
     */
     public static List<String> getIdOfTag(String htmlString, String tag) {
-        List<String> buttons = new ArrayList<>();
+        List<String> idList = new ArrayList<>();
 
         Document doc = Jsoup.parse(htmlString);
 
-        doc.getElementsByTag(tag).stream().forEach(e -> buttons.add(e.id()));
+        doc.getElementsByTag(tag).stream().forEach(e -> idList.add(e.id()));
 
-        return buttons;
+        return idList;
+    }
+
+    /**
+    * Retrieves an InputStream for a specified file from a remote location.
+    *
+    * This method constructs a URL using the provided 'path'.
+    * It then attempts to open an InputStream from the constructed URL, allowing access to the content of the remote file.
+    *
+    * @param path The name of the file to retrieve.
+    * @return An InputStream that provides access to the content of the specified file.
+    * @throws IOException
+    */
+    public static InputStream getFileFromCdn(String path) throws IOException {
+
+        InputStream ioStream = null;
+        log.info("Getting file [{}]", path);
+
+        ioStream = new URL(path).openStream();
+
+        return ioStream;
     }
 }
