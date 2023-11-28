@@ -242,6 +242,11 @@ public class TaskServiceImpl implements TaskService {
 		atmTask.setReceiptTemplate((String) workingVariables.get(Constants.RECEIPT_TEMPLATE));
 		log.debug("Getting recepitTemplate value: [{}]", workingVariables.remove(Constants.RECEIPT_TEMPLATE));
 
+		if (atmTask.getTemplate() != null) {
+			atmTask.getTemplate().setType((String) workingVariables.get(Constants.TEMPLATE_TYPE));
+			log.debug("Getting template type value: [{}]", workingVariables.remove(Constants.TEMPLATE_TYPE));
+		}
+
 		if (!workingVariables.isEmpty()) {
 			log.debug("Getting generic variables...");
 			atmTask.setData(workingVariables.get(Constants.DATA_VARIABLES) == null ? new HashMap<String, Object>()
@@ -369,4 +374,5 @@ public class TaskServiceImpl implements TaskService {
 			}
 		}
 	}
+
 }
