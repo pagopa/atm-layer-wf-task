@@ -5,8 +5,6 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.Data;
@@ -17,10 +15,14 @@ import lombok.Data;
 @Schema(description = "Oggetto che rappresenta il template da visualizzare")
 public class Template {
 
-    @JsonProperty(access = Access.WRITE_ONLY)
     @Schema(description = "Rappresenta il Base64 della pagina HTML da visualizzare")
     private String data;
 
+    @Schema(description = "Tipo di visualizzazione della schermata HTML")
     private String type;
 
+    @JsonIgnore
+    public String getData() {
+        return data;
+    }
 }
