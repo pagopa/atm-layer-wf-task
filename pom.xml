@@ -7,6 +7,7 @@
   <artifactId>workflow-task</artifactId>
   <version>1.0.0-dev.23</version>
   <properties>
+    <jacoco.version>0.8.11</jacoco.version>
     <compiler-plugin.version>3.11.0</compiler-plugin.version>
     <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -96,6 +97,11 @@
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>testcontainers</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-jacoco</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
