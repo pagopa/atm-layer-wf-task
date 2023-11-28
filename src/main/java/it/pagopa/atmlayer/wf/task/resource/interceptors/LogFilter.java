@@ -60,7 +60,7 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
             log.info("============== RESPONSE ==============");
             log.info("Response: Status: {}", responseContext.getStatus());
             if (responseContext.getEntity() != null) {
-                log.info("Body: {}", Utility.getJsonForLog(responseContext.getEntity()), "content");
+                log.info("Body: {}", Utility.getJsonForLog(responseContext.getEntity()));
             }
             log.info("============== RESPONSE ==============");
             MDC.remove(TRANSACTION_ID_LOG_CONFIGURATION);
