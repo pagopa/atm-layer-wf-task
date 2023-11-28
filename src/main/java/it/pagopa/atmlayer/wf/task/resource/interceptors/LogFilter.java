@@ -7,7 +7,6 @@ import org.slf4j.MDC;
 
 import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.util.Utility;
-import it.pagopa.atmlayer.wf.task.util.securestring.SecureString;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.container.ContainerResponseContext;
@@ -61,7 +60,7 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
             log.info("============== RESPONSE ==============");
             log.info("Response: Status: {}", responseContext.getStatus());
             if (responseContext.getEntity() != null) {
-                log.info("Body: {}", SecureString.getInstance(Utility.getJson(responseContext.getEntity()), "content"));
+                log.info("Body: {}", Utility.getJsonForLog(responseContext.getEntity()), "content");
             }
             log.info("============== RESPONSE ==============");
             MDC.remove(TRANSACTION_ID_LOG_CONFIGURATION);
