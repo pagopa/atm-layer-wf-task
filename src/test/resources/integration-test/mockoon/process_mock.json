@@ -29,7 +29,7 @@
                     "rules": [
                         {
                             "target": "body",
-                            "modifier": "device.bankId",
+                            "modifier": "deviceInfo.bankId",
                             "value": "06789",
                             "invert": false,
                             "operator": "equals"
@@ -55,7 +55,7 @@
                     "rules": [
                         {
                             "target": "body",
-                            "modifier": "device.bankId",
+                            "modifier": "deviceInfo.bankId",
                             "value": "00001",
                             "invert": false,
                             "operator": "equals"
@@ -160,7 +160,7 @@
                     "rules": [
                         {
                             "target": "body",
-                            "modifier": "device.bankId",
+                            "modifier": "deviceInfo.bankId",
                             "value": "06789",
                             "invert": false,
                             "operator": "equals"
@@ -186,7 +186,7 @@
                     "rules": [
                         {
                             "target": "body",
-                            "modifier": "device.bankId",
+                            "modifier": "deviceInfo.bankId",
                             "value": "00001",
                             "invert": false,
                             "operator": "equals"
