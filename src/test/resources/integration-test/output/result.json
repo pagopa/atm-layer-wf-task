@@ -6,8 +6,8 @@
     },
     "item": [
       {
-        "id": "86aa17c7-bb98-4fc7-a099-507b79d60d81",
-        "name": "Start process",
+        "id": "7f6647be-e458-4d7b-ae52-0350e9320f04",
+        "name": "Start process - CREATED",
         "request": {
           "description": {
             "content": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection.",
@@ -43,21 +43,71 @@
           {
             "listen": "test",
             "script": {
-              "id": "ba41a089-e100-47fa-a45a-85896760d2bb",
+              "id": "d4943aad-3b98-4984-93af-8463b21b5562",
               "type": "text/javascript",
               "exec": [
                 "pm.test(\"Status code is 201\", function () {",
                 "    pm.response.to.have.status(201);",
                 "});"
               ],
-              "_lastExecutionId": "fbcedf4a-9080-4437-b9c5-3219d5605e83"
+              "_lastExecutionId": "df8cc0a9-1ec7-4aef-84a9-da3a8584d711"
             }
           }
         ]
       },
       {
-        "id": "5462fd00-55a5-4931-b275-ef138aa9f94e",
-        "name": "Next",
+        "id": "945a549a-771f-46ab-b97a-0e24c378db26",
+        "name": "Start process - END PROCESS",
+        "request": {
+          "description": {
+            "content": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection.",
+            "type": "text/plain"
+          },
+          "url": {
+            "path": [
+              "api",
+              "v1",
+              "tasks",
+              "main",
+              "SPONTANEOUS_PAYMENT"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00001\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    }\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "a5e37c45-eadb-41b5-900a-c160c303305f",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status code is 200\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});"
+              ],
+              "_lastExecutionId": "bd605773-5fed-4581-b6f1-214b081954bc"
+            }
+          }
+        ]
+      },
+      {
+        "id": "3212c360-3d9b-4344-9a7c-aa15d08e6082",
+        "name": "Next - CREATED",
         "request": {
           "description": {
             "content": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned.",
@@ -94,14 +144,14 @@
           {
             "listen": "test",
             "script": {
-              "id": "02e21949-4c10-4d4f-bc8f-16a601749c63",
+              "id": "f90de85b-9ad0-459c-b956-e983b7a3ffa4",
               "type": "text/javascript",
               "exec": [
                 "pm.test(\"Status code is 201\", function () {",
                 "    pm.response.to.have.status(201);",
                 "});"
               ],
-              "_lastExecutionId": "5cebf4a0-74a4-4a62-a166-eaacd68091b3"
+              "_lastExecutionId": "c4f50d7d-3311-4cc3-ad8b-d51d76a0c7c1"
             }
           }
         ]
@@ -111,23 +161,23 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "7a92c059-96ca-4bb6-9caf-324a8eb6a999",
+          "id": "f7d76162-8655-4c8d-bade-a5668d1efda7",
           "type": "text/javascript",
           "exec": [
             ""
           ],
-          "_lastExecutionId": "8af129c5-94b0-4327-b6df-031a0c18ec6d"
+          "_lastExecutionId": "18fb537f-989b-4c42-8b2e-190fe4a99b97"
         }
       },
       {
         "listen": "test",
         "script": {
-          "id": "bfc9912b-1c17-416d-b826-0d28fe38d14b",
+          "id": "629cab64-6853-47bf-b323-a6d5fa79549d",
           "type": "text/javascript",
           "exec": [
             ""
           ],
-          "_lastExecutionId": "8515c3ea-de87-4715-b457-47b5ed0d99ce"
+          "_lastExecutionId": "90c4032e-d747-4cbf-af67-4c54b66a684f"
         }
       }
     ],
@@ -154,7 +204,7 @@
     }
   },
   "environment": {
-    "id": "699c16af-218c-4070-8db5-9f7a42afb924",
+    "id": "baf1b608-f00b-4a79-8f0e-7af10320c7ed",
     "values": [
       {
         "type": "any",
@@ -164,7 +214,7 @@
     ]
   },
   "globals": {
-    "id": "d9c4c39e-aa63-4db5-aa6b-dbe2d9029451",
+    "id": "023ffb25-16f9-4d2f-b4c3-f12b03134f0d",
     "values": []
   },
   "run": {
@@ -175,51 +225,51 @@
         "failed": 0
       },
       "items": {
-        "total": 2,
+        "total": 3,
         "pending": 0,
         "failed": 0
       },
       "scripts": {
-        "total": 6,
+        "total": 9,
         "pending": 0,
         "failed": 0
       },
       "prerequests": {
-        "total": 2,
+        "total": 3,
         "pending": 0,
         "failed": 0
       },
       "requests": {
-        "total": 2,
+        "total": 3,
         "pending": 0,
         "failed": 0
       },
       "tests": {
-        "total": 2,
+        "total": 3,
         "pending": 0,
         "failed": 0
       },
       "assertions": {
-        "total": 2,
+        "total": 3,
         "pending": 0,
         "failed": 0
       },
       "testScripts": {
-        "total": 4,
+        "total": 6,
         "pending": 0,
         "failed": 0
       },
       "prerequestScripts": {
-        "total": 2,
+        "total": 3,
         "pending": 0,
         "failed": 0
       }
     },
     "timings": {
-      "responseAverage": 205,
-      "responseMin": 58,
-      "responseMax": 352,
-      "responseSd": 147,
+      "responseAverage": 143.66666666666666,
+      "responseMin": 27,
+      "responseMax": 361,
+      "responseSd": 153.81662964567764,
       "dnsAverage": 0,
       "dnsMin": 0,
       "dnsMax": 0,
@@ -228,26 +278,26 @@
       "firstByteMin": 0,
       "firstByteMax": 0,
       "firstByteSd": 0,
-      "started": 1701257016953,
-      "completed": 1701257017448
+      "started": 1701268638566,
+      "completed": 1701268639103
     },
     "executions": [
       {
         "cursor": {
           "position": 0,
           "iteration": 0,
-          "length": 2,
+          "length": 3,
           "cycles": 1,
           "empty": false,
           "eof": false,
           "bof": true,
           "cr": false,
-          "ref": "fbfd3b59-1c84-45c9-ad6c-75781630602a",
-          "httpRequestId": "bfb5aeed-1367-41d7-8ac6-a7f17b028b58"
+          "ref": "333baff5-8e48-4fba-bb68-656597b8f172",
+          "httpRequestId": "1c84f853-3fc9-4cfa-9299-dd6ea7cf0db5"
         },
         "item": {
-          "id": "86aa17c7-bb98-4fc7-a099-507b79d60d81",
-          "name": "Start process",
+          "id": "7f6647be-e458-4d7b-ae52-0350e9320f04",
+          "name": "Start process - CREATED",
           "request": {
             "description": {
               "content": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection.",
@@ -283,14 +333,14 @@
             {
               "listen": "test",
               "script": {
-                "id": "ba41a089-e100-47fa-a45a-85896760d2bb",
+                "id": "d4943aad-3b98-4984-93af-8463b21b5562",
                 "type": "text/javascript",
                 "exec": [
                   "pm.test(\"Status code is 201\", function () {",
                   "    pm.response.to.have.status(201);",
                   "});"
                 ],
-                "_lastExecutionId": "fbcedf4a-9080-4437-b9c5-3219d5605e83"
+                "_lastExecutionId": "df8cc0a9-1ec7-4aef-84a9-da3a8584d711"
               }
             }
           ]
@@ -341,7 +391,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "0b607cd0-4bbe-4449-bf2f-c81e265b4897",
+              "value": "f3ada9e3-e000-499d-993f-ce7de618ac02",
               "system": true
             },
             {
@@ -377,7 +427,7 @@
           }
         },
         "response": {
-          "id": "46281fa5-0e1e-424a-854d-5c0652536cfb",
+          "id": "b40daefc-4974-424d-a424-f0aeff807e58",
           "status": "Created",
           "code": 201,
           "header": [
@@ -2351,15 +2401,15 @@
               48,
               45,
               49,
-              54,
-              99,
-              99,
-              101,
-              49,
-              52,
+              98,
               97,
-              45,
               102,
+              48,
+              101,
+              50,
+              102,
+              45,
+              48,
               34,
               44,
               34,
@@ -2444,10 +2494,10 @@
             ]
           },
           "cookie": [],
-          "responseTime": 352,
+          "responseTime": 361,
           "responseSize": 2048
         },
-        "id": "86aa17c7-bb98-4fc7-a099-507b79d60d81",
+        "id": "7f6647be-e458-4d7b-ae52-0350e9320f04",
         "assertions": [
           {
             "assertion": "Status code is 201",
@@ -2457,16 +2507,326 @@
       },
       {
         "cursor": {
-          "ref": "fc5b1986-54ce-4ba5-9e5a-3197976e2c89",
-          "length": 2,
+          "ref": "4b17af79-265b-474f-b790-4067310a9270",
+          "length": 3,
           "cycles": 1,
           "position": 1,
           "iteration": 0,
-          "httpRequestId": "341587fc-d65b-457c-acad-b42c57cb4371"
+          "httpRequestId": "c7f5818d-6a13-4141-a37a-5eed5f381259"
         },
         "item": {
-          "id": "5462fd00-55a5-4931-b275-ef138aa9f94e",
-          "name": "Next",
+          "id": "945a549a-771f-46ab-b97a-0e24c378db26",
+          "name": "Start process - END PROCESS",
+          "request": {
+            "description": {
+              "content": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "tasks",
+                "main",
+                "SPONTANEOUS_PAYMENT"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00001\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "a5e37c45-eadb-41b5-900a-c160c303305f",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "_lastExecutionId": "bd605773-5fed-4581-b6f1-214b081954bc"
+              }
+            }
+          ]
+        },
+        "request": {
+          "description": {
+            "content": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection.",
+            "type": "text/plain"
+          },
+          "url": {
+            "protocol": "http",
+            "port": "8086",
+            "path": [
+              "api",
+              "v1",
+              "tasks",
+              "main",
+              "SPONTANEOUS_PAYMENT"
+            ],
+            "host": [
+              "host",
+              "testcontainers",
+              "internal"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.33.0",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "d52cbbde-29e4-464a-977a-a967cd691257",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "host.testcontainers.internal:8086",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "494",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00001\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    }\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "d1002b2d-4893-4f8f-be20-3626af87e282",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "content-length",
+              "value": "139"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              116,
+              114,
+              97,
+              110,
+              115,
+              97,
+              99,
+              116,
+              105,
+              111,
+              110,
+              73,
+              100,
+              34,
+              58,
+              34,
+              48,
+              48,
+              48,
+              48,
+              49,
+              45,
+              49,
+              50,
+              51,
+              52,
+              53,
+              45,
+              48,
+              48,
+              48,
+              49,
+              45,
+              54,
+              52,
+              56,
+              55,
+              52,
+              52,
+              49,
+              50,
+              45,
+              49,
+              54,
+              57,
+              56,
+              55,
+              54,
+              57,
+              56,
+              48,
+              48,
+              48,
+              48,
+              48,
+              45,
+              100,
+              100,
+              101,
+              53,
+              102,
+              100,
+              48,
+              48,
+              45,
+              51,
+              34,
+              44,
+              34,
+              111,
+              117,
+              116,
+              99,
+              111,
+              109,
+              101,
+              34,
+              58,
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              69,
+              78,
+              68,
+              34,
+              44,
+              34,
+              100,
+              101,
+              115,
+              99,
+              114,
+              105,
+              112,
+              116,
+              105,
+              111,
+              110,
+              34,
+              58,
+              34,
+              84,
+              104,
+              101,
+              32,
+              112,
+              114,
+              111,
+              99,
+              101,
+              115,
+              115,
+              32,
+              105,
+              115,
+              32,
+              116,
+              101,
+              114,
+              109,
+              105,
+              110,
+              97,
+              116,
+              101,
+              100,
+              34,
+              125,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 27,
+          "responseSize": 139
+        },
+        "id": "945a549a-771f-46ab-b97a-0e24c378db26",
+        "assertions": [
+          {
+            "assertion": "Status code is 200",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "7d6245f5-4c3e-4029-9fc4-c4a3151a5f1f",
+          "length": 3,
+          "cycles": 1,
+          "position": 2,
+          "iteration": 0,
+          "httpRequestId": "0175eae8-c633-4e0e-90e7-0075ac999a17"
+        },
+        "item": {
+          "id": "3212c360-3d9b-4344-9a7c-aa15d08e6082",
+          "name": "Next - CREATED",
           "request": {
             "description": {
               "content": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned.",
@@ -2503,14 +2863,14 @@
             {
               "listen": "test",
               "script": {
-                "id": "02e21949-4c10-4d4f-bc8f-16a601749c63",
+                "id": "f90de85b-9ad0-459c-b956-e983b7a3ffa4",
                 "type": "text/javascript",
                 "exec": [
                   "pm.test(\"Status code is 201\", function () {",
                   "    pm.response.to.have.status(201);",
                   "});"
                 ],
-                "_lastExecutionId": "5cebf4a0-74a4-4a62-a166-eaacd68091b3"
+                "_lastExecutionId": "c4f50d7d-3311-4cc3-ad8b-d51d76a0c7c1"
               }
             }
           ]
@@ -2562,7 +2922,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "4c6a91f2-c844-4ca1-aa3c-bc2138a58fcd",
+              "value": "8930b737-f943-4e1e-a7bb-0fcfa0e8bda7",
               "system": true
             },
             {
@@ -2598,7 +2958,7 @@
           }
         },
         "response": {
-          "id": "0efde9fa-ef72-4c51-8bf4-4ff532cb89cb",
+          "id": "994e665a-9441-4b81-8fc3-912b37830472",
           "status": "Created",
           "code": 201,
           "header": [
@@ -4665,10 +5025,10 @@
             ]
           },
           "cookie": [],
-          "responseTime": 58,
+          "responseTime": 43,
           "responseSize": 2048
         },
-        "id": "5462fd00-55a5-4931-b275-ef138aa9f94e",
+        "id": "3212c360-3d9b-4344-9a7c-aa15d08e6082",
         "assertions": [
           {
             "assertion": "Status code is 201",
@@ -4678,7 +5038,7 @@
       }
     ],
     "transfers": {
-      "responseTotal": 4096
+      "responseTotal": 4235
     },
     "failures": [],
     "error": null
