@@ -265,7 +265,7 @@
                         {
                             "target": "body",
                             "modifier": "deviceInfo.bankId",
-                            "value": "00002",
+                            "value": "00001",
                             "invert": false,
                             "operator": "equals"
                         }
