@@ -26,11 +26,45 @@
                     "filePath": "",
                     "databucketID": "",
                     "sendFileAsBody": false,
-                    "rules": [],
+                    "rules": [
+                        {
+                            "target": "body",
+                            "modifier": "device.bankId",
+                            "value": "06789",
+                            "invert": false,
+                            "operator": "equals"
+                        }
+                    ],
                     "rulesOperator": "OR",
                     "disableTemplating": false,
                     "fallbackTo404": false,
                     "default": true,
+                    "crudKey": "id"
+                },
+                {
+                    "uuid": "8739f2b6-0661-4810-8b94-aaf9dc90e7ee",
+                    "body": "{\n  \"transactionId\": \"1000\"\n}",
+                    "latency": 0,
+                    "statusCode": 200,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [
+                        {
+                            "target": "body",
+                            "modifier": "device.bankId",
+                            "value": "00001",
+                            "invert": false,
+                            "operator": "equals"
+                        }
+                    ],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": false,
                     "crudKey": "id"
                 }
             ],
