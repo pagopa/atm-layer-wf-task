@@ -126,7 +126,7 @@
                     "rules": [
                         {
                             "target": "body",
-                            "modifier": "bankId",
+                            "modifier": "device.bankId",
                             "value": "06789",
                             "invert": false,
                             "operator": "equals"
@@ -152,7 +152,7 @@
                     "rules": [
                         {
                             "target": "body",
-                            "modifier": "bankId",
+                            "modifier": "device.bankId",
                             "value": "00001",
                             "invert": false,
                             "operator": "equals"
