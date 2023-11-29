@@ -1,4 +1,4 @@
-package it.pagopa.atmlayer.wf.task.bean.exceptionsaaa;
+package it.pagopa.atmlayer.wf.task.bean.exceptions;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
