@@ -1,4 +1,4 @@
-package it.pagopa.atmlayer.wf.task.bean.exceptions;
+package it.pagopa.atmlayer.wf.task.bean.exceptionsaaa;
 
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;

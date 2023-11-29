@@ -10,9 +10,9 @@ import org.jboss.resteasy.reactive.RestResponse.Status;
 
 import it.pagopa.atmlayer.wf.task.bean.Scene;
 import it.pagopa.atmlayer.wf.task.bean.State;
-import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorEnum;
-import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorException;
-import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorResponse;
+import it.pagopa.atmlayer.wf.task.bean.exceptionsaaa.ErrorEnum;
+import it.pagopa.atmlayer.wf.task.bean.exceptionsaaa.ErrorException;
+import it.pagopa.atmlayer.wf.task.bean.exceptionsaaa.ErrorResponse;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeEnum;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeResponse;
 import it.pagopa.atmlayer.wf.task.service.TaskService;

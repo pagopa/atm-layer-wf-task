@@ -22,8 +22,8 @@ import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.bean.Template;
 import it.pagopa.atmlayer.wf.task.bean.enumartive.Command;
 import it.pagopa.atmlayer.wf.task.bean.enumartive.EppMode;
-import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorEnum;
-import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorException;
+import it.pagopa.atmlayer.wf.task.bean.exceptionsaaa.ErrorEnum;
+import it.pagopa.atmlayer.wf.task.bean.exceptionsaaa.ErrorException;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeEnum;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeResponse;
 import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
@@ -77,7 +77,7 @@ public class TaskServiceImpl implements TaskService {
 		TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
 		RestResponse<TaskResponse> restTaskResponse = null;
 		try {
-			log.info("Calling start process of function: [{}]", functionId);
+			log.info("Calling start process: [{}]", taskRequest);
 			restTaskResponse = processRestClient.startProcess(taskRequest);
 		} catch (WebApplicationException e) {
 			log.error("Error calling process service", e);
@@ -93,7 +93,7 @@ public class TaskServiceImpl implements TaskService {
 		TaskRequest taskRequest = buildTaskRequest(state, transactionId, null);
 		RestResponse<TaskResponse> restTaskResponse = null;
 		try {
-			log.info("Calling next task after for task id: [{}]", taskRequest.getTaskId());
+			log.info("Calling next task: [{}]", taskRequest);
 			restTaskResponse = processRestClient.nextTasks(taskRequest);
 		} catch (WebApplicationException e) {
 			log.error("Error calling process service", e);
@@ -130,6 +130,7 @@ public class TaskServiceImpl implements TaskService {
 			log.info("Calling retrieve variables for task id: [{}]", workingTask.getId());
 			RestResponse<VariableResponse> restVariableResponse = null;
 			try {
+				log.info("Retrieving variables: [{}]", variableRequest);
 				restVariableResponse = processRestClient.retrieveVariables(variableRequest);
 			} catch (WebApplicationException e) {
 				log.error("Error calling process service", e);
@@ -141,6 +142,7 @@ public class TaskServiceImpl implements TaskService {
 
 			if (restVariableResponse.getStatus() == 200) {
 				VariableResponse variableResponse = restVariableResponse.getEntity();
+				log.info("Retrieved variables: [{}]", variableResponse);
 				atmTask = new it.pagopa.atmlayer.wf.task.bean.Task();
 				atmTask.setId(workingTask.getId());
 				Map<String, Object> workingVariables = variableResponse.getVariables();
