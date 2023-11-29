@@ -68,32 +68,6 @@
                     "crudKey": "id"
                 },
                 {
-                    "uuid": "b3818e00-2e24-4904-bfcb-7d1860d1c9a9",
-                    "body": "{}",
-                    "latency": 0,
-                    "statusCode": 204,
-                    "label": "",
-                    "headers": [],
-                    "bodyType": "INLINE",
-                    "filePath": "",
-                    "databucketID": "",
-                    "sendFileAsBody": false,
-                    "rules": [
-                        {
-                            "target": "body",
-                            "modifier": "deviceInfo.bankId",
-                            "value": "00002",
-                            "invert": false,
-                            "operator": "equals"
-                        }
-                    ],
-                    "rulesOperator": "OR",
-                    "disableTemplating": false,
-                    "fallbackTo404": false,
-                    "default": false,
-                    "crudKey": "id"
-                },
-                {
                     "uuid": "fd2aa70b-206f-420a-9aa2-52697993f373",
                     "body": "",
                     "latency": 0,
@@ -135,6 +109,32 @@
                             "target": "body",
                             "modifier": "deviceInfo.bankId",
                             "value": "00004",
+                            "invert": false,
+                            "operator": "equals"
+                        }
+                    ],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": false,
+                    "crudKey": "id"
+                },
+                {
+                    "uuid": "dd7137b7-e8c8-4aa3-9335-1b935cd336a8",
+                    "body": "",
+                    "latency": 0,
+                    "statusCode": 202,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [
+                        {
+                            "target": "body",
+                            "modifier": "deviceInfo.bankId",
+                            "value": "00002",
                             "invert": false,
                             "operator": "equals"
                         }
@@ -280,7 +280,7 @@
                     "uuid": "57e8a1a2-c5b4-4fa8-ae09-1a3fd028c8e9",
                     "body": "",
                     "latency": 0,
-                    "statusCode": 204,
+                    "statusCode": 202,
                     "label": "",
                     "headers": [],
                     "bodyType": "INLINE",
