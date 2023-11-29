@@ -108,10 +108,12 @@ public class TaskServiceImpl implements TaskService {
 	private Scene manageTaskResponse(RestResponse<TaskResponse> restTaskResponse) {
 		Scene scene = new Scene();
 		if (restTaskResponse.getStatus() == 200) {
+			log.info("Retrieved process: [{}]", restTaskResponse.getEntity());
 			scene.setOutcome(new OutcomeResponse(OutcomeEnum.OK));
 			scene.setTask(manageOkResponse(restTaskResponse.getEntity()));
 			return scene;
 		} else if (restTaskResponse.getStatus() == 202) {
+			log.info("Retrieved process: [{}]", restTaskResponse.getEntity());
 			scene.setOutcome(new OutcomeResponse(OutcomeEnum.PROCESSING));
 			return scene;
 		} else {

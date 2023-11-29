@@ -272,6 +272,6 @@ public class DataTest {
     }
 
     public static void main(String[] args) {
-        System.out.println(Utility.getJson(createTaskResponse(1)));
+        System.out.println(Utility.getJson(createStateRequestNoData()));
     }
 }

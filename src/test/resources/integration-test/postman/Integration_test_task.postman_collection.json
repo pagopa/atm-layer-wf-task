@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "Start process",
+			"name": "Start process - OK",
 			"event": [
 				{
 					"listen": "test",
@@ -52,7 +52,51 @@
 			"response": []
 		},
 		{
-			"name": "Next",
+			"name": "Start process - END PROCESS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00001\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/tasks/main/SPONTANEOUS_PAYMENT",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"tasks",
+						"main",
+						"SPONTANEOUS_PAYMENT"
+					]
+				},
+				"description": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection."
+			},
+			"response": []
+		},
+		{
+			"name": "Next - OK",
 			"event": [
 				{
 					"listen": "test",
