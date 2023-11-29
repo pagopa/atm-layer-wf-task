@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "Start process - OK",
+			"name": "Start process - CREATED",
 			"event": [
 				{
 					"listen": "test",
@@ -96,7 +96,7 @@
 			"response": []
 		},
 		{
-			"name": "Next - OK",
+			"name": "Next - CREATED",
 			"event": [
 				{
 					"listen": "test",
