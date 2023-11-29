@@ -43,7 +43,7 @@
                 },
                 {
                     "uuid": "8739f2b6-0661-4810-8b94-aaf9dc90e7ee",
-                    "body": "{\n  \"transactionId\": \"1000\"\n}",
+                    "body": "{\n  \"tasks\": [],\n  \"transactionId\": \"1000\"\n}",
                     "latency": 0,
                     "statusCode": 200,
                     "label": "",
@@ -174,7 +174,7 @@
                 },
                 {
                     "uuid": "03a17d0e-1281-418f-bebb-ae8a8d67b27d",
-                    "body": "{\n  \"transactionId\": \"1000\"\n}",
+                    "body": "{\n  \"tasks\": [],\n  \"transactionId\": \"1000\"\n}",
                     "latency": 0,
                     "statusCode": 200,
                     "label": "",
