@@ -6,7 +6,7 @@
     },
     "item": [
       {
-        "id": "7f6647be-e458-4d7b-ae52-0350e9320f04",
+        "id": "78ed720c-e841-4fd3-80f4-f09b5f32000a",
         "name": "Start process - CREATED",
         "request": {
           "description": {
@@ -43,20 +43,20 @@
           {
             "listen": "test",
             "script": {
-              "id": "d4943aad-3b98-4984-93af-8463b21b5562",
+              "id": "c76ac3b0-5fb9-4169-9cd1-483ad7b08d39",
               "type": "text/javascript",
               "exec": [
                 "pm.test(\"Status code is 201\", function () {",
                 "    pm.response.to.have.status(201);",
                 "});"
               ],
-              "_lastExecutionId": "df8cc0a9-1ec7-4aef-84a9-da3a8584d711"
+              "_lastExecutionId": "1451db03-26e2-411c-abb6-b201144cec2b"
             }
           }
         ]
       },
       {
-        "id": "945a549a-771f-46ab-b97a-0e24c378db26",
+        "id": "9db90261-fdca-45ee-8c6b-53f39ec74c8a",
         "name": "Start process - END PROCESS",
         "request": {
           "description": {
@@ -93,20 +93,170 @@
           {
             "listen": "test",
             "script": {
-              "id": "a5e37c45-eadb-41b5-900a-c160c303305f",
+              "id": "7825db5d-c3f7-409f-a173-46843497b8cc",
               "type": "text/javascript",
               "exec": [
                 "pm.test(\"Status code is 200\", function () {",
                 "    pm.response.to.have.status(200);",
                 "});"
               ],
-              "_lastExecutionId": "bd605773-5fed-4581-b6f1-214b081954bc"
+              "_lastExecutionId": "9e4ffeb0-d2fa-45ff-b738-166501b7c6eb"
             }
           }
         ]
       },
       {
-        "id": "3212c360-3d9b-4344-9a7c-aa15d08e6082",
+        "id": "efde3bbd-469c-43d9-8acb-dd4a764e0bf4",
+        "name": "Start process - PROCESSING",
+        "request": {
+          "description": {
+            "content": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection.",
+            "type": "text/plain"
+          },
+          "url": {
+            "path": [
+              "api",
+              "v1",
+              "tasks",
+              "main",
+              "SPONTANEOUS_PAYMENT"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00002\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    }\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "85c94937-a18b-4a8d-8c50-178e2c13b0b3",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status code is 202\", function () {",
+                "    pm.response.to.have.status(202);",
+                "});"
+              ],
+              "_lastExecutionId": "bb3efed3-8aef-41f7-9b4b-0efce1f4a24d"
+            }
+          }
+        ]
+      },
+      {
+        "id": "07c077ed-5406-4196-a407-ca36bf3783ed",
+        "name": "Start process - ERROR ON PROCESS",
+        "request": {
+          "description": {
+            "content": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection.",
+            "type": "text/plain"
+          },
+          "url": {
+            "path": [
+              "api",
+              "v1",
+              "tasks",
+              "main",
+              "SPONTANEOUS_PAYMENT"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00003\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    }\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "a6635a99-da24-487b-b644-cb1efa6ba8f5",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status code is 204\", function () {",
+                "    pm.response.to.have.status(204);",
+                "});"
+              ],
+              "_lastExecutionId": "d45bc3c3-cfcb-4918-aa80-39fcceb02b74"
+            }
+          }
+        ]
+      },
+      {
+        "id": "94951792-9ab0-4982-a613-0bb1d4ff75d3",
+        "name": "Start process - EXCEPTION ON PROCESS",
+        "request": {
+          "description": {
+            "content": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection.",
+            "type": "text/plain"
+          },
+          "url": {
+            "path": [
+              "api",
+              "v1",
+              "tasks",
+              "main",
+              "SPONTANEOUS_PAYMENT"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00004\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    }\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "f4b0f951-192b-43e6-9d59-558c6b7d5e06",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status code is 500\", function () {",
+                "    pm.response.to.have.status(500);",
+                "});"
+              ],
+              "_lastExecutionId": "d5db15ae-aedd-4813-a6fb-a6d245d84f4a"
+            }
+          }
+        ]
+      },
+      {
+        "id": "5606fbcf-d139-4a99-9e1f-3023f05d3068",
         "name": "Next - CREATED",
         "request": {
           "description": {
@@ -144,14 +294,218 @@
           {
             "listen": "test",
             "script": {
-              "id": "f90de85b-9ad0-459c-b956-e983b7a3ffa4",
+              "id": "02448c61-8ebb-4b29-b6c6-7ee05a9dcfa9",
               "type": "text/javascript",
               "exec": [
                 "pm.test(\"Status code is 201\", function () {",
                 "    pm.response.to.have.status(201);",
                 "});"
               ],
-              "_lastExecutionId": "c4f50d7d-3311-4cc3-ad8b-d51d76a0c7c1"
+              "_lastExecutionId": "ab3f72a7-4664-4f43-9d77-3912d5873c08"
+            }
+          }
+        ]
+      },
+      {
+        "id": "7507d0c7-3e2c-440d-ac76-4b9c27a175cc",
+        "name": "Next - END PROCESS",
+        "request": {
+          "description": {
+            "content": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned.",
+            "type": "text/plain"
+          },
+          "url": {
+            "path": [
+              "api",
+              "v1",
+              "tasks",
+              "next",
+              "trns",
+              "00001-12345-0001-64874412-1698769800000-363cc36d-0"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00001\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"name\": \"Scanner\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    },\r\n    \"data\": {\r\n        \"continue\": true,\r\n        \"functionId\": \"SPONTANEOUS_PAYMENT\"\r\n    },\r\n    \"taskId\": \"5352663e-8a11-11ee-a28e-be1865dc64a3\"\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "e722f950-3dee-41a3-8613-0799b3ad3336",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status code is 200\", function () {",
+                "    pm.response.to.have.status(200);",
+                "});"
+              ],
+              "_lastExecutionId": "747c331a-997d-4667-af51-1a89fb7e71a6"
+            }
+          }
+        ]
+      },
+      {
+        "id": "28dbe38c-a57d-412a-b9d4-1596d132d814",
+        "name": "Next - PROCESSING",
+        "request": {
+          "description": {
+            "content": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned.",
+            "type": "text/plain"
+          },
+          "url": {
+            "path": [
+              "api",
+              "v1",
+              "tasks",
+              "next",
+              "trns",
+              "00002-12345-0001-64874412-1698769800000-363cc36d-0"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00002\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"name\": \"Scanner\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    },\r\n    \"data\": {\r\n        \"continue\": true,\r\n        \"functionId\": \"SPONTANEOUS_PAYMENT\"\r\n    },\r\n    \"taskId\": \"5352663e-8a11-11ee-a28e-be1865dc64a3\"\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "17f95707-4723-4f31-894d-8b2f08a605a9",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status code is 202\", function () {",
+                "    pm.response.to.have.status(202);",
+                "});"
+              ],
+              "_lastExecutionId": "5bd518b4-3b18-4ca7-950c-79f4570e74d0"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ba299fdb-a842-42f8-ad5b-fe38b7f30800",
+        "name": "Next - ERROR ON PROCESS",
+        "request": {
+          "description": {
+            "content": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned.",
+            "type": "text/plain"
+          },
+          "url": {
+            "path": [
+              "api",
+              "v1",
+              "tasks",
+              "next",
+              "trns",
+              "00003-12345-0001-64874412-1698769800000-363cc36d-0"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00003\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"name\": \"Scanner\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    },\r\n    \"data\": {\r\n        \"continue\": true,\r\n        \"functionId\": \"SPONTANEOUS_PAYMENT\"\r\n    },\r\n    \"taskId\": \"5352663e-8a11-11ee-a28e-be1865dc64a3\"\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "ddf5fe32-6ab0-43b0-ad30-7172f3d159c5",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status code is 204\", function () {",
+                "    pm.response.to.have.status(204);",
+                "});"
+              ],
+              "_lastExecutionId": "e3b3e5d8-01a8-461f-be28-cc65dfdd67a1"
+            }
+          }
+        ]
+      },
+      {
+        "id": "887ea687-03d8-4d64-b100-f96653bafc59",
+        "name": "Next - EXCEPTION ON PROCESS",
+        "request": {
+          "description": {
+            "content": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned.",
+            "type": "text/plain"
+          },
+          "url": {
+            "path": [
+              "api",
+              "v1",
+              "tasks",
+              "next",
+              "trns",
+              "00004-12345-0001-64874412-1698769800000-363cc36d-0"
+            ],
+            "host": [
+              "{{baseUrl}}"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00004\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"name\": \"Scanner\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    },\r\n    \"data\": {\r\n        \"continue\": true,\r\n        \"functionId\": \"SPONTANEOUS_PAYMENT\"\r\n    },\r\n    \"taskId\": \"5352663e-8a11-11ee-a28e-be1865dc64a3\"\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": [],
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "313e4ae0-ee9e-4257-9834-1c93d8993cac",
+              "type": "text/javascript",
+              "exec": [
+                "pm.test(\"Status code is 500\", function () {",
+                "    pm.response.to.have.status(500);",
+                "});"
+              ],
+              "_lastExecutionId": "7c8ddc92-f115-4d82-b630-f4b4d6b68e61"
             }
           }
         ]
@@ -161,23 +515,23 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "f7d76162-8655-4c8d-bade-a5668d1efda7",
+          "id": "af412d33-3f1b-44b0-a766-a1564feb5bda",
           "type": "text/javascript",
           "exec": [
             ""
           ],
-          "_lastExecutionId": "18fb537f-989b-4c42-8b2e-190fe4a99b97"
+          "_lastExecutionId": "64ed2635-45f1-43df-86f6-abe2ac8deac5"
         }
       },
       {
         "listen": "test",
         "script": {
-          "id": "629cab64-6853-47bf-b323-a6d5fa79549d",
+          "id": "04d9effa-8ce7-4549-9a3c-4fe20cc8233d",
           "type": "text/javascript",
           "exec": [
             ""
           ],
-          "_lastExecutionId": "90c4032e-d747-4cbf-af67-4c54b66a684f"
+          "_lastExecutionId": "aff637ef-0a43-4b91-ab72-15c48e4e5733"
         }
       }
     ],
@@ -204,7 +558,7 @@
     }
   },
   "environment": {
-    "id": "baf1b608-f00b-4a79-8f0e-7af10320c7ed",
+    "id": "8b5b4962-b84a-43ca-bfba-272e83bb19d0",
     "values": [
       {
         "type": "any",
@@ -214,7 +568,7 @@
     ]
   },
   "globals": {
-    "id": "023ffb25-16f9-4d2f-b4c3-f12b03134f0d",
+    "id": "b24f1b62-bf5b-4445-8496-4c41a0f8a309",
     "values": []
   },
   "run": {
@@ -225,51 +579,51 @@
         "failed": 0
       },
       "items": {
-        "total": 3,
+        "total": 10,
         "pending": 0,
         "failed": 0
       },
       "scripts": {
-        "total": 9,
+        "total": 30,
         "pending": 0,
         "failed": 0
       },
       "prerequests": {
-        "total": 3,
+        "total": 10,
         "pending": 0,
         "failed": 0
       },
       "requests": {
-        "total": 3,
+        "total": 10,
         "pending": 0,
         "failed": 0
       },
       "tests": {
-        "total": 3,
+        "total": 10,
         "pending": 0,
         "failed": 0
       },
       "assertions": {
-        "total": 3,
+        "total": 10,
         "pending": 0,
         "failed": 0
       },
       "testScripts": {
-        "total": 6,
+        "total": 20,
         "pending": 0,
         "failed": 0
       },
       "prerequestScripts": {
-        "total": 3,
+        "total": 10,
         "pending": 0,
         "failed": 0
       }
     },
     "timings": {
-      "responseAverage": 143.66666666666666,
-      "responseMin": 27,
-      "responseMax": 361,
-      "responseSd": 153.81662964567764,
+      "responseAverage": 61.8,
+      "responseMin": 24,
+      "responseMax": 350,
+      "responseSd": 96.32839664398033,
       "dnsAverage": 0,
       "dnsMin": 0,
       "dnsMax": 0,
@@ -278,25 +632,25 @@
       "firstByteMin": 0,
       "firstByteMax": 0,
       "firstByteSd": 0,
-      "started": 1701268638566,
-      "completed": 1701268639103
+      "started": 1701354134365,
+      "completed": 1701354135282
     },
     "executions": [
       {
         "cursor": {
           "position": 0,
           "iteration": 0,
-          "length": 3,
+          "length": 10,
           "cycles": 1,
           "empty": false,
           "eof": false,
           "bof": true,
           "cr": false,
-          "ref": "333baff5-8e48-4fba-bb68-656597b8f172",
-          "httpRequestId": "1c84f853-3fc9-4cfa-9299-dd6ea7cf0db5"
+          "ref": "aa256964-706f-42f7-b458-fe9f2fbfa207",
+          "httpRequestId": "17a072df-d935-4553-8d2b-075fc56efa0f"
         },
         "item": {
-          "id": "7f6647be-e458-4d7b-ae52-0350e9320f04",
+          "id": "78ed720c-e841-4fd3-80f4-f09b5f32000a",
           "name": "Start process - CREATED",
           "request": {
             "description": {
@@ -333,14 +687,14 @@
             {
               "listen": "test",
               "script": {
-                "id": "d4943aad-3b98-4984-93af-8463b21b5562",
+                "id": "c76ac3b0-5fb9-4169-9cd1-483ad7b08d39",
                 "type": "text/javascript",
                 "exec": [
                   "pm.test(\"Status code is 201\", function () {",
                   "    pm.response.to.have.status(201);",
                   "});"
                 ],
-                "_lastExecutionId": "df8cc0a9-1ec7-4aef-84a9-da3a8584d711"
+                "_lastExecutionId": "1451db03-26e2-411c-abb6-b201144cec2b"
               }
             }
           ]
@@ -391,7 +745,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "f3ada9e3-e000-499d-993f-ce7de618ac02",
+              "value": "ba70503e-7204-4801-8734-a3289fae82fa",
               "system": true
             },
             {
@@ -427,7 +781,7 @@
           }
         },
         "response": {
-          "id": "b40daefc-4974-424d-a424-f0aeff807e58",
+          "id": "b2581ce9-f228-4db7-83b2-3f9a6464860b",
           "status": "Created",
           "code": 201,
           "header": [
@@ -2400,16 +2754,16 @@
               48,
               48,
               45,
-              49,
-              98,
+              56,
+              100,
               97,
+              100,
+              99,
+              54,
               102,
-              48,
-              101,
-              50,
-              102,
+              54,
               45,
-              48,
+              97,
               34,
               44,
               34,
@@ -2494,10 +2848,10 @@
             ]
           },
           "cookie": [],
-          "responseTime": 361,
+          "responseTime": 350,
           "responseSize": 2048
         },
-        "id": "7f6647be-e458-4d7b-ae52-0350e9320f04",
+        "id": "78ed720c-e841-4fd3-80f4-f09b5f32000a",
         "assertions": [
           {
             "assertion": "Status code is 201",
@@ -2507,15 +2861,15 @@
       },
       {
         "cursor": {
-          "ref": "4b17af79-265b-474f-b790-4067310a9270",
-          "length": 3,
+          "ref": "1050ad60-08eb-42a8-89e8-89dfa5966cf6",
+          "length": 10,
           "cycles": 1,
           "position": 1,
           "iteration": 0,
-          "httpRequestId": "c7f5818d-6a13-4141-a37a-5eed5f381259"
+          "httpRequestId": "8e20c201-8094-4bca-b180-cbd7806effe9"
         },
         "item": {
-          "id": "945a549a-771f-46ab-b97a-0e24c378db26",
+          "id": "9db90261-fdca-45ee-8c6b-53f39ec74c8a",
           "name": "Start process - END PROCESS",
           "request": {
             "description": {
@@ -2552,14 +2906,14 @@
             {
               "listen": "test",
               "script": {
-                "id": "a5e37c45-eadb-41b5-900a-c160c303305f",
+                "id": "7825db5d-c3f7-409f-a173-46843497b8cc",
                 "type": "text/javascript",
                 "exec": [
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
                   "});"
                 ],
-                "_lastExecutionId": "bd605773-5fed-4581-b6f1-214b081954bc"
+                "_lastExecutionId": "9e4ffeb0-d2fa-45ff-b738-166501b7c6eb"
               }
             }
           ]
@@ -2610,7 +2964,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "d52cbbde-29e4-464a-977a-a967cd691257",
+              "value": "3c50e5fb-af41-4b7b-8da7-cee0ee56e202",
               "system": true
             },
             {
@@ -2646,7 +3000,7 @@
           }
         },
         "response": {
-          "id": "d1002b2d-4893-4f8f-be20-3626af87e282",
+          "id": "70a53ad0-6cac-4469-b24c-0003e4a86d09",
           "status": "OK",
           "code": 200,
           "header": [
@@ -2720,16 +3074,16 @@
               48,
               48,
               45,
-              100,
-              100,
+              51,
+              50,
+              101,
+              48,
+              51,
+              98,
               101,
               53,
-              102,
-              100,
-              48,
-              48,
               45,
-              51,
+              54,
               34,
               44,
               34,
@@ -2804,10 +3158,10 @@
             ]
           },
           "cookie": [],
-          "responseTime": 27,
+          "responseTime": 33,
           "responseSize": 139
         },
-        "id": "945a549a-771f-46ab-b97a-0e24c378db26",
+        "id": "9db90261-fdca-45ee-8c6b-53f39ec74c8a",
         "assertions": [
           {
             "assertion": "Status code is 200",
@@ -2817,15 +3171,758 @@
       },
       {
         "cursor": {
-          "ref": "7d6245f5-4c3e-4029-9fc4-c4a3151a5f1f",
-          "length": 3,
+          "ref": "e0b59b8b-a7d0-4011-9c0a-f2a59a863b5c",
+          "length": 10,
           "cycles": 1,
           "position": 2,
           "iteration": 0,
-          "httpRequestId": "0175eae8-c633-4e0e-90e7-0075ac999a17"
+          "httpRequestId": "b584d064-3889-4ccf-8721-12ec03654bc5"
         },
         "item": {
-          "id": "3212c360-3d9b-4344-9a7c-aa15d08e6082",
+          "id": "efde3bbd-469c-43d9-8acb-dd4a764e0bf4",
+          "name": "Start process - PROCESSING",
+          "request": {
+            "description": {
+              "content": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "tasks",
+                "main",
+                "SPONTANEOUS_PAYMENT"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00002\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "85c94937-a18b-4a8d-8c50-178e2c13b0b3",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 202\", function () {",
+                  "    pm.response.to.have.status(202);",
+                  "});"
+                ],
+                "_lastExecutionId": "bb3efed3-8aef-41f7-9b4b-0efce1f4a24d"
+              }
+            }
+          ]
+        },
+        "request": {
+          "description": {
+            "content": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection.",
+            "type": "text/plain"
+          },
+          "url": {
+            "protocol": "http",
+            "port": "8086",
+            "path": [
+              "api",
+              "v1",
+              "tasks",
+              "main",
+              "SPONTANEOUS_PAYMENT"
+            ],
+            "host": [
+              "host",
+              "testcontainers",
+              "internal"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.33.0",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "bf92f8ca-fd4c-4c17-adda-9c20a83a801f",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "host.testcontainers.internal:8086",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "494",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00002\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    }\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "1188d04c-a9a6-430c-bd53-2710b0ef7665",
+          "status": "Accepted",
+          "code": 202,
+          "header": [
+            {
+              "key": "content-length",
+              "value": "155"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              116,
+              114,
+              97,
+              110,
+              115,
+              97,
+              99,
+              116,
+              105,
+              111,
+              110,
+              73,
+              100,
+              34,
+              58,
+              34,
+              48,
+              48,
+              48,
+              48,
+              50,
+              45,
+              49,
+              50,
+              51,
+              52,
+              53,
+              45,
+              48,
+              48,
+              48,
+              49,
+              45,
+              54,
+              52,
+              56,
+              55,
+              52,
+              52,
+              49,
+              50,
+              45,
+              49,
+              54,
+              57,
+              56,
+              55,
+              54,
+              57,
+              56,
+              48,
+              48,
+              48,
+              48,
+              48,
+              45,
+              100,
+              51,
+              54,
+              97,
+              100,
+              48,
+              55,
+              48,
+              45,
+              97,
+              34,
+              44,
+              34,
+              111,
+              117,
+              116,
+              99,
+              111,
+              109,
+              101,
+              34,
+              58,
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              80,
+              82,
+              79,
+              67,
+              69,
+              83,
+              83,
+              73,
+              78,
+              71,
+              34,
+              44,
+              34,
+              100,
+              101,
+              115,
+              99,
+              114,
+              105,
+              112,
+              116,
+              105,
+              111,
+              110,
+              34,
+              58,
+              34,
+              80,
+              114,
+              111,
+              99,
+              101,
+              115,
+              115,
+              32,
+              115,
+              116,
+              105,
+              108,
+              108,
+              32,
+              114,
+              117,
+              110,
+              110,
+              105,
+              110,
+              103,
+              44,
+              32,
+              114,
+              101,
+              116,
+              114,
+              121,
+              32,
+              108,
+              97,
+              116,
+              101,
+              114,
+              34,
+              125,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 26,
+          "responseSize": 155
+        },
+        "id": "efde3bbd-469c-43d9-8acb-dd4a764e0bf4",
+        "assertions": [
+          {
+            "assertion": "Status code is 202",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "e6302c6a-5329-4e93-8217-36205b76db64",
+          "length": 10,
+          "cycles": 1,
+          "position": 3,
+          "iteration": 0,
+          "httpRequestId": "961a2e69-85a4-4169-8ad9-b0c413c0fea3"
+        },
+        "item": {
+          "id": "07c077ed-5406-4196-a407-ca36bf3783ed",
+          "name": "Start process - ERROR ON PROCESS",
+          "request": {
+            "description": {
+              "content": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "tasks",
+                "main",
+                "SPONTANEOUS_PAYMENT"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00003\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "a6635a99-da24-487b-b644-cb1efa6ba8f5",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 204\", function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});"
+                ],
+                "_lastExecutionId": "d45bc3c3-cfcb-4918-aa80-39fcceb02b74"
+              }
+            }
+          ]
+        },
+        "request": {
+          "description": {
+            "content": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection.",
+            "type": "text/plain"
+          },
+          "url": {
+            "protocol": "http",
+            "port": "8086",
+            "path": [
+              "api",
+              "v1",
+              "tasks",
+              "main",
+              "SPONTANEOUS_PAYMENT"
+            ],
+            "host": [
+              "host",
+              "testcontainers",
+              "internal"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.33.0",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "0e1f10ea-308c-4a40-b2d1-72766a3c13a7",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "host.testcontainers.internal:8086",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "494",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00003\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    }\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "790198c7-d9ac-4c5e-929c-4d7296a2ad4f",
+          "status": "No Content",
+          "code": 204,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": []
+          },
+          "cookie": [],
+          "responseTime": 29,
+          "responseSize": 0
+        },
+        "id": "07c077ed-5406-4196-a407-ca36bf3783ed",
+        "assertions": [
+          {
+            "assertion": "Status code is 204",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "04e0a06c-c77a-4fe2-88f5-070842fbb545",
+          "length": 10,
+          "cycles": 1,
+          "position": 4,
+          "iteration": 0,
+          "httpRequestId": "9a472c6c-905f-4818-ae5d-e9b741502c1b"
+        },
+        "item": {
+          "id": "94951792-9ab0-4982-a613-0bb1d4ff75d3",
+          "name": "Start process - EXCEPTION ON PROCESS",
+          "request": {
+            "description": {
+              "content": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "tasks",
+                "main",
+                "SPONTANEOUS_PAYMENT"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00004\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "f4b0f951-192b-43e6-9d59-558c6b7d5e06",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 500\", function () {",
+                  "    pm.response.to.have.status(500);",
+                  "});"
+                ],
+                "_lastExecutionId": "d5db15ae-aedd-4813-a6fb-a6d245d84f4a"
+              }
+            }
+          ]
+        },
+        "request": {
+          "description": {
+            "content": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection.",
+            "type": "text/plain"
+          },
+          "url": {
+            "protocol": "http",
+            "port": "8086",
+            "path": [
+              "api",
+              "v1",
+              "tasks",
+              "main",
+              "SPONTANEOUS_PAYMENT"
+            ],
+            "host": [
+              "host",
+              "testcontainers",
+              "internal"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.33.0",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "bcbee63d-5342-4e8e-9b99-6178385cbd6b",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "host.testcontainers.internal:8086",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "494",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00004\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    }\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "d55028a9-d307-41af-84ca-248c6b7957f8",
+          "status": "Internal Server Error",
+          "code": 500,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8"
+            },
+            {
+              "key": "content-length",
+              "value": "80"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              101,
+              114,
+              114,
+              111,
+              114,
+              67,
+              111,
+              100,
+              101,
+              34,
+              58,
+              34,
+              84,
+              65,
+              83,
+              75,
+              95,
+              69,
+              82,
+              82,
+              79,
+              82,
+              34,
+              44,
+              34,
+              100,
+              101,
+              115,
+              99,
+              114,
+              105,
+              112,
+              116,
+              105,
+              111,
+              110,
+              34,
+              58,
+              34,
+              69,
+              114,
+              114,
+              111,
+              114,
+              32,
+              114,
+              101,
+              116,
+              114,
+              105,
+              101,
+              118,
+              101,
+              32,
+              110,
+              101,
+              120,
+              116,
+              32,
+              115,
+              116,
+              101,
+              112,
+              34,
+              44,
+              34,
+              115,
+              116,
+              97,
+              116,
+              117,
+              115,
+              34,
+              58,
+              53,
+              48,
+              48,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 26,
+          "responseSize": 80
+        },
+        "id": "94951792-9ab0-4982-a613-0bb1d4ff75d3",
+        "assertions": [
+          {
+            "assertion": "Status code is 500",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "7ed8c2b0-5f5d-422b-9e66-48e3f7531ed2",
+          "length": 10,
+          "cycles": 1,
+          "position": 5,
+          "iteration": 0,
+          "httpRequestId": "74df3374-8642-48aa-8424-28b328dc1277"
+        },
+        "item": {
+          "id": "5606fbcf-d139-4a99-9e1f-3023f05d3068",
           "name": "Next - CREATED",
           "request": {
             "description": {
@@ -2863,14 +3960,14 @@
             {
               "listen": "test",
               "script": {
-                "id": "f90de85b-9ad0-459c-b956-e983b7a3ffa4",
+                "id": "02448c61-8ebb-4b29-b6c6-7ee05a9dcfa9",
                 "type": "text/javascript",
                 "exec": [
                   "pm.test(\"Status code is 201\", function () {",
                   "    pm.response.to.have.status(201);",
                   "});"
                 ],
-                "_lastExecutionId": "c4f50d7d-3311-4cc3-ad8b-d51d76a0c7c1"
+                "_lastExecutionId": "ab3f72a7-4664-4f43-9d77-3912d5873c08"
               }
             }
           ]
@@ -2922,7 +4019,7 @@
             },
             {
               "key": "Postman-Token",
-              "value": "8930b737-f943-4e1e-a7bb-0fcfa0e8bda7",
+              "value": "d8293d9f-3267-452a-87fa-2cc94ba12094",
               "system": true
             },
             {
@@ -2958,7 +4055,7 @@
           }
         },
         "response": {
-          "id": "994e665a-9441-4b81-8fc3-912b37830472",
+          "id": "68069920-6019-4e4c-aa15-418a3a3b4840",
           "status": "Created",
           "code": 201,
           "header": [
@@ -5025,20 +6122,1081 @@
             ]
           },
           "cookie": [],
-          "responseTime": 43,
+          "responseTime": 49,
           "responseSize": 2048
         },
-        "id": "3212c360-3d9b-4344-9a7c-aa15d08e6082",
+        "id": "5606fbcf-d139-4a99-9e1f-3023f05d3068",
         "assertions": [
           {
             "assertion": "Status code is 201",
             "skipped": false
           }
         ]
+      },
+      {
+        "cursor": {
+          "ref": "32d505f5-fc5f-424f-8536-09004fbf2089",
+          "length": 10,
+          "cycles": 1,
+          "position": 6,
+          "iteration": 0,
+          "httpRequestId": "ef729cc7-e56b-49a2-829c-9a3a5cb2d317"
+        },
+        "item": {
+          "id": "7507d0c7-3e2c-440d-ac76-4b9c27a175cc",
+          "name": "Next - END PROCESS",
+          "request": {
+            "description": {
+              "content": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "tasks",
+                "next",
+                "trns",
+                "00001-12345-0001-64874412-1698769800000-363cc36d-0"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00001\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"name\": \"Scanner\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    },\r\n    \"data\": {\r\n        \"continue\": true,\r\n        \"functionId\": \"SPONTANEOUS_PAYMENT\"\r\n    },\r\n    \"taskId\": \"5352663e-8a11-11ee-a28e-be1865dc64a3\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "e722f950-3dee-41a3-8613-0799b3ad3336",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "_lastExecutionId": "747c331a-997d-4667-af51-1a89fb7e71a6"
+              }
+            }
+          ]
+        },
+        "request": {
+          "description": {
+            "content": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned.",
+            "type": "text/plain"
+          },
+          "url": {
+            "protocol": "http",
+            "port": "8086",
+            "path": [
+              "api",
+              "v1",
+              "tasks",
+              "next",
+              "trns",
+              "00001-12345-0001-64874412-1698769800000-363cc36d-0"
+            ],
+            "host": [
+              "host",
+              "testcontainers",
+              "internal"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.33.0",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "89247f48-23b1-4260-a0db-f97d05beadca",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "host.testcontainers.internal:8086",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "680",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00001\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"name\": \"Scanner\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    },\r\n    \"data\": {\r\n        \"continue\": true,\r\n        \"functionId\": \"SPONTANEOUS_PAYMENT\"\r\n    },\r\n    \"taskId\": \"5352663e-8a11-11ee-a28e-be1865dc64a3\"\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "0fb2b583-6bb6-4b4f-aca4-036192968ada",
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "content-length",
+              "value": "139"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              116,
+              114,
+              97,
+              110,
+              115,
+              97,
+              99,
+              116,
+              105,
+              111,
+              110,
+              73,
+              100,
+              34,
+              58,
+              34,
+              48,
+              48,
+              48,
+              48,
+              49,
+              45,
+              49,
+              50,
+              51,
+              52,
+              53,
+              45,
+              48,
+              48,
+              48,
+              49,
+              45,
+              54,
+              52,
+              56,
+              55,
+              52,
+              52,
+              49,
+              50,
+              45,
+              49,
+              54,
+              57,
+              56,
+              55,
+              54,
+              57,
+              56,
+              48,
+              48,
+              48,
+              48,
+              48,
+              45,
+              51,
+              54,
+              51,
+              99,
+              99,
+              51,
+              54,
+              100,
+              45,
+              48,
+              34,
+              44,
+              34,
+              111,
+              117,
+              116,
+              99,
+              111,
+              109,
+              101,
+              34,
+              58,
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              69,
+              78,
+              68,
+              34,
+              44,
+              34,
+              100,
+              101,
+              115,
+              99,
+              114,
+              105,
+              112,
+              116,
+              105,
+              111,
+              110,
+              34,
+              58,
+              34,
+              84,
+              104,
+              101,
+              32,
+              112,
+              114,
+              111,
+              99,
+              101,
+              115,
+              115,
+              32,
+              105,
+              115,
+              32,
+              116,
+              101,
+              114,
+              109,
+              105,
+              110,
+              97,
+              116,
+              101,
+              100,
+              34,
+              125,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 25,
+          "responseSize": 139
+        },
+        "id": "7507d0c7-3e2c-440d-ac76-4b9c27a175cc",
+        "assertions": [
+          {
+            "assertion": "Status code is 200",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "9bc02cd1-3956-4a9e-bf88-368c99f37d2b",
+          "length": 10,
+          "cycles": 1,
+          "position": 7,
+          "iteration": 0,
+          "httpRequestId": "2a52663f-4b2a-4488-8c64-50bc7c97f183"
+        },
+        "item": {
+          "id": "28dbe38c-a57d-412a-b9d4-1596d132d814",
+          "name": "Next - PROCESSING",
+          "request": {
+            "description": {
+              "content": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "tasks",
+                "next",
+                "trns",
+                "00002-12345-0001-64874412-1698769800000-363cc36d-0"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00002\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"name\": \"Scanner\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    },\r\n    \"data\": {\r\n        \"continue\": true,\r\n        \"functionId\": \"SPONTANEOUS_PAYMENT\"\r\n    },\r\n    \"taskId\": \"5352663e-8a11-11ee-a28e-be1865dc64a3\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "17f95707-4723-4f31-894d-8b2f08a605a9",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 202\", function () {",
+                  "    pm.response.to.have.status(202);",
+                  "});"
+                ],
+                "_lastExecutionId": "5bd518b4-3b18-4ca7-950c-79f4570e74d0"
+              }
+            }
+          ]
+        },
+        "request": {
+          "description": {
+            "content": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned.",
+            "type": "text/plain"
+          },
+          "url": {
+            "protocol": "http",
+            "port": "8086",
+            "path": [
+              "api",
+              "v1",
+              "tasks",
+              "next",
+              "trns",
+              "00002-12345-0001-64874412-1698769800000-363cc36d-0"
+            ],
+            "host": [
+              "host",
+              "testcontainers",
+              "internal"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.33.0",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "c2c5366c-8b1b-4c8b-9cb7-cea6a5e2caea",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "host.testcontainers.internal:8086",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "680",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00002\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"name\": \"Scanner\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    },\r\n    \"data\": {\r\n        \"continue\": true,\r\n        \"functionId\": \"SPONTANEOUS_PAYMENT\"\r\n    },\r\n    \"taskId\": \"5352663e-8a11-11ee-a28e-be1865dc64a3\"\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "15cbcd3b-5fbd-4e4f-8aa2-24d896fd00be",
+          "status": "Accepted",
+          "code": 202,
+          "header": [
+            {
+              "key": "content-length",
+              "value": "155"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              116,
+              114,
+              97,
+              110,
+              115,
+              97,
+              99,
+              116,
+              105,
+              111,
+              110,
+              73,
+              100,
+              34,
+              58,
+              34,
+              48,
+              48,
+              48,
+              48,
+              50,
+              45,
+              49,
+              50,
+              51,
+              52,
+              53,
+              45,
+              48,
+              48,
+              48,
+              49,
+              45,
+              54,
+              52,
+              56,
+              55,
+              52,
+              52,
+              49,
+              50,
+              45,
+              49,
+              54,
+              57,
+              56,
+              55,
+              54,
+              57,
+              56,
+              48,
+              48,
+              48,
+              48,
+              48,
+              45,
+              51,
+              54,
+              51,
+              99,
+              99,
+              51,
+              54,
+              100,
+              45,
+              48,
+              34,
+              44,
+              34,
+              111,
+              117,
+              116,
+              99,
+              111,
+              109,
+              101,
+              34,
+              58,
+              123,
+              34,
+              114,
+              101,
+              115,
+              117,
+              108,
+              116,
+              34,
+              58,
+              34,
+              80,
+              82,
+              79,
+              67,
+              69,
+              83,
+              83,
+              73,
+              78,
+              71,
+              34,
+              44,
+              34,
+              100,
+              101,
+              115,
+              99,
+              114,
+              105,
+              112,
+              116,
+              105,
+              111,
+              110,
+              34,
+              58,
+              34,
+              80,
+              114,
+              111,
+              99,
+              101,
+              115,
+              115,
+              32,
+              115,
+              116,
+              105,
+              108,
+              108,
+              32,
+              114,
+              117,
+              110,
+              110,
+              105,
+              110,
+              103,
+              44,
+              32,
+              114,
+              101,
+              116,
+              114,
+              121,
+              32,
+              108,
+              97,
+              116,
+              101,
+              114,
+              34,
+              125,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 32,
+          "responseSize": 155
+        },
+        "id": "28dbe38c-a57d-412a-b9d4-1596d132d814",
+        "assertions": [
+          {
+            "assertion": "Status code is 202",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "61378ead-8feb-412b-bdfe-5b201b2ef462",
+          "length": 10,
+          "cycles": 1,
+          "position": 8,
+          "iteration": 0,
+          "httpRequestId": "42adea2f-fc11-48e2-b9de-c1388a02e581"
+        },
+        "item": {
+          "id": "ba299fdb-a842-42f8-ad5b-fe38b7f30800",
+          "name": "Next - ERROR ON PROCESS",
+          "request": {
+            "description": {
+              "content": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "tasks",
+                "next",
+                "trns",
+                "00003-12345-0001-64874412-1698769800000-363cc36d-0"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00003\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"name\": \"Scanner\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    },\r\n    \"data\": {\r\n        \"continue\": true,\r\n        \"functionId\": \"SPONTANEOUS_PAYMENT\"\r\n    },\r\n    \"taskId\": \"5352663e-8a11-11ee-a28e-be1865dc64a3\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "ddf5fe32-6ab0-43b0-ad30-7172f3d159c5",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 204\", function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});"
+                ],
+                "_lastExecutionId": "e3b3e5d8-01a8-461f-be28-cc65dfdd67a1"
+              }
+            }
+          ]
+        },
+        "request": {
+          "description": {
+            "content": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned.",
+            "type": "text/plain"
+          },
+          "url": {
+            "protocol": "http",
+            "port": "8086",
+            "path": [
+              "api",
+              "v1",
+              "tasks",
+              "next",
+              "trns",
+              "00003-12345-0001-64874412-1698769800000-363cc36d-0"
+            ],
+            "host": [
+              "host",
+              "testcontainers",
+              "internal"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.33.0",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "1b0c3a98-4880-4089-8406-a3954763bcf1",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "host.testcontainers.internal:8086",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "680",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00003\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"name\": \"Scanner\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    },\r\n    \"data\": {\r\n        \"continue\": true,\r\n        \"functionId\": \"SPONTANEOUS_PAYMENT\"\r\n    },\r\n    \"taskId\": \"5352663e-8a11-11ee-a28e-be1865dc64a3\"\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "c7cf740c-9230-4ee2-9611-64d96fa8900b",
+          "status": "No Content",
+          "code": 204,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": []
+          },
+          "cookie": [],
+          "responseTime": 24,
+          "responseSize": 0
+        },
+        "id": "ba299fdb-a842-42f8-ad5b-fe38b7f30800",
+        "assertions": [
+          {
+            "assertion": "Status code is 204",
+            "skipped": false
+          }
+        ]
+      },
+      {
+        "cursor": {
+          "ref": "53cd60b5-9185-42aa-950c-b37c04e38eb0",
+          "length": 10,
+          "cycles": 1,
+          "position": 9,
+          "iteration": 0,
+          "httpRequestId": "a0310b05-f217-44ef-bd10-7af63f616a79"
+        },
+        "item": {
+          "id": "887ea687-03d8-4d64-b100-f96653bafc59",
+          "name": "Next - EXCEPTION ON PROCESS",
+          "request": {
+            "description": {
+              "content": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "tasks",
+                "next",
+                "trns",
+                "00004-12345-0001-64874412-1698769800000-363cc36d-0"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00004\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"name\": \"Scanner\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    },\r\n    \"data\": {\r\n        \"continue\": true,\r\n        \"functionId\": \"SPONTANEOUS_PAYMENT\"\r\n    },\r\n    \"taskId\": \"5352663e-8a11-11ee-a28e-be1865dc64a3\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "313e4ae0-ee9e-4257-9834-1c93d8993cac",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 500\", function () {",
+                  "    pm.response.to.have.status(500);",
+                  "});"
+                ],
+                "_lastExecutionId": "7c8ddc92-f115-4d82-b630-f4b4d6b68e61"
+              }
+            }
+          ]
+        },
+        "request": {
+          "description": {
+            "content": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned.",
+            "type": "text/plain"
+          },
+          "url": {
+            "protocol": "http",
+            "port": "8086",
+            "path": [
+              "api",
+              "v1",
+              "tasks",
+              "next",
+              "trns",
+              "00004-12345-0001-64874412-1698769800000-363cc36d-0"
+            ],
+            "host": [
+              "host",
+              "testcontainers",
+              "internal"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "system": true
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.33.0",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "b8f198e1-dc4a-497d-ad66-f88cb1ac9c68",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "host.testcontainers.internal:8086",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "680",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n    \"device\": {\r\n        \"bankId\": \"00004\",\r\n        \"branchId\": \"12345\",\r\n        \"code\": \"0001\",\r\n        \"terminalId\": \"64874412\",\r\n        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n        \"channel\": \"ATM\",\r\n        \"peripherals\": [\r\n            {\r\n                \"id\": \"PRINTER\",\r\n                \"name\": \"Receipt printer\",\r\n                \"status\": \"OK\"\r\n            },\r\n            {\r\n                \"id\": \"SCANNER\",\r\n                \"name\": \"Scanner\",\r\n                \"status\": \"OK\"\r\n            }\r\n        ]\r\n    },\r\n    \"data\": {\r\n        \"continue\": true,\r\n        \"functionId\": \"SPONTANEOUS_PAYMENT\"\r\n    },\r\n    \"taskId\": \"5352663e-8a11-11ee-a28e-be1865dc64a3\"\r\n}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "ea4f2bc3-eadc-452b-8058-2e90f49f0f87",
+          "status": "Internal Server Error",
+          "code": 500,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json;charset=UTF-8"
+            },
+            {
+              "key": "content-length",
+              "value": "80"
+            }
+          ],
+          "stream": {
+            "type": "Buffer",
+            "data": [
+              123,
+              34,
+              101,
+              114,
+              114,
+              111,
+              114,
+              67,
+              111,
+              100,
+              101,
+              34,
+              58,
+              34,
+              84,
+              65,
+              83,
+              75,
+              95,
+              69,
+              82,
+              82,
+              79,
+              82,
+              34,
+              44,
+              34,
+              100,
+              101,
+              115,
+              99,
+              114,
+              105,
+              112,
+              116,
+              105,
+              111,
+              110,
+              34,
+              58,
+              34,
+              69,
+              114,
+              114,
+              111,
+              114,
+              32,
+              114,
+              101,
+              116,
+              114,
+              105,
+              101,
+              118,
+              101,
+              32,
+              110,
+              101,
+              120,
+              116,
+              32,
+              115,
+              116,
+              101,
+              112,
+              34,
+              44,
+              34,
+              115,
+              116,
+              97,
+              116,
+              117,
+              115,
+              34,
+              58,
+              53,
+              48,
+              48,
+              125
+            ]
+          },
+          "cookie": [],
+          "responseTime": 24,
+          "responseSize": 80
+        },
+        "id": "887ea687-03d8-4d64-b100-f96653bafc59",
+        "assertions": [
+          {
+            "assertion": "Status code is 500",
+            "skipped": false
+          }
+        ]
       }
     ],
     "transfers": {
-      "responseTotal": 4235
+      "responseTotal": 4844
     },
     "failures": [],
     "error": null
