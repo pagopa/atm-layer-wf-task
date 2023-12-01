@@ -130,7 +130,7 @@ public class TaskServiceImpl implements TaskService {
 		if (!response.getTasks().isEmpty()) {
 			Task workingTask = response.getTasks().get(0);
 			atmTask = new it.pagopa.atmlayer.wf.task.bean.Task();
-			VariableRequest variableRequest = createVariableRequest(workingTask, atmTask);
+			VariableRequest variableRequest = createVariableRequestForTemplate(workingTask, atmTask);
 			log.info("Calling retrieve variables for task id: [{}]", workingTask.getId());
 			RestResponse<VariableResponse> restVariableResponse = null;
 			try {
@@ -152,6 +152,8 @@ public class TaskServiceImpl implements TaskService {
 
 				manageVariables(workingVariables, atmTask, variableRequest);
 
+				manageReceipt(workingVariables, atmTask);
+
 				updateTemplate(atmTask);
 
 				setButtonInAtmTask(atmTask, variableResponse.getButtons());
@@ -162,6 +164,36 @@ public class TaskServiceImpl implements TaskService {
 			}
 		}
 		return atmTask;
+	}
+
+	private void manageReceipt(Map<String, Object> workingVariables, it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
+
+		RestResponse<VariableResponse> restVariableResponse2 = null;
+		try {
+			restVariableResponse2 = processRestClient
+					.retrieveVariables(createVariableRequestForReceipt(workingVariables, atmTask));
+		} catch (WebApplicationException e) {
+			log.error("Error calling process service", e);
+			if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
+				throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
+			}
+			throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+		}
+		if (restVariableResponse2.getStatus() == 200) {
+			try {
+				atmTask.setReceiptTemplate(Base64.getEncoder()
+						.encodeToString(replaceVarValue(restVariableResponse2.getEntity().getVariables(),
+								atmTask.getReceiptTemplate()).getBytes(properties.htmlCharset())));
+			} catch (UnsupportedEncodingException e) {
+				log.error(" - ERROR:", e);
+				throw new ErrorException(ErrorEnum.GENERIC_ERROR);
+			}
+		} else if (restVariableResponse2.getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
+			throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
+		} else {
+			throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+		}
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -260,7 +292,34 @@ public class TaskServiceImpl implements TaskService {
 
 	}
 
-	private VariableRequest createVariableRequest(Task task, it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
+	private VariableRequest createVariableRequestForReceipt(Map<String, Object> variables,
+			it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
+		VariableRequest variableRequest = new VariableRequest();
+		if (variables != null && variables.get(Constants.RECEIPT_TEMPLATE) != null) {
+			String receiptTemplateName = (String) variables.get(Constants.RECEIPT_TEMPLATE);
+			try {
+				log.debug("Finding variables in receipt template...");
+				String htmlString = new String(
+						Utility.getFileFromCdn(properties.cdnUrl() + properties.htmlResourcesPath()
+								+ receiptTemplateName).readAllBytes(),
+						properties.htmlCharset());
+				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
+				atmTask.setReceiptTemplate(htmlString);
+				log.debug("Placeholders found: {}", placeholders);
+				if (placeholders != null && !placeholders.isEmpty()) {
+					log.debug("Number of variables found in receipt template: {}", placeholders.size());
+					variableRequest.setVariables(placeholders);
+				}
+			} catch (IOException e) {
+				log.error("- ERROR: File: {} not found!", receiptTemplateName, e);
+				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+			}
+		}
+		variableRequest.setTaskId(atmTask.getId());
+		return variableRequest;
+	}
+
+	private VariableRequest createVariableRequestForTemplate(Task task, it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
 		VariableRequest variableRequest = new VariableRequest();
 		if (task.getForm() != null) {
 			try {
@@ -282,28 +341,6 @@ public class TaskServiceImpl implements TaskService {
 				variableRequest.setButtons(buttonList);
 			} catch (IOException e) {
 				log.error("- ERROR: File: {} not found!", task.getForm(), e);
-				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
-			}
-		}
-		// Find variables in receipt template
-		if (task.getVariables() != null
-				&& task.getVariables().get(Constants.RECEIPT_TEMPLATE) != null) {
-			try {
-				String htmlString = new String(
-						Utility.getFileFromCdn(properties.cdnUrl() + properties.htmlResourcesPath()
-								+ (String) task.getVariables()
-										.get(Constants.RECEIPT_TEMPLATE))
-								.readAllBytes(),
-						properties.htmlCharset());
-				atmTask.setReceiptTemplate(htmlString);
-				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
-				placeholders.addAll(Utility.getIdOfTag(htmlString, LI_TAG));
-				if (placeholders != null && !placeholders.isEmpty()) {
-					log.debug("Number of variables found in receipt template: {}", placeholders.size());
-					variableRequest.setVariables(placeholders);
-				}
-			} catch (IOException e) {
-				log.error("- ERROR: File: {} not found!", task.getVariables().get(Constants.RECEIPT_TEMPLATE), e);
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
 		}
@@ -351,8 +388,6 @@ public class TaskServiceImpl implements TaskService {
 			if (atmTask.getTemplate() != null) {
 				atmTask.getTemplate().setContent(replaceVarValue(workingVariables, atmTask.getTemplate().getContent()));
 			}
-			// Replaceing variables with values in template
-			atmTask.setReceiptTemplate(replaceVarValue(workingVariables, atmTask.getReceiptTemplate()));
 			if (variableRequest.getVariables() != null) {
 				workingVariables.keySet().removeAll(variableRequest.getVariables());
 			}
