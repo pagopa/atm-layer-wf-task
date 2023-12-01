@@ -129,7 +129,8 @@ public class TaskServiceImpl implements TaskService {
 
 		if (!response.getTasks().isEmpty()) {
 			Task workingTask = response.getTasks().get(0);
-			VariableRequest variableRequest = createVariableRequest(workingTask);
+			atmTask = new it.pagopa.atmlayer.wf.task.bean.Task();
+			VariableRequest variableRequest = createVariableRequest(workingTask, atmTask);
 			log.info("Calling retrieve variables for task id: [{}]", workingTask.getId());
 			RestResponse<VariableResponse> restVariableResponse = null;
 			try {
@@ -146,11 +147,8 @@ public class TaskServiceImpl implements TaskService {
 			if (restVariableResponse.getStatus() == 200) {
 				VariableResponse variableResponse = restVariableResponse.getEntity();
 				log.info("Retrieved variables: [{}]", variableResponse);
-				atmTask = new it.pagopa.atmlayer.wf.task.bean.Task();
 				atmTask.setId(workingTask.getId());
 				Map<String, Object> workingVariables = variableResponse.getVariables();
-
-				setTemplate(atmTask, workingTask);
 
 				manageVariables(workingVariables, atmTask, variableRequest);
 
@@ -164,9 +162,6 @@ public class TaskServiceImpl implements TaskService {
 			}
 		}
 		return atmTask;
-	}
-
-	private void setReceipt() {
 	}
 
 	@SuppressWarnings("unchecked")
@@ -247,9 +242,6 @@ public class TaskServiceImpl implements TaskService {
 		atmTask.setOutcomeVarName((String) workingVariables.get(Constants.OUTCOME_VAR_NAME));
 		log.debug("Getting outcomeVarName value: [{}]", workingVariables.remove(Constants.OUTCOME_VAR_NAME));
 
-		atmTask.setReceiptTemplate((String) workingVariables.get(Constants.RECEIPT_TEMPLATE));
-		log.debug("Getting recepitTemplate value: [{}]", workingVariables.remove(Constants.RECEIPT_TEMPLATE));
-
 		if (atmTask.getTemplate() != null) {
 			atmTask.getTemplate().setType((String) workingVariables.get(Constants.TEMPLATE_TYPE));
 			log.debug("Getting template type value: [{}]", workingVariables.remove(Constants.TEMPLATE_TYPE));
@@ -268,16 +260,18 @@ public class TaskServiceImpl implements TaskService {
 
 	}
 
-	private VariableRequest createVariableRequest(Task task) {
+	private VariableRequest createVariableRequest(Task task, it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
 		VariableRequest variableRequest = new VariableRequest();
 		if (task.getForm() != null) {
 			try {
 				log.debug("Finding variables in html form...");
+				atmTask.setTemplate(new Template());
 				String htmlString = new String(
 						Utility.getFileFromCdn(properties.cdnUrl() + properties.htmlResourcesPath() + task.getForm())
 								.readAllBytes(),
 						properties.htmlCharset());
 				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
+				atmTask.getTemplate().setContent(htmlString);
 				log.debug("Placeholders found: {}", placeholders);
 				if (placeholders != null && !placeholders.isEmpty()) {
 					log.debug("Number of variables found in html form: {}", placeholders.size());
@@ -301,6 +295,7 @@ public class TaskServiceImpl implements TaskService {
 										.get(Constants.RECEIPT_TEMPLATE))
 								.readAllBytes(),
 						properties.htmlCharset());
+				atmTask.setReceiptTemplate(htmlString);
 				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
 				placeholders.addAll(Utility.getIdOfTag(htmlString, LI_TAG));
 				if (placeholders != null && !placeholders.isEmpty()) {
@@ -317,20 +312,22 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	private String replaceVarValue(Map<String, Object> variables, String html) {
-		if (html != null) {
+		String htmlTemp = html;
+		if (htmlTemp != null) {
 			log.info("-----START replacing variables in html-----");
 			for (Entry<String, Object> value : variables.entrySet()) {
-				html = html.replace("${" + value.getKey() + "}", String.valueOf(value.getValue()));
+				log.debug("Replacing {} -> {}", "${" + value.getKey() + "}", String.valueOf(value.getValue()));
+				htmlTemp = htmlTemp.replace("${" + value.getKey() + "}", String.valueOf(value.getValue()));
 			}
-			html = html.replace("${" + Constants.CDN_PLACEHOLDER + "}", properties.cdnUrl());
-			List<String> placeholders = Utility.findStringsByGroup(html, VARIABLES_REGEX);
+			htmlTemp = htmlTemp.replace("${" + Constants.CDN_PLACEHOLDER + "}", properties.cdnUrl());
+			List<String> placeholders = Utility.findStringsByGroup(htmlTemp, VARIABLES_REGEX);
 			if (!placeholders.isEmpty()) {
 				log.error("Value not found for placeholders: {}", placeholders);
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
 			log.info("-----END replacing variables in html-----");
 		}
-		return html;
+		return htmlTemp;
 	}
 
 	private void updateTemplate(it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
@@ -350,30 +347,14 @@ public class TaskServiceImpl implements TaskService {
 			VariableRequest variableRequest) {
 		if (workingVariables != null) {
 			// Replaceing variables with values in template
+			setVariablesInAtmTask(atmTask, workingVariables);
 			if (atmTask.getTemplate() != null) {
 				atmTask.getTemplate().setContent(replaceVarValue(workingVariables, atmTask.getTemplate().getContent()));
 			}
 			// Replaceing variables with values in template
+			atmTask.setReceiptTemplate(replaceVarValue(workingVariables, atmTask.getReceiptTemplate()));
 			if (variableRequest.getVariables() != null) {
 				workingVariables.keySet().removeAll(variableRequest.getVariables());
-			}
-			setVariablesInAtmTask(atmTask, workingVariables);
-			atmTask.setReceiptTemplate(replaceVarValue(workingVariables, atmTask.getReceiptTemplate()));
-		}
-	}
-
-	private void setTemplate(it.pagopa.atmlayer.wf.task.bean.Task atmTask, Task workingTask) {
-		if (workingTask.getForm() != null) {
-			try {
-				atmTask.setTemplate(new Template());
-				atmTask.getTemplate().setContent(
-						new String(Utility.getFileFromCdn(properties.cdnUrl()
-								+ properties.htmlResourcesPath()
-								+ workingTask.getForm()).readAllBytes(),
-								properties.htmlCharset()));
-			} catch (IOException e) {
-				log.error("File not found {}", workingTask.getForm(), e);
-				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
 		}
 	}
