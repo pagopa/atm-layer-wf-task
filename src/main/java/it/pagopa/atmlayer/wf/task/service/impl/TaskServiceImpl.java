@@ -168,30 +168,32 @@ public class TaskServiceImpl implements TaskService {
 
 	private void manageReceipt(Map<String, Object> workingVariables, it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
 
-		RestResponse<VariableResponse> restVariableResponse2 = null;
-		try {
-			restVariableResponse2 = processRestClient
-					.retrieveVariables(createVariableRequestForReceipt(workingVariables, atmTask));
-		} catch (WebApplicationException e) {
-			log.error("Error calling process service", e);
-			if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
-				throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
-			}
-			throw new ErrorException(ErrorEnum.PROCESS_ERROR);
-		}
-		if (restVariableResponse2.getStatus() == 200) {
+		if (workingVariables != null && workingVariables.get(Constants.RECEIPT_TEMPLATE) != null) {
+			RestResponse<VariableResponse> restVariableResponse2 = null;
 			try {
-				atmTask.setReceiptTemplate(Base64.getEncoder()
-						.encodeToString(replaceVarValue(restVariableResponse2.getEntity().getVariables(),
-								atmTask.getReceiptTemplate()).getBytes(properties.htmlCharset())));
-			} catch (UnsupportedEncodingException e) {
-				log.error(" - ERROR:", e);
-				throw new ErrorException(ErrorEnum.GENERIC_ERROR);
+				restVariableResponse2 = processRestClient
+						.retrieveVariables(createVariableRequestForReceipt(workingVariables, atmTask));
+			} catch (WebApplicationException e) {
+				log.error("Error calling process service", e);
+				if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
+					throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
+				}
+				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
-		} else if (restVariableResponse2.getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
-			throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
-		} else {
-			throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+			if (restVariableResponse2.getStatus() == 200) {
+				try {
+					atmTask.setReceiptTemplate(Base64.getEncoder()
+							.encodeToString(replaceVarValue(restVariableResponse2.getEntity().getVariables(),
+									atmTask.getReceiptTemplate()).getBytes(properties.htmlCharset())));
+				} catch (UnsupportedEncodingException e) {
+					log.error(" - ERROR:", e);
+					throw new ErrorException(ErrorEnum.GENERIC_ERROR);
+				}
+			} else if (restVariableResponse2.getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
+				throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
+			} else {
+				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+			}
 		}
 
 	}
