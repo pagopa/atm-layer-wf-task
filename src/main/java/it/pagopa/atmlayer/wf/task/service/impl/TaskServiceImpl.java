@@ -386,10 +386,10 @@ public class TaskServiceImpl implements TaskService {
 			VariableRequest variableRequest) {
 		if (workingVariables != null) {
 			// Replaceing variables with values in template
-			setVariablesInAtmTask(atmTask, workingVariables);
 			if (atmTask.getTemplate() != null) {
 				atmTask.getTemplate().setContent(replaceVarValue(workingVariables, atmTask.getTemplate().getContent()));
 			}
+			setVariablesInAtmTask(atmTask, workingVariables);
 			if (variableRequest.getVariables() != null) {
 				workingVariables.keySet().removeAll(variableRequest.getVariables());
 			}
