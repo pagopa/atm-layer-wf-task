@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse;
@@ -165,6 +166,9 @@ public class TaskServiceImpl implements TaskService {
 		return atmTask;
 	}
 
+	private void setReceipt() {
+	}
+
 	@SuppressWarnings("unchecked")
 	private void setButtonInAtmTask(it.pagopa.atmlayer.wf.task.bean.Task atmTask, Map<String, Object> buttons) {
 		if (buttons != null) {
@@ -261,6 +265,7 @@ public class TaskServiceImpl implements TaskService {
 				atmTask.getData().put(entry.getKey(), String.valueOf(entry.getValue()));
 			}
 		}
+
 	}
 
 	private VariableRequest createVariableRequest(Task task) {
@@ -311,32 +316,21 @@ public class TaskServiceImpl implements TaskService {
 		return variableRequest;
 	}
 
-	private void replaceVarValue(it.pagopa.atmlayer.wf.task.bean.Task task, Map<String, Object> variables) {
-		if (task.getTemplate() != null) {
+	private String replaceVarValue(Map<String, Object> variables, String html) {
+		if (html != null) {
 			log.info("-----START replacing variables in html-----");
-
-			variables.entrySet().stream().forEach(value -> {
-				for (String variable : Utility.findStringsByGroup(task.getTemplate().getContent(), VARIABLES_REGEX)) {
-					if (value.getKey().equals(variable)) {
-						log.info("Var {} replaced -> {}", variable, value.getValue());
-						task.getTemplate().setContent(
-								task.getTemplate().getContent().replace("${" + variable + "}",
-										String.valueOf(value.getValue())));
-						break;
-					}
-				}
-			});
-
-			task.getTemplate().setContent(
-					task.getTemplate().getContent().replace("${" + Constants.CDN_PLACEHOLDER + "}",
-							properties.cdnUrl()));
-			List<String> placeholders = Utility.findStringsByGroup(task.getTemplate().getContent(), VARIABLES_REGEX);
+			for (Entry<String, Object> value : variables.entrySet()) {
+				html = html.replace("${" + value.getKey() + "}", String.valueOf(value.getValue()));
+			}
+			html = html.replace("${" + Constants.CDN_PLACEHOLDER + "}", properties.cdnUrl());
+			List<String> placeholders = Utility.findStringsByGroup(html, VARIABLES_REGEX);
 			if (!placeholders.isEmpty()) {
 				log.error("Value not found for placeholders: {}", placeholders);
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
 			log.info("-----END replacing variables in html-----");
 		}
+		return html;
 	}
 
 	private void updateTemplate(it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
@@ -355,12 +349,16 @@ public class TaskServiceImpl implements TaskService {
 	private void manageVariables(Map<String, Object> workingVariables, it.pagopa.atmlayer.wf.task.bean.Task atmTask,
 			VariableRequest variableRequest) {
 		if (workingVariables != null) {
-			// Replaceing variables with values
-			replaceVarValue(atmTask, workingVariables);
+			// Replaceing variables with values in template
+			if (atmTask.getTemplate() != null) {
+				atmTask.getTemplate().setContent(replaceVarValue(workingVariables, atmTask.getTemplate().getContent()));
+			}
+			// Replaceing variables with values in template
 			if (variableRequest.getVariables() != null) {
 				workingVariables.keySet().removeAll(variableRequest.getVariables());
 			}
 			setVariablesInAtmTask(atmTask, workingVariables);
+			atmTask.setReceiptTemplate(replaceVarValue(workingVariables, atmTask.getReceiptTemplate()));
 		}
 	}
 
