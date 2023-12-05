@@ -169,9 +169,9 @@ public class TaskServiceImpl implements TaskService {
 	private void manageReceipt(Map<String, Object> workingVariables, it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
 
 		if (workingVariables != null && workingVariables.get(Constants.RECEIPT_TEMPLATE) != null) {
-			RestResponse<VariableResponse> restVariableResponse2 = null;
+			RestResponse<VariableResponse> restVariableResponse = null;
 			try {
-				restVariableResponse2 = processRestClient
+				restVariableResponse = processRestClient
 						.retrieveVariables(createVariableRequestForReceipt(workingVariables, atmTask));
 			} catch (WebApplicationException e) {
 				log.error("Error calling process service", e);
@@ -180,16 +180,16 @@ public class TaskServiceImpl implements TaskService {
 				}
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
-			if (restVariableResponse2.getStatus() == 200) {
+			if (restVariableResponse.getStatus() == 200) {
 				try {
 					atmTask.setReceiptTemplate(Base64.getEncoder()
-							.encodeToString(replaceVarValue(restVariableResponse2.getEntity().getVariables(),
+							.encodeToString(replaceVarValue(restVariableResponse.getEntity().getVariables(),
 									atmTask.getReceiptTemplate()).getBytes(properties.htmlCharset())));
 				} catch (UnsupportedEncodingException e) {
 					log.error(" - ERROR:", e);
 					throw new ErrorException(ErrorEnum.GENERIC_ERROR);
 				}
-			} else if (restVariableResponse2.getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
+			} else if (restVariableResponse.getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
 				throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
 			} else {
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
