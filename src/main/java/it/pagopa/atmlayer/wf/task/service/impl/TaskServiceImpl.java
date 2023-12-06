@@ -150,9 +150,9 @@ public class TaskServiceImpl implements TaskService {
 				atmTask.setId(workingTask.getId());
 				Map<String, Object> workingVariables = variableResponse.getVariables();
 
-				manageVariables(workingVariables, atmTask, variableRequest);
-
 				manageReceipt(workingVariables, atmTask);
+
+				manageVariables(workingVariables, atmTask, variableRequest);
 
 				updateTemplate(atmTask);
 
@@ -180,6 +180,9 @@ public class TaskServiceImpl implements TaskService {
 				}
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
+
+			workingVariables.remove(Constants.RECEIPT_TEMPLATE);
+
 			if (restVariableResponse.getStatus() == 200) {
 				try {
 					atmTask.setReceiptTemplate(Base64.getEncoder()
