@@ -16,6 +16,7 @@ import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorResponse;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeEnum;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeResponse;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
+import it.pagopa.atmlayer.wf.task.util.Constants;
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.POST;
@@ -31,7 +32,7 @@ public class TaskResource {
 	@Inject
 	TaskService taskService;
 
-	@Path("/main/{functionId}")
+	@Path("/main")
 	@POST
 	@Operation(summary = "Restituisce la scena principale della funzione selezionata.", description = "CREATE della scena prinicpale con la lista dei task dato l'ID della funzione selezionata.")
 	@APIResponse(responseCode = "200", description = "Operazione eseguita con successo. Il processo è terminato.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
@@ -41,10 +42,9 @@ public class TaskResource {
 	@APIResponse(responseCode = "400", description = "Richiesta malformata, la descrizione può fornire dettagli sull'errore.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
 	@APIResponse(responseCode = "500", description = "Errore generico, la descrizione può fornire dettagli sull'errore.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
 	public RestResponse<Scene> createMainScene(
-			@Parameter(description = "ID della funzione selezionata", example = "SPONTANEOUS_PAYMENT") @NotNull @PathParam("functionId") String functionId,
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 		try {
-			Scene scene = taskService.buildFirst(functionId, state);
+			Scene scene = taskService.buildFirst(Constants.FUNCTION_ID, state);
 			if (OutcomeEnum.PROCESSING.equals(scene.getOutcome().getOutcomeEnum())) {
 				return RestResponse.status(Status.ACCEPTED, scene);
 			}
