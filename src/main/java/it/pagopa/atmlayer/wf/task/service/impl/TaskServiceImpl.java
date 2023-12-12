@@ -115,6 +115,7 @@ public class TaskServiceImpl implements TaskService {
 			return scene;
 		} else if (restTaskResponse.getStatus() == 202) {
 			log.info("Retrieved process: [{}]", restTaskResponse.getEntity());
+
 			scene.setOutcome(new OutcomeResponse(OutcomeEnum.PROCESSING));
 			return scene;
 		} else {
@@ -135,6 +136,7 @@ public class TaskServiceImpl implements TaskService {
 			RestResponse<VariableResponse> restVariableResponse = null;
 			try {
 				log.info("Retrieving variables: [{}]", variableRequest);
+
 				restVariableResponse = processRestClient.retrieveVariables(variableRequest);
 			} catch (WebApplicationException e) {
 				log.error("Error calling process service", e);
@@ -346,6 +348,7 @@ public class TaskServiceImpl implements TaskService {
 				variableRequest.setButtons(buttonList);
 			} catch (IOException e) {
 				log.error("- ERROR: File: {} not found!", task.getForm(), e);
+
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
 		}
@@ -377,6 +380,7 @@ public class TaskServiceImpl implements TaskService {
 			try {
 				atmTask.getTemplate().setContent(Base64.getEncoder()
 						.encodeToString(atmTask.getTemplate().getContent().getBytes(properties.htmlCharset())));
+
 			} catch (UnsupportedEncodingException e) {
 				log.error(" - ERROR:", e);
 				throw new ErrorException(ErrorEnum.GENERIC_ERROR);
@@ -398,5 +402,6 @@ public class TaskServiceImpl implements TaskService {
 			}
 		}
 	}
+
 
 }

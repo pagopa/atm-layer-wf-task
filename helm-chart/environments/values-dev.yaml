@@ -19,7 +19,16 @@ fullnameOverride: ""
 processService:
   address: http://pagopa-dev-atm-layer-wf-process.pagopa.svc.cluster.local:8080
 
-logLevel: DEBUG
+logLevel: INFO
+
+cdn:
+  credentialsSecretName: "pagopa-dev-atm-layer-wf-task-cdn-base-path"
+  credentialsSecretKeys:
+    cdn_base_path: CDN_BASE_PATH
+
+secretProviderClass:
+  name: atm-layer-wf-task-secrets
+  env: dev
 
 cdn:
   credentialsSecretName: "pagopa-dev-atm-layer-wf-task-cdn-base-path"
