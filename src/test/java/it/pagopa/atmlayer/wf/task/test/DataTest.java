@@ -19,7 +19,6 @@ import it.pagopa.atmlayer.wf.task.client.bean.Task;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.util.Constants;
-import it.pagopa.atmlayer.wf.task.util.Utility;
 
 public class DataTest {
 
@@ -55,7 +54,6 @@ public class DataTest {
         }
 
         taskResponse.getTasks().get(0).setForm("riepilogoCommissioni.html");
-
         taskResponse.setTransactionId("1000");
 
         return taskResponse;

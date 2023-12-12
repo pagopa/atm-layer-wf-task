@@ -35,7 +35,6 @@
                             "operator": "equals"
                         }
                     ],
-
                     "rulesOperator": "OR",
                     "disableTemplating": false,
                     "fallbackTo404": false,
@@ -245,7 +244,6 @@
                             "operator": "equals"
                         }
                     ],
-
                     "rulesOperator": "OR",
                     "disableTemplating": false,
                     "fallbackTo404": false,
@@ -355,7 +353,6 @@
                     "fallbackTo404": false,
                     "default": false,
                     "crudKey": "id"
-
                 }
             ],
             "enabled": true,

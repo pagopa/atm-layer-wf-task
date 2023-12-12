@@ -44,36 +44,6 @@ public class Utility {
         return result;
     }
 
-    public static Object getObject(String json, Class<?> clazz) {
-        Object result = null;
-        ObjectMapper om = new ObjectMapper();
-        try {
-            result = om.readValue(json, clazz);
-        } catch (JsonProcessingException e) {
-            log.error("Error deserializing: {}", e);
-        }
-        return result;
-    }
-
-    /**
-    * Generates a unique transaction ID for a device.
-    *
-    * This method creates a unique transaction ID using the UUID (Universally Unique Identifier) generator.
-    * The generated transaction ID is intended to uniquely identify a transaction associated with a specific device.
-    *
-    * @param device The device for which the transaction ID is being generated.
-    * @return A unique transaction ID in UUID format.
-    */
-    public static String generateTransactionId(Object object) {
-        Device device = ((State) object).getDevice();
-        return (device.getBankId()
-                + "-" + (device.getBranchId() != null ? device.getBranchId() : "")
-                + "-" + (device.getCode() != null ? device.getCode() : "")
-                + "-" + (device.getTerminalId() != null ? device.getTerminalId() : "")
-                + "-" + (device.getOpTimestamp().getTime())
-                + "-" + UUID.randomUUID().toString()).substring(0, Constants.TRANSACTION_ID_LENGTH);
-    }
-
     /**
     * Converts an object to a JSON representation.
     *
