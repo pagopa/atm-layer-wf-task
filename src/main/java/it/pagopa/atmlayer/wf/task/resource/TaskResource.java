@@ -16,6 +16,7 @@ import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorResponse;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeEnum;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeResponse;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
+import it.pagopa.atmlayer.wf.task.util.Constants;
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.POST;
@@ -31,20 +32,19 @@ public class TaskResource {
 	@Inject
 	TaskService taskService;
 
-	@Path("/main/{functionId}")
+	@Path("/main")
 	@POST
 	@Operation(summary = "Restituisce la scena principale della funzione selezionata.", description = "CREATE della scena prinicpale con la lista dei task dato l'ID della funzione selezionata.")
-	@APIResponse(responseCode = "200", description = "Operazione eseguita con successo. Il processo è terminato.", content = @Content(schema = @Schema(implementation = Scene.class)))
-	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. Restituisce l'oggetto Task nel body della risposta.", content = @Content(schema = @Schema(implementation = Scene.class)))
-	@APIResponse(responseCode = "202", description = "Operazione eseguita con successo. Il processo è in esecuzione.", content = @Content(schema = @Schema(implementation = Scene.class)))
-	@APIResponse(responseCode = "204", description = "Errore durante l'elaborazione del flusso.", content = @Content(schema = @Schema(implementation = Scene.class)))
-	@APIResponse(responseCode = "400", description = "Richiesta malformata, la descrizione può fornire dettagli sull'errore.", content = @Content(schema = @Schema(implementation = Scene.class)))
-	@APIResponse(responseCode = "500", description = "Errore generico, la descrizione può fornire dettagli sull'errore.", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+	@APIResponse(responseCode = "200", description = "Operazione eseguita con successo. Il processo è terminato.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. Restituisce l'oggetto Task nel body della risposta.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "202", description = "Operazione eseguita con successo. Il processo è in esecuzione.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "209", description = "Errore durante l'elaborazione del flusso della funzione.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+	@APIResponse(responseCode = "400", description = "Richiesta malformata, la descrizione può fornire dettagli sull'errore.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "500", description = "Errore generico, la descrizione può fornire dettagli sull'errore.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
 	public RestResponse<Scene> createMainScene(
-			@Parameter(description = "ID della funzione selezionata", example = "SPONTANEOUS_PAYMENT") @NotNull @PathParam("functionId") String functionId,
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 		try {
-			Scene scene = taskService.buildFirst(functionId, state);
+			Scene scene = taskService.buildFirst(Constants.FUNCTION_ID, state);
 			if (OutcomeEnum.PROCESSING.equals(scene.getOutcome().getOutcomeEnum())) {
 				return RestResponse.status(Status.ACCEPTED, scene);
 			}
@@ -63,12 +63,12 @@ public class TaskResource {
 	@Path("/next/trns/{transactionId}")
 	@POST
 	@Operation(summary = "Restituisce la scena successiva con la lista dei task dato l'ID del flusso.", description = "CREATE dello step successivo a quello corrente dato l'ID del flusso.")
-	@APIResponse(responseCode = "200", description = "Operazione eseguita con successo. Il processo è terminato.", content = @Content(schema = @Schema(implementation = Scene.class)))
-	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. Restituisce l'oggetto Task nel body della risposta.", content = @Content(schema = @Schema(implementation = Scene.class)))
-	@APIResponse(responseCode = "202", description = "Operazione eseguita con successo. Il processo è in esecuzione.", content = @Content(schema = @Schema(implementation = Scene.class)))
-	@APIResponse(responseCode = "204", description = "Errore durante l'elaborazione a causa dell'errata progettazione della funzione.", content = @Content(schema = @Schema(implementation = Scene.class)))
-	@APIResponse(responseCode = "400", description = "Richiesta malformata, la descrizione può fornire dettagli sull'errore.", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-	@APIResponse(responseCode = "500", description = "Errore generico, la descrizione può fornire dettagli sull'errore.", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+	@APIResponse(responseCode = "200", description = "Operazione eseguita con successo. Il processo è terminato.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. Restituisce l'oggetto Task nel body della risposta.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "202", description = "Operazione eseguita con successo. Il processo è in esecuzione.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "209", description = "Errore durante l'elaborazione del flusso della funzione.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+	@APIResponse(responseCode = "400", description = "Richiesta malformata, la descrizione può fornire dettagli sull'errore.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+	@APIResponse(responseCode = "500", description = "Errore generico, la descrizione può fornire dettagli sull'errore.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
 	public RestResponse<Scene> createNextScene(
 			@Parameter(description = "ID della transazione") @NotNull @PathParam("transactionId") String transactionId,
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {

@@ -44,6 +44,27 @@ public class Utility {
         return result;
     }
 
+    /**
+    * Converts an object to a JSON representation.
+    *
+    * This method serializes an object into its JSON representation using the Jackson ObjectMapper.
+    * The resulting JSON string represents the provided object's state.
+    * The method returns the JSON string or null if an error occurs during the conversion.
+    *
+    * @param object The object to be converted to a JSON string.
+    * @return A JSON string representing the provided object, or null if an error occurs.
+    */
+    public static String getObscuredJson(Object object) {
+        String result = null;
+        ObjectMapper om = new ObjectMapper();
+        try {
+            result = om.writerWithView(Object.class).writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            log.error(" - ERROR", e);
+        }
+        return result;
+    }
+
     public static Object getObject(String json, Class<?> clazz) {
         Object result = null;
         ObjectMapper om = new ObjectMapper();

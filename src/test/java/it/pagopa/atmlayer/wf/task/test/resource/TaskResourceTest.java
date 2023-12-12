@@ -51,7 +51,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/main/{functionId}", "demo23").then().extract().response();
+                                .post("/main").then().extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
         }
@@ -70,7 +70,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestStartWithoutDeviceData())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/main/{functionId}", "demo23").then().extract().response();
+                                .post("/main").then().extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
         }
@@ -89,7 +89,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestStartWithoutDeviceData())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/main/{functionId}", "demo23").then().extract().response();
+                                .post("/main").then().extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
         }
@@ -108,7 +108,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestStartWithoutDeviceData())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/main/{functionId}", "demo23").then().extract().response();
+                                .post("/main").then().extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
         }
@@ -126,7 +126,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/main/{functionId}", "demo23").then().extract().response();
+                                .post("/main").then().extract().response();
 
                 Assertions.assertEquals(500, response.statusCode());
         }
@@ -144,9 +144,9 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/main/{functionId}", "demo23").then().extract().response();
+                                .post("/main").then().extract().response();
 
-                Assertions.assertEquals(204, response.statusCode());
+                Assertions.assertEquals(209, response.statusCode());
         }
 
         @Test
@@ -161,7 +161,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/main/{functionId}", "demo23").then().extract().response();
+                                .post("/main").then().extract().response();
 
                 Assertions.assertEquals(500, response.statusCode());
         }
@@ -178,9 +178,9 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/main/{functionId}", "demo23").then().extract().response();
+                                .post("/main").then().extract().response();
 
-                Assertions.assertEquals(204, response.statusCode());
+                Assertions.assertEquals(209, response.statusCode());
         }
 
         @Test
@@ -197,7 +197,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/main/{functionId}", "demo23").then().extract().response();
+                                .post("/main").then().extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
         }
@@ -246,7 +246,7 @@ class TaskResourceTest {
                                 .post("/next/trns/{transactionId}", "00001-0002-12345-1234567890-aaaaaaaaaaaaa")
                                 .then().extract().response();
 
-                Assertions.assertEquals(204, response.statusCode());
+                Assertions.assertEquals(209, response.statusCode());
         }
 
         @Test
@@ -282,7 +282,7 @@ class TaskResourceTest {
                                 .post("/next/trns/{transactionId}", "00001-0002-12345-1234567890-aaaaaaaaaaaaa")
                                 .then().extract().response();
 
-                Assertions.assertEquals(204, response.statusCode());
+                Assertions.assertEquals(209, response.statusCode());
         }
 
         @Test
@@ -299,7 +299,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestNoPeripheral())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/main/{functionId}", "demo23")
+                                .post("/main")
                                 .then().extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
@@ -322,7 +322,7 @@ class TaskResourceTest {
                                 .post("/next/trns/{transactionId}", "00001-0002-12345-1234567890-aaaaaaaaaaaaa")
                                 .then().extract().response();
 
-                Assertions.assertEquals(204, response.statusCode());
+                Assertions.assertEquals(209, response.statusCode());
         }
 
         @ParameterizedTest
@@ -423,7 +423,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestNoData())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/main/{functionId}", "demo23").then().extract().response();
+                                .post("/main").then().extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
         }
@@ -442,7 +442,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestNoData())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/main/{functionId}", "demo23").then().extract().response();
+                                .post("/main").then().extract().response();
 
                 Assertions.assertEquals(200, response.statusCode());
         }
@@ -460,7 +460,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/main/{functionId}", "demo23").then().extract().response();
+                                .post("/main").then().extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
         }
@@ -474,13 +474,13 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createvaVariableResponseDefaultVariables()));
+                                                DataTest.createvaVariableResponseMissingReceipt()));
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/main/{functionId}", "demo23").then().extract().response();
+                                .post("/main").then().extract().response();
 
-                Assertions.assertEquals(204, response.statusCode());
+                Assertions.assertEquals(209, response.statusCode());
         }
 
         @Test
@@ -515,7 +515,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/main/{functionId}", "demo23").then()
+                                .post("/main").then()
                                 .extract().response();
 
                 Assertions.assertEquals(202, response.statusCode());
@@ -563,7 +563,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/main/{functionId}", "demo23").then().extract().response();
+                                .post("/main").then().extract().response();
 
                 Assertions.assertEquals(500, response.statusCode());
         }
@@ -576,9 +576,9 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/main/{functionId}", "demo23").then().extract().response();
+                                .post("/main").then().extract().response();
 
-                Assertions.assertEquals(204, response.statusCode());
+                Assertions.assertEquals(209, response.statusCode());
         }
 
         public static void main(String[] args) {

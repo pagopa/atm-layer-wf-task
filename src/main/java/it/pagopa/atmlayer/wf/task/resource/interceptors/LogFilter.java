@@ -46,6 +46,7 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
             }
             log.info("HEADERS: {}", requestContext.getHeaders());
             log.info("METHOD: {}", requestContext.getMethod());
+
             log.info("BODY: {}", new String(entity));
 
             requestContext.setEntityStream(new ByteArrayInputStream(entity));
@@ -59,7 +60,7 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
             log.info("============== RESPONSE ==============");
             log.info("Response: Status: {}", responseContext.getStatus());
             if (responseContext.getEntity() != null) {
-                log.info("Body: {}", Utility.getJson(responseContext.getEntity()));
+                log.info("Body: {}", Utility.getObscuredJson(responseContext.getEntity()));
             }
             log.info("============== RESPONSE ==============");
             MDC.remove(TRANSACTION_ID_LOG_CONFIGURATION);

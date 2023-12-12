@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<project
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
   xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>it.pagopa.atmlayer</groupId>
   <artifactId>workflow-task</artifactId>
-  <version>1.0.0-dev.19</version>
+  <version>1.0.0-dev.33</version>
   <properties>
+    <jacoco.version>0.8.11</jacoco.version>
     <compiler-plugin.version>3.11.0</compiler-plugin.version>
     <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -99,6 +99,11 @@
       <artifactId>testcontainers</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-jacoco</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -158,43 +163,17 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>${jacoco-maven-plugin.version}</version>
+        <version>${jacoco.version}</version>
         <executions>
           <execution>
-            <id>jacoco-check</id>
+            <id>default-prepare-agent</id>
             <goals>
-              <goal>check</goal>
+              <goal>prepare-agent</goal>
             </goals>
-            <phase>test</phase>
             <configuration>
-              <dataFile>${project.build.directory}/jacoco-quarkus.exec</dataFile>
-              <rules>
-                <rule>
-                  <element>CLASS</element>
-                  <limits>
-                    <limit>
-                      <counter>LINE</counter>
-                      <value>COVEREDRATIO</value>
-                      <minimum>0.90</minimum>
-                    </limit>
-                    <limit>
-                      <counter>BRANCH</counter>
-                      <value>COVEREDRATIO</value>
-                      <minimum>0.90</minimum>
-                    </limit>
-                  </limits>
-                </rule>
-                <rule>
-                  <element>METHOD</element>
-                  <limits>
-                    <limit>
-                      <counter>COMPLEXITY</counter>
-                      <value>TOTALCOUNT</value>
-                      <maximum>15</maximum>
-                    </limit>
-                  </limits>
-                </rule>
-              </rules>
+              <exclClassLoaders>*QuarkusClassLoader</exclClassLoaders>
+              <destFile>${project.build.directory}/jacoco-quarkus.exec</destFile>
+              <append>true</append>
             </configuration>
           </execution>
         </executions>

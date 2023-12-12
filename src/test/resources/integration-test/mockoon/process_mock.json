@@ -26,11 +26,123 @@
                     "filePath": "",
                     "databucketID": "",
                     "sendFileAsBody": false,
-                    "rules": [],
+                    "rules": [
+                        {
+                            "target": "body",
+                            "modifier": "deviceInfo.bankId",
+                            "value": "06789",
+                            "invert": false,
+                            "operator": "equals"
+                        }
+                    ],
                     "rulesOperator": "OR",
                     "disableTemplating": false,
                     "fallbackTo404": false,
                     "default": true,
+                    "crudKey": "id"
+                },
+                {
+                    "uuid": "8739f2b6-0661-4810-8b94-aaf9dc90e7ee",
+                    "body": "{\n  \"tasks\": [],\n  \"transactionId\": \"1000\"\n}",
+                    "latency": 0,
+                    "statusCode": 200,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [
+                        {
+                            "target": "body",
+                            "modifier": "deviceInfo.bankId",
+                            "value": "00001",
+                            "invert": false,
+                            "operator": "equals"
+                        }
+                    ],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": false,
+                    "crudKey": "id"
+                },
+                {
+                    "uuid": "fd2aa70b-206f-420a-9aa2-52697993f373",
+                    "body": "",
+                    "latency": 0,
+                    "statusCode": 503,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [
+                        {
+                            "target": "body",
+                            "modifier": "deviceInfo.bankId",
+                            "value": "00003",
+                            "invert": false,
+                            "operator": "equals"
+                        }
+                    ],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": false,
+                    "crudKey": "id"
+                },
+                {
+                    "uuid": "5a1c04fc-6c7c-4802-984f-617d348a42e1",
+                    "body": "",
+                    "latency": 0,
+                    "statusCode": 500,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [
+                        {
+                            "target": "body",
+                            "modifier": "deviceInfo.bankId",
+                            "value": "00004",
+                            "invert": false,
+                            "operator": "equals"
+                        }
+                    ],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": false,
+                    "crudKey": "id"
+                },
+                {
+                    "uuid": "dd7137b7-e8c8-4aa3-9335-1b935cd336a8",
+                    "body": "",
+                    "latency": 0,
+                    "statusCode": 202,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [
+                        {
+                            "target": "body",
+                            "modifier": "deviceInfo.bankId",
+                            "value": "00002",
+                            "invert": false,
+                            "operator": "equals"
+                        }
+                    ],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": false,
                     "crudKey": "id"
                 }
             ],
@@ -123,11 +235,123 @@
                     "filePath": "",
                     "databucketID": "",
                     "sendFileAsBody": false,
-                    "rules": [],
+                    "rules": [
+                        {
+                            "target": "body",
+                            "modifier": "deviceInfo.bankId",
+                            "value": "06789",
+                            "invert": false,
+                            "operator": "equals"
+                        }
+                    ],
                     "rulesOperator": "OR",
                     "disableTemplating": false,
                     "fallbackTo404": false,
                     "default": true,
+                    "crudKey": "id"
+                },
+                {
+                    "uuid": "03a17d0e-1281-418f-bebb-ae8a8d67b27d",
+                    "body": "{\n  \"tasks\": [],\n  \"transactionId\": \"1000\"\n}",
+                    "latency": 0,
+                    "statusCode": 200,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [
+                        {
+                            "target": "body",
+                            "modifier": "deviceInfo.bankId",
+                            "value": "00001",
+                            "invert": false,
+                            "operator": "equals"
+                        }
+                    ],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": false,
+                    "crudKey": "id"
+                },
+                {
+                    "uuid": "57e8a1a2-c5b4-4fa8-ae09-1a3fd028c8e9",
+                    "body": "",
+                    "latency": 0,
+                    "statusCode": 202,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [
+                        {
+                            "target": "body",
+                            "modifier": "deviceInfo.bankId",
+                            "value": "00002",
+                            "invert": false,
+                            "operator": "equals"
+                        }
+                    ],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": false,
+                    "crudKey": "id"
+                },
+                {
+                    "uuid": "e027e0aa-bf15-4dc4-80d3-9a33fa827c29",
+                    "body": "",
+                    "latency": 0,
+                    "statusCode": 503,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [
+                        {
+                            "target": "body",
+                            "modifier": "deviceInfo.bankId",
+                            "value": "00003",
+                            "invert": false,
+                            "operator": "equals"
+                        }
+                    ],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": false,
+                    "crudKey": "id"
+                },
+                {
+                    "uuid": "35da8a57-84c2-4e23-aa77-84855bed25cd",
+                    "body": "",
+                    "latency": 0,
+                    "statusCode": 500,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [
+                        {
+                            "target": "body",
+                            "modifier": "deviceInfo.bankId",
+                            "value": "00004",
+                            "invert": false,
+                            "operator": "equals"
+                        }
+                    ],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": false,
                     "crudKey": "id"
                 }
             ],

@@ -16,6 +16,8 @@ public class Constants {
 
     public static final String RECEIPT_TEMPLATE = "receiptTemplate";
 
+    public static final String TEMPLATE_TYPE = "template";
+
     public static final String EPP_MODE = "eppMode";
 
     public static final String BUTTON_VARIABLES = "buttons";
@@ -24,4 +26,5 @@ public class Constants {
 
     public static final int TRANSACTION_ID_LENGTH = 50;
 
+    public static final String FUNCTION_ID = "SERVIZI_PAGOPA";
 }

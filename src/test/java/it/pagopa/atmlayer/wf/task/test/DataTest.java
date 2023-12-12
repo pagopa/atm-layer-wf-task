@@ -19,7 +19,6 @@ import it.pagopa.atmlayer.wf.task.client.bean.Task;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.util.Constants;
-import it.pagopa.atmlayer.wf.task.util.Utility;
 
 public class DataTest {
 
@@ -55,9 +54,6 @@ public class DataTest {
         }
 
         taskResponse.getTasks().get(0).setForm("riepilogoCommissioni.html");
-        Map<String, Object> templateMap = new HashMap<>();
-        templateMap.put(Constants.RECEIPT_TEMPLATE, "aa.html");
-        taskResponse.getTasks().get(0).setVariables(templateMap);
         taskResponse.setTransactionId("1000");
 
         return taskResponse;
@@ -246,7 +242,27 @@ public class DataTest {
         varResponse.getVariables().put(Constants.TIMEOUT_VALUE, 1);
         varResponse.getVariables().put(Constants.COMMAND_VARIABLE_VALUE, "END");
         varResponse.getVariables().put(Constants.OUTCOME_VAR_NAME, "a");
+        varResponse.getVariables().put(Constants.RECEIPT_TEMPLATE, "arrivederci.html");
+        varResponse.getVariables().put(Constants.TEMPLATE_TYPE, "INFO");
+        varResponse.getVariables().put("company", "Auriga");
+        varResponse.getVariables().put("description", "descrizione");
+        varResponse.getVariables().put("amount", 10000);
+        varResponse.getVariables().put("fee", 2.30);
+        varResponse.getVariables().put("totale", 11.50);
+
+        return varResponse;
+    }
+
+    public static VariableResponse createvaVariableResponseMissingReceipt() {
+        VariableResponse varResponse = createVariableResponseWithData();
+        varResponse.setVariables(new HashMap<String, Object>());
+        varResponse.getVariables().put(Constants.ERROR_VARIABLES, new HashMap<>());
+        varResponse.getVariables().put(Constants.TIMEOUT_VARIABLES, new HashMap<>());
+        varResponse.getVariables().put(Constants.TIMEOUT_VALUE, 1);
+        varResponse.getVariables().put(Constants.COMMAND_VARIABLE_VALUE, "END");
+        varResponse.getVariables().put(Constants.OUTCOME_VAR_NAME, "a");
         varResponse.getVariables().put(Constants.RECEIPT_TEMPLATE, "a.html");
+        varResponse.getVariables().put(Constants.TEMPLATE_TYPE, "INFO");
         varResponse.getVariables().put("company", "Auriga");
         varResponse.getVariables().put("description", "descrizione");
         varResponse.getVariables().put("amount", 10000);
@@ -270,7 +286,4 @@ public class DataTest {
         return taskResponse;
     }
 
-    public static void main(String[] args) {
-        System.out.println(Utility.getJson(createTaskResponse(1)));
-    }
 }

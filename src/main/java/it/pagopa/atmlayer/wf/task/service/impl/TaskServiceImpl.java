@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse;
@@ -77,7 +78,7 @@ public class TaskServiceImpl implements TaskService {
 		TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
 		RestResponse<TaskResponse> restTaskResponse = null;
 		try {
-			log.info("Calling start process of function: [{}]", functionId);
+			log.info("Calling start process: [{}]", taskRequest);
 			restTaskResponse = processRestClient.startProcess(taskRequest);
 		} catch (WebApplicationException e) {
 			log.error("Error calling process service", e);
@@ -93,7 +94,7 @@ public class TaskServiceImpl implements TaskService {
 		TaskRequest taskRequest = buildTaskRequest(state, transactionId, null);
 		RestResponse<TaskResponse> restTaskResponse = null;
 		try {
-			log.info("Calling next task after for task id: [{}]", taskRequest.getTaskId());
+			log.info("Calling next task: [{}]", taskRequest);
 			restTaskResponse = processRestClient.nextTasks(taskRequest);
 		} catch (WebApplicationException e) {
 			log.error("Error calling process service", e);
@@ -108,10 +109,12 @@ public class TaskServiceImpl implements TaskService {
 	private Scene manageTaskResponse(RestResponse<TaskResponse> restTaskResponse) {
 		Scene scene = new Scene();
 		if (restTaskResponse.getStatus() == 200) {
+			log.info("Retrieved process: [{}]", restTaskResponse.getEntity());
 			scene.setOutcome(new OutcomeResponse(OutcomeEnum.OK));
 			scene.setTask(manageOkResponse(restTaskResponse.getEntity()));
 			return scene;
 		} else if (restTaskResponse.getStatus() == 202) {
+			log.info("Retrieved process: [{}]", restTaskResponse.getEntity());
 			scene.setOutcome(new OutcomeResponse(OutcomeEnum.PROCESSING));
 			return scene;
 		} else {
@@ -126,10 +129,12 @@ public class TaskServiceImpl implements TaskService {
 
 		if (!response.getTasks().isEmpty()) {
 			Task workingTask = response.getTasks().get(0);
-			VariableRequest variableRequest = createVariableRequest(workingTask);
+			atmTask = new it.pagopa.atmlayer.wf.task.bean.Task();
+			VariableRequest variableRequest = createVariableRequestForTemplate(workingTask, atmTask);
 			log.info("Calling retrieve variables for task id: [{}]", workingTask.getId());
 			RestResponse<VariableResponse> restVariableResponse = null;
 			try {
+				log.info("Retrieving variables: [{}]", variableRequest);
 				restVariableResponse = processRestClient.retrieveVariables(variableRequest);
 			} catch (WebApplicationException e) {
 				log.error("Error calling process service", e);
@@ -141,11 +146,11 @@ public class TaskServiceImpl implements TaskService {
 
 			if (restVariableResponse.getStatus() == 200) {
 				VariableResponse variableResponse = restVariableResponse.getEntity();
-				atmTask = new it.pagopa.atmlayer.wf.task.bean.Task();
+				log.info("Retrieved variables: [{}]", variableResponse);
 				atmTask.setId(workingTask.getId());
 				Map<String, Object> workingVariables = variableResponse.getVariables();
 
-				setTemplate(atmTask, workingTask);
+				manageReceipt(workingVariables, atmTask);
 
 				manageVariables(workingVariables, atmTask, variableRequest);
 
@@ -159,6 +164,41 @@ public class TaskServiceImpl implements TaskService {
 			}
 		}
 		return atmTask;
+	}
+
+	private void manageReceipt(Map<String, Object> workingVariables, it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
+
+		if (workingVariables != null && workingVariables.get(Constants.RECEIPT_TEMPLATE) != null) {
+			RestResponse<VariableResponse> restVariableResponse = null;
+			try {
+				restVariableResponse = processRestClient
+						.retrieveVariables(createVariableRequestForReceipt(workingVariables, atmTask));
+			} catch (WebApplicationException e) {
+				log.error("Error calling process service", e);
+				if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
+					throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
+				}
+				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+			}
+
+			workingVariables.remove(Constants.RECEIPT_TEMPLATE);
+
+			if (restVariableResponse.getStatus() == 200) {
+				try {
+					atmTask.setReceiptTemplate(Base64.getEncoder()
+							.encodeToString(replaceVarValue(restVariableResponse.getEntity().getVariables(),
+									atmTask.getReceiptTemplate()).getBytes(properties.htmlCharset())));
+				} catch (UnsupportedEncodingException e) {
+					log.error(" - ERROR:", e);
+					throw new ErrorException(ErrorEnum.GENERIC_ERROR);
+				}
+			} else if (restVariableResponse.getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
+				throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
+			} else {
+				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+			}
+		}
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -239,8 +279,10 @@ public class TaskServiceImpl implements TaskService {
 		atmTask.setOutcomeVarName((String) workingVariables.get(Constants.OUTCOME_VAR_NAME));
 		log.debug("Getting outcomeVarName value: [{}]", workingVariables.remove(Constants.OUTCOME_VAR_NAME));
 
-		atmTask.setReceiptTemplate((String) workingVariables.get(Constants.RECEIPT_TEMPLATE));
-		log.debug("Getting recepitTemplate value: [{}]", workingVariables.remove(Constants.RECEIPT_TEMPLATE));
+		if (atmTask.getTemplate() != null) {
+			atmTask.getTemplate().setType((String) workingVariables.get(Constants.TEMPLATE_TYPE));
+			log.debug("Getting template type value: [{}]", workingVariables.remove(Constants.TEMPLATE_TYPE));
+		}
 
 		if (!workingVariables.isEmpty()) {
 			log.debug("Getting generic variables...");
@@ -252,18 +294,48 @@ public class TaskServiceImpl implements TaskService {
 				atmTask.getData().put(entry.getKey(), String.valueOf(entry.getValue()));
 			}
 		}
+
 	}
 
-	private VariableRequest createVariableRequest(Task task) {
+	private VariableRequest createVariableRequestForReceipt(Map<String, Object> variables,
+			it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
+		VariableRequest variableRequest = new VariableRequest();
+		if (variables != null && variables.get(Constants.RECEIPT_TEMPLATE) != null) {
+			String receiptTemplateName = (String) variables.get(Constants.RECEIPT_TEMPLATE);
+			try {
+				log.debug("Finding variables in receipt template...");
+				String htmlString = new String(
+						Utility.getFileFromCdn(properties.cdnUrl() + properties.htmlResourcesPath()
+								+ receiptTemplateName).readAllBytes(),
+						properties.htmlCharset());
+				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
+				atmTask.setReceiptTemplate(htmlString);
+				log.debug("Placeholders found: {}", placeholders);
+				if (placeholders != null && !placeholders.isEmpty()) {
+					log.debug("Number of variables found in receipt template: {}", placeholders.size());
+					variableRequest.setVariables(placeholders);
+				}
+			} catch (IOException e) {
+				log.error("- ERROR: File: {} not found!", receiptTemplateName, e);
+				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+			}
+		}
+		variableRequest.setTaskId(atmTask.getId());
+		return variableRequest;
+	}
+
+	private VariableRequest createVariableRequestForTemplate(Task task, it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
 		VariableRequest variableRequest = new VariableRequest();
 		if (task.getForm() != null) {
 			try {
 				log.debug("Finding variables in html form...");
+				atmTask.setTemplate(new Template());
 				String htmlString = new String(
 						Utility.getFileFromCdn(properties.cdnUrl() + properties.htmlResourcesPath() + task.getForm())
 								.readAllBytes(),
 						properties.htmlCharset());
 				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
+				atmTask.getTemplate().setContent(htmlString);
 				log.debug("Placeholders found: {}", placeholders);
 				if (placeholders != null && !placeholders.isEmpty()) {
 					log.debug("Number of variables found in html form: {}", placeholders.size());
@@ -277,63 +349,34 @@ public class TaskServiceImpl implements TaskService {
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
 		}
-		// Find variables in receipt template
-		if (task.getVariables() != null
-				&& task.getVariables().get(Constants.RECEIPT_TEMPLATE) != null) {
-			try {
-				String htmlString = new String(
-						Utility.getFileFromCdn(properties.cdnUrl() + properties.htmlResourcesPath()
-								+ (String) task.getVariables()
-										.get(Constants.RECEIPT_TEMPLATE))
-								.readAllBytes(),
-						properties.htmlCharset());
-				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
-				placeholders.addAll(Utility.getIdOfTag(htmlString, LI_TAG));
-				if (placeholders != null && !placeholders.isEmpty()) {
-					log.debug("Number of variables found in receipt template: {}", placeholders.size());
-					variableRequest.setVariables(placeholders);
-				}
-			} catch (IOException e) {
-				log.error("- ERROR: File: {} not found!", task.getVariables().get(Constants.RECEIPT_TEMPLATE), e);
-				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
-			}
-		}
 		variableRequest.setTaskId(task.getId());
 		return variableRequest;
 	}
 
-	private void replaceVarValue(it.pagopa.atmlayer.wf.task.bean.Task task, Map<String, Object> variables) {
-		if (task.getTemplate() != null) {
+	private String replaceVarValue(Map<String, Object> variables, String html) {
+		String htmlTemp = html;
+		if (htmlTemp != null) {
 			log.info("-----START replacing variables in html-----");
-
-			variables.entrySet().stream().forEach(value -> {
-				for (String variable : Utility.findStringsByGroup(task.getTemplate().getData(), VARIABLES_REGEX)) {
-					if (value.getKey().equals(variable)) {
-						log.info("Var {} replaced -> {}", variable, value.getValue());
-						task.getTemplate().setData(
-								task.getTemplate().getData().replace("${" + variable + "}",
-										String.valueOf(value.getValue())));
-						break;
-					}
-				}
-			});
-
-			task.getTemplate().setData(
-					task.getTemplate().getData().replace("${" + Constants.CDN_PLACEHOLDER + "}", properties.cdnUrl()));
-			List<String> placeholders = Utility.findStringsByGroup(task.getTemplate().getData(), VARIABLES_REGEX);
+			for (Entry<String, Object> value : variables.entrySet()) {
+				log.debug("Replacing {} -> {}", "${" + value.getKey() + "}", String.valueOf(value.getValue()));
+				htmlTemp = htmlTemp.replace("${" + value.getKey() + "}", String.valueOf(value.getValue()));
+			}
+			htmlTemp = htmlTemp.replace("${" + Constants.CDN_PLACEHOLDER + "}", properties.cdnUrl());
+			List<String> placeholders = Utility.findStringsByGroup(htmlTemp, VARIABLES_REGEX);
 			if (!placeholders.isEmpty()) {
 				log.error("Value not found for placeholders: {}", placeholders);
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
 			log.info("-----END replacing variables in html-----");
 		}
+		return htmlTemp;
 	}
 
 	private void updateTemplate(it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
 		if (atmTask.getTemplate() != null) {
 			try {
-				atmTask.getTemplate().setData(Base64.getEncoder()
-						.encodeToString(atmTask.getTemplate().getData().getBytes(properties.htmlCharset())));
+				atmTask.getTemplate().setContent(Base64.getEncoder()
+						.encodeToString(atmTask.getTemplate().getContent().getBytes(properties.htmlCharset())));
 			} catch (UnsupportedEncodingException e) {
 				log.error(" - ERROR:", e);
 				throw new ErrorException(ErrorEnum.GENERIC_ERROR);
@@ -345,28 +388,15 @@ public class TaskServiceImpl implements TaskService {
 	private void manageVariables(Map<String, Object> workingVariables, it.pagopa.atmlayer.wf.task.bean.Task atmTask,
 			VariableRequest variableRequest) {
 		if (workingVariables != null) {
-			// Replaceing variables with values
-			replaceVarValue(atmTask, workingVariables);
+			// Replaceing variables with values in template
+			if (atmTask.getTemplate() != null) {
+				atmTask.getTemplate().setContent(replaceVarValue(workingVariables, atmTask.getTemplate().getContent()));
+			}
+			setVariablesInAtmTask(atmTask, workingVariables);
 			if (variableRequest.getVariables() != null) {
 				workingVariables.keySet().removeAll(variableRequest.getVariables());
 			}
-			setVariablesInAtmTask(atmTask, workingVariables);
 		}
 	}
 
-	private void setTemplate(it.pagopa.atmlayer.wf.task.bean.Task atmTask, Task workingTask) {
-		if (workingTask.getForm() != null) {
-			try {
-				atmTask.setTemplate(new Template());
-				atmTask.getTemplate().setData(
-						new String(Utility.getFileFromCdn(properties.cdnUrl()
-								+ properties.htmlResourcesPath()
-								+ workingTask.getForm()).readAllBytes(),
-								properties.htmlCharset()));
-			} catch (IOException e) {
-				log.error("File not found {}", workingTask.getForm(), e);
-				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
-			}
-		}
-	}
 }

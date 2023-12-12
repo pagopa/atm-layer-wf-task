@@ -27,6 +27,7 @@ public class State {
 	@Schema(description = "Mappa delle variabili inviate dal Device")
 	private Map<String, Object> data;
 
+	@Schema(hidden = true)
 	private String transactionId;
 
 }
