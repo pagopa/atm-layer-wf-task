@@ -10,12 +10,19 @@ import org.jboss.resteasy.reactive.RestResponse.Status;
 
 import it.pagopa.atmlayer.wf.task.bean.Scene;
 import it.pagopa.atmlayer.wf.task.bean.State;
+import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorEnum;
+import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorException;
+import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorResponse;
+import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeEnum;
+import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeResponse;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
+import it.pagopa.atmlayer.wf.task.util.Constants;
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.ProcessingException;
 import lombok.extern.slf4j.Slf4j;
 
 @Path("/api/v1/tasks")
@@ -25,33 +32,81 @@ public class TaskResource {
 	@Inject
 	TaskService taskService;
 
-	@Path("/main/{functionId}")
+	@Path("/main")
 	@POST
-	@Operation(summary = "Restituisce la scena principale della funzione selezionata", description = "CREATE della scena prinicpale con la lista dei task dato l'ID della funzione selezionata.")
-	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. Restituisce l'oggetto Scene nel body della risposta.", content = @Content(schema = @Schema(implementation = Scene.class)))
+	@Operation(summary = "Restituisce la scena principale della funzione selezionata.", description = "CREATE della scena prinicpale con la lista dei task dato l'ID della funzione selezionata.")
+	@APIResponse(responseCode = "200", description = "Operazione eseguita con successo. Il processo è terminato.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. Restituisce l'oggetto Task nel body della risposta.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "202", description = "Operazione eseguita con successo. Il processo è in esecuzione.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "209", description = "Errore durante l'elaborazione del flusso della funzione.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+	@APIResponse(responseCode = "400", description = "Richiesta malformata, la descrizione può fornire dettagli sull'errore.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "500", description = "Errore generico, la descrizione può fornire dettagli sull'errore.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
 	public RestResponse<Scene> createMainScene(
-			@Parameter(description = "ID della funzione selezionata", example = "PAGAMENTO_SPONTANEO") @NotNull @PathParam("functionId") String functionId,
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
+		try {
+			Scene scene = taskService.buildFirst(Constants.FUNCTION_ID, state);
+			if (OutcomeEnum.PROCESSING.equals(scene.getOutcome().getOutcomeEnum())) {
+				return RestResponse.status(Status.ACCEPTED, scene);
+			}
+			if (scene.getTask() == null) {
+				scene.setOutcome(new OutcomeResponse(OutcomeEnum.END));
+				return RestResponse.status(Status.OK, scene);
+			}
+			return RestResponse.status(Status.CREATED, scene);
+		} catch (ProcessingException e) {
+			log.error("Unable to establish connection", e);
+			throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
+		}
 
-		Scene scene = taskService.buildFirst(functionId, state);
-
-		return RestResponse.status(Status.CREATED, scene);
 	}
 
 	@Path("/next/trns/{transactionId}")
 	@POST
 	@Operation(summary = "Restituisce la scena successiva con la lista dei task dato l'ID del flusso.", description = "CREATE dello step successivo a quello corrente dato l'ID del flusso.")
-	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. restituisce l'oggetto Task nel body della risposta.", content = @Content(schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "200", description = "Operazione eseguita con successo. Il processo è terminato.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. Restituisce l'oggetto Task nel body della risposta.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "202", description = "Operazione eseguita con successo. Il processo è in esecuzione.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
+	@APIResponse(responseCode = "209", description = "Errore durante l'elaborazione del flusso della funzione.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+	@APIResponse(responseCode = "400", description = "Richiesta malformata, la descrizione può fornire dettagli sull'errore.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+	@APIResponse(responseCode = "500", description = "Errore generico, la descrizione può fornire dettagli sull'errore.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
 	public RestResponse<Scene> createNextScene(
 			@Parameter(description = "ID della transazione") @NotNull @PathParam("transactionId") String transactionId,
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 
-		if (state.getTaskId() == null || state.getTaskId().isEmpty()) {
-			log.error("Task id is null or empty");
-			return RestResponse.status(Status.BAD_REQUEST);
+		String[] transactionIdParts = transactionId.split("-");
+		if (!transactionIdParts[0].equals(state.getDevice().getBankId())) {
+			log.error("TransactionId not valid -> [BankId]");
+			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
 		}
-		Scene scene = taskService.buildNext(transactionId, state);
-		return RestResponse.status(Status.CREATED, scene);
+		if (state.getDevice().getBranchId() != null
+				&& !transactionIdParts[1].equals(state.getDevice().getBranchId())) {
+			log.error("TransactionId not valid -> [BranchId]");
+			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
+		}
+		if (state.getDevice().getCode() != null
+				&& !transactionIdParts[2].equals(state.getDevice().getCode())) {
+			log.error("TransactionId not valid -> [Code]");
+			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
+		}
+		if (state.getDevice().getTerminalId() != null
+				&& !transactionIdParts[3].equals(state.getDevice().getTerminalId())) {
+			log.error("TransactionId not valid -> [TerminalId]");
+			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
+		}
+		try {
+			Scene scene = taskService.buildNext(transactionId, state);
+			if (OutcomeEnum.PROCESSING.equals(scene.getOutcome().getOutcomeEnum())) {
+				return RestResponse.status(Status.ACCEPTED, scene);
+			}
+			if (scene.getTask() == null) {
+				scene.setOutcome(new OutcomeResponse(OutcomeEnum.END));
+				return RestResponse.status(Status.OK, scene);
+			}
+			return RestResponse.status(Status.CREATED, scene);
+		} catch (ProcessingException e) {
+			log.error("Unable to establish connection", e);
+			throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
+		}
 
 	}
 }

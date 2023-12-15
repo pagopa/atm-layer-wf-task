@@ -8,6 +8,8 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import it.pagopa.atmlayer.wf.task.bean.enumartive.Command;
+import it.pagopa.atmlayer.wf.task.bean.enumartive.EppMode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,7 +39,7 @@ public class Task {
 	private Map<String, Object> onTimeout;
 
 	@Schema(description = "Template html")
-	private String template;
+	private Template template;
 
 	@Schema(description = "Comando da eseguire")
 	private Command command;
@@ -47,6 +49,9 @@ public class Task {
 
 	@Schema(description = "Nome della variabile in cui il Device setterà l'esito del Command")
 	private String outcomeVarName;
+
+	@Schema(description = "Modalità dell'epp")
+	private EppMode eppMode;
 
 	@Schema(description = "Lista dei bottoni")
 	private List<Button> buttons;

@@ -1,4 +1,4 @@
-package it.pagopa.atmlayer.wf.task.test;
+package it.pagopa.atmlayer.wf.task.test.resource;
 
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 
