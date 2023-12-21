@@ -30,5 +30,7 @@ jobs:
             APPLICATION_BASE_URL: ${{ vars.APPLICATION_BASE_URL }}
             APPLICATION_BASE_PATH: ${{ vars.APPLICATION_BASE_PATH }}
             COGNITO_BASE_URL: ${{ vars.COGNITO_BASE_URL }}
+            COGNITO_CLIENT_ID:  ${{ secrets.COGNITO_CLIENT_ID }}
+            COGNITO_CLIENT_SECRET:  ${{ secrets.COGNITO_CLIENT_SECRET }}
         with:
           filename: performance_test/run_performance_tests.js
