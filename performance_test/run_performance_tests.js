@@ -5,7 +5,7 @@ import { menu } from "./functions/menu.js";
 import { spontaneousPayment } from "./functions/spontaneous_payement.js";
 import { payementScan } from "./functions/payement_scan.js";
 import { exit } from "./functions/exit.js";
-import { sleep } from "k6";
+// import { sleep } from "k6";
 import { confirmExit } from "./functions/confirm_exit.js";
 
 const baseUrl = `${__ENV.APPLICATION_BASE_URL}`;
