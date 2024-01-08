@@ -1,3 +1,5 @@
+const terminalId = Math.floor(10000000 + Math.random() * 90000000);
+
 export function mockBodyMenu () {
     const mock = {
 
@@ -43,7 +45,7 @@ export function mockBodyMenu () {
     
             ],
     
-            "terminalId": "64874412"
+            "terminalId": terminalId
     
         }
     
@@ -93,7 +95,7 @@ export function mockedRequestBody (paymentNotice, taskId) {
     
             ],
     
-            "terminalId": "64874412"
+            "terminalId": terminalId
     
         },
     
