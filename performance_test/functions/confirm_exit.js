@@ -15,7 +15,7 @@ export function confirmExit(baseUrl, basePath, token, exitResponse) {
 
     const params = {
         headers: headers,
-        tags: { name: 'Confirm Exit' },
+        tags: { name: 'Close' },
     };
 
     const jsonData = JSON.parse(exitResponse).task;
