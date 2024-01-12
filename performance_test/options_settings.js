@@ -11,37 +11,39 @@ export const thresholdsSettings = {
     'http_reqs{name:Menu}':[],
 
     //SPONTANEOUS PAYEMENT
-    'http_req_duration{name:Spontaneous Payement}': ['p(95)<15000'],
-    'http_req_waiting{name:Spontaneous Payement}':['p(95)<15000'],
-    'http_req_failed{name:Spontaneous Payement}':['rate<0.01'],
-    'http_reqs{name:Spontaneous Payement}':[],
+    'http_req_duration{name:Bill Payment}': ['p(95)<15000'],
+    'http_req_waiting{name:Bill Payment}':['p(95)<15000'],
+    'http_req_failed{name:Bill Payment}':['rate<0.01'],
+    'http_reqs{name:Bill Payment}':[],
 
     //PAYMENT SCAN
-    'http_req_duration{name:PaymentScan}': ['p(95)<15000'],
-    'http_req_waiting{name:PaymentScan}':['p(95)<15000'],
-    'http_req_failed{name:PaymentScan}':['rate<0.01'],
-    'http_reqs{name:PaymentScan}':[],
+    'http_req_duration{name:Calculate Fees}': ['p(95)<15000'],
+    'http_req_waiting{name:Calculate Fees}':['p(95)<15000'],
+    'http_req_failed{name:Calculate Fees}':['rate<0.01'],
+    'http_reqs{name:Calculate Fees}':[],
 
     //EXIT
-    'http_req_duration{name:Exit}': ['p(95)<15000'],
-    'http_req_waiting{name:Exit}':['p(95)<15000'],
-    'http_req_failed{name:Exit}':['rate<0.01'],
-    'http_reqs{name:Exit}':[],
+    'http_req_duration{name:Pre Close}': ['p(95)<15000'],
+    'http_req_waiting{name:Pre Close}':['p(95)<15000'],
+    'http_req_failed{name:Pre Close}':['rate<0.01'],
+    'http_reqs{name:Pre Close}':[],
 
     //CONFIRM EXIT
-    'http_req_duration{name:Confirm Exit}': ['p(95)<15000'],
-    'http_req_waiting{name:Confirm Exit}':['p(95)<15000'],
-    'http_req_failed{name:Confirm Exit}':['rate<0.01'],
-    'http_reqs{name:Confirm Exit}':[],
+    'http_req_duration{name:Close}': ['p(95)<15000'],
+    'http_req_waiting{name:Close}':['p(95)<15000'],
+    'http_req_failed{name:Close}':['rate<0.01'],
+    'http_reqs{name:Close}':[],
   }
   
   
   export const average_load = {
     executor: 'ramping-vus',
     stages: [
-      { duration: '2s', target: 20 },
-      { duration: '5s', target: 20 },
-      { duration: '5s', target: 0 },
+      { duration: '2s', target: 5 },
+      { duration: '10s', target: 10 },
+      { duration: '5m', target: 20 },
+      { duration: '5m', target: 3 },
+      { duration: '2s', target: 0 },
     ],
   };
   
