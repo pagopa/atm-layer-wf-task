@@ -1,4 +1,4 @@
-package it.pagopa.atmlayer.wf.task.client.bean;
+package it.pagopa.atmlayer.wf.task.client.process.bean;
 
 import java.util.List;
 

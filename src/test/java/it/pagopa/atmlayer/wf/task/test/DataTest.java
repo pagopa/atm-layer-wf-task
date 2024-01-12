@@ -15,9 +15,9 @@ import it.pagopa.atmlayer.wf.task.bean.enumartive.Channel;
 import it.pagopa.atmlayer.wf.task.bean.enumartive.Command;
 import it.pagopa.atmlayer.wf.task.bean.enumartive.EppMode;
 import it.pagopa.atmlayer.wf.task.bean.enumartive.PeripheralStatus;
-import it.pagopa.atmlayer.wf.task.client.bean.Task;
-import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
-import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
+import it.pagopa.atmlayer.wf.task.client.process.bean.Task;
+import it.pagopa.atmlayer.wf.task.client.process.bean.TaskResponse;
+import it.pagopa.atmlayer.wf.task.client.process.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.util.Constants;
 
 public class DataTest {

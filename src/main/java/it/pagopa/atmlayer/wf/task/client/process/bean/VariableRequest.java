@@ -1,6 +1,6 @@
-package it.pagopa.atmlayer.wf.task.client.bean;
+package it.pagopa.atmlayer.wf.task.client.process.bean;
 
-import java.util.Map;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -15,18 +15,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@RegisterForReflection
 @JsonInclude(Include.NON_NULL)
-public class TaskRequest {
-
-    private String functionId;
+@RegisterForReflection
+public class VariableRequest {
 
     private String taskId;
 
-    private String transactionId;
+    private Set<String> buttons;
 
-    private DeviceInfo deviceInfo;
-
-    private Map<String, Object> variables;
+    private Set<String> variables;
 
 }
