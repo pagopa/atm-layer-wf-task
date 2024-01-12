@@ -15,7 +15,7 @@ export function exit(baseUrl, basePath, token, scanPaymentResponse) {
 
     const params = {
         headers: headers,
-        tags: { name: 'Exit' },
+        tags: { name: 'Pre Close' },
     };
 
     const jsonData = JSON.parse(scanPaymentResponse).task;
