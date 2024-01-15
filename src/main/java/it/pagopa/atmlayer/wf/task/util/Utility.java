@@ -3,10 +3,9 @@ package it.pagopa.atmlayer.wf.task.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -107,8 +106,8 @@ public class Utility {
     * @param regex The regular expression pattern used to identify matching substrings.
     * @return A list of strings representing the substrings found in the input string that match the given regular expression.
     */
-    public static Set<String> findStringsByGroup(String inputString, String regex) {
-        Set<String> groups = new LinkedHashSet<>();
+    public static List<String> findStringsByGroup(String inputString, String regex) {
+        List<String> groups = new LinkedList<>();
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(inputString);
         while (matcher.find()) {
@@ -151,8 +150,8 @@ public class Utility {
     * @param tag The HTML tag used to identify the elements.
     * @return A list of strings containing the IDs of HTML elements with the specified tag in the HTML string.
     */
-    public static Set<String> getIdOfTag(String htmlString, String tag) {
-        Set<String> idList = new LinkedHashSet<>();
+    public static List<String> getIdOfTag(String htmlString, String tag) {
+        List<String> idList = new ArrayList<>();
 
         Document doc = Jsoup.parse(htmlString);
 

@@ -1,4 +1,4 @@
-package it.pagopa.atmlayer.wf.task.client.process.bean;
+package it.pagopa.atmlayer.wf.task.client.bean;
 
 import java.util.Map;
 
@@ -15,17 +15,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@RegisterForReflection
 @JsonInclude(Include.NON_NULL)
-public class TaskRequest {
+@RegisterForReflection
+public class VariableResponse {
 
-    private String functionId;
-
-    private String taskId;
-
-    private String transactionId;
-
-    private DeviceInfo deviceInfo;
+    private Map<String, Object> buttons;
 
     private Map<String, Object> variables;
 

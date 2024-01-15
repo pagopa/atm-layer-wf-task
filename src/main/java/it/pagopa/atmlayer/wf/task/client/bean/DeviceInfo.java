@@ -1,4 +1,4 @@
-package it.pagopa.atmlayer.wf.task.client.process.bean;
+package it.pagopa.atmlayer.wf.task.client.bean;
 
 import java.util.Date;
 
