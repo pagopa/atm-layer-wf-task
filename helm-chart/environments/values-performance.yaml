@@ -17,18 +17,18 @@ nameOverride: ""
 fullnameOverride: ""
 
 processService:
-  address: http://pagopa-uat-atm-layer-wf-process.pagopa.svc.cluster.local:8080
+  address: http://pagopa-performance-atm-layer-wf-process.pagopa.svc.cluster.local:8080
 
 logLevel: DEBUG
 
 cdn:
-  credentialsSecretName: "pagopa-uat-atm-layer-wf-task-cdn-base-path"
+  credentialsSecretName: "pagopa-performance-atm-layer-wf-task-cdn-base-path"
   credentialsSecretKeys:
     cdn_base_path: CDN_BASE_PATH
 
 secretProviderClass:
   name: atm-layer-wf-task-secrets
-  env: uat
+  env: performance
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -38,7 +38,7 @@ serviceAccount:
     eks.amazonaws.com/role-arn: arn:aws:iam::00000000000:role/pagopa-dev-atm-layer-xxxxxx-serviceaccount-role
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: pagopa-uat-atm-layer-wf-task
+  name: pagopa-performance-atm-layer-wf-task
 
 podAnnotations: {}
 
@@ -54,25 +54,25 @@ securityContext: {}
   # runAsUser: 1000
 
 deployment:
-  name: pagopa-uat-atm-layer-wf-task
+  name: pagopa-performance-atm-layer-wf-task
   annotations:
     reloader.stakater.com/auto: "true"
-    secret.reloader.stakater.com/reload: pagopa-uat-atm-layer-wf-task-cdn-base-path
+    secret.reloader.stakater.com/reload: pagopa-performance-atm-layer-wf-task-cdn-base-path
 
 service:
-  name: pagopa-uat-atm-layer-wf-task
+  name: pagopa-performance-atm-layer-wf-task
   type: NodePort
   port: 8080
 
 ingress:
   enabled: true
   className: ""
-  name: pagopa-uat-atm-layer-wf-task
+  name: pagopa-performance-atm-layer-wf-task
   annotations: 
     kubernetes.io/ingress.class: "alb"
     alb.ingress.kubernetes.io/scheme: "internal"
     alb.ingress.kubernetes.io/group.name: "alb-controller"
-    alb.ingress.kubernetes.io/load-balancer-name: "pagopa-uat-atm-layer-alb-int"
+    alb.ingress.kubernetes.io/load-balancer-name: "pagopa-performance-atm-layer-alb-int"
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTP": 8080}]'
     alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
     alb.ingress.kubernetes.io/healthcheck-port: traffic-port
@@ -105,15 +105,11 @@ resources: {}
   #   memory: 128Mi
 
 autoscaling:
-  enabled: true
-  minReplicas: 2
-  maxReplicas: 4
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
   targetCPUUtilizationPercentage: 80
-  targetMemoryUtilizationPercentage: 80
-  memoryLimits: 600Mi
-  memoryRequests: 300Mi
-  cpuLimits: 600m
-  cpuRequest: 300m
+  # targetMemoryUtilizationPercentage: 80
 
 nodeSelector: {}
 
