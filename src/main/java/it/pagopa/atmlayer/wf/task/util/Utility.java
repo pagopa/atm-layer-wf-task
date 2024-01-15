@@ -65,8 +65,8 @@ public class Utility {
         return result;
     }
 
-    public static Object getObject(String json, Class<?> clazz) {
-        Object result = null;
+    public static <T> T  getObject(String json, Class<T> clazz) {
+        T result = null;
         ObjectMapper om = new ObjectMapper();
         try {
             result = om.readValue(json, clazz);
@@ -85,8 +85,8 @@ public class Utility {
     * @param device The device for which the transaction ID is being generated.
     * @return A unique transaction ID in UUID format.
     */
-    public static String generateTransactionId(Object object) {
-        Device device = ((State) object).getDevice();
+    public static String generateTransactionId(State state) {
+        Device device = state.getDevice();
         return (device.getBankId()
                 + "-" + (device.getBranchId() != null ? device.getBranchId() : "")
                 + "-" + (device.getCode() != null ? device.getCode() : "")

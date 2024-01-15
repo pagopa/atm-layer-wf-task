@@ -171,6 +171,7 @@ public class DataTest {
         Map<String, Object> variablesData = new HashMap<>();
         variablesData.put("var1", "test");
         state.setData(variablesData);
+        state.setFiscalCode("RSSMRA74D22A001Q");
         return state;
     }
 

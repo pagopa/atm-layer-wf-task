@@ -17,6 +17,7 @@ import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.MockitoConfig;
 import io.restassured.response.Response;
+import it.pagopa.atmlayer.wf.task.client.MilAuthRestClient;
 import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
@@ -36,9 +37,17 @@ class TaskResourceTest {
         @RestClient
         @MockitoConfig(convertScopes = true)
         ProcessRestClient processRestClient;
+        
+        @InjectMock
+        @RestClient
+        @MockitoConfig(convertScopes = true)
+        MilAuthRestClient milAuthRestClient;
 
         @Test
         void startProcessOk() {
+            
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(RestResponse.status(Status.OK,"{\"access_token\": \"string\"}"));            
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -58,6 +67,9 @@ class TaskResourceTest {
 
         @Test
         void startProcessOkWithoutDeviceData() {
+            
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(RestResponse.status(Status.OK,"{\"access_token\": \"string\"}")); 
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -77,6 +89,9 @@ class TaskResourceTest {
 
         @Test
         void taskWithoutButtons() {
+            
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(RestResponse.status(Status.OK,"{\"access_token\": \"string\"}")); 
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -96,6 +111,9 @@ class TaskResourceTest {
 
         @Test
         void taskWithoutForm() {
+            
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(RestResponse.status(Status.OK,"{\"access_token\": \"string\"}")); 
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -115,6 +133,9 @@ class TaskResourceTest {
 
         @Test
         void startProcessKoOnStart500() {
+            
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(RestResponse.status(Status.OK,"{\"access_token\": \"string\"}")); 
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.INTERNAL_SERVER_ERROR));
@@ -133,6 +154,9 @@ class TaskResourceTest {
 
         @Test
         void startProcessKoOnStart503() {
+                
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(RestResponse.status(Status.OK,"{\"access_token\": \"string\"}")); 
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenThrow(new WebApplicationException(Status.SERVICE_UNAVAILABLE));
@@ -151,6 +175,8 @@ class TaskResourceTest {
 
         @Test
         void startProcessKoOnVariables500() {
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(RestResponse.status(Status.OK,"{\"access_token\": \"string\"}")); 
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK, DataTest.createTaskResponse(1)));
@@ -168,6 +194,8 @@ class TaskResourceTest {
 
         @Test
         void startProcessKoOnVariables503() {
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(RestResponse.status(Status.OK,"{\"access_token\": \"string\"}")); 
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK, DataTest.createTaskResponse(1)));
@@ -185,6 +213,8 @@ class TaskResourceTest {
 
         @Test
         void variableResponseWithData() {
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(RestResponse.status(Status.OK,"{\"access_token\": \"string\"}")); 
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -287,7 +317,10 @@ class TaskResourceTest {
 
         @Test
         void taskNoPeripherals() {
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(RestResponse.status(Status.OK,"{\"access_token\": \"string\"}")); 
 
+            
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createTaskResponse(1)));
@@ -411,6 +444,8 @@ class TaskResourceTest {
 
         @Test
         void startProcessOkNoData() {
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(RestResponse.status(Status.OK,"{\"access_token\": \"string\"}")); 
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -430,6 +465,9 @@ class TaskResourceTest {
 
         @Test
         void startProcessNoTasks() {
+            
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(RestResponse.status(Status.OK,"{\"access_token\": \"string\"}")); 
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -449,6 +487,9 @@ class TaskResourceTest {
 
         @Test
         void testDefaultVariables() {
+            
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(RestResponse.status(Status.OK,"{\"access_token\": \"string\"}")); 
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -467,7 +508,9 @@ class TaskResourceTest {
 
         @Test
         void testMissingReceipt() {
-
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(RestResponse.status(Status.OK,"{\"access_token\": \"string\"}")); 
+                
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createTaskResponseMissingReceipt(1)));
@@ -504,6 +547,9 @@ class TaskResourceTest {
 
         @Test
         void testReturn202ProcessOnStart() {
+            
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(RestResponse.status(Status.OK,"{\"access_token\": \"string\"}")); 
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.ACCEPTED,
@@ -557,6 +603,9 @@ class TaskResourceTest {
 
         @Test
         void startProcessKoFromProcess500() {
+            
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(RestResponse.status(Status.OK,"{\"access_token\": \"string\"}")); 
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenThrow(new WebApplicationException(Status.INTERNAL_SERVER_ERROR));
@@ -570,6 +619,9 @@ class TaskResourceTest {
 
         @Test
         void startProcessKoFromProcess503() {
+            
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(RestResponse.status(Status.OK,"{\"access_token\": \"string\"}")); 
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenThrow(new WebApplicationException(Status.SERVICE_UNAVAILABLE));
@@ -579,6 +631,19 @@ class TaskResourceTest {
                                 .post("/main").then().extract().response();
 
                 Assertions.assertEquals(209, response.statusCode());
+        }
+        
+        @Test
+        void startProcessKoFromGetToken() {
+            
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenThrow(new WebApplicationException(Status.SERVICE_UNAVAILABLE));                 
+
+                Response response = given().body(DataTest.createStateRequestStart())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/main").then().extract().response();
+
+                Assertions.assertEquals(500, response.statusCode());
         }
 
         public static void main(String[] args) {
