@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>it.pagopa.atmlayer</groupId>
   <artifactId>workflow-task</artifactId>
-  <version>1.1.0-dev.1</version>
+  <version>1.1.0</version>
   <properties>
     <jacoco.version>0.8.11</jacoco.version>
     <compiler-plugin.version>3.11.0</compiler-plugin.version>
