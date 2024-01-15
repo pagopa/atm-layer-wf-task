@@ -6,9 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.TimeZone;
 
 import org.junit.jupiter.api.Test;
@@ -70,7 +68,7 @@ class UtilityTest {
                 "\t\r\n" + //
                 "</html>";
 
-        Set<String> result = new LinkedHashSet<>();
+        List<String> result = new ArrayList<>();
         result.add("cancel");
         assertEquals(result, Utility.getIdOfTag(htmlString, "button"));
     }
