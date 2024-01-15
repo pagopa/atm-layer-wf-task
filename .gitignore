@@ -44,4 +44,4 @@ nb-configuration.xml
 
 #result integration test
 # src/test/resources/integration-test/output/result.html
-# src/test/resources/integration-test/output/result.json
+src/test/resources/integration-test/output/result.json
