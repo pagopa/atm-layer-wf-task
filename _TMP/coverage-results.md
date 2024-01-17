@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 92.16%               |
-| :heavy_check_mark: Number of Lines Covered | 376    |
+| Code Coverage %         | 92.47%               |
+| :heavy_check_mark: Number of Lines Covered | 393    |
 | :x: Number of Lines Missed  | 32     |
-| Total Number of Lines   | 408     |
+| Total Number of Lines   | 425     |
 
 
 ## Details:
@@ -193,6 +193,16 @@
 
 <details>
     <summary>
+:x: TokenResponse.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
 :x: VariableRequest.java
     </summary>
 
@@ -292,11 +302,11 @@
         
 #### Lines Missed:
         
-- Line #191
+- Line #197
 ```
 				} catch (UnsupportedEncodingException e) {
 ```
-- Line #380
+- Line #386
 ```
 			} catch (UnsupportedEncodingException e) {
 ```
@@ -411,6 +421,16 @@
 
     
 ### it/pagopa/atmlayer/wf/task/client
+
+<details>
+    <summary>
+:x: MilAuthRestClient.java
+    </summary>
+
+        
+</details>
+
+    
 
 <details>
     <summary>
