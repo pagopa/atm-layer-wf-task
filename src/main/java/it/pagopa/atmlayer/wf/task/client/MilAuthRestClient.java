@@ -16,7 +16,7 @@ public interface MilAuthRestClient {
     RestResponse<TokenResponse> getToken(
             @HeaderParam("AcquirerId") String bankId,
             @HeaderParam("Channel") String channel,
-            @HeaderParam("Fiscalcode") String fiscalCode,
+            @HeaderParam("FiscalCode") String fiscalCode,
             @HeaderParam("TerminalId") String terminalId,
             @HeaderParam("TransactionId") String transactionId);
 }

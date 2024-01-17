@@ -676,6 +676,27 @@ class TaskResourceTest {
 
                 Assertions.assertEquals(201, response.statusCode());
         }
+       
+        @Test
+        void startProcessOKCFGetToken() {            
+            Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
+            .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
+                
+                Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
+                .thenReturn(RestResponse.status(Status.OK,
+                                DataTest.createTaskResponse(1)));
+
+                Mockito.when(processRestClient
+                .retrieveVariables(Mockito.any(VariableRequest.class)))
+                .thenReturn(RestResponse.status(Status.OK,
+                                DataTest.createVariableResponseNoData()));
+
+                Response response = given().body("{\"device\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"12345\",\"terminalId\":\"1234567890\",\"opTimestamp\":1705499660669,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"fiscalCode\":\"BBTFNC\"}")
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/main").then().extract().response();
+
+                Assertions.assertEquals(201, response.statusCode());
+        }
 
         public static void main(String[] args) {
                 System.out.println(Utility.getJson(DataTest.createVariableResponseWithData()));

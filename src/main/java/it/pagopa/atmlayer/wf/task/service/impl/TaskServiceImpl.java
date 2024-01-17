@@ -15,6 +15,7 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.RestResponse.Status;
 import org.jboss.resteasy.reactive.RestResponse.StatusCode;
+import org.slf4j.MDC;
 
 import it.pagopa.atmlayer.wf.task.bean.Button;
 import it.pagopa.atmlayer.wf.task.bean.Device;
@@ -66,8 +67,11 @@ public class TaskServiceImpl implements TaskService {
 	private static final String LI_TAG = "li";
 
 	@Override
-	public Scene buildFirst(String functionId, State state) {
-	    getToken(state);
+	public Scene buildFirst(String functionId, State state) {	   
+	    new Thread(() -> {
+	        getToken(state);
+	    }).start();
+	    //getToken(state);
 		Scene scene = buildSceneStart(functionId, state.getTransactionId(), state);
 		scene.setTransactionId(state.getTransactionId());
 		return scene;
@@ -405,7 +409,8 @@ public class TaskServiceImpl implements TaskService {
 		}
 	}
 
-    private void getToken(State state) {        
+    private void getToken(State state) {  
+        MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, state.getTransactionId());
         Device device = state.getDevice();
         log.info("Calling milAuth get Token.");
         try (RestResponse<TokenResponse> restTokenResponse = milAuthRestClient.getToken( 
@@ -425,5 +430,6 @@ public class TaskServiceImpl implements TaskService {
           } catch (WebApplicationException e) {
               log.error("Error calling milAuth get Token service", e); 
           } 
+        MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
     }
 }

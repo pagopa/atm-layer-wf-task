@@ -14,7 +14,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.State;
@@ -44,6 +46,22 @@ public class Utility {
         return result;
     }
 
+    public static byte[] setTransactionIdInJson(byte[] entity,String transactionId ) {
+        String result = null;
+        
+        ObjectMapper om = new ObjectMapper();
+        try {
+            JsonNode jn = om.readTree(new String(entity));            
+            ((ObjectNode) jn).put("transactionId", transactionId);    
+             result = om.writeValueAsString(jn);
+
+        } catch (JsonProcessingException e) {
+            log.error(" - ERROR", e);
+            return entity;
+        }
+        return result.getBytes();
+    }
+    
     /**
     * Converts an object to a JSON representation.
     *
