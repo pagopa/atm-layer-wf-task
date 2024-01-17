@@ -27,12 +27,14 @@ import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorEnum;
 import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorException;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeEnum;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeResponse;
+import it.pagopa.atmlayer.wf.task.client.MilAuthRestClient;
 import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
 import it.pagopa.atmlayer.wf.task.client.bean.DeviceInfo;
 import it.pagopa.atmlayer.wf.task.client.bean.DeviceType;
 import it.pagopa.atmlayer.wf.task.client.bean.Task;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
+import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
@@ -50,6 +52,9 @@ public class TaskServiceImpl implements TaskService {
 
 	@RestClient
 	ProcessRestClient processRestClient;
+	
+	@RestClient
+    MilAuthRestClient milAuthRestClient;
 
 	@Inject
 	Properties properties;
@@ -62,6 +67,7 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public Scene buildFirst(String functionId, State state) {
+	    getToken(state);
 		Scene scene = buildSceneStart(functionId, state.getTransactionId(), state);
 		scene.setTransactionId(state.getTransactionId());
 		return scene;
@@ -399,4 +405,25 @@ public class TaskServiceImpl implements TaskService {
 		}
 	}
 
+    private void getToken(State state) {        
+        Device device = state.getDevice();
+        log.info("Calling milAuth get Token.");
+        try (RestResponse<TokenResponse> restTokenResponse = milAuthRestClient.getToken( 
+                  device.getBankId(), 
+                  device.getChannel().name(), 
+                  state.getFiscalCode(), 
+                  device.getTerminalId(),
+                  state.getTransactionId());)
+            {
+            if (restTokenResponse!= null) {
+                if (restTokenResponse.getStatus() == 200) {
+                log.info("Retrieved token: [{}]", restTokenResponse.getEntity().getAccess_token());
+                } else {
+                    log.warn("Calling milAuth Status: [{}]", restTokenResponse.getStatus());               
+                }
+            }            
+          } catch (WebApplicationException e) {
+              log.error("Error calling milAuth get Token service", e); 
+          } 
+    }
 }
