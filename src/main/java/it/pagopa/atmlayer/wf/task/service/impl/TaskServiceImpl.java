@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse;
@@ -318,7 +319,7 @@ public class TaskServiceImpl implements TaskService {
 						Utility.getFileFromCdn(properties.cdnUrl() + properties.htmlResourcesPath()
 								+ receiptTemplateName).readAllBytes(),
 						properties.htmlCharset());
-				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
+				Set<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
 				atmTask.setReceiptTemplate(htmlString);
 				log.debug("Placeholders found: {}", placeholders);
 				if (placeholders != null && !placeholders.isEmpty()) {
@@ -344,14 +345,15 @@ public class TaskServiceImpl implements TaskService {
 						Utility.getFileFromCdn(properties.cdnUrl() + properties.htmlResourcesPath() + task.getForm())
 								.readAllBytes(),
 						properties.htmlCharset());
-				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
+				Set<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
 				atmTask.getTemplate().setContent(htmlString);
+				placeholders.remove(Constants.CDN_PLACEHOLDER);
 				log.debug("Placeholders found: {}", placeholders);
 				if (placeholders != null && !placeholders.isEmpty()) {
-					log.debug("Number of variables found in html form: {}", placeholders.size());
+					log.info("Number of variables found in html form: {}", placeholders.size());
 					variableRequest.setVariables(placeholders);
 				}
-				List<String> buttonList = Utility.getIdOfTag(htmlString, BUTTON_TAG);
+				Set<String> buttonList = Utility.getIdOfTag(htmlString, BUTTON_TAG);
 				buttonList.addAll(Utility.getIdOfTag(htmlString, LI_TAG));
 				variableRequest.setButtons(buttonList);
 			} catch (IOException e) {
@@ -372,7 +374,7 @@ public class TaskServiceImpl implements TaskService {
 				htmlTemp = htmlTemp.replace("${" + value.getKey() + "}", String.valueOf(value.getValue()));
 			}
 			htmlTemp = htmlTemp.replace("${" + Constants.CDN_PLACEHOLDER + "}", properties.cdnUrl());
-			List<String> placeholders = Utility.findStringsByGroup(htmlTemp, VARIABLES_REGEX);
+			Set<String> placeholders = Utility.findStringsByGroup(htmlTemp, VARIABLES_REGEX);
 			if (!placeholders.isEmpty()) {
 				log.error("Value not found for placeholders: {}", placeholders);
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
