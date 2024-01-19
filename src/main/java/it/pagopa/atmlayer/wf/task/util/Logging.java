@@ -18,6 +18,8 @@ public class Logging{
 
     public static final String RETRIEVE_VARIABLES_LOG_ID = "retrieveVariables";
 
+    public static final String GET_TOKEN_LOG_ID = "getToken";
+
     /**
      * Logs the elapsed time occurred for the processing.
      * 

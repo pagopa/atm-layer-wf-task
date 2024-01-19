@@ -65,9 +65,8 @@ public class TaskResource {
 
 			return response;
 		} catch (ProcessingException e) {
-			log.error("Unable to establish connection", e);
-
 			stop = System.currentTimeMillis();
+			log.error("Unable to establish connection", e);
 			Logging.logElapsedTime(Logging.CREATE_MAIN_SCENE_LOG_ID , start, stop);
 
 			throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
@@ -93,29 +92,29 @@ public class TaskResource {
 
 		String[] transactionIdParts = transactionId.split("-");
 		if (!transactionIdParts[0].equals(state.getDevice().getBankId())) {
-			log.error("TransactionId not valid -> [BankId]");
 			stop = System.currentTimeMillis();
+			log.error("TransactionId not valid -> [BankId]");
 			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start, stop);
 			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
 		}
 		if (state.getDevice().getBranchId() != null
 				&& !transactionIdParts[1].equals(state.getDevice().getBranchId())) {
-			log.error("TransactionId not valid -> [BranchId]");
 			stop = System.currentTimeMillis();
+			log.error("TransactionId not valid -> [BranchId]");
 			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start, stop);
 			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
 		}
 		if (state.getDevice().getCode() != null
 				&& !transactionIdParts[2].equals(state.getDevice().getCode())) {
-			log.error("TransactionId not valid -> [Code]");
 			stop = System.currentTimeMillis();
+			log.error("TransactionId not valid -> [Code]");
 			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start, stop);
 			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
 		}
 		if (state.getDevice().getTerminalId() != null
 				&& !transactionIdParts[3].equals(state.getDevice().getTerminalId())) {
-			log.error("TransactionId not valid -> [TerminalId]");
 			stop = System.currentTimeMillis();
+			log.error("TransactionId not valid -> [TerminalId]");
 			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start, stop);
 			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
 		}
@@ -138,9 +137,8 @@ public class TaskResource {
 			return response;
 
 		} catch (ProcessingException e) {
-			log.error("Unable to establish connection", e);
-
 			stop = System.currentTimeMillis();
+			log.error("Unable to establish connection", e);
 			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start, stop);
 
 			throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
