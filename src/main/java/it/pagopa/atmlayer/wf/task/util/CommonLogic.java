@@ -19,7 +19,7 @@ public class CommonLogic{
     /**
      * Logs the elapsed time occurred for the processing.
      * 
-     * @param label - LOG_ID of the function to display in the log [Pattern -> CLASS.FUNCTION]
+     * @param label - LOG_ID of the function to display in the log
      * @param start - the start time, when the execution is started
      * @param stop  - the stop time, when the execution is finished
      */
