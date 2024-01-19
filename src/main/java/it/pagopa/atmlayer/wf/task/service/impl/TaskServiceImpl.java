@@ -41,7 +41,7 @@ import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
 import it.pagopa.atmlayer.wf.task.util.Constants;
-import it.pagopa.atmlayer.wf.task.util.Logging;
+import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Properties;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -51,7 +51,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @ApplicationScoped
 @Slf4j
-public class TaskServiceImpl implements TaskService {
+public class TaskServiceImpl extends CommonLogic implements TaskService {
 
 	@RestClient
 	ProcessRestClient processRestClient;
@@ -107,7 +107,7 @@ public class TaskServiceImpl implements TaskService {
 			}
 			throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 		} finally {
-			Logging.logElapsedTime(Logging.START_PROCESS_LOG_ID, start);
+			logElapsedTime(START_PROCESS_LOG_ID, start);
 		}
 
 		return manageTaskResponse(restTaskResponse);
@@ -128,7 +128,7 @@ public class TaskServiceImpl implements TaskService {
 			}
 			throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 		} finally {
-			Logging.logElapsedTime(Logging.NEXT_TASKS_LOG_ID, start);
+			logElapsedTime(NEXT_TASKS_LOG_ID, start);
 		}
 
 		return manageTaskResponse(restTaskResponse);
@@ -173,7 +173,7 @@ public class TaskServiceImpl implements TaskService {
 				}
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			} finally {
-				Logging.logElapsedTime(Logging.RETRIEVE_VARIABLES_LOG_ID, start);
+				logElapsedTime(RETRIEVE_VARIABLES_LOG_ID, start);
 			}
 
 			if (restVariableResponse.getStatus() == 200) {
@@ -217,7 +217,7 @@ public class TaskServiceImpl implements TaskService {
 
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			} finally {
-				Logging.logElapsedTime(Logging.RETRIEVE_VARIABLES_LOG_ID, start);
+				logElapsedTime(RETRIEVE_VARIABLES_LOG_ID, start);
 			}
 
 			workingVariables.remove(Constants.RECEIPT_TEMPLATE);
@@ -464,7 +464,7 @@ public class TaskServiceImpl implements TaskService {
           } catch (WebApplicationException e) {
 			log.error("Error calling milAuth get Token service", e);			
           } finally {
-              Logging.logElapsedTime(Logging.GET_TOKEN_LOG_ID, start);
+              logElapsedTime(GET_TOKEN_LOG_ID, start);
           }
         MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
         return token;

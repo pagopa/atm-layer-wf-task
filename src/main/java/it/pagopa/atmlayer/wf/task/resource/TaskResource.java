@@ -17,7 +17,7 @@ import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeEnum;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeResponse;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
 import it.pagopa.atmlayer.wf.task.util.Constants;
-import it.pagopa.atmlayer.wf.task.util.Logging;
+import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.POST;
@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Path("/api/v1/tasks")
 @Slf4j
-public class TaskResource {
+public class TaskResource extends CommonLogic{
 
 	@Inject
 	TaskService taskService;
@@ -64,7 +64,7 @@ public class TaskResource {
 			log.error("Unable to establish connection", e);
 			throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
 		} finally {
-			Logging.logElapsedTime(Logging.CREATE_MAIN_SCENE_LOG_ID , start);
+			logElapsedTime(CREATE_MAIN_SCENE_LOG_ID , start);
 		}
 
 	}
@@ -87,25 +87,25 @@ public class TaskResource {
 		String[] transactionIdParts = transactionId.split("-");
 		if (!transactionIdParts[0].equals(state.getDevice().getBankId())) {
 			log.error("TransactionId not valid -> [BankId]");
-			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start);
+			logElapsedTime(CREATE_NEXT_SCENE_LOG_ID, start);
 			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
 		}
 		if (state.getDevice().getBranchId() != null
 				&& !transactionIdParts[1].equals(state.getDevice().getBranchId())) {
 			log.error("TransactionId not valid -> [BranchId]");
-			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start);
+			logElapsedTime(CREATE_NEXT_SCENE_LOG_ID, start);
 			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
 		}
 		if (state.getDevice().getCode() != null
 				&& !transactionIdParts[2].equals(state.getDevice().getCode())) {
 			log.error("TransactionId not valid -> [Code]");
-			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start);
+			logElapsedTime(CREATE_NEXT_SCENE_LOG_ID, start);
 			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
 		}
 		if (state.getDevice().getTerminalId() != null
 				&& !transactionIdParts[3].equals(state.getDevice().getTerminalId())) {
 			log.error("TransactionId not valid -> [TerminalId]");
-			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start);
+			logElapsedTime(CREATE_NEXT_SCENE_LOG_ID, start);
 			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
 		}
 
@@ -126,7 +126,7 @@ public class TaskResource {
 			log.error("Unable to establish connection", e);
 			throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
 		} finally {
-			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start);
+			logElapsedTime(CREATE_NEXT_SCENE_LOG_ID , start);
 		}
 
 	}
