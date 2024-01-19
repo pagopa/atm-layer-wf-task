@@ -198,4 +198,15 @@ public class Utility {
 
         return ioStream;
     }
+
+    /**
+     * Logs the elapsed time occurred for the processing.
+     * 
+     * @param label - the function to display in the log
+     * @param start - the start time, when the execution is started
+     * @param stop  - the stop time, when the execution is finished
+     */
+    public static void logElapsedTime(String label, long start, long stop) {
+        log.info(" - {} - Elapsed time [ms] = {}", label, stop - start);
+    }
 }

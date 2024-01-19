@@ -41,6 +41,7 @@ import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
 import it.pagopa.atmlayer.wf.task.util.Constants;
+import it.pagopa.atmlayer.wf.task.util.Logging;
 import it.pagopa.atmlayer.wf.task.util.Properties;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -88,32 +89,52 @@ public class TaskServiceImpl implements TaskService {
 	private Scene buildSceneStart(String functionId, String transactionId, State state) {
 		TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
 		RestResponse<TaskResponse> restTaskResponse = null;
+		long start = System.currentTimeMillis();
+		long stop;
+
 		try {
 			log.info("Calling start process: [{}]", taskRequest);
 			restTaskResponse = processRestClient.startProcess(taskRequest);
 		} catch (WebApplicationException e) {
 			log.error("Error calling process service", e);
 			if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
+				stop = System.currentTimeMillis();
+				Logging.logElapsedTime(Logging.START_PROCESS_LOG_ID, start, stop);
 				throw new ErrorException(ErrorEnum.GET_TASKS_ERROR);
 			}
+			stop = System.currentTimeMillis();
+			Logging.logElapsedTime(Logging.START_PROCESS_LOG_ID, start, stop);
 			throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 		}
+
+		stop = System.currentTimeMillis();
+		Logging.logElapsedTime(Logging.START_PROCESS_LOG_ID, start, stop);
 		return manageTaskResponse(restTaskResponse);
 	}
 
 	private Scene buildSceneNext(String transactionId, State state) {
 		TaskRequest taskRequest = buildTaskRequest(state, transactionId, null);
 		RestResponse<TaskResponse> restTaskResponse = null;
+		long start = System.currentTimeMillis();
+		long stop;
+
 		try {
 			log.info("Calling next task: [{}]", taskRequest);
 			restTaskResponse = processRestClient.nextTasks(taskRequest);
 		} catch (WebApplicationException e) {
 			log.error("Error calling process service", e);
 			if (e.getResponse().getStatus() == StatusCode.INTERNAL_SERVER_ERROR) {
+				stop = System.currentTimeMillis();
+				Logging.logElapsedTime(Logging.NEXT_TASKS_LOG_ID, start, stop);
 				throw new ErrorException(ErrorEnum.GET_TASKS_ERROR);
 			}
+			stop = System.currentTimeMillis();
+			Logging.logElapsedTime(Logging.NEXT_TASKS_LOG_ID, start, stop);
 			throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 		}
+
+		stop = System.currentTimeMillis();
+		Logging.logElapsedTime(Logging.NEXT_TASKS_LOG_ID, start, stop);
 		return manageTaskResponse(restTaskResponse);
 	}
 
@@ -137,6 +158,8 @@ public class TaskServiceImpl implements TaskService {
 		it.pagopa.atmlayer.wf.task.bean.Task atmTask = null;
 		// Recupero il primo task ordinato per priorità
 		Collections.sort(response.getTasks(), Comparator.comparingInt(Task::getPriority));
+		long start = System.currentTimeMillis();
+		long stop;
 
 		if (!response.getTasks().isEmpty()) {
 			Task workingTask = response.getTasks().get(0);
@@ -150,12 +173,19 @@ public class TaskServiceImpl implements TaskService {
 			} catch (WebApplicationException e) {
 				log.error("Error calling process service", e);
 				if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
+					stop = System.currentTimeMillis();
+					Logging.logElapsedTime(Logging.RETRIEVE_VARIABLES_LOG_ID, start, stop);
 					throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
 				}
+				stop = System.currentTimeMillis();
+				Logging.logElapsedTime(Logging.RETRIEVE_VARIABLES_LOG_ID, start, stop);
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
 
 			if (restVariableResponse.getStatus() == 200) {
+				stop = System.currentTimeMillis();
+				Logging.logElapsedTime(Logging.RETRIEVE_VARIABLES_LOG_ID, start, stop);
+
 				VariableResponse variableResponse = restVariableResponse.getEntity();
 				log.info("Retrieved variables: [{}]", variableResponse);
 				atmTask.setId(workingTask.getId());
@@ -169,8 +199,12 @@ public class TaskServiceImpl implements TaskService {
 
 				setButtonInAtmTask(atmTask, variableResponse.getButtons());
 			} else if (restVariableResponse.getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
+				stop = System.currentTimeMillis();
+				Logging.logElapsedTime(Logging.RETRIEVE_VARIABLES_LOG_ID, start, stop);
 				throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
 			} else {
+				stop = System.currentTimeMillis();
+				Logging.logElapsedTime(Logging.RETRIEVE_VARIABLES_LOG_ID, start, stop);
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
 		}
@@ -181,16 +215,26 @@ public class TaskServiceImpl implements TaskService {
 
 		if (workingVariables != null && workingVariables.get(Constants.RECEIPT_TEMPLATE) != null) {
 			RestResponse<VariableResponse> restVariableResponse = null;
+			long start = System.currentTimeMillis();
+			long stop;
+
 			try {
 				restVariableResponse = processRestClient
 						.retrieveVariables(createVariableRequestForReceipt(workingVariables, atmTask));
 			} catch (WebApplicationException e) {
 				log.error("Error calling process service", e);
 				if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
+					stop = System.currentTimeMillis();
+					Logging.logElapsedTime(Logging.RETRIEVE_VARIABLES_LOG_ID, start, stop);
 					throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
 				}
+				stop = System.currentTimeMillis();
+				Logging.logElapsedTime(Logging.RETRIEVE_VARIABLES_LOG_ID, start, stop);
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
+
+			stop = System.currentTimeMillis();
+			Logging.logElapsedTime(Logging.RETRIEVE_VARIABLES_LOG_ID, start, stop);
 
 			workingVariables.remove(Constants.RECEIPT_TEMPLATE);
 
