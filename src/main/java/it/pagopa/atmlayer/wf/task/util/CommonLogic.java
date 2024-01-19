@@ -25,6 +25,6 @@ public class CommonLogic{
      */
     protected static void logElapsedTime(String label, long start) {
         long stop = System.currentTimeMillis();
-        log.info(" - {} - Elapsed time [ms] = {}", label, stop - start);
+        log.info(" {} - Elapsed time [ms] = {}", label, stop - start);
     }
 }
