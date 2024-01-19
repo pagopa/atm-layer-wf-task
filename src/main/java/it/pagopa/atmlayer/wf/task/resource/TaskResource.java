@@ -46,7 +46,6 @@ public class TaskResource {
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 		
 		long start = System.currentTimeMillis();
-		long stop;
 
 		try {
 			RestResponse<Scene> response;
@@ -60,16 +59,12 @@ public class TaskResource {
 				response = RestResponse.status(Status.CREATED, scene);
 			}
 
-			stop = System.currentTimeMillis();
-			Logging.logElapsedTime(Logging.CREATE_MAIN_SCENE_LOG_ID , start, stop);
-
 			return response;
 		} catch (ProcessingException e) {
-			stop = System.currentTimeMillis();
 			log.error("Unable to establish connection", e);
-			Logging.logElapsedTime(Logging.CREATE_MAIN_SCENE_LOG_ID , start, stop);
-
 			throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
+		} finally {
+			Logging.logElapsedTime(Logging.CREATE_MAIN_SCENE_LOG_ID , start, System.currentTimeMillis());
 		}
 
 	}
@@ -88,34 +83,29 @@ public class TaskResource {
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 
 		long start = System.currentTimeMillis();
-		long stop;
 
 		String[] transactionIdParts = transactionId.split("-");
 		if (!transactionIdParts[0].equals(state.getDevice().getBankId())) {
-			stop = System.currentTimeMillis();
 			log.error("TransactionId not valid -> [BankId]");
-			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start, stop);
+			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start, System.currentTimeMillis());
 			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
 		}
 		if (state.getDevice().getBranchId() != null
 				&& !transactionIdParts[1].equals(state.getDevice().getBranchId())) {
-			stop = System.currentTimeMillis();
 			log.error("TransactionId not valid -> [BranchId]");
-			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start, stop);
+			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start, System.currentTimeMillis());
 			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
 		}
 		if (state.getDevice().getCode() != null
 				&& !transactionIdParts[2].equals(state.getDevice().getCode())) {
-			stop = System.currentTimeMillis();
 			log.error("TransactionId not valid -> [Code]");
-			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start, stop);
+			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start, System.currentTimeMillis());
 			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
 		}
 		if (state.getDevice().getTerminalId() != null
 				&& !transactionIdParts[3].equals(state.getDevice().getTerminalId())) {
-			stop = System.currentTimeMillis();
 			log.error("TransactionId not valid -> [TerminalId]");
-			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start, stop);
+			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start, System.currentTimeMillis());
 			throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
 		}
 
@@ -131,17 +121,12 @@ public class TaskResource {
 				response = RestResponse.status(Status.CREATED, scene);
 			}
 
-			stop = System.currentTimeMillis();
-			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start, stop);
-
 			return response;
-
 		} catch (ProcessingException e) {
-			stop = System.currentTimeMillis();
 			log.error("Unable to establish connection", e);
-			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start, stop);
-
 			throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
+		} finally {
+			Logging.logElapsedTime(Logging.CREATE_NEXT_SCENE_LOG_ID , start, System.currentTimeMillis());
 		}
 
 	}

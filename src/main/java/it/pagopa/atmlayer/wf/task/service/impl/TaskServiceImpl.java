@@ -55,9 +55,9 @@ public class TaskServiceImpl implements TaskService {
 
 	@RestClient
 	ProcessRestClient processRestClient;
-	
+
 	@RestClient
-    MilAuthRestClient milAuthRestClient;
+	MilAuthRestClient milAuthRestClient;
 
 	@Inject
 	Properties properties;
@@ -69,11 +69,11 @@ public class TaskServiceImpl implements TaskService {
 	private static final String LI_TAG = "li";
 
 	@Override
-	public Scene buildFirst(String functionId, State state) {	   
-	    new Thread(() -> {
-	        getToken(state);
-	    }).start();
-	    //getToken(state);
+	public Scene buildFirst(String functionId, State state) {
+		new Thread(() -> {
+			getToken(state);
+		}).start();
+		// getToken(state);
 		Scene scene = buildSceneStart(functionId, state.getTransactionId(), state);
 		scene.setTransactionId(state.getTransactionId());
 		return scene;
@@ -90,26 +90,20 @@ public class TaskServiceImpl implements TaskService {
 		TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
 		RestResponse<TaskResponse> restTaskResponse = null;
 		long start = System.currentTimeMillis();
-		long stop;
 
 		try {
 			log.info("Calling start process: [{}]", taskRequest);
 			restTaskResponse = processRestClient.startProcess(taskRequest);
-
-			stop = System.currentTimeMillis();
-			Logging.logElapsedTime(Logging.START_PROCESS_LOG_ID, start, stop);
 		} catch (WebApplicationException e) {
-			stop = System.currentTimeMillis();
 			log.error("Error calling process service", e);
-			Logging.logElapsedTime(Logging.START_PROCESS_LOG_ID, start, stop);
-
 			if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
 				throw new ErrorException(ErrorEnum.GET_TASKS_ERROR);
 			}
 			throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+		} finally {
+			Logging.logElapsedTime(Logging.START_PROCESS_LOG_ID, start, System.currentTimeMillis());
 		}
 
-		
 		return manageTaskResponse(restTaskResponse);
 	}
 
@@ -117,23 +111,18 @@ public class TaskServiceImpl implements TaskService {
 		TaskRequest taskRequest = buildTaskRequest(state, transactionId, null);
 		RestResponse<TaskResponse> restTaskResponse = null;
 		long start = System.currentTimeMillis();
-		long stop;
 
 		try {
 			log.info("Calling next task: [{}]", taskRequest);
 			restTaskResponse = processRestClient.nextTasks(taskRequest);
-
-			stop = System.currentTimeMillis();
-			Logging.logElapsedTime(Logging.NEXT_TASKS_LOG_ID, start, stop);
 		} catch (WebApplicationException e) {
-			stop = System.currentTimeMillis();
 			log.error("Error calling process service", e);
-			Logging.logElapsedTime(Logging.NEXT_TASKS_LOG_ID, start, stop);
-
-			if (e.getResponse().getStatus() == StatusCode.INTERNAL_SERVER_ERROR) {				
+			if (e.getResponse().getStatus() == StatusCode.INTERNAL_SERVER_ERROR) {
 				throw new ErrorException(ErrorEnum.GET_TASKS_ERROR);
 			}
 			throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+		} finally {
+			Logging.logElapsedTime(Logging.NEXT_TASKS_LOG_ID, start, System.currentTimeMillis());
 		}
 
 		return manageTaskResponse(restTaskResponse);
@@ -159,8 +148,7 @@ public class TaskServiceImpl implements TaskService {
 		it.pagopa.atmlayer.wf.task.bean.Task atmTask = null;
 		// Recupero il primo task ordinato per priorità
 		Collections.sort(response.getTasks(), Comparator.comparingInt(Task::getPriority));
-		long start = System.currentTimeMillis();
-		long stop;
+		
 
 		if (!response.getTasks().isEmpty()) {
 			Task workingTask = response.getTasks().get(0);
@@ -168,24 +156,21 @@ public class TaskServiceImpl implements TaskService {
 			VariableRequest variableRequest = createVariableRequestForTemplate(workingTask, atmTask);
 			log.info("Calling retrieve variables for task id: [{}]", workingTask.getId());
 			RestResponse<VariableResponse> restVariableResponse = null;
+			long start = System.currentTimeMillis();
 			try {
 				log.info("Retrieving variables: [{}]", variableRequest);
 				restVariableResponse = processRestClient.retrieveVariables(variableRequest);
-
-				stop = System.currentTimeMillis();
-				Logging.logElapsedTime(Logging.RETRIEVE_VARIABLES_LOG_ID, start, stop);
 			} catch (WebApplicationException e) {
-				stop = System.currentTimeMillis();
 				log.error("Error calling process service", e);
-				Logging.logElapsedTime(Logging.RETRIEVE_VARIABLES_LOG_ID, start, stop);
-
 				if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
 					throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
 				}
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+			} finally {
+				Logging.logElapsedTime(Logging.RETRIEVE_VARIABLES_LOG_ID, start, System.currentTimeMillis());
 			}
 
-			if (restVariableResponse.getStatus() == 200) {				
+			if (restVariableResponse.getStatus() == 200) {
 
 				VariableResponse variableResponse = restVariableResponse.getEntity();
 				log.info("Retrieved variables: [{}]", variableResponse);
@@ -213,22 +198,20 @@ public class TaskServiceImpl implements TaskService {
 		if (workingVariables != null && workingVariables.get(Constants.RECEIPT_TEMPLATE) != null) {
 			RestResponse<VariableResponse> restVariableResponse = null;
 			long start = System.currentTimeMillis();
-			long stop;
 
 			try {
-				restVariableResponse = processRestClient.retrieveVariables(createVariableRequestForReceipt(workingVariables, atmTask));
-				stop = System.currentTimeMillis();
-				Logging.logElapsedTime(Logging.RETRIEVE_VARIABLES_LOG_ID, start, stop);
+				restVariableResponse = processRestClient
+						.retrieveVariables(createVariableRequestForReceipt(workingVariables, atmTask));
 			} catch (WebApplicationException e) {
-				stop = System.currentTimeMillis();
-				log.error("Error calling process service", e);
-				Logging.logElapsedTime(Logging.RETRIEVE_VARIABLES_LOG_ID, start, stop);
 
+				log.error("Error calling process service", e);
 				if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
 					throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
 				}
 
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+			} finally {
+				Logging.logElapsedTime(Logging.RETRIEVE_VARIABLES_LOG_ID, start, System.currentTimeMillis());
 			}
 
 			workingVariables.remove(Constants.RECEIPT_TEMPLATE);
@@ -450,35 +433,32 @@ public class TaskServiceImpl implements TaskService {
 		}
 	}
 
-    private void getToken(State state) {  
-        MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, state.getTransactionId());
-        Device device = state.getDevice();
-        log.info("Calling milAuth get Token.");
+	private void getToken(State state) {
+		MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, state.getTransactionId());
+		Device device = state.getDevice();
+		log.info("Calling milAuth get Token.");
 		long start = System.currentTimeMillis();
-		long stop;
 
-        try (RestResponse<TokenResponse> restTokenResponse = milAuthRestClient.getToken( 
-                  device.getBankId(), 
-                  device.getChannel().name(), 
-                  state.getFiscalCode(), 
-                  device.getTerminalId(),
-                  state.getTransactionId());) {
-			
-			stop = System.currentTimeMillis();
-			Logging.logElapsedTime(Logging.GET_TOKEN_LOG_ID, start, stop);
+		try (RestResponse<TokenResponse> restTokenResponse = milAuthRestClient.getToken(
+				device.getBankId(),
+				device.getChannel().name(),
+				state.getFiscalCode(),
+				device.getTerminalId(),
+				state.getTransactionId());) {
 
-            if (restTokenResponse!= null) {
-                if (restTokenResponse.getStatus() == 200) {
-                log.info("Retrieved token: [{}]", restTokenResponse.getEntity().getAccess_token());
-                } else {
-                    log.warn("Calling milAuth Status: [{}]", restTokenResponse.getStatus());               
-                }
-            }            
-          } catch (WebApplicationException e) {
-			stop = System.currentTimeMillis();
+			if (restTokenResponse != null) {
+				if (restTokenResponse.getStatus() == 200) {
+					log.info("Retrieved token: [{}]", restTokenResponse.getEntity().getAccess_token());
+				} else {
+					log.warn("Calling milAuth Status: [{}]", restTokenResponse.getStatus());
+				}
+			}
+		} catch (WebApplicationException e) {
 			log.error("Error calling milAuth get Token service", e);
-			Logging.logElapsedTime(Logging.GET_TOKEN_LOG_ID, start, stop);
-          } 
-        MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
-    }
+		} finally {
+			Logging.logElapsedTime(Logging.GET_TOKEN_LOG_ID, start, System.currentTimeMillis());
+		}
+
+		MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
+	}
 }
