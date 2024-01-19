@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 92.03%               |
-| :heavy_check_mark: Number of Lines Covered | 404    |
-| :x: Number of Lines Missed  | 35     |
-| Total Number of Lines   | 439     |
+| Code Coverage %         | 92.04%               |
+| :heavy_check_mark: Number of Lines Covered | 428    |
+| :x: Number of Lines Missed  | 37     |
+| Total Number of Lines   | 465     |
 
 
 ## Details:
@@ -158,11 +158,11 @@
         
 #### Lines Missed:
         
-- Line #56
+- Line #63
 ```
 		} catch (ProcessingException e) {
 ```
-- Line #106
+- Line #125
 ```
 		} catch (ProcessingException e) {
 ```
@@ -302,11 +302,11 @@
         
 #### Lines Missed:
         
-- Line #202
+- Line #230
 ```
 				} catch (UnsupportedEncodingException e) {
 ```
-- Line #392
+- Line #420
 ```
 			} catch (UnsupportedEncodingException e) {
 ```
@@ -379,6 +379,18 @@
 
 <details>
     <summary>
+:heavy_check_mark: Logging.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+
+<details>
+    <summary>
 :x: Constants.java
     </summary>
 
@@ -420,6 +432,10 @@
 - Line #81
 ```
         } catch (JsonProcessingException e) {
+```
+- Line #211
+```
+    }
 ```
 </details>
 
