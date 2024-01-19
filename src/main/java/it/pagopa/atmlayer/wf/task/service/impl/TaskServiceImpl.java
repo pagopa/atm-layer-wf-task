@@ -70,10 +70,16 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public Scene buildFirst(String functionId, State state) {	   
-	    new Thread(() -> {
+	   /* new Thread(() -> {
 	        getToken(state);
-	    }).start();
-	    //getToken(state);
+	    }).start();*/
+	    Map<String, Object> data = state.getData();
+	    if (data == null) {
+	        state.setData(new HashMap<String, Object>());
+	        data = state.getData();
+	    }
+	        
+	    state.getData().put("millAccessToken", getToken(state));
 		Scene scene = buildSceneStart(functionId, state.getTransactionId(), state);
 		scene.setTransactionId(state.getTransactionId());
 		return scene;
@@ -450,10 +456,11 @@ public class TaskServiceImpl implements TaskService {
 		}
 	}
 
-    private void getToken(State state) {  
+    private String getToken(State state) {  
         MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, state.getTransactionId());
         Device device = state.getDevice();
         log.info("Calling milAuth get Token.");
+        String token = null;
 		long start = System.currentTimeMillis();
 		long stop;
 
@@ -469,7 +476,8 @@ public class TaskServiceImpl implements TaskService {
 
             if (restTokenResponse!= null) {
                 if (restTokenResponse.getStatus() == 200) {
-                log.info("Retrieved token: [{}]", restTokenResponse.getEntity().getAccess_token());
+                    token = restTokenResponse.getEntity().getAccess_token();
+                log.info("Retrieved token: [{}]", token);
                 } else {
                     log.warn("Calling milAuth Status: [{}]", restTokenResponse.getStatus());               
                 }
@@ -480,5 +488,6 @@ public class TaskServiceImpl implements TaskService {
 			Logging.logElapsedTime(Logging.GET_TOKEN_LOG_ID, start, stop);
           } 
         MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
+        return token;
     }
 }
