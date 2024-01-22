@@ -3,9 +3,10 @@ package it.pagopa.atmlayer.wf.task.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,7 +15,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.State;
@@ -44,6 +47,22 @@ public class Utility {
         return result;
     }
 
+    public static byte[] setTransactionIdInJson(byte[] entity,String transactionId ) {
+        String result = null;
+        
+        ObjectMapper om = new ObjectMapper();
+        try {
+            JsonNode jn = om.readTree(new String(entity));            
+            ((ObjectNode) jn).put("transactionId", transactionId);    
+             result = om.writeValueAsString(jn);
+
+        } catch (JsonProcessingException e) {
+            log.error(" - ERROR", e);
+            return entity;
+        }
+        return result.getBytes();
+    }
+    
     /**
     * Converts an object to a JSON representation.
     *
@@ -65,8 +84,8 @@ public class Utility {
         return result;
     }
 
-    public static Object getObject(String json, Class<?> clazz) {
-        Object result = null;
+    public static <T> T  getObject(String json, Class<T> clazz) {
+        T result = null;
         ObjectMapper om = new ObjectMapper();
         try {
             result = om.readValue(json, clazz);
@@ -85,8 +104,8 @@ public class Utility {
     * @param device The device for which the transaction ID is being generated.
     * @return A unique transaction ID in UUID format.
     */
-    public static String generateTransactionId(Object object) {
-        Device device = ((State) object).getDevice();
+    public static String generateTransactionId(State state) {
+        Device device = state.getDevice();
         return (device.getBankId()
                 + "-" + (device.getBranchId() != null ? device.getBranchId() : "")
                 + "-" + (device.getCode() != null ? device.getCode() : "")
@@ -106,8 +125,8 @@ public class Utility {
     * @param regex The regular expression pattern used to identify matching substrings.
     * @return A list of strings representing the substrings found in the input string that match the given regular expression.
     */
-    public static List<String> findStringsByGroup(String inputString, String regex) {
-        List<String> groups = new LinkedList<>();
+    public static Set<String> findStringsByGroup(String inputString, String regex) {
+        Set<String> groups = new HashSet<>();
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(inputString);
         while (matcher.find()) {
@@ -150,8 +169,8 @@ public class Utility {
     * @param tag The HTML tag used to identify the elements.
     * @return A list of strings containing the IDs of HTML elements with the specified tag in the HTML string.
     */
-    public static List<String> getIdOfTag(String htmlString, String tag) {
-        List<String> idList = new ArrayList<>();
+    public static Set<String> getIdOfTag(String htmlString, String tag) {
+        Set<String> idList = new HashSet<>();
 
         Document doc = Jsoup.parse(htmlString);
 
@@ -178,5 +197,16 @@ public class Utility {
         ioStream = new URL(path).openStream();
 
         return ioStream;
+    }
+
+    /**
+     * Logs the elapsed time occurred for the processing.
+     * 
+     * @param label - the function to display in the log
+     * @param start - the start time, when the execution is started
+     * @param stop  - the stop time, when the execution is finished
+     */
+    public static void logElapsedTime(String label, long start, long stop) {
+        log.info(" - {} - Elapsed time [ms] = {}", label, stop - start);
     }
 }

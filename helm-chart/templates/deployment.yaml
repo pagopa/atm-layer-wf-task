@@ -38,6 +38,8 @@ spec:
               value: "{{ .Values.processService.address }}"
             - name: WF_TASK_LOG_LEVEL
               value: "{{ .Values.logLevel }}"
+            - name: MIL_AUTH_SERVICE_ADDRESS
+              value: "{{ .Values.milAuthServiceAddress }}"
             - name: CDN_URL
               valueFrom:
                 secretKeyRef:

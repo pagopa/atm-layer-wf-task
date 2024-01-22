@@ -15,7 +15,7 @@ export function spontaneousPayment(baseUrl, basePath, token, menuResponse){
 
     const params = {
         headers: headers,
-        tags: { name: 'Bill Payment'},
+        tags: { name: 'Seleziona pagamento spontaneo'},
     };
 
     const jsonData = JSON.parse(menuResponse).task;

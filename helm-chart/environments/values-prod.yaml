@@ -19,6 +19,8 @@ fullnameOverride: ""
 processService:
   address: http://pagopa-prod-atm-layer-wf-process.pagopa.svc.cluster.local:8080
 
+milAuthServiceAddress: http://pagopa-prod-atm-layer-mil-authenticator.pagopa.svc.cluster.local:8080
+
 logLevel: DEBUG
 
 cdn:

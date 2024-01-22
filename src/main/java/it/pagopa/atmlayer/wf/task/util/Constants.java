@@ -27,4 +27,8 @@ public class Constants {
     public static final int TRANSACTION_ID_LENGTH = 50;
 
     public static final String FUNCTION_ID = "SERVIZI_PAGOPA";
+    
+    public static final String TRANSACTION_ID_LOG_CONFIGURATION = "transactionId";
+
+    public static final String TRANSACTION_ID_PATH_PARAM_NAME = "transactionId";
 }

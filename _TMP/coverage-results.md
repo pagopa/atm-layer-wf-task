@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 92.16%               |
-| :heavy_check_mark: Number of Lines Covered | 376    |
-| :x: Number of Lines Missed  | 32     |
-| Total Number of Lines   | 408     |
+| Code Coverage %         | 92.06%               |
+| :heavy_check_mark: Number of Lines Covered | 429    |
+| :x: Number of Lines Missed  | 37     |
+| Total Number of Lines   | 466     |
 
 
 ## Details:
@@ -158,11 +158,11 @@
         
 #### Lines Missed:
         
-- Line #56
+- Line #63
 ```
 		} catch (ProcessingException e) {
 ```
-- Line #106
+- Line #125
 ```
 		} catch (ProcessingException e) {
 ```
@@ -184,6 +184,16 @@
 <details>
     <summary>
 :x: TaskResponse.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: TokenResponse.java
     </summary>
 
         
@@ -292,11 +302,11 @@
         
 #### Lines Missed:
         
-- Line #191
+- Line #230
 ```
 				} catch (UnsupportedEncodingException e) {
 ```
-- Line #380
+- Line #420
 ```
 			} catch (UnsupportedEncodingException e) {
 ```
@@ -369,6 +379,18 @@
 
 <details>
     <summary>
+:heavy_check_mark: CommonLogic.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+
+<details>
+    <summary>
 :x: Constants.java
     </summary>
 
@@ -399,18 +421,36 @@
         
 #### Lines Missed:
         
-- Line #41
+- Line #44
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #62
+- Line #59
 ```
         } catch (JsonProcessingException e) {
+```
+- Line #81
+```
+        } catch (JsonProcessingException e) {
+```
+- Line #211
+```
+    }
 ```
 </details>
 
     
 ### it/pagopa/atmlayer/wf/task/client
+
+<details>
+    <summary>
+:x: MilAuthRestClient.java
+    </summary>
+
+        
+</details>
+
+    
 
 <details>
     <summary>

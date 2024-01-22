@@ -10,11 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.RestResponse.Status;
 import org.jboss.resteasy.reactive.RestResponse.StatusCode;
+import org.slf4j.MDC;
 
 import it.pagopa.atmlayer.wf.task.bean.Button;
 import it.pagopa.atmlayer.wf.task.bean.Device;
@@ -27,16 +29,19 @@ import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorEnum;
 import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorException;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeEnum;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeResponse;
+import it.pagopa.atmlayer.wf.task.client.MilAuthRestClient;
 import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
 import it.pagopa.atmlayer.wf.task.client.bean.DeviceInfo;
 import it.pagopa.atmlayer.wf.task.client.bean.DeviceType;
 import it.pagopa.atmlayer.wf.task.client.bean.Task;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
+import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
 import it.pagopa.atmlayer.wf.task.util.Constants;
+import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Properties;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -46,10 +51,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @ApplicationScoped
 @Slf4j
-public class TaskServiceImpl implements TaskService {
+public class TaskServiceImpl extends CommonLogic implements TaskService {
 
 	@RestClient
 	ProcessRestClient processRestClient;
+
+	@RestClient
+	MilAuthRestClient milAuthRestClient;
 
 	@Inject
 	Properties properties;
@@ -61,7 +69,17 @@ public class TaskServiceImpl implements TaskService {
 	private static final String LI_TAG = "li";
 
 	@Override
-	public Scene buildFirst(String functionId, State state) {
+	public Scene buildFirst(String functionId, State state) {	   
+	   /* new Thread(() -> {
+	        getToken(state);
+	    }).start();*/
+	    Map<String, Object> data = state.getData();
+	    if (data == null) {
+	        state.setData(new HashMap<String, Object>());
+	        data = state.getData();
+	    }
+	        
+	    state.getData().put("millAccessToken", getToken(state));
 		Scene scene = buildSceneStart(functionId, state.getTransactionId(), state);
 		scene.setTransactionId(state.getTransactionId());
 		return scene;
@@ -77,6 +95,8 @@ public class TaskServiceImpl implements TaskService {
 	private Scene buildSceneStart(String functionId, String transactionId, State state) {
 		TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
 		RestResponse<TaskResponse> restTaskResponse = null;
+		long start = System.currentTimeMillis();
+
 		try {
 			log.info("Calling start process: [{}]", taskRequest);
 			restTaskResponse = processRestClient.startProcess(taskRequest);
@@ -86,13 +106,18 @@ public class TaskServiceImpl implements TaskService {
 				throw new ErrorException(ErrorEnum.GET_TASKS_ERROR);
 			}
 			throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+		} finally {
+			logElapsedTime(START_PROCESS_LOG_ID, start);
 		}
+
 		return manageTaskResponse(restTaskResponse);
 	}
 
 	private Scene buildSceneNext(String transactionId, State state) {
 		TaskRequest taskRequest = buildTaskRequest(state, transactionId, null);
 		RestResponse<TaskResponse> restTaskResponse = null;
+		long start = System.currentTimeMillis();
+
 		try {
 			log.info("Calling next task: [{}]", taskRequest);
 			restTaskResponse = processRestClient.nextTasks(taskRequest);
@@ -102,7 +127,10 @@ public class TaskServiceImpl implements TaskService {
 				throw new ErrorException(ErrorEnum.GET_TASKS_ERROR);
 			}
 			throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+		} finally {
+			logElapsedTime(NEXT_TASKS_LOG_ID, start);
 		}
+
 		return manageTaskResponse(restTaskResponse);
 	}
 
@@ -126,6 +154,7 @@ public class TaskServiceImpl implements TaskService {
 		it.pagopa.atmlayer.wf.task.bean.Task atmTask = null;
 		// Recupero il primo task ordinato per priorità
 		Collections.sort(response.getTasks(), Comparator.comparingInt(Task::getPriority));
+		
 
 		if (!response.getTasks().isEmpty()) {
 			Task workingTask = response.getTasks().get(0);
@@ -133,6 +162,7 @@ public class TaskServiceImpl implements TaskService {
 			VariableRequest variableRequest = createVariableRequestForTemplate(workingTask, atmTask);
 			log.info("Calling retrieve variables for task id: [{}]", workingTask.getId());
 			RestResponse<VariableResponse> restVariableResponse = null;
+			long start = System.currentTimeMillis();
 			try {
 				log.info("Retrieving variables: [{}]", variableRequest);
 				restVariableResponse = processRestClient.retrieveVariables(variableRequest);
@@ -142,9 +172,12 @@ public class TaskServiceImpl implements TaskService {
 					throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
 				}
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+			} finally {
+				logElapsedTime(RETRIEVE_VARIABLES_LOG_ID, start);
 			}
 
 			if (restVariableResponse.getStatus() == 200) {
+
 				VariableResponse variableResponse = restVariableResponse.getEntity();
 				log.info("Retrieved variables: [{}]", variableResponse);
 				atmTask.setId(workingTask.getId());
@@ -170,15 +203,21 @@ public class TaskServiceImpl implements TaskService {
 
 		if (workingVariables != null && workingVariables.get(Constants.RECEIPT_TEMPLATE) != null) {
 			RestResponse<VariableResponse> restVariableResponse = null;
+			long start = System.currentTimeMillis();
+
 			try {
 				restVariableResponse = processRestClient
 						.retrieveVariables(createVariableRequestForReceipt(workingVariables, atmTask));
 			} catch (WebApplicationException e) {
+
 				log.error("Error calling process service", e);
 				if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
 					throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
 				}
+
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+			} finally {
+				logElapsedTime(RETRIEVE_VARIABLES_LOG_ID, start);
 			}
 
 			workingVariables.remove(Constants.RECEIPT_TEMPLATE);
@@ -308,7 +347,7 @@ public class TaskServiceImpl implements TaskService {
 						Utility.getFileFromCdn(properties.cdnUrl() + properties.htmlResourcesPath()
 								+ receiptTemplateName).readAllBytes(),
 						properties.htmlCharset());
-				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
+				Set<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
 				atmTask.setReceiptTemplate(htmlString);
 				log.debug("Placeholders found: {}", placeholders);
 				if (placeholders != null && !placeholders.isEmpty()) {
@@ -334,14 +373,15 @@ public class TaskServiceImpl implements TaskService {
 						Utility.getFileFromCdn(properties.cdnUrl() + properties.htmlResourcesPath() + task.getForm())
 								.readAllBytes(),
 						properties.htmlCharset());
-				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
+				Set<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
 				atmTask.getTemplate().setContent(htmlString);
+				placeholders.remove(Constants.CDN_PLACEHOLDER);
 				log.debug("Placeholders found: {}", placeholders);
 				if (placeholders != null && !placeholders.isEmpty()) {
-					log.debug("Number of variables found in html form: {}", placeholders.size());
+					log.info("Number of variables found in html form: {}", placeholders.size());
 					variableRequest.setVariables(placeholders);
 				}
-				List<String> buttonList = Utility.getIdOfTag(htmlString, BUTTON_TAG);
+				Set<String> buttonList = Utility.getIdOfTag(htmlString, BUTTON_TAG);
 				buttonList.addAll(Utility.getIdOfTag(htmlString, LI_TAG));
 				variableRequest.setButtons(buttonList);
 			} catch (IOException e) {
@@ -362,7 +402,7 @@ public class TaskServiceImpl implements TaskService {
 				htmlTemp = htmlTemp.replace("${" + value.getKey() + "}", String.valueOf(value.getValue()));
 			}
 			htmlTemp = htmlTemp.replace("${" + Constants.CDN_PLACEHOLDER + "}", properties.cdnUrl());
-			List<String> placeholders = Utility.findStringsByGroup(htmlTemp, VARIABLES_REGEX);
+			Set<String> placeholders = Utility.findStringsByGroup(htmlTemp, VARIABLES_REGEX);
 			if (!placeholders.isEmpty()) {
 				log.error("Value not found for placeholders: {}", placeholders);
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
@@ -399,4 +439,34 @@ public class TaskServiceImpl implements TaskService {
 		}
 	}
 
+    private String getToken(State state) {  
+        MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, state.getTransactionId());
+        Device device = state.getDevice();
+        log.info("Calling milAuth get Token.");
+        String token = null;
+		long start = System.currentTimeMillis();
+
+		try (RestResponse<TokenResponse> restTokenResponse = milAuthRestClient.getToken(
+				device.getBankId(),
+				device.getChannel().name(),
+				state.getFiscalCode(),
+				device.getTerminalId(),
+				state.getTransactionId());) {
+
+            if (restTokenResponse!= null) {
+                if (restTokenResponse.getStatus() == 200) {
+                    token = restTokenResponse.getEntity().getAccess_token();
+                    log.info("Retrieved token: [{}]", token);
+                } else {
+                    log.warn("Calling milAuth Status: [{}]", restTokenResponse.getStatus());               
+                }
+            }            
+          } catch (WebApplicationException e) {
+			log.error("Error calling milAuth get Token service", e);			
+          } finally {
+              logElapsedTime(GET_TOKEN_LOG_ID, start);
+          }
+        MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
+        return token;
+    }
 }

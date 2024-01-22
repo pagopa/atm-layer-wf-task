@@ -5,34 +5,34 @@ export const thresholdsSettings = {
   
   export const nameThresholds={
     //MENU
-    'http_req_duration{name:Menu}': ['p(95)<15000'],
-    'http_req_waiting{name:Menu}':['p(95)<15000'],
-    'http_req_failed{name:Menu}':['rate<0.01'],
-    'http_reqs{name:Menu}':[],
+    'http_req_duration{name:Menu iniziale}': ['p(95)<15000'],
+    'http_req_waiting{name:Menu iniziale}':['p(95)<15000'],
+    'http_req_failed{name:Menu iniziale}':['rate<0.01'],
+    'http_reqs{name:Menu iniziale}':[],
 
     //SPONTANEOUS PAYEMENT
-    'http_req_duration{name:Bill Payment}': ['p(95)<15000'],
-    'http_req_waiting{name:Bill Payment}':['p(95)<15000'],
-    'http_req_failed{name:Bill Payment}':['rate<0.01'],
-    'http_reqs{name:Bill Payment}':[],
+    'http_req_duration{name:Seleziona pagamento spontaneo}': ['p(95)<15000'],
+    'http_req_waiting{name:Seleziona pagamento spontaneo}':['p(95)<15000'],
+    'http_req_failed{name:Seleziona pagamento spontaneo}':['rate<0.01'],
+    'http_reqs{name:Seleziona pagamento spontaneo}':[],
 
     //PAYMENT SCAN
-    'http_req_duration{name:Calculate Fees}': ['p(95)<15000'],
-    'http_req_waiting{name:Calculate Fees}':['p(95)<15000'],
-    'http_req_failed{name:Calculate Fees}':['rate<0.01'],
-    'http_reqs{name:Calculate Fees}':[],
+    'http_req_duration{name:Inserimento codice bollettino}': ['p(95)<15000'],
+    'http_req_waiting{name:Inserimento codice bollettino}':['p(95)<15000'],
+    'http_req_failed{name:Inserimento codice bollettino}':['rate<0.01'],
+    'http_reqs{name:Inserimento codice bollettino}':[],
 
     //EXIT
-    'http_req_duration{name:Pre Close}': ['p(95)<15000'],
-    'http_req_waiting{name:Pre Close}':['p(95)<15000'],
-    'http_req_failed{name:Pre Close}':['rate<0.01'],
-    'http_reqs{name:Pre Close}':[],
+    'http_req_duration{name:Seleziona uscita}': ['p(95)<15000'],
+    'http_req_waiting{name:Seleziona uscita}':['p(95)<15000'],
+    'http_req_failed{name:Seleziona uscita}':['rate<0.01'],
+    'http_reqs{name:Seleziona uscita}':[],
 
     //CONFIRM EXIT
-    'http_req_duration{name:Close}': ['p(95)<15000'],
-    'http_req_waiting{name:Close}':['p(95)<15000'],
-    'http_req_failed{name:Close}':['rate<0.01'],
-    'http_reqs{name:Close}':[],
+    'http_req_duration{name:Conferma uscita}': ['p(95)<15000'],
+    'http_req_waiting{name:Conferma uscita}':['p(95)<15000'],
+    'http_req_failed{name:Conferma uscita}':['rate<0.01'],
+    'http_reqs{name:Conferma uscita}':[],
   }
   
   

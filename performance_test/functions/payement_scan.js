@@ -15,7 +15,7 @@ export function payementScan(baseUrl, basePath, token, spontaneousPayementRespon
 
     const params = {
         headers: headers,
-        tags: { name: 'Calculate Fees' },
+        tags: { name: 'Inserimento codice bollettino' },
     };
 
     const jsonData = JSON.parse(spontaneousPayementResponse).task;
