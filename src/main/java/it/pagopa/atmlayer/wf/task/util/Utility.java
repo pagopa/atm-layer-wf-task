@@ -160,8 +160,7 @@ public class Utility {
         groups = forObjectsAttributes.isEmpty() ? groups
                 : groups.stream()
                         .filter(groupsElement -> forObjectsAttributes.stream()
-                                .noneMatch(forElement -> groupsElement.equals(forElement) ||
-                                        groupsElement.startsWith(forElement)))
+                                .noneMatch(groupsElement::startsWith))
                         .collect(Collectors.toSet());
 
         return groups;
