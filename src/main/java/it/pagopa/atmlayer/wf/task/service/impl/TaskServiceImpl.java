@@ -66,11 +66,6 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 	@Inject
 	Properties properties;
 
-	private static final String VARIABLES_REGEX = "\\$\\{(.*?)\\}";
-
-	private static final String BUTTON_TAG = "button";
-
-	private static final String LI_TAG = "li";
 
 	@Override
 	public Scene buildFirst(String functionId, State state) {	   
@@ -351,7 +346,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 						Utility.getFileFromCdn(properties.cdnUrl() + properties.htmlResourcesPath()
 								+ receiptTemplateName).readAllBytes(),
 						properties.htmlCharset());
-				Set<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
+				Set<String> placeholders = Utility.findStringsByGroup(htmlString, Constants.VARIABLES_REGEX);
 				atmTask.setReceiptTemplate(htmlString);
 				log.debug("Placeholders found: {}", placeholders);
 				if (placeholders != null && !placeholders.isEmpty()) {
@@ -377,7 +372,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 						Utility.getFileFromCdn(properties.cdnUrl() + properties.htmlResourcesPath() + task.getForm())
 								.readAllBytes(),
 						properties.htmlCharset());
-				Set<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
+				Set<String> placeholders = Utility.findStringsByGroup(htmlString, Constants.VARIABLES_REGEX);
 				atmTask.getTemplate().setContent(htmlString);
 				placeholders.remove(Constants.CDN_PLACEHOLDER);
 				placeholders.addAll(Utility.getForVar(htmlString));
@@ -386,8 +381,8 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 					log.info("Number of variables found in html form: {}", placeholders.size());
 					variableRequest.setVariables(placeholders);
 				}
-				Set<String> buttonList = Utility.getIdOfTag(htmlString, BUTTON_TAG);
-				buttonList.addAll(Utility.getIdOfTag(htmlString, LI_TAG));
+				Set<String> buttonList = Utility.getIdOfTag(htmlString, Constants.BUTTON_TAG);
+				buttonList.addAll(Utility.getIdOfTag(htmlString, Constants.LI_TAG));
 				variableRequest.setButtons(buttonList);
 			} catch (IOException e) {
 				log.error("- ERROR: File: {} not found!", task.getForm(), e);
@@ -408,7 +403,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 				htmlTemp = htmlTemp.replace("${" + value.getKey() + "}", String.valueOf(value.getValue()));
 			}
 			htmlTemp = htmlTemp.replace("${" + Constants.CDN_PLACEHOLDER + "}", properties.cdnUrl());
-			Set<String> placeholders = Utility.findStringsByGroup(htmlTemp, VARIABLES_REGEX);
+			Set<String> placeholders = Utility.findStringsByGroup(htmlTemp, Constants.VARIABLES_REGEX);
 			if (!placeholders.isEmpty()) {
 				log.error("Value not found for placeholders: {}", placeholders);
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
