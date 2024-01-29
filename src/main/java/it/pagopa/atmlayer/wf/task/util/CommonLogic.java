@@ -14,7 +14,8 @@ public class CommonLogic{
     protected static final String START_PROCESS_LOG_ID = PROCESS_REST_CLIENT_CLASS_ID + "startProcess";
     protected static final String NEXT_TASKS_LOG_ID = PROCESS_REST_CLIENT_CLASS_ID + "nextTasks";
     protected static final String RETRIEVE_VARIABLES_LOG_ID = PROCESS_REST_CLIENT_CLASS_ID + "retrieveVariables";
-    protected static final String GET_TOKEN_LOG_ID = PROCESS_REST_CLIENT_CLASS_ID + "getToken";
+    private static final String MIL_AUTH_REST_CLIENT_CLASS_ID = "MilAuthRestClient.";
+    protected static final String GET_TOKEN_LOG_ID = MIL_AUTH_REST_CLIENT_CLASS_ID + "getToken";
 
     /**
      * Logs the elapsed time occurred for the processing.

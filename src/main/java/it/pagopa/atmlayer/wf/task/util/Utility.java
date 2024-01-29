@@ -178,6 +178,22 @@ public class Utility {
 
         return idList;
     }
+    
+    /**
+    *
+    * @param htmlString The HTML string to search for elements with the specified tag.
+    * @param tag The HTML tag used to identify the elements.
+    * @return A list of strings containing the IDs of HTML elements with the specified tag in the HTML string.
+    */
+    public static Set<String> getForVar(String htmlString) {
+        Set<String> idList = new HashSet<>();
+
+        Document doc = Jsoup.parse(htmlString);
+
+        doc.getElementsByTag("for").stream().forEach(e -> idList.add(e.attr("list")));
+
+        return idList;
+    }
 
     /**
     * Retrieves an InputStream for a specified file from a remote location.

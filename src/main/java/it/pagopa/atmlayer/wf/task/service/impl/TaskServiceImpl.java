@@ -16,6 +16,10 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.RestResponse.Status;
 import org.jboss.resteasy.reactive.RestResponse.StatusCode;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
 import org.slf4j.MDC;
 
 import it.pagopa.atmlayer.wf.task.bean.Button;
@@ -40,8 +44,8 @@ import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
-import it.pagopa.atmlayer.wf.task.util.Constants;
 import it.pagopa.atmlayer.wf.task.util.CommonLogic;
+import it.pagopa.atmlayer.wf.task.util.Constants;
 import it.pagopa.atmlayer.wf.task.util.Properties;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -376,6 +380,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 				Set<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
 				atmTask.getTemplate().setContent(htmlString);
 				placeholders.remove(Constants.CDN_PLACEHOLDER);
+				placeholders.addAll(Utility.getForVar(htmlString));
 				log.debug("Placeholders found: {}", placeholders);
 				if (placeholders != null && !placeholders.isEmpty()) {
 					log.info("Number of variables found in html form: {}", placeholders.size());
@@ -397,6 +402,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 		String htmlTemp = html;
 		if (htmlTemp != null) {
 			log.info("-----START replacing variables in html-----");
+			htmlTemp = parseLoopHtml(variables, html);
 			for (Entry<String, Object> value : variables.entrySet()) {
 				log.debug("Replacing {} -> {}", "${" + value.getKey() + "}", String.valueOf(value.getValue()));
 				htmlTemp = htmlTemp.replace("${" + value.getKey() + "}", String.valueOf(value.getValue()));
@@ -411,6 +417,28 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 		}
 		return htmlTemp;
 	}
+	
+	private static String parseLoopHtml( Map<String, Object> variables, String html) {
+        Document doc = Jsoup.parse(html,Parser.xmlParser());
+        
+        Element forEl  = doc.select("for").first();
+        if (forEl != null) {
+            String obj = forEl.attr("object");
+            List<?> list = (List<?>) variables.get(forEl.attr("list"));
+            int i = 0; 
+            for(Object element :list) {
+                i++;
+                variables.put(obj, element);
+                String htmlTemp = parseLoopHtml(variables, forEl.html());
+                htmlTemp = htmlTemp.replace("${" + obj + "}", String.valueOf(element));
+                htmlTemp = htmlTemp.replace("${" + obj + ".i}", String.valueOf(i));
+                forEl.after(htmlTemp);
+            }
+            forEl.remove();
+            doc.html(parseLoopHtml(variables, doc.html()));
+        }
+        return doc.html();
+    }
 
 	private void updateTemplate(it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
 		if (atmTask.getTemplate() != null) {
