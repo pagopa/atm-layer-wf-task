@@ -421,14 +421,17 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             String obj = forEl.attr("object");
             List<?> list = (List<?>) variables.get(forEl.attr("list"));
             int i = 0; 
-            for(Object element :list) {
-                i++;
-                variables.put(obj, element);
-                String htmlTemp = parseLoopHtml(variables, forEl.html());
-                htmlTemp = htmlTemp.replace("${" + obj + "}", String.valueOf(element));
-                htmlTemp = htmlTemp.replace("${" + obj + ".i}", String.valueOf(i));
-                forEl.after(htmlTemp);
-            }
+			if (list != null){
+				for(Object element :list) {
+					i++;
+					variables.put(obj, element);
+					String htmlTemp = parseLoopHtml(variables, forEl.html());
+					htmlTemp = htmlTemp.replace("${" + obj + "}", String.valueOf(element));
+					htmlTemp = htmlTemp.replace("${" + obj + ".i}", String.valueOf(i));
+					forEl.after(htmlTemp);
+				}
+			}
+            
             forEl.remove();
             doc.html(parseLoopHtml(variables, doc.html()));
         }

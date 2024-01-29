@@ -1,6 +1,7 @@
 package it.pagopa.atmlayer.wf.task.test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -142,6 +143,11 @@ public class DataTest {
         variableResponse.getVariables().put("amount", 10000);
         variableResponse.getVariables().put("fee", 2.30);
         variableResponse.getVariables().put("totale", 2.30);
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("prova1");
+        list.add("prova2");
+        list.add("prova3");
+        variableResponse.getVariables().put("pulsanti", list);
 
         return variableResponse;
     }

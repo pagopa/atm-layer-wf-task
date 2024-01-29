@@ -50,7 +50,11 @@
       <span>Paga  ${totale} &euro;</span>
 	</button>
 	
-	
+	<for object="pulsante" list="pulsanti">
+        <button class="negative" data-fdk="S${pulsante.i}" id="${pulsante}">
+            <span>${pulsante}</span>
+        </button>
+  	</for>
 
 	</body>
 	
