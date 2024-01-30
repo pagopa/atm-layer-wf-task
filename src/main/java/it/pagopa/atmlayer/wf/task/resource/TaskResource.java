@@ -8,6 +8,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.RestResponse.Status;
 
+import io.opentelemetry.api.trace.Tracer;
 import it.pagopa.atmlayer.wf.task.bean.Scene;
 import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorEnum;
@@ -32,6 +33,9 @@ public class TaskResource extends CommonLogic{
 
 	@Inject
 	TaskService taskService;
+
+	@Inject
+	Tracer tracer;
 
 	@Path("/main")
 	@POST
