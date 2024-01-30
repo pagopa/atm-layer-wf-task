@@ -429,14 +429,14 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 			if (list != null) {
 				for (Object element : list) {
 					i++;
-					variables.put(obj, element);
+					//variables.put(obj, element);
 					String htmlTemp = parseLoopHtml(variables, forEl.html(), placeholders);
 					htmlTemp = htmlTemp.replace("${" + obj + "}", String.valueOf(element));
 					htmlTemp = htmlTemp.replace("${" + obj + ".i}", String.valueOf(i));
-					for (Entry<String, Object> var : variables.entrySet()) {
+					for (String var : placeholders) {
 
-						if (var.getKey().startsWith(obj + ".")) {
-							String[] properties = var.getKey().split(".");
+						if (var.startsWith(obj + ".")) {
+							String[] properties = var.split(".");
 							JsonElement jsonElement = JsonParser.parseString(String.valueOf(element));
 							JsonElement propElement = jsonElement;
 							for (int j = 1; j <= properties.length; j++){
@@ -450,7 +450,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 							}
 
 							if (propElement != null){
-								htmlTemp = htmlTemp.replace("${" + var.getKey() + "}", propElement.getAsString());
+								htmlTemp = htmlTemp.replace("${" + var + "}", propElement.getAsString());
 							}
 							
 						}

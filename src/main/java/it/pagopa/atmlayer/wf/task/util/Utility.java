@@ -144,9 +144,9 @@ public class Utility {
     public static Set<String> findStringsByGroup(String inputString, String regex) {
         Set<String> groups = new HashSet<>();
 
-        Set<String> forObjectsAttributes = extractObjects(regex);
+        /* Set<String> forObjectsAttributes = extractObjects(regex);
 
-        log.debug("For object attributes {} :", forObjectsAttributes);
+        log.debug("For object attributes {} :", forObjectsAttributes); */
 
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(inputString);
@@ -157,11 +157,11 @@ public class Utility {
             }
         }
 
-        groups = forObjectsAttributes.isEmpty() ? groups
+        /* groups = forObjectsAttributes.isEmpty() ? groups
                 : groups.stream()
                         .filter(groupsElement -> forObjectsAttributes.stream()
                                 .noneMatch(groupsElement::startsWith))
-                        .collect(Collectors.toSet());
+                        .collect(Collectors.toSet()); */
 
         return groups;
     }
