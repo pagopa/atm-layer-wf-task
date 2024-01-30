@@ -19,6 +19,7 @@ import org.jboss.resteasy.reactive.RestResponse.StatusCode;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Entities.EscapeMode;
 import org.jsoup.parser.Parser;
 import org.slf4j.MDC;
 
@@ -401,14 +402,14 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 		String htmlTemp = html;
 		if (htmlTemp != null) {
 			log.info("-----START replacing variables in html-----");
-			Set<String> placeholders = Utility.findStringsByGroup(htmlTemp, Constants.VARIABLES_REGEX);
-			htmlTemp = parseLoopHtml(variables, html, placeholders);
+			
+			htmlTemp = parseLoopHtml(variables, html);
 			for (Entry<String, Object> value : variables.entrySet()) {
 				log.debug("Replacing {} -> {}", "${" + value.getKey() + "}", String.valueOf(value.getValue()));
 				htmlTemp = htmlTemp.replace("${" + value.getKey() + "}", String.valueOf(value.getValue()));
 			}
 			htmlTemp = htmlTemp.replace("${" + Constants.CDN_PLACEHOLDER + "}", properties.cdnUrl());
-			placeholders = Utility.findStringsByGroup(htmlTemp, Constants.VARIABLES_REGEX);
+			Set<String> placeholders = Utility.findStringsByGroup(htmlTemp, Constants.VARIABLES_REGEX);
 			if (!placeholders.isEmpty()) {
 				log.error("Value not found for placeholders: {}", placeholders);
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
@@ -418,51 +419,48 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 		return htmlTemp;
 	}
 
-	private static String parseLoopHtml(Map<String, Object> variables, String html, Set<String> placeholders) {
+	private String parseLoopHtml(Map<String, Object> variables, String html) {
 		Document doc = Jsoup.parse(html, Parser.xmlParser());
-
+		doc.outputSettings().prettyPrint(false).charset(properties.htmlCharset()).escapeMode(EscapeMode.extended);
 		Element forEl = doc.select("for").first();
 		if (forEl != null) {
 			String obj = forEl.attr("object");
+			Set<String> placeholders = Utility.findStringsByGroup(html, Constants.VARIABLES_REGEX);
+			placeholders.removeIf(p -> !p.startsWith(obj + "."));		
+			
 			List<?> list = (List<?>) variables.get(forEl.attr("list"));
 			int i = 0;
 			if (list != null) {
 				for (Object element : list) {
-					i++;
-					//variables.put(obj, element);
-					String htmlTemp = parseLoopHtml(variables, forEl.html(), placeholders);
+					i++;					
+					String htmlTemp = parseLoopHtml(variables, forEl.html());
 					htmlTemp = htmlTemp.replace("${" + obj + "}", String.valueOf(element));
 					htmlTemp = htmlTemp.replace("${" + obj + ".i}", String.valueOf(i));
-					for (String var : placeholders) {
-
-						if (var.startsWith(obj + ".")) {
-							String[] properties = var.split("\\.");
-							JsonElement jsonElement = JsonParser.parseString(String.valueOf(element));
-							JsonElement propElement = jsonElement;
-							for (int j = 1; j < properties.length; j++){
-								JsonObject jsonObject = propElement.getAsJsonObject();
-								if (jsonObject.has(properties[j])){
-									propElement = jsonObject.get(properties[j]);
-								} else {
-									propElement = null;
-									break;
-								}
-							}
-
-							if (propElement != null){
-								htmlTemp = htmlTemp.replace("${" + var + "}", propElement.getAsString());
-							}
-							
-						}
+					JsonElement jsonElement = JsonParser.parseString(String.valueOf(element));
+					for (String var : placeholders) {					    
+						    htmlTemp = htmlTemp.replace("${" + var + "}",  getVarProp(var, jsonElement));				
 					}
 					forEl.after(htmlTemp);
 				}
 			}
-
 			forEl.remove();
-			doc.html(parseLoopHtml(variables, doc.html(), placeholders));
-		}
+			doc.html(parseLoopHtml(variables, doc.html()));
+		}		
 		return doc.html();
+	}
+	
+	private static String  getVarProp(String var, JsonElement jsonElement) {
+	    String[] varProperties = var.split("\\.");     
+        JsonElement propElement = jsonElement;
+        for (int j = 1; j < varProperties.length; j++){
+            JsonObject jsonObject = propElement.getAsJsonObject();
+            if (jsonObject.has(varProperties[j])){
+                propElement = jsonObject.get(varProperties[j]);
+            } else {
+                return "";
+            }
+        }        
+	    return propElement.getAsString();
 	}
 
 	private void updateTemplate(it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
