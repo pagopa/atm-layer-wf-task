@@ -22,7 +22,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.slf4j.MDC;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -402,13 +401,14 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 		String htmlTemp = html;
 		if (htmlTemp != null) {
 			log.info("-----START replacing variables in html-----");
-			htmlTemp = parseLoopHtml(variables, html);
+			Set<String> placeholders = Utility.findStringsByGroup(htmlTemp, Constants.VARIABLES_REGEX);
+			htmlTemp = parseLoopHtml(variables, html, placeholders);
 			for (Entry<String, Object> value : variables.entrySet()) {
 				log.debug("Replacing {} -> {}", "${" + value.getKey() + "}", String.valueOf(value.getValue()));
 				htmlTemp = htmlTemp.replace("${" + value.getKey() + "}", String.valueOf(value.getValue()));
 			}
 			htmlTemp = htmlTemp.replace("${" + Constants.CDN_PLACEHOLDER + "}", properties.cdnUrl());
-			Set<String> placeholders = Utility.findStringsByGroup(htmlTemp, Constants.VARIABLES_REGEX);
+			
 			if (!placeholders.isEmpty()) {
 				log.error("Value not found for placeholders: {}", placeholders);
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
@@ -418,7 +418,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 		return htmlTemp;
 	}
 
-	private static String parseLoopHtml(Map<String, Object> variables, String html) {
+	private static String parseLoopHtml(Map<String, Object> variables, String html, Set<String> placeholders) {
 		Document doc = Jsoup.parse(html, Parser.xmlParser());
 
 		Element forEl = doc.select("for").first();
@@ -429,14 +429,14 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 			if (list != null) {
 				for (Object element : list) {
 					i++;
-					variables.put(obj, element);
-					String htmlTemp = parseLoopHtml(variables, forEl.html());
+					//variables.put(obj, element);
+					String htmlTemp = parseLoopHtml(variables, forEl.html(), placeholders);
 					htmlTemp = htmlTemp.replace("${" + obj + "}", String.valueOf(element));
 					htmlTemp = htmlTemp.replace("${" + obj + ".i}", String.valueOf(i));
-					for (Entry<String, Object> var : variables.entrySet()) {
+					for (String var : placeholders) {
 
-						if (var.getKey().startsWith(obj + ".")) {
-							String[] properties = var.getKey().split(".");
+						if (var.startsWith(obj + ".")) {
+							String[] properties = var.split(".");
 							JsonElement jsonElement = JsonParser.parseString(String.valueOf(element));
 							JsonElement propElement = jsonElement;
 							for (int j = 1; j <= properties.length; j++){
@@ -450,7 +450,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 							}
 
 							if (propElement != null){
-								htmlTemp = htmlTemp.replace("${" + var.getKey() + "}", propElement.getAsString());
+								htmlTemp = htmlTemp.replace("${" + var + "}", propElement.getAsString());
 							}
 							
 						}
@@ -460,7 +460,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 			}
 
 			forEl.remove();
-			doc.html(parseLoopHtml(variables, doc.html()));
+			doc.html(parseLoopHtml(variables, doc.html(), placeholders));
 		}
 		return doc.html();
 	}
