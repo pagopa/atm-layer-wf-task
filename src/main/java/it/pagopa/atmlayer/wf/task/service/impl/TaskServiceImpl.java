@@ -408,7 +408,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 				htmlTemp = htmlTemp.replace("${" + value.getKey() + "}", String.valueOf(value.getValue()));
 			}
 			htmlTemp = htmlTemp.replace("${" + Constants.CDN_PLACEHOLDER + "}", properties.cdnUrl());
-			
+			placeholders = Utility.findStringsByGroup(htmlTemp, Constants.VARIABLES_REGEX);
 			if (!placeholders.isEmpty()) {
 				log.error("Value not found for placeholders: {}", placeholders);
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
@@ -436,10 +436,10 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 					for (String var : placeholders) {
 
 						if (var.startsWith(obj + ".")) {
-							String[] properties = var.split(".");
+							String[] properties = var.split("\\.");
 							JsonElement jsonElement = JsonParser.parseString(String.valueOf(element));
 							JsonElement propElement = jsonElement;
-							for (int j = 1; j <= properties.length; j++){
+							for (int j = 1; j < properties.length; j++){
 								JsonObject jsonObject = propElement.getAsJsonObject();
 								if (jsonObject.has(properties[j])){
 									propElement = jsonObject.get(properties[j]);
