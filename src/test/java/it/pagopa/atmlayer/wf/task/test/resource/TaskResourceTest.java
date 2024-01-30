@@ -126,10 +126,12 @@ class TaskResourceTest {
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createVariableResponseWithData()));
 
+                        
                 Response response = given().body(DataTest.createStateRequestStartWithoutDeviceData())
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/main").then().extract().response();
 
+                System.out.println(response.toString());
                 Assertions.assertEquals(201, response.statusCode());
         }
 

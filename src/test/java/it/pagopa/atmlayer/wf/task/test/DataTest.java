@@ -144,9 +144,22 @@ public class DataTest {
         variableResponse.getVariables().put("fee", 2.30);
         variableResponse.getVariables().put("totale", 2.30);
         ArrayList<String> list = new ArrayList<String>();
-        list.add("prova1");
-        list.add("prova2");
-        list.add("prova3");
+        list.add("{\r\n" + //
+                "    \"paragrafo\": \"vedi2\",\r\n" + //
+                "    \"titolo\": {\r\n" + //
+                "        \"data\": \"2024\",\r\n" + //
+                "        \"id\": 4,\r\n" + //
+                "        \"name\": \"Test\"\r\n" + //
+                "    }\r\n" + //
+                "}");
+        list.add("{\r\n" + //
+                "    \"paragrafo\": \"vedi3\",\r\n" + //
+                "    \"titolo\": {\r\n" + //
+                "        \"data\": \"2023\",\r\n" + //
+                "        \"id\": 3,\r\n" + //
+                "        \"name\": \"Test3\"\r\n" + //
+                "    }\r\n" + //
+                "}");
         variableResponse.getVariables().put("pulsanti", list);
 
         return variableResponse;

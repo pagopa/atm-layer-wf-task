@@ -22,6 +22,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.slf4j.MDC;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import it.pagopa.atmlayer.wf.task.bean.Button;
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.Scene;
@@ -66,19 +71,20 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 	@Inject
 	Properties properties;
 
-
 	@Override
-	public Scene buildFirst(String functionId, State state) {	   
-	   /* new Thread(() -> {
-	        getToken(state);
-	    }).start();*/
-	    Map<String, Object> data = state.getData();
-	    if (data == null) {
-	        state.setData(new HashMap<String, Object>());
-	        data = state.getData();
-	    }
-	        
-	    state.getData().put("millAccessToken", getToken(state));
+	public Scene buildFirst(String functionId, State state) {
+		/*
+		 * new Thread(() -> {
+		 * getToken(state);
+		 * }).start();
+		 */
+		Map<String, Object> data = state.getData();
+		if (data == null) {
+			state.setData(new HashMap<String, Object>());
+			data = state.getData();
+		}
+
+		state.getData().put("millAccessToken", getToken(state));
 		Scene scene = buildSceneStart(functionId, state.getTransactionId(), state);
 		scene.setTransactionId(state.getTransactionId());
 		return scene;
@@ -153,7 +159,6 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 		it.pagopa.atmlayer.wf.task.bean.Task atmTask = null;
 		// Recupero il primo task ordinato per priorità
 		Collections.sort(response.getTasks(), Comparator.comparingInt(Task::getPriority));
-		
 
 		if (!response.getTasks().isEmpty()) {
 			Task workingTask = response.getTasks().get(0);
@@ -412,31 +417,53 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 		}
 		return htmlTemp;
 	}
-	
-	private static String parseLoopHtml( Map<String, Object> variables, String html) {
-        Document doc = Jsoup.parse(html,Parser.xmlParser());
-        
-        Element forEl  = doc.select("for").first();
-        if (forEl != null) {
-            String obj = forEl.attr("object");
-            List<?> list = (List<?>) variables.get(forEl.attr("list"));
-            int i = 0; 
-			if (list != null){
-				for(Object element :list) {
+
+	private static String parseLoopHtml(Map<String, Object> variables, String html) {
+		Document doc = Jsoup.parse(html, Parser.xmlParser());
+
+		Element forEl = doc.select("for").first();
+		if (forEl != null) {
+			String obj = forEl.attr("object");
+			List<?> list = (List<?>) variables.get(forEl.attr("list"));
+			int i = 0;
+			if (list != null) {
+				for (Object element : list) {
 					i++;
 					variables.put(obj, element);
 					String htmlTemp = parseLoopHtml(variables, forEl.html());
 					htmlTemp = htmlTemp.replace("${" + obj + "}", String.valueOf(element));
 					htmlTemp = htmlTemp.replace("${" + obj + ".i}", String.valueOf(i));
+					for (Entry<String, Object> var : variables.entrySet()) {
+
+						if (var.getKey().startsWith(obj + ".")) {
+							String[] properties = var.getKey().split(".");
+							JsonElement jsonElement = JsonParser.parseString(String.valueOf(element));
+							JsonElement propElement = jsonElement;
+							for (int j = 1; j <= properties.length; j++){
+								JsonObject jsonObject = propElement.getAsJsonObject();
+								if (jsonObject.has(properties[j])){
+									propElement = jsonObject.get(properties[j]);
+								} else {
+									propElement = null;
+									break;
+								}
+							}
+
+							if (propElement != null){
+								htmlTemp = htmlTemp.replace("${" + var.getKey() + "}", propElement.getAsString());
+							}
+							
+						}
+					}
 					forEl.after(htmlTemp);
 				}
 			}
-            
-            forEl.remove();
-            doc.html(parseLoopHtml(variables, doc.html()));
-        }
-        return doc.html();
-    }
+
+			forEl.remove();
+			doc.html(parseLoopHtml(variables, doc.html()));
+		}
+		return doc.html();
+	}
 
 	private void updateTemplate(it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
 		if (atmTask.getTemplate() != null) {
@@ -465,11 +492,11 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 		}
 	}
 
-    private String getToken(State state) {  
-        MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, state.getTransactionId());
-        Device device = state.getDevice();
-        log.info("Calling milAuth get Token.");
-        String token = null;
+	private String getToken(State state) {
+		MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, state.getTransactionId());
+		Device device = state.getDevice();
+		log.info("Calling milAuth get Token.");
+		String token = null;
 		long start = System.currentTimeMillis();
 
 		try (RestResponse<TokenResponse> restTokenResponse = milAuthRestClient.getToken(
@@ -479,20 +506,20 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 				device.getTerminalId(),
 				state.getTransactionId());) {
 
-            if (restTokenResponse!= null) {
-                if (restTokenResponse.getStatus() == 200) {
-                    token = restTokenResponse.getEntity().getAccess_token();
-                    log.info("Retrieved token: [{}]", token);
-                } else {
-                    log.warn("Calling milAuth Status: [{}]", restTokenResponse.getStatus());               
-                }
-            }            
-          } catch (WebApplicationException e) {
-			log.error("Error calling milAuth get Token service", e);			
-          } finally {
-              logElapsedTime(GET_TOKEN_LOG_ID, start);
-          }
-        MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
-        return token;
-    }
+			if (restTokenResponse != null) {
+				if (restTokenResponse.getStatus() == 200) {
+					token = restTokenResponse.getEntity().getAccess_token();
+					log.info("Retrieved token: [{}]", token);
+				} else {
+					log.warn("Calling milAuth Status: [{}]", restTokenResponse.getStatus());
+				}
+			}
+		} catch (WebApplicationException e) {
+			log.error("Error calling milAuth get Token service", e);
+		} finally {
+			logElapsedTime(GET_TOKEN_LOG_ID, start);
+		}
+		MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
+		return token;
+	}
 }
