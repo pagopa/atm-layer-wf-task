@@ -170,6 +170,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 			try {
 				log.info("Retrieving variables: [{}]", variableRequest);
 				restVariableResponse = processRestClient.retrieveVariables(variableRequest);
+				log.info("VariableResp: {}", restVariableResponse.getEntity());
 			} catch (WebApplicationException e) {
 				log.error("Error calling process service", e);
 				if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
@@ -436,6 +437,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 					String htmlTemp = parseLoopHtml(variables, forEl.html());
 					htmlTemp = htmlTemp.replace("${" + obj + "}", String.valueOf(element));
 					htmlTemp = htmlTemp.replace("${" + obj + ".i}", String.valueOf(i));
+					log.info("ELEMENT: " + String.valueOf(element));
 					JsonElement jsonElement = JsonParser.parseString(String.valueOf(element));
 					for (String var : placeholders) {					    
 						    htmlTemp = htmlTemp.replace("${" + var + "}",  getVarProp(var, jsonElement));				
