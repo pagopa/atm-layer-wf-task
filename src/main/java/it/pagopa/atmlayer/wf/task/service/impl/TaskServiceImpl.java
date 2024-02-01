@@ -438,18 +438,9 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 					String htmlTemp = parseLoopHtml(variables, forEl.html());
 					htmlTemp = htmlTemp.replace("${" + obj + "}", String.valueOf(element));
 					htmlTemp = htmlTemp.replace("${" + obj + ".i}", String.valueOf(i));
-					log.info("ELEMENT: " + String.valueOf(element));
 
-					String jsonString = null;
-					ObjectMapper om = new ObjectMapper();
-					try {
-						jsonString = om.writeValueAsString(element);
-					} catch (JsonProcessingException e) {
-						log.error("Error during Json processing log!");
-						throw new ErrorException(ErrorEnum.GENERIC_ERROR);
-					}
-
-					JsonElement jsonElement = JsonParser.parseString(jsonString);
+					JsonElement jsonElement = JsonParser.parseString(Utility.getJson(element));
+					
 					for (String var : placeholders) {					    
 						    htmlTemp = htmlTemp.replace("${" + var + "}",  getVarProp(var, jsonElement));				
 					}
