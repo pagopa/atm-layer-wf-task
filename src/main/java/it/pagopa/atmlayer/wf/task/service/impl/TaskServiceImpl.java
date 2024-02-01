@@ -23,6 +23,8 @@ import org.jsoup.nodes.Entities.EscapeMode;
 import org.jsoup.parser.Parser;
 import org.slf4j.MDC;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -170,7 +172,6 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 			try {
 				log.info("Retrieving variables: [{}]", variableRequest);
 				restVariableResponse = processRestClient.retrieveVariables(variableRequest);
-				log.info("VariableResp: {}", restVariableResponse.getEntity());
 			} catch (WebApplicationException e) {
 				log.error("Error calling process service", e);
 				if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
@@ -438,7 +439,17 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 					htmlTemp = htmlTemp.replace("${" + obj + "}", String.valueOf(element));
 					htmlTemp = htmlTemp.replace("${" + obj + ".i}", String.valueOf(i));
 					log.info("ELEMENT: " + String.valueOf(element));
-					JsonElement jsonElement = JsonParser.parseString(String.valueOf(element));
+
+					String jsonString = null;
+					ObjectMapper om = new ObjectMapper();
+					try {
+						jsonString = om.writeValueAsString(element);
+					} catch (JsonProcessingException e) {
+						log.error("Error during Json processing log!");
+						throw new ErrorException(ErrorEnum.GENERIC_ERROR);
+					}
+
+					JsonElement jsonElement = JsonParser.parseString(jsonString);
 					for (String var : placeholders) {					    
 						    htmlTemp = htmlTemp.replace("${" + var + "}",  getVarProp(var, jsonElement));				
 					}
