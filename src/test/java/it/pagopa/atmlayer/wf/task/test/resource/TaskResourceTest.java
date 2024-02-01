@@ -597,6 +597,9 @@ class TaskResourceTest {
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createTaskResponseEndProcess()));
 
+                Mockito.when(milAuthRestClient.deleteToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.NO_CONTENT));
+
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/next/trns/{transactionId}", "00001-0002-12345-1234567890-aaaaaaaaaaaaa").then()
