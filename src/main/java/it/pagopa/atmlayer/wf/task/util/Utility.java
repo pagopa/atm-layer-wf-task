@@ -10,7 +10,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -26,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Utility {
+    static private ObjectMapper om = new ObjectMapper();
 
     /**
      * Converts an object to a JSON representation.
@@ -41,8 +41,7 @@ public class Utility {
      *         occurs.
      */
     public static String getJson(Object object) {
-        String result = null;
-        ObjectMapper om = new ObjectMapper();
+        String result = null;       
         try {
             result = om.writer().writeValueAsString(object);
         } catch (JsonProcessingException e) {
@@ -53,8 +52,7 @@ public class Utility {
 
     public static byte[] setTransactionIdInJson(byte[] entity, String transactionId) {
         String result = null;
-
-        ObjectMapper om = new ObjectMapper();
+       
         try {
             JsonNode jn = om.readTree(new String(entity));
             ((ObjectNode) jn).put("transactionId", transactionId);
@@ -82,7 +80,7 @@ public class Utility {
      */
     public static String getObscuredJson(Object object) {
         String result = null;
-        ObjectMapper om = new ObjectMapper();
+       
         try {
             result = om.writerWithView(Object.class).writeValueAsString(object);
         } catch (JsonProcessingException e) {
@@ -93,7 +91,7 @@ public class Utility {
 
     public static <T> T getObject(String json, Class<T> clazz) {
         T result = null;
-        ObjectMapper om = new ObjectMapper();
+      
         try {
             result = om.readValue(json, clazz);
         } catch (JsonProcessingException e) {
