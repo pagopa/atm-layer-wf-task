@@ -539,8 +539,9 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 		long start = System.currentTimeMillis();
 
 		try {
-			milAuthRestClient.deleteToken(device.getBankId(), device.getChannel().name(), device.getTerminalId(),
+			RestResponse<Object> response = milAuthRestClient.deleteToken(device.getBankId(), device.getChannel().name(), device.getTerminalId(),
 					state.getTransactionId());
+			log.info("Token deleted correctly. Status code: {}", response.getStatus());
 		} catch (WebApplicationException e) {
 			log.warn("MilAuth error in delete Token service", e);
 			switch (e.getResponse().getStatus()) {
