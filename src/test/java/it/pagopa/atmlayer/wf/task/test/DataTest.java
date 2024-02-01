@@ -18,6 +18,7 @@ import it.pagopa.atmlayer.wf.task.bean.enumartive.PeripheralStatus;
 import it.pagopa.atmlayer.wf.task.client.bean.Task;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
+import it.pagopa.atmlayer.wf.task.test.bean.Dato;
 import it.pagopa.atmlayer.wf.task.util.Constants;
 
 public class DataTest {
@@ -122,7 +123,11 @@ public class DataTest {
         variableResponse.getVariables().put("totale", 11.50);
         variableResponse.getVariables().put("variable1", "11.50");
         variableResponse.getVariables().put(Constants.COMMAND_VARIABLE_VALUE, Command.PRINT_RECEIPT.name());
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<Object> list = new ArrayList<Object>();
+        Dato elemento = new Dato();
+        elemento.setParagrafo("vedi2");
+        list.add(elemento);
+        /*
         list.add("{\r\n" + //
                 "    \"paragrafo\": \"vedi2\",\r\n" + //
                 "    \"titolo\": {\r\n" + //
@@ -138,7 +143,7 @@ public class DataTest {
                 "        \"id\": 3,\r\n" + //
                 "        \"name\": \"Test3\"\r\n" + //
                 "    }\r\n" + //
-                "}");
+                "}");*/
         variableResponse.getVariables().put("pulsanti", list);
 
         Map<String, Object> buttonMap = new HashMap<>();
@@ -160,8 +165,8 @@ public class DataTest {
         variableResponse.getVariables().put("amount", 10000);
         variableResponse.getVariables().put("fee", 2.30);
         variableResponse.getVariables().put("totale", 2.30);
-        ArrayList<String> list = new ArrayList<String>();
-        list.add("{\r\n" + //
+        ArrayList<Object> list = new ArrayList<Object>();
+      /*  list.add("{\r\n" + //
                 "    \"paragrafo\": \"vedi2\",\r\n" + //
                 "    \"titolo\": {\r\n" + //
                 "        \"data\": \"2024\",\r\n" + //
@@ -176,7 +181,11 @@ public class DataTest {
                 "        \"id\": 3,\r\n" + //
                 "        \"name\": \"Test3\"\r\n" + //
                 "    }\r\n" + //
-                "}");
+                "}");*/
+        Dato elemento = new Dato();
+        elemento.setParagrafo("vedi2");
+        list.add(elemento);
+        
         variableResponse.getVariables().put("pulsanti", list);
 
         return variableResponse;
@@ -286,23 +295,27 @@ public class DataTest {
         varResponse.getVariables().put("amount", 10000);
         varResponse.getVariables().put("fee", 2.30);
         varResponse.getVariables().put("totale", 11.50);
-        ArrayList<String> list = new ArrayList<String>();
-        list.add("{\r\n" + //
-                "    \"paragrafo\": \"vedi2\",\r\n" + //
-                "    \"titolo\": {\r\n" + //
-                "        \"data\": \"2024\",\r\n" + //
-                "        \"id\": 4,\r\n" + //
-                "        \"name\": \"Test\"\r\n" + //
-                "    }\r\n" + //
-                "}");
-        list.add("{\r\n" + //
-                "    \"paragrafo\": \"vedi3\",\r\n" + //
-                "    \"titolo\": {\r\n" + //
-                "        \"data\": \"2023\",\r\n" + //
-                "        \"id\": 3,\r\n" + //
-                "        \"name\": \"Test3\"\r\n" + //
-                "    }\r\n" + //
-                "}");
+        ArrayList<Object> list = new ArrayList<Object>();
+        /*  list.add("{\r\n" + //
+                  "    \"paragrafo\": \"vedi2\",\r\n" + //
+                  "    \"titolo\": {\r\n" + //
+                  "        \"data\": \"2024\",\r\n" + //
+                  "        \"id\": 4,\r\n" + //
+                  "        \"name\": \"Test\"\r\n" + //
+                  "    }\r\n" + //
+                  "}");
+          list.add("{\r\n" + //
+                  "    \"paragrafo\": \"vedi3\",\r\n" + //
+                  "    \"titolo\": {\r\n" + //
+                  "        \"data\": \"2023\",\r\n" + //
+                  "        \"id\": 3,\r\n" + //
+                  "        \"name\": \"Test3\"\r\n" + //
+                  "    }\r\n" + //
+                  "}");*/
+          Dato elemento = new Dato();
+          elemento.setParagrafo("vedi2");
+          list.add(elemento);
+        
         varResponse.getVariables().put("pulsanti", list);
 
         return varResponse;
