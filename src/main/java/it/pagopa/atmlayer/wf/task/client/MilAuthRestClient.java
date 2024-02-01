@@ -4,6 +4,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.jboss.resteasy.reactive.RestResponse;
 
 import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -19,4 +20,13 @@ public interface MilAuthRestClient {
             @HeaderParam("FiscalCode") String fiscalCode,
             @HeaderParam("TerminalId") String terminalId,
             @HeaderParam("TransactionId") String transactionId);
+
+    @DELETE
+    @Path("/token")
+    RestResponse<Object> deleteToken(
+            @HeaderParam("AcquirerId") String bankId,
+            @HeaderParam("Channel") String channel,
+            @HeaderParam("TerminalId") String terminalId,
+            @HeaderParam("TransactionId") String transactionId);
+
 }

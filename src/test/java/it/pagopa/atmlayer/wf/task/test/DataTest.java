@@ -127,23 +127,6 @@ public class DataTest {
         Dato elemento = new Dato();
         elemento.setParagrafo("vedi2");
         list.add(elemento);
-        /*
-        list.add("{\r\n" + //
-                "    \"paragrafo\": \"vedi2\",\r\n" + //
-                "    \"titolo\": {\r\n" + //
-                "        \"data\": \"2024\",\r\n" + //
-                "        \"id\": 4,\r\n" + //
-                "        \"name\": \"Test\"\r\n" + //
-                "    }\r\n" + //
-                "}");
-        list.add("{\r\n" + //
-                "    \"paragrafo\": \"vedi3\",\r\n" + //
-                "    \"titolo\": {\r\n" + //
-                "        \"data\": \"2023\",\r\n" + //
-                "        \"id\": 3,\r\n" + //
-                "        \"name\": \"Test3\"\r\n" + //
-                "    }\r\n" + //
-                "}");*/
         variableResponse.getVariables().put("pulsanti", list);
 
         Map<String, Object> buttonMap = new HashMap<>();
@@ -166,22 +149,6 @@ public class DataTest {
         variableResponse.getVariables().put("fee", 2.30);
         variableResponse.getVariables().put("totale", 2.30);
         ArrayList<Object> list = new ArrayList<Object>();
-      /*  list.add("{\r\n" + //
-                "    \"paragrafo\": \"vedi2\",\r\n" + //
-                "    \"titolo\": {\r\n" + //
-                "        \"data\": \"2024\",\r\n" + //
-                "        \"id\": 4,\r\n" + //
-                "        \"name\": \"Test\"\r\n" + //
-                "    }\r\n" + //
-                "}");
-        list.add("{\r\n" + //
-                "    \"paragrafo\": \"vedi3\",\r\n" + //
-                "    \"titolo\": {\r\n" + //
-                "        \"data\": \"2023\",\r\n" + //
-                "        \"id\": 3,\r\n" + //
-                "        \"name\": \"Test3\"\r\n" + //
-                "    }\r\n" + //
-                "}");*/
         Dato elemento = new Dato();
         elemento.setParagrafo("vedi2");
         list.add(elemento);
@@ -296,22 +263,6 @@ public class DataTest {
         varResponse.getVariables().put("fee", 2.30);
         varResponse.getVariables().put("totale", 11.50);
         ArrayList<Object> list = new ArrayList<Object>();
-        /*  list.add("{\r\n" + //
-                  "    \"paragrafo\": \"vedi2\",\r\n" + //
-                  "    \"titolo\": {\r\n" + //
-                  "        \"data\": \"2024\",\r\n" + //
-                  "        \"id\": 4,\r\n" + //
-                  "        \"name\": \"Test\"\r\n" + //
-                  "    }\r\n" + //
-                  "}");
-          list.add("{\r\n" + //
-                  "    \"paragrafo\": \"vedi3\",\r\n" + //
-                  "    \"titolo\": {\r\n" + //
-                  "        \"data\": \"2023\",\r\n" + //
-                  "        \"id\": 3,\r\n" + //
-                  "        \"name\": \"Test3\"\r\n" + //
-                  "    }\r\n" + //
-                  "}");*/
           Dato elemento = new Dato();
           elemento.setParagrafo("vedi2");
           list.add(elemento);

@@ -23,8 +23,6 @@ import org.jsoup.nodes.Entities.EscapeMode;
 import org.jsoup.parser.Parser;
 import org.slf4j.MDC;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -202,7 +200,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
 		}
-		return atmTask;
+				return atmTask;
 	}
 
 	private void manageReceipt(Map<String, Object> workingVariables, it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
@@ -404,7 +402,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 		String htmlTemp = html;
 		if (htmlTemp != null) {
 			log.info("-----START replacing variables in html-----");
-			
+
 			htmlTemp = parseLoopHtml(variables, html);
 			for (Entry<String, Object> value : variables.entrySet()) {
 				log.debug("Replacing {} -> {}", "${" + value.getKey() + "}", String.valueOf(value.getValue()));
@@ -428,43 +426,43 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 		if (forEl != null) {
 			String obj = forEl.attr("object");
 			Set<String> placeholders = Utility.findStringsByGroup(html, Constants.VARIABLES_REGEX);
-			placeholders.removeIf(p -> !p.startsWith(obj + "."));		
-			
+			placeholders.removeIf(p -> !p.startsWith(obj + "."));
+
 			List<?> list = (List<?>) variables.get(forEl.attr("list"));
 			int i = 0;
 			if (list != null) {
 				for (Object element : list) {
-					i++;					
+					i++;
 					String htmlTemp = parseLoopHtml(variables, forEl.html());
 					htmlTemp = htmlTemp.replace("${" + obj + "}", String.valueOf(element));
 					htmlTemp = htmlTemp.replace("${" + obj + ".i}", String.valueOf(i));
 
 					JsonElement jsonElement = JsonParser.parseString(Utility.getJson(element));
-					
-					for (String var : placeholders) {					    
-						    htmlTemp = htmlTemp.replace("${" + var + "}",  getVarProp(var, jsonElement));				
+
+					for (String var : placeholders) {
+						htmlTemp = htmlTemp.replace("${" + var + "}",  getVarProp(var, jsonElement));
 					}
 					forEl.after(htmlTemp);
 				}
 			}
 			forEl.remove();
 			doc.html(parseLoopHtml(variables, doc.html()));
-		}		
+		}
 		return doc.html();
 	}
-	
+
 	private static String  getVarProp(String var, JsonElement jsonElement) {
-	    String[] varProperties = var.split("\\.");     
-        JsonElement propElement = jsonElement;
-        for (int j = 1; j < varProperties.length; j++){
-            JsonObject jsonObject = propElement.getAsJsonObject();
-            if (jsonObject.has(varProperties[j])){
-                propElement = jsonObject.get(varProperties[j]);
-            } else {
-                return "";
-            }
-        }        
-	    return propElement.getAsString();
+		String[] varProperties = var.split("\\.");
+		JsonElement propElement = jsonElement;
+		for (int j = 1; j < varProperties.length; j++){
+			JsonObject jsonObject = propElement.getAsJsonObject();
+			if (jsonObject.has(varProperties[j])){
+				propElement = jsonObject.get(varProperties[j]);
+			} else {
+				return "";
+			}
+		}
+		return propElement.getAsString();
 	}
 
 	private void updateTemplate(it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
@@ -494,6 +492,11 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 		}
 	}
 
+	/**
+	 * Return the token created and save it in Redis cache managed by MilAuth.
+	 * 
+	 * @param state
+	 */
 	private String getToken(State state) {
 		MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, state.getTransactionId());
 		Device device = state.getDevice();
@@ -523,5 +526,33 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 		}
 		MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
 		return token;
+	}
+
+	/**
+     * {@inheritDoc}
+     */
+	@Override
+	public void deleteToken(State state) {
+		MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, state.getTransactionId());
+		Device device = state.getDevice();
+		log.info("Calling milAuth delete Token.");
+		long start = System.currentTimeMillis();
+
+		try {
+			milAuthRestClient.deleteToken(device.getBankId(), device.getChannel().name(), device.getTerminalId(),
+					state.getTransactionId());
+		} catch (WebApplicationException e) {
+			log.warn("MilAuth error in delete Token service", e);
+			switch (e.getResponse().getStatus()) {
+				case RestResponse.StatusCode.NOT_FOUND -> log.warn("MilAuth error. Token not present in cache.");
+				case RestResponse.StatusCode.INTERNAL_SERVER_ERROR ->
+					log.warn("MilAuth error. Redis unavailable or a generic error occured.");
+				default -> log.warn("Delete token response with an unknown status {}", e.getResponse().getStatus());
+			}
+		} finally {
+			logElapsedTime(DELETE_TOKEN_LOG_ID, start);
+		}
+
+		MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
 	}
 }
