@@ -51,8 +51,7 @@ public class Utility {
     }
 
     public static byte[] setTransactionIdInJson(byte[] entity, String transactionId) {
-        String result = null;
-       
+        String result = null;       
         try {
             JsonNode jn = om.readTree(new String(entity));
             ((ObjectNode) jn).put("transactionId", transactionId);
