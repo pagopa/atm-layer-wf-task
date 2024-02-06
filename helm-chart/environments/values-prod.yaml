@@ -19,7 +19,14 @@ fullnameOverride: ""
 processService:
   address: http://pagopa-prod-atm-layer-wf-process.pagopa.svc.cluster.local:8080
 
+milAuthServiceAddress: http://pagopa-prod-atm-layer-mil-authenticator.pagopa.svc.cluster.local:8080
+
 logLevel: DEBUG
+
+tracing:
+  enabled: "true"
+  endpointBasePath: "http://jaeger-collector.default.svc.cluster.local:4317"
+  enableJDBCMonitoring: "false"
 
 cdn:
   credentialsSecretName: "pagopa-prod-atm-layer-wf-task-cdn-base-path"

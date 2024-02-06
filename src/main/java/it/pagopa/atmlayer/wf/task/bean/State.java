@@ -6,10 +6,13 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @JsonInclude(Include.NON_NULL)
@@ -29,5 +32,10 @@ public class State {
 
 	@Schema(hidden = true)
 	private String transactionId;
+
+    @ToString.Exclude
+    @JsonProperty(access = Access.WRITE_ONLY)
+    @Schema(description = "Codice Fiscale dell'utente (dato sensibile)")
+	private String fiscalCode;
 
 }

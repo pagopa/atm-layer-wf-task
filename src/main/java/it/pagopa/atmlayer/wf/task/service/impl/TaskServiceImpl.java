@@ -10,11 +10,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.RestResponse.Status;
 import org.jboss.resteasy.reactive.RestResponse.StatusCode;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Entities.EscapeMode;
+import org.jsoup.parser.Parser;
+import org.slf4j.MDC;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 
 import it.pagopa.atmlayer.wf.task.bean.Button;
 import it.pagopa.atmlayer.wf.task.bean.Device;
@@ -27,16 +39,20 @@ import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorEnum;
 import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorException;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeEnum;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeResponse;
+import it.pagopa.atmlayer.wf.task.client.MilAuthRestClient;
 import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
 import it.pagopa.atmlayer.wf.task.client.bean.DeviceInfo;
 import it.pagopa.atmlayer.wf.task.client.bean.DeviceType;
 import it.pagopa.atmlayer.wf.task.client.bean.Task;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
+import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
+import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Constants;
+import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Properties;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -46,22 +62,31 @@ import lombok.extern.slf4j.Slf4j;
 
 @ApplicationScoped
 @Slf4j
-public class TaskServiceImpl implements TaskService {
+public class TaskServiceImpl extends CommonLogic implements TaskService {
 
 	@RestClient
 	ProcessRestClient processRestClient;
 
+	@RestClient
+	MilAuthRestClient milAuthRestClient;
+
 	@Inject
 	Properties properties;
 
-	private static final String VARIABLES_REGEX = "\\$\\{(.*?)\\}";
-
-	private static final String BUTTON_TAG = "button";
-
-	private static final String LI_TAG = "li";
-
 	@Override
 	public Scene buildFirst(String functionId, State state) {
+		/*
+		 * new Thread(() -> {
+		 * getToken(state);
+		 * }).start();
+		 */
+		Map<String, Object> data = state.getData();
+		if (data == null) {
+			state.setData(new HashMap<String, Object>());
+			data = state.getData();
+		}
+
+		state.getData().put("millAccessToken", getToken(state));
 		Scene scene = buildSceneStart(functionId, state.getTransactionId(), state);
 		scene.setTransactionId(state.getTransactionId());
 		return scene;
@@ -77,6 +102,8 @@ public class TaskServiceImpl implements TaskService {
 	private Scene buildSceneStart(String functionId, String transactionId, State state) {
 		TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
 		RestResponse<TaskResponse> restTaskResponse = null;
+		long start = System.currentTimeMillis();
+
 		try {
 			log.info("Calling start process: [{}]", taskRequest);
 			restTaskResponse = processRestClient.startProcess(taskRequest);
@@ -86,13 +113,18 @@ public class TaskServiceImpl implements TaskService {
 				throw new ErrorException(ErrorEnum.GET_TASKS_ERROR);
 			}
 			throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+		} finally {
+			logElapsedTime(START_PROCESS_LOG_ID, start);
 		}
+
 		return manageTaskResponse(restTaskResponse);
 	}
 
 	private Scene buildSceneNext(String transactionId, State state) {
 		TaskRequest taskRequest = buildTaskRequest(state, transactionId, null);
 		RestResponse<TaskResponse> restTaskResponse = null;
+		long start = System.currentTimeMillis();
+
 		try {
 			log.info("Calling next task: [{}]", taskRequest);
 			restTaskResponse = processRestClient.nextTasks(taskRequest);
@@ -102,7 +134,10 @@ public class TaskServiceImpl implements TaskService {
 				throw new ErrorException(ErrorEnum.GET_TASKS_ERROR);
 			}
 			throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+		} finally {
+			logElapsedTime(NEXT_TASKS_LOG_ID, start);
 		}
+
 		return manageTaskResponse(restTaskResponse);
 	}
 
@@ -126,6 +161,7 @@ public class TaskServiceImpl implements TaskService {
 		it.pagopa.atmlayer.wf.task.bean.Task atmTask = null;
 		// Recupero il primo task ordinato per priorità
 		Collections.sort(response.getTasks(), Comparator.comparingInt(Task::getPriority));
+		
 
 		if (!response.getTasks().isEmpty()) {
 			Task workingTask = response.getTasks().get(0);
@@ -133,6 +169,7 @@ public class TaskServiceImpl implements TaskService {
 			VariableRequest variableRequest = createVariableRequestForTemplate(workingTask, atmTask);
 			log.info("Calling retrieve variables for task id: [{}]", workingTask.getId());
 			RestResponse<VariableResponse> restVariableResponse = null;
+			long start = System.currentTimeMillis();
 			try {
 				log.info("Retrieving variables: [{}]", variableRequest);
 				restVariableResponse = processRestClient.retrieveVariables(variableRequest);
@@ -142,9 +179,12 @@ public class TaskServiceImpl implements TaskService {
 					throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
 				}
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+			} finally {
+				logElapsedTime(RETRIEVE_VARIABLES_LOG_ID, start);
 			}
 
 			if (restVariableResponse.getStatus() == 200) {
+
 				VariableResponse variableResponse = restVariableResponse.getEntity();
 				log.info("Retrieved variables: [{}]", variableResponse);
 				atmTask.setId(workingTask.getId());
@@ -163,22 +203,28 @@ public class TaskServiceImpl implements TaskService {
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
 			}
 		}
-		return atmTask;
+				return atmTask;
 	}
 
 	private void manageReceipt(Map<String, Object> workingVariables, it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
 
 		if (workingVariables != null && workingVariables.get(Constants.RECEIPT_TEMPLATE) != null) {
 			RestResponse<VariableResponse> restVariableResponse = null;
+			long start = System.currentTimeMillis();
+
 			try {
 				restVariableResponse = processRestClient
 						.retrieveVariables(createVariableRequestForReceipt(workingVariables, atmTask));
 			} catch (WebApplicationException e) {
+
 				log.error("Error calling process service", e);
 				if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
 					throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
 				}
+
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+			} finally {
+				logElapsedTime(RETRIEVE_VARIABLES_LOG_ID, start);
 			}
 
 			workingVariables.remove(Constants.RECEIPT_TEMPLATE);
@@ -308,7 +354,7 @@ public class TaskServiceImpl implements TaskService {
 						Utility.getFileFromCdn(properties.cdnUrl() + properties.htmlResourcesPath()
 								+ receiptTemplateName).readAllBytes(),
 						properties.htmlCharset());
-				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
+				Set<String> placeholders = Utility.findStringsByGroup(htmlString, Constants.VARIABLES_REGEX);
 				atmTask.setReceiptTemplate(htmlString);
 				log.debug("Placeholders found: {}", placeholders);
 				if (placeholders != null && !placeholders.isEmpty()) {
@@ -334,15 +380,17 @@ public class TaskServiceImpl implements TaskService {
 						Utility.getFileFromCdn(properties.cdnUrl() + properties.htmlResourcesPath() + task.getForm())
 								.readAllBytes(),
 						properties.htmlCharset());
-				List<String> placeholders = Utility.findStringsByGroup(htmlString, VARIABLES_REGEX);
+				Set<String> placeholders = Utility.findStringsByGroup(htmlString, Constants.VARIABLES_REGEX);
 				atmTask.getTemplate().setContent(htmlString);
+				placeholders.remove(Constants.CDN_PLACEHOLDER);
+				placeholders.addAll(Utility.getForVar(htmlString));
 				log.debug("Placeholders found: {}", placeholders);
 				if (placeholders != null && !placeholders.isEmpty()) {
-					log.debug("Number of variables found in html form: {}", placeholders.size());
+					log.info("Number of variables found in html form: {}", placeholders.size());
 					variableRequest.setVariables(placeholders);
 				}
-				List<String> buttonList = Utility.getIdOfTag(htmlString, BUTTON_TAG);
-				buttonList.addAll(Utility.getIdOfTag(htmlString, LI_TAG));
+				Set<String> buttonList = Utility.getIdOfTag(htmlString, Constants.BUTTON_TAG);
+				buttonList.addAll(Utility.getIdOfTag(htmlString, Constants.LI_TAG));
 				variableRequest.setButtons(buttonList);
 			} catch (IOException e) {
 				log.error("- ERROR: File: {} not found!", task.getForm(), e);
@@ -357,12 +405,14 @@ public class TaskServiceImpl implements TaskService {
 		String htmlTemp = html;
 		if (htmlTemp != null) {
 			log.info("-----START replacing variables in html-----");
+
+			htmlTemp = parseLoopHtml(variables, html);
 			for (Entry<String, Object> value : variables.entrySet()) {
 				log.debug("Replacing {} -> {}", "${" + value.getKey() + "}", String.valueOf(value.getValue()));
 				htmlTemp = htmlTemp.replace("${" + value.getKey() + "}", String.valueOf(value.getValue()));
 			}
 			htmlTemp = htmlTemp.replace("${" + Constants.CDN_PLACEHOLDER + "}", properties.cdnUrl());
-			List<String> placeholders = Utility.findStringsByGroup(htmlTemp, VARIABLES_REGEX);
+			Set<String> placeholders = Utility.findStringsByGroup(htmlTemp, Constants.VARIABLES_REGEX);
 			if (!placeholders.isEmpty()) {
 				log.error("Value not found for placeholders: {}", placeholders);
 				throw new ErrorException(ErrorEnum.PROCESS_ERROR);
@@ -370,6 +420,52 @@ public class TaskServiceImpl implements TaskService {
 			log.info("-----END replacing variables in html-----");
 		}
 		return htmlTemp;
+	}
+
+	private String parseLoopHtml(Map<String, Object> variables, String html) {
+		Document doc = Jsoup.parse(html, Parser.xmlParser());
+		doc.outputSettings().prettyPrint(false).charset(properties.htmlCharset()).escapeMode(EscapeMode.extended);
+		Element forEl = doc.select("for").first();
+		if (forEl != null) {
+			String obj = forEl.attr("object");
+			Set<String> placeholders = Utility.findStringsByGroup(html, Constants.VARIABLES_REGEX);
+			placeholders.removeIf(p -> !p.startsWith(obj + "."));
+
+			List<?> list = (List<?>) variables.get(forEl.attr("list"));
+			int i = 0;
+			if (list != null) {
+				for (Object element : list) {
+					i++;
+					String htmlTemp = parseLoopHtml(variables, forEl.html());
+					htmlTemp = htmlTemp.replace("${" + obj + "}", String.valueOf(element));
+					htmlTemp = htmlTemp.replace("${" + obj + ".i}", String.valueOf(i));
+
+					JsonElement jsonElement = JsonParser.parseString(Utility.getJson(element));
+
+					for (String var : placeholders) {
+						htmlTemp = htmlTemp.replace("${" + var + "}",  getVarProp(var, jsonElement));
+					}
+					forEl.after(htmlTemp);
+				}
+			}
+			forEl.remove();
+			doc.html(parseLoopHtml(variables, doc.html()));
+		}
+		return doc.html();
+	}
+
+	private static String  getVarProp(String var, JsonElement jsonElement) {
+		String[] varProperties = var.split("\\.");
+		JsonElement propElement = jsonElement;
+		for (int j = 1; j < varProperties.length; j++){
+			JsonObject jsonObject = propElement.getAsJsonObject();
+			if (jsonObject.has(varProperties[j])){
+				propElement = jsonObject.get(varProperties[j]);
+			} else {
+				return "";
+			}
+		}
+		return propElement.getAsString();
 	}
 
 	private void updateTemplate(it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
@@ -399,4 +495,68 @@ public class TaskServiceImpl implements TaskService {
 		}
 	}
 
+	/**
+	 * Return the token created and save it in Redis cache managed by MilAuth.
+	 * 
+	 * @param state
+	 */
+	private String getToken(State state) {
+		MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, state.getTransactionId());
+		Device device = state.getDevice();
+		log.info("Calling milAuth get Token.");
+		String token = null;
+		long start = System.currentTimeMillis();
+
+		try (RestResponse<TokenResponse> restTokenResponse = milAuthRestClient.getToken(
+				device.getBankId(),
+				device.getChannel().name(),
+				state.getFiscalCode(),
+				device.getTerminalId(),
+				state.getTransactionId());) {
+
+			if (restTokenResponse != null) {
+				if (restTokenResponse.getStatus() == 200) {
+					token = restTokenResponse.getEntity().getAccess_token();
+					log.info("Retrieved token: [{}]", token);
+				} else {
+					log.warn("Calling milAuth Status: [{}]", restTokenResponse.getStatus());
+				}
+			}
+		} catch (WebApplicationException e) {
+			log.error("Error calling milAuth get Token service", e);
+		} finally {
+			logElapsedTime(GET_TOKEN_LOG_ID, start);
+		}
+		MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
+		return token;
+	}
+
+	/**
+     * {@inheritDoc}
+     */
+	@Override
+	public void deleteToken(State state) {
+		MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, state.getTransactionId());
+		Device device = state.getDevice();
+		log.info("Calling milAuth delete Token.");
+		long start = System.currentTimeMillis();
+
+		try {
+			RestResponse<Object> response = milAuthRestClient.deleteToken(device.getBankId(), device.getChannel().name(), device.getTerminalId(),
+					state.getTransactionId());
+			log.info("Token deleted correctly. Status code: {}", response.getStatus());
+		} catch (WebApplicationException e) {
+			log.warn("MilAuth error in delete Token service", e);
+			switch (e.getResponse().getStatus()) {
+				case RestResponse.StatusCode.NOT_FOUND -> log.warn("MilAuth error. Token not present in cache.");
+				case RestResponse.StatusCode.INTERNAL_SERVER_ERROR ->
+					log.warn("MilAuth error. Redis unavailable or a generic error occured.");
+				default -> log.warn("Delete token response with an unknown status {}", e.getResponse().getStatus());
+			}
+		} finally {
+			logElapsedTime(DELETE_TOKEN_LOG_ID, start);
+		}
+
+		MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
+	}
 }

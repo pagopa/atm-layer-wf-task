@@ -1,7 +1,5 @@
 package it.pagopa.atmlayer.wf.task.client.bean;
 
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -17,12 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(Include.NON_NULL)
 @RegisterForReflection
-public class VariableRequest {
+public class TokenResponse {
 
-    private String taskId;
-
-    private Set<String> buttons;
-
-    private Set<String> variables;
-
+    private String access_token;
 }

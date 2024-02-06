@@ -18,6 +18,7 @@ import it.pagopa.atmlayer.wf.task.bean.enumartive.PeripheralStatus;
 import it.pagopa.atmlayer.wf.task.client.bean.Task;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
+import it.pagopa.atmlayer.wf.task.test.bean.Dato;
 import it.pagopa.atmlayer.wf.task.util.Constants;
 
 public class DataTest {
@@ -122,6 +123,11 @@ public class DataTest {
         variableResponse.getVariables().put("totale", 11.50);
         variableResponse.getVariables().put("variable1", "11.50");
         variableResponse.getVariables().put(Constants.COMMAND_VARIABLE_VALUE, Command.PRINT_RECEIPT.name());
+        ArrayList<Object> list = new ArrayList<Object>();
+        Dato elemento = new Dato();
+        elemento.setParagrafo("vedi2");
+        list.add(elemento);
+        variableResponse.getVariables().put("pulsanti", list);
 
         Map<String, Object> buttonMap = new HashMap<>();
         buttonMap.put("prop1", "value1");
@@ -142,6 +148,12 @@ public class DataTest {
         variableResponse.getVariables().put("amount", 10000);
         variableResponse.getVariables().put("fee", 2.30);
         variableResponse.getVariables().put("totale", 2.30);
+        ArrayList<Object> list = new ArrayList<Object>();
+        Dato elemento = new Dato();
+        elemento.setParagrafo("vedi2");
+        list.add(elemento);
+        
+        variableResponse.getVariables().put("pulsanti", list);
 
         return variableResponse;
     }
@@ -171,6 +183,7 @@ public class DataTest {
         Map<String, Object> variablesData = new HashMap<>();
         variablesData.put("var1", "test");
         state.setData(variablesData);
+        state.setFiscalCode("RSSMRA74D22A001Q");
         return state;
     }
 
@@ -249,6 +262,12 @@ public class DataTest {
         varResponse.getVariables().put("amount", 10000);
         varResponse.getVariables().put("fee", 2.30);
         varResponse.getVariables().put("totale", 11.50);
+        ArrayList<Object> list = new ArrayList<Object>();
+          Dato elemento = new Dato();
+          elemento.setParagrafo("vedi2");
+          list.add(elemento);
+        
+        varResponse.getVariables().put("pulsanti", list);
 
         return varResponse;
     }
