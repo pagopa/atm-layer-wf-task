@@ -27,6 +27,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+
 import it.pagopa.atmlayer.wf.task.bean.Button;
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.Scene;
@@ -51,6 +52,7 @@ import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
 import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Constants;
+import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Properties;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -159,6 +161,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 		it.pagopa.atmlayer.wf.task.bean.Task atmTask = null;
 		// Recupero il primo task ordinato per priorità
 		Collections.sort(response.getTasks(), Comparator.comparingInt(Task::getPriority));
+		
 
 		if (!response.getTasks().isEmpty()) {
 			Task workingTask = response.getTasks().get(0);

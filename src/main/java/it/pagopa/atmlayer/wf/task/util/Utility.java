@@ -88,9 +88,9 @@ public class Utility {
         return result;
     }
 
+
     public static <T> T getObject(String json, Class<T> clazz) {
-        T result = null;
-      
+        T result = null;      
         try {
             result = om.readValue(json, clazz);
         } catch (JsonProcessingException e) {
@@ -142,7 +142,6 @@ public class Utility {
         Set<String> groups = new HashSet<>();
 
         /* Set<String> forObjectsAttributes = extractObjects(regex);
-
         log.debug("For object attributes {} :", forObjectsAttributes); */
 
         Pattern pattern = Pattern.compile(regex);
