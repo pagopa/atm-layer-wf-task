@@ -126,10 +126,12 @@ class TaskResourceTest {
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createVariableResponseWithData()));
 
+                        
                 Response response = given().body(DataTest.createStateRequestStartWithoutDeviceData())
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/main").then().extract().response();
 
+                System.out.println(response.toString());
                 Assertions.assertEquals(201, response.statusCode());
         }
 
@@ -594,6 +596,9 @@ class TaskResourceTest {
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createTaskResponseEndProcess()));
+
+                Mockito.when(milAuthRestClient.deleteToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.NO_CONTENT));
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()

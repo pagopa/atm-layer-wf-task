@@ -23,6 +23,11 @@ milAuthServiceAddress: http://pagopa-uat-atm-layer-mil-authenticator.pagopa.svc.
 
 logLevel: DEBUG
 
+tracing:
+  enabled: "true"
+  endpointBasePath: "http://jaeger-collector.default.svc.cluster.local:4317"
+  enableJDBCMonitoring: "false"
+
 cdn:
   credentialsSecretName: "pagopa-uat-atm-layer-wf-task-cdn-base-path"
   credentialsSecretKeys:

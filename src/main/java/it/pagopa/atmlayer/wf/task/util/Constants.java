@@ -31,4 +31,12 @@ public class Constants {
     public static final String TRANSACTION_ID_LOG_CONFIGURATION = "transactionId";
 
     public static final String TRANSACTION_ID_PATH_PARAM_NAME = "transactionId";
+
+    public static final String VARIABLES_REGEX = "\\$\\{(.*?)\\}";
+
+	public static final String FOR_REGEX = "<for\\s+object=\"([^\"]+)\"";
+
+	public static final String BUTTON_TAG = "button";
+
+	public static final String LI_TAG = "li";
 }
