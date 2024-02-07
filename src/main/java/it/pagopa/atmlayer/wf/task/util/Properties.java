@@ -23,6 +23,9 @@ public interface Properties {
     @WithConverter(ConverterImplement.class)
     @ConfigProperty(name = "html-resources-path")
     String htmlResourcesPath();
+    
+    @ConfigProperty(name = "tokenization-is-mock")
+    boolean tokenizationIsMock();
 
     public static class ConverterImplement implements Converter<String> {
         @Override

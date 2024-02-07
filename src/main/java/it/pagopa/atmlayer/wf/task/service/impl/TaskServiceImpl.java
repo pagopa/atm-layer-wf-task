@@ -3,6 +3,9 @@ package it.pagopa.atmlayer.wf.task.service.impl;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
@@ -301,33 +304,40 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
     private List<PanInformation> encryptPan(State state) {
         List<PanInformation> panInformationList = null;
         RestResponse<PublicKey> publicKeyResponse = null;
+
         if (!Utility.nullOrEmpty(state.getPanInfo())) {
-            log.info("Calling to get public key.");
-            publicKeyResponse = tokenizationClient.getKey();
-            if (publicKeyResponse.getStatus() == 200) {
-                RSAPublicKey rsaPublicKey = null;
-                try {
-                    rsaPublicKey = Utility.buildRSAPublicKey(Constants.RSA, publicKeyResponse.getEntity().getModulus());
-                } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-                    log.error(" - Error during generating RSAPublicKey", e);
+            RSAPublicKey rsaPublicKey = null;
+            if (properties.tokenizationIsMock()) {
+                rsaPublicKey = Utility.generateRandomRSAPublicKey();
+            } else {
+                log.info("Calling to get public key.");
+                publicKeyResponse = tokenizationClient.getKey();
+                if (publicKeyResponse.getStatus() == 200) {
+                    try {
+                        rsaPublicKey = Utility.buildRSAPublicKey(Constants.RSA, publicKeyResponse.getEntity().getModulus());
+                    } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+                        log.error(" - Error during generating RSAPublicKey", e);
+                    }
+                    log.info("key retrieved successfully.");
                 }
-                log.info("key retrieved successfully.");
-                if (rsaPublicKey != null) {
-                    List<PanInfo> panInfoList = state.getPanInfo();
-                    panInformationList = new ArrayList<>();
-                    for (PanInfo panInfo : panInfoList) {
-                        PanInformation panInformation = new PanInformation();
-                        panInformation.setBankName(panInfo.getBankName());
-                        panInformation.setCircuits(panInfo.getCircuits());
-                        panInformation.setLastDigits(panInfo.getPan().substring(panInfo.getPan().length() - 4));
-                        try {
-                            panInformation.setPan(new String(Utility.encryptRSA(panInfo.getPan().getBytes(), rsaPublicKey)));
-                        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
-                            log.error(" - Error during encrypting data", e);
-                        }
+
+            }
+            if (rsaPublicKey != null) {
+                List<PanInfo> panInfoList = state.getPanInfo();
+                panInformationList = new ArrayList<>();
+                for (PanInfo panInfo : panInfoList) {
+                    PanInformation panInformation = new PanInformation();
+                    panInformation.setBankName(panInfo.getBankName());
+                    panInformation.setCircuits(panInfo.getCircuits());
+                    panInformation.setLastDigits(panInfo.getPan().substring(panInfo.getPan().length() - 4));
+                    try {
+                        panInformation.setPan(new String(Utility.encryptRSA(panInfo.getPan().getBytes(), rsaPublicKey)));
+                    } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
+                        log.error(" - Error during encrypting data", e);
                     }
                 }
             }
+
         }
         return panInformationList;
     }
