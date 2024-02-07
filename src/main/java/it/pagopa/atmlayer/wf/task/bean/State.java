@@ -1,5 +1,6 @@
 package it.pagopa.atmlayer.wf.task.bean;
 
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -37,5 +38,8 @@ public class State {
     @JsonProperty(access = Access.WRITE_ONLY)
     @Schema(description = "Codice Fiscale dell'utente (dato sensibile)")
 	private String fiscalCode;
-
+    
+    @Schema(description = "Informazioni del pan (dato sensibile)")
+    private List<PanInfo> panInfo;
+    
 }

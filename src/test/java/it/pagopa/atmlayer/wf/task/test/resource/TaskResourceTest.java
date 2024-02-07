@@ -19,6 +19,7 @@ import io.quarkus.test.junit.mockito.MockitoConfig;
 import io.restassured.response.Response;
 import it.pagopa.atmlayer.wf.task.client.MilAuthRestClient;
 import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
+import it.pagopa.atmlayer.wf.task.client.TokenizationRestClient;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
@@ -43,6 +44,12 @@ class TaskResourceTest {
         @RestClient
         @MockitoConfig(convertScopes = true)
         ProcessRestClient processRestClient;
+        
+        @InjectMock
+        @RestClient
+        @MockitoConfig(convertScopes = true)
+        TokenizationRestClient tokenizationRestClient;
+        
 
         @Test
         void startProcessOk() {
@@ -61,6 +68,33 @@ class TaskResourceTest {
                                                 DataTest.createVariableResponseNoData()));
 
                 Response response = given().body(DataTest.createStateRequestStart())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/main").then().extract().response();
+
+                Assertions.assertEquals(201, response.statusCode());
+        }
+        
+        @Test
+        void startProcessOkWithPan() {
+            
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));   
+            
+
+                Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createTaskResponse(1)));
+
+                Mockito.when(processRestClient
+                                .retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createVariableResponseNoData()));
+                
+                Mockito.when(tokenizationRestClient
+                        .getKey()).thenReturn(RestResponse.status(Status.OK,
+                                        DataTest.createPublicKeyResponse()));
+
+                Response response = given().body(DataTest.createStateRequestStartWithPan())
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/main").then().extract().response();
 
@@ -703,7 +737,4 @@ class TaskResourceTest {
                 Assertions.assertEquals(201, response.statusCode());
         }
 
-        public static void main(String[] args) {
-                System.out.println(Utility.getJson(DataTest.createVariableResponseWithData()));
-        }
 }
