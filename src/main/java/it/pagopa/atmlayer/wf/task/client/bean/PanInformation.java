@@ -1,5 +1,7 @@
 package it.pagopa.atmlayer.wf.task.client.bean;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -19,7 +21,7 @@ public class PanInformation {
 
     private String pan;
     
-    private String circuit;
+    private List<String> circuits;
     
     private String bankName;
     

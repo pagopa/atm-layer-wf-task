@@ -184,19 +184,6 @@ public class DataTest {
         return state;
     }
 
-    public static State createStateRequestStartWithPan() {
-        State state = createStateRequestStart();
-        List<PanInfo> panInfoList = new ArrayList<>();
-        PanInfo panInfo = new PanInfo();
-        panInfo.setPan("1234567891234567");
-        panInfo.setBankName("ISYBANK");
-        panInfo.setCircuit("VISA");
-        panInfoList.add(panInfo);
-        state.setPanInfo(panInfoList);
-
-        return state;
-    }
-
     public static State createStateRequestStartWithoutDeviceData() {
         List<Peripheral> perList = new ArrayList<>();
         Peripheral per = new Peripheral();

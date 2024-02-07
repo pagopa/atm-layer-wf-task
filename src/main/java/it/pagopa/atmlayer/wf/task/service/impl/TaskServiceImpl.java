@@ -318,7 +318,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                     for (PanInfo panInfo : panInfoList) {
                         PanInformation panInformation = new PanInformation();
                         panInformation.setBankName(panInfo.getBankName());
-                        panInformation.setCircuit(panInfo.getCircuit());
+                        panInformation.setCircuits(panInfo.getCircuits());
                         panInformation.setLastDigits(panInfo.getPan().substring(panInfo.getPan().length() - 4));
                         try {
                             panInformation.setPan(new String(Utility.encryptRSA(panInfo.getPan().getBytes(), rsaPublicKey)));

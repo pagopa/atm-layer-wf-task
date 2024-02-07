@@ -33,9 +33,9 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
             State state = Utility.getObject(new String(entity), State.class);
             if (transactionId == null) {
                 transactionId = Utility.generateTransactionId(state);
-            }           
-            state.setTransactionId(transactionId);           
-           
+            }
+            state.setTransactionId(transactionId);
+
             MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, transactionId);
             log.info("============== REQUEST ==============");
             if (pathParameters != null) {
@@ -46,9 +46,9 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
 
             log.info("BODY: {}", state);
 
-            requestContext.setEntityStream(new ByteArrayInputStream(Utility.setTransactionIdInJson(entity,transactionId)));
-          
-            log.info("============== REQUEST ==============");         
+            requestContext.setEntityStream(new ByteArrayInputStream(Utility.setTransactionIdInJson(entity, transactionId)));
+
+            log.info("============== REQUEST ==============");
         }
     }
 

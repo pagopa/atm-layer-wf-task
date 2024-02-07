@@ -94,7 +94,7 @@ class TaskResourceTest {
                         .getKey()).thenReturn(RestResponse.status(Status.OK,
                                         DataTest.createPublicKeyResponse()));
 
-                Response response = given().body(DataTest.createStateRequestStartWithPan())
+                Response response = given().body("{\"device\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"12345\",\"terminalId\":\"1234567890\",\"opTimestamp\":1707323349628,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"panInfo\":[{\"pan\":\"1234567891234567\",\"circuits\":[\"VISA\",\"MASTERCARD\"],\"bankName\":\"ISYBANK\"}]}")
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/main").then().extract().response();
 
