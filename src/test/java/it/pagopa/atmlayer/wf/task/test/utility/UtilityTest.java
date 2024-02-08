@@ -1,6 +1,8 @@
 package it.pagopa.atmlayer.wf.task.test.utility;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -85,15 +87,13 @@ class UtilityTest {
                 "        \"code\": \"0001\",\r\n" + //
                 "        \"terminalId\": \"64874412\",\r\n" + //
                 "        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n" + //
-                "        \"channel\": \"ATM\"" +
-                "}}";
+                "        \"channel\": \"ATM\"" + "}}";
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date date = sdf.parse("2023-10-31T16:30:00");
         State state = new State();
-        Device device = Device.builder().bankId("06789").branchId("12345").channel(Channel.ATM).code("0001")
-                .terminalId("64874412").opTimestamp(date).build();
+        Device device = Device.builder().bankId("06789").branchId("12345").channel(Channel.ATM).code("0001").terminalId("64874412").opTimestamp(date).build();
         state.setDevice(device);
         assertEquals(state, Utility.getObject(json, State.class));
     }
@@ -108,10 +108,62 @@ class UtilityTest {
                 "        \"code\": \"0001\",\r\n" + //
                 "        \"terminalId\": \"64874412\",\r\n" + //
                 "        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n" + //
-                "        \"channel\": \"ATM\"" +
-                "}";
+                "        \"channel\": \"ATM\"" + "}";
 
         assertEquals(null, Utility.getObject(json, State.class));
+    }
+
+    @Test
+    void testNullOrEmptyStringEmpty() {
+        assertEquals(true, Utility.nullOrEmpty(""));
+    }
+
+    @Test
+    void testNullOrEmptyStringNull() {
+        String test = null;
+        assertEquals(true, Utility.nullOrEmpty(test));
+    }
+
+    @Test
+    void testNullOrEmptyStringOk() {
+        String test = "test";
+        assertEquals(false, Utility.nullOrEmpty(test));
+    }
+
+    @Test
+    void testNullOrEmptyCollectionEmpty() {
+        List<String> test = List.of();
+        assertEquals(true, Utility.nullOrEmpty(test));
+    }
+
+    @Test
+    void testNullOrEmptyCollectionNull() {
+        List<String> test = null;
+        assertEquals(true, Utility.nullOrEmpty(test));
+    }
+
+    @Test
+    void testNullOrEmptyCollectionOk() {
+        List<String> test = List.of("Test");
+        assertEquals(false, Utility.nullOrEmpty(test));
+    }
+
+    @Test
+    void testFormatOk() {
+        assertNotNull(Utility.format(new byte[] {
+                10,
+                22
+        }));
+    }
+
+    @Test
+    void testFormatEmpty() {
+        assertNotNull(Utility.format(new byte[] {}));
+    }
+
+    @Test
+    void testFormatNull() {
+        assertNull(Utility.format(null));
     }
 
 }
