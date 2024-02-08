@@ -3,6 +3,11 @@ package it.pagopa.atmlayer.wf.task.service.impl;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
+
+import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
@@ -334,6 +339,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                         log.error(" - Error during encrypting data", e);
                     }
                     panInformationList.add(panInformation);
+
                 }
             }
 
@@ -461,9 +467,8 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
     }
 
     private String parseLoopHtml(Map<String, Object> variables, String html) {
-        Document doc = Jsoup.parse(html, Parser.xmlParser().settings(ParseSettings.preserveCase));
+        Document doc = Jsoup.parse(html, Parser.xmlParser());
         doc.outputSettings().prettyPrint(false).charset(properties.htmlCharset()).escapeMode(EscapeMode.extended);
-        System.out.print(doc.html());
         Element forEl = doc.select("for").first();
         if (forEl != null) {
             String obj = forEl.attr("object");
@@ -589,5 +594,4 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 
         MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
     }
-    
 }

@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 91.06%               |
-| :heavy_check_mark: Number of Lines Covered | 479    |
-| :x: Number of Lines Missed  | 47     |
-| Total Number of Lines   | 526     |
+| Code Coverage %         | 90.59%               |
+| :heavy_check_mark: Number of Lines Covered | 491    |
+| :x: Number of Lines Missed  | 51     |
+| Total Number of Lines   | 542     |
 
 
 ## Details:
@@ -64,6 +64,16 @@
 
     
 ### it/pagopa/atmlayer/wf/task/bean
+
+<details>
+    <summary>
+:x: PanInfo.java
+    </summary>
+
+        
+</details>
+
+    
 
 <details>
     <summary>
@@ -203,6 +213,16 @@
 
 <details>
     <summary>
+:x: PublicKey.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
 :x: VariableRequest.java
     </summary>
 
@@ -238,6 +258,16 @@
 
         
 #### All Lines Covered!
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: PanInformation.java
+    </summary>
+
         
 </details>
 
@@ -302,13 +332,25 @@
         
 #### Lines Missed:
         
-- Line #234
+- Line #249
 ```
-				} catch (UnsupportedEncodingException e) {
+                } catch (UnsupportedEncodingException e) {
 ```
-- Line #473
+- Line #318
 ```
-			} catch (UnsupportedEncodingException e) {
+                    } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+```
+- Line #320
+```
+                    }
+```
+- Line #335
+```
+                    } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
+```
+- Line #514
+```
+            } catch (UnsupportedEncodingException e) {
 ```
 </details>
 
@@ -421,30 +463,40 @@
         
 #### Lines Missed:
         
-- Line #47
+- Line #63
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #60
+- Line #76
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #85
+- Line #101
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #181
-```
-        }
-```
-- Line #287
+- Line #296
 ```
     }
+```
+- Line #361
+```
+        } catch (NoSuchAlgorithmException e) {
 ```
 </details>
 
     
 ### it/pagopa/atmlayer/wf/task/client
+
+<details>
+    <summary>
+:x: TokenizationRestClient.java
+    </summary>
+
+        
+</details>
+
+    
 
 <details>
     <summary>
