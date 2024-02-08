@@ -257,6 +257,7 @@ public class DataTest {
         varResponse.getVariables().put("fee", 2.30);
         varResponse.getVariables().put("totale", 11.50);
         ArrayList<Object> list = new ArrayList<Object>();
+
         Dato elemento = new Dato();
         elemento.setParagrafo("vedi2");
         list.add(elemento);
