@@ -172,26 +172,6 @@ public class Utility {
         return groups;
     }
 
-//    /**
-//     * Extract content of attribute object in for tags.
-//     * 
-//     * @param html - the input html
-//     * @return a Set containing the contents of object attributes
-//     */
-//    public static Set<String> extractObjects(String html) {
-//        Set<String> objectSet = new HashSet<>();
-//
-//        Pattern pattern = Pattern.compile(Constants.FOR_REGEX);
-//        Matcher matcher = pattern.matcher(html);
-//
-//        while (matcher.find()) {
-//            String objectValue = matcher.group(1);
-//            objectSet.add(objectValue);
-//        }
-//
-//        return objectSet;
-//    }
-
     /**
      * Finds and extracts matched substrings from an input string using a regular
      * expression.
@@ -363,66 +343,5 @@ public class Utility {
         }
         return rsaPublicKey;
     }
-
-    //    public static byte[] decryptRSA(byte[] dataToDecrypt, RSAPrivateKey decryptionKey) throws InvalidKeySpecException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
-    //
-    //        byte[] decryptedData = null;
-    //        PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(decryptionKey.getEncoded());
-    //        KeyFactory kf;
-    //        PrivateKey privateKey;
-    //        Cipher cipher;
-    //        kf = KeyFactory.getInstance("RSA");
-    //        privateKey = kf.generatePrivate(privSpec);
-    //        cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-    //        cipher.init(Cipher.DECRYPT_MODE, privateKey);
-    //
-    //        byte[] encryptedBytes = dataToDecrypt;
-    //        decryptedData = cipher.doFinal(encryptedBytes);
-    //        return decryptedData;
-    //    }
-    //
-    //    public static RSAPrivateKey buildRSAPrivateKey(String algorithm, byte[] keyBytes) throws InvalidKeySpecException, NoSuchAlgorithmException {
-    //
-    //        return (RSAPrivateKey) KeyFactory.getInstance(algorithm).generatePrivate(new PKCS8EncodedKeySpec(keyBytes));
-    //    }
-    //
-    //    public static byte[] parseHexString(String hexString) {
-    //        byte[] byteArray = null;
-    //        if (hexString != null) {
-    //            int hexStringLen = hexString.length();
-    //            int byteArrayLen = hexStringLen / 2;
-    //            String _hexString = hexString;
-    //            if (byteArrayLen * 2 != hexStringLen) {
-    //                _hexString = "0" + hexString;
-    //                hexStringLen++;
-    //                byteArrayLen++;
-    //            }
-    //            byteArray = new byte[byteArrayLen];
-    //            int i = 0;
-    //            int j = 0;
-    //            boolean ok = true;
-    //            while (i < hexStringLen && ok) {
-    //                try {
-    //                    byteArray[j] = (byte) Integer.parseInt(_hexString.substring(i, i + 2), 16);
-    //                } catch (NumberFormatException e) {
-    //                    ok = false;
-    //                }
-    //                j++;
-    //                i += 2;
-    //            }
-    //            if (!ok) {
-    //                byteArray = null;
-    //            }
-    //        }
-    //        return byteArray;
-    //    }
-    //
-    //    public static byte[] readPublicKeyFromString(String pemString) throws GeneralSecurityException {
-    //        String publicKeyPEM = pemString.replace("-----BEGIN PUBLIC KEY-----", "").replaceAll("\r\n", "").replace("-----END PUBLIC KEY-----", "");
-    //        byte[] encoded = Base64.getDecoder().decode(publicKeyPEM);
-    //        KeyFactory keyFactory = KeyFactory.getInstance(Constants.RSA);
-    //        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encoded);
-    //        return parseHexString(((RSAPublicKey) keyFactory.generatePublic(keySpec)).getModulus().toString(16));
-    //    }
 
 }
