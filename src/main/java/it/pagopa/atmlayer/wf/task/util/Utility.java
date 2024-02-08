@@ -2,7 +2,18 @@ package it.pagopa.atmlayer.wf.task.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.net.URL;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.RSAPublicKeySpec;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +21,11 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -41,7 +57,7 @@ public class Utility {
      *         occurs.
      */
     public static String getJson(Object object) {
-        String result = null;       
+        String result = null;
         try {
             result = om.writer().writeValueAsString(object);
         } catch (JsonProcessingException e) {
@@ -51,7 +67,7 @@ public class Utility {
     }
 
     public static byte[] setTransactionIdInJson(byte[] entity, String transactionId) {
-        String result = null;       
+        String result = null;
         try {
             JsonNode jn = om.readTree(new String(entity));
             ((ObjectNode) jn).put("transactionId", transactionId);
@@ -79,7 +95,7 @@ public class Utility {
      */
     public static String getObscuredJson(Object object) {
         String result = null;
-       
+
         try {
             result = om.writerWithView(Object.class).writeValueAsString(object);
         } catch (JsonProcessingException e) {
@@ -88,9 +104,8 @@ public class Utility {
         return result;
     }
 
-
     public static <T> T getObject(String json, Class<T> clazz) {
-        T result = null;      
+        T result = null;
         try {
             result = om.readValue(json, clazz);
         } catch (JsonProcessingException e) {
@@ -112,12 +127,7 @@ public class Utility {
      */
     public static String generateTransactionId(State state) {
         Device device = state.getDevice();
-        return (device.getBankId()
-                + "-" + (device.getBranchId() != null ? device.getBranchId() : "")
-                + "-" + (device.getCode() != null ? device.getCode() : "")
-                + "-" + (device.getTerminalId() != null ? device.getTerminalId() : "")
-                + "-" + (device.getOpTimestamp().getTime())
-                + "-" + UUID.randomUUID().toString()).substring(0, Constants.TRANSACTION_ID_LENGTH);
+        return (device.getBankId() + "-" + (device.getBranchId() != null ? device.getBranchId() : "") + "-" + (device.getCode() != null ? device.getCode() : "") + "-" + (device.getTerminalId() != null ? device.getTerminalId() : "") + "-" + (device.getOpTimestamp().getTime()) + "-" + UUID.randomUUID().toString()).substring(0, Constants.TRANSACTION_ID_LENGTH);
     }
 
     /**
@@ -162,25 +172,25 @@ public class Utility {
         return groups;
     }
 
-    /**
-     * Extract content of attribute object in for tags.
-     * 
-     * @param html - the input html
-     * @return a Set containing the contents of object attributes
-     */
-    public static Set<String> extractObjects(String html) {
-        Set<String> objectSet = new HashSet<>();
-
-        Pattern pattern = Pattern.compile(Constants.FOR_REGEX);
-        Matcher matcher = pattern.matcher(html);
-
-        while (matcher.find()) {
-            String objectValue = matcher.group(1);
-            objectSet.add(objectValue);
-        }
-
-        return objectSet;
-    }
+//    /**
+//     * Extract content of attribute object in for tags.
+//     * 
+//     * @param html - the input html
+//     * @return a Set containing the contents of object attributes
+//     */
+//    public static Set<String> extractObjects(String html) {
+//        Set<String> objectSet = new HashSet<>();
+//
+//        Pattern pattern = Pattern.compile(Constants.FOR_REGEX);
+//        Matcher matcher = pattern.matcher(html);
+//
+//        while (matcher.find()) {
+//            String objectValue = matcher.group(1);
+//            objectSet.add(objectValue);
+//        }
+//
+//        return objectSet;
+//    }
 
     /**
      * Finds and extracts matched substrings from an input string using a regular
@@ -284,4 +294,135 @@ public class Utility {
     public static void logElapsedTime(String label, long start, long stop) {
         log.info(" - {} - Elapsed time [ms] = {}", label, stop - start);
     }
+
+    /**
+     * <p>Test input String value to check if it's null or empty</p>
+     *
+     * @param value - value to be checked
+     * @return true if the input value is null or empty, false otherwise
+     */
+    public static boolean nullOrEmpty(String value) {
+        return value == null || value.trim().isEmpty();
+    }
+
+    /**
+     * <p>Test input Collection value to check if it's null or empty</p>
+     *
+     * @param value - value to be checked
+     * @return true if the input value is null or empty, false otherwise
+     */
+    public static boolean nullOrEmpty(Collection<?> value) {
+        return value == null || value.isEmpty();
+    }
+
+    public static byte[] encryptRSA(byte[] dataToEncrypt, RSAPublicKey encryptionKey) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+
+        Cipher cipher;
+        cipher = Cipher.getInstance(Constants.RSA_ALGORITHM_PADDING);
+        cipher.init(Cipher.ENCRYPT_MODE, encryptionKey);
+
+        return cipher.doFinal(dataToEncrypt);
+    }
+
+    public static RSAPublicKey buildRSAPublicKey(String algorithm, byte[] keyModulus) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        KeyFactory factory = KeyFactory.getInstance(algorithm);
+        RSAPublicKeySpec publicSpec = new RSAPublicKeySpec(new BigInteger(format(keyModulus), 16), BigInteger.valueOf(65537));
+        return (RSAPublicKey) factory.generatePublic(publicSpec);
+    }
+
+    /**
+     * 
+     * @param stream
+     * @param separator
+     * @return
+     */
+    public static String format(byte[] stream) {
+        if (stream != null) {
+            StringBuilder buf = new StringBuilder();
+            for (int i = 0; i < stream.length; i++) {
+                if (stream[i] >= 0x00 && stream[i] <= 0x0F) {
+                    buf.append("0");
+                }
+                buf.append(Integer.toHexString(((stream[i] < 0) ? (stream[i] + 256) : stream[i])));
+            }
+            return buf.toString().toUpperCase();
+        }
+        return null;
+    }
+
+    public static RSAPublicKey generateRandomRSAPublicKey() {
+        log.info(" - Generating random RSA public key");
+        RSAPublicKey rsaPublicKey = null;
+        try {
+            KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+            kpg.initialize(2048);
+            KeyPair kp = kpg.generateKeyPair();
+            rsaPublicKey = (RSAPublicKey) kp.getPublic();
+        } catch (NoSuchAlgorithmException e) {
+            log.error(" - Error generating public key", e);
+        }
+        return rsaPublicKey;
+    }
+
+    //    public static byte[] decryptRSA(byte[] dataToDecrypt, RSAPrivateKey decryptionKey) throws InvalidKeySpecException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+    //
+    //        byte[] decryptedData = null;
+    //        PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(decryptionKey.getEncoded());
+    //        KeyFactory kf;
+    //        PrivateKey privateKey;
+    //        Cipher cipher;
+    //        kf = KeyFactory.getInstance("RSA");
+    //        privateKey = kf.generatePrivate(privSpec);
+    //        cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+    //        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+    //
+    //        byte[] encryptedBytes = dataToDecrypt;
+    //        decryptedData = cipher.doFinal(encryptedBytes);
+    //        return decryptedData;
+    //    }
+    //
+    //    public static RSAPrivateKey buildRSAPrivateKey(String algorithm, byte[] keyBytes) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    //
+    //        return (RSAPrivateKey) KeyFactory.getInstance(algorithm).generatePrivate(new PKCS8EncodedKeySpec(keyBytes));
+    //    }
+    //
+    //    public static byte[] parseHexString(String hexString) {
+    //        byte[] byteArray = null;
+    //        if (hexString != null) {
+    //            int hexStringLen = hexString.length();
+    //            int byteArrayLen = hexStringLen / 2;
+    //            String _hexString = hexString;
+    //            if (byteArrayLen * 2 != hexStringLen) {
+    //                _hexString = "0" + hexString;
+    //                hexStringLen++;
+    //                byteArrayLen++;
+    //            }
+    //            byteArray = new byte[byteArrayLen];
+    //            int i = 0;
+    //            int j = 0;
+    //            boolean ok = true;
+    //            while (i < hexStringLen && ok) {
+    //                try {
+    //                    byteArray[j] = (byte) Integer.parseInt(_hexString.substring(i, i + 2), 16);
+    //                } catch (NumberFormatException e) {
+    //                    ok = false;
+    //                }
+    //                j++;
+    //                i += 2;
+    //            }
+    //            if (!ok) {
+    //                byteArray = null;
+    //            }
+    //        }
+    //        return byteArray;
+    //    }
+    //
+    //    public static byte[] readPublicKeyFromString(String pemString) throws GeneralSecurityException {
+    //        String publicKeyPEM = pemString.replace("-----BEGIN PUBLIC KEY-----", "").replaceAll("\r\n", "").replace("-----END PUBLIC KEY-----", "");
+    //        byte[] encoded = Base64.getDecoder().decode(publicKeyPEM);
+    //        KeyFactory keyFactory = KeyFactory.getInstance(Constants.RSA);
+    //        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encoded);
+    //        return parseHexString(((RSAPublicKey) keyFactory.generatePublic(keySpec)).getModulus().toString(16));
+    //    }
+
 }

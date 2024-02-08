@@ -1,10 +1,15 @@
 package it.pagopa.atmlayer.wf.task.test.utility;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -85,15 +90,13 @@ class UtilityTest {
                 "        \"code\": \"0001\",\r\n" + //
                 "        \"terminalId\": \"64874412\",\r\n" + //
                 "        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n" + //
-                "        \"channel\": \"ATM\"" +
-                "}}";
+                "        \"channel\": \"ATM\"" + "}}";
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date date = sdf.parse("2023-10-31T16:30:00");
         State state = new State();
-        Device device = Device.builder().bankId("06789").branchId("12345").channel(Channel.ATM).code("0001")
-                .terminalId("64874412").opTimestamp(date).build();
+        Device device = Device.builder().bankId("06789").branchId("12345").channel(Channel.ATM).code("0001").terminalId("64874412").opTimestamp(date).build();
         state.setDevice(device);
         assertEquals(state, Utility.getObject(json, State.class));
     }
@@ -108,10 +111,66 @@ class UtilityTest {
                 "        \"code\": \"0001\",\r\n" + //
                 "        \"terminalId\": \"64874412\",\r\n" + //
                 "        \"opTimestamp\": \"2023-10-31T16:30:00\",\r\n" + //
-                "        \"channel\": \"ATM\"" +
-                "}";
+                "        \"channel\": \"ATM\"" + "}";
 
         assertEquals(null, Utility.getObject(json, State.class));
     }
 
+    @Test
+    void testNullOrEmptyStringEmpty() {
+        assertEquals(true, Utility.nullOrEmpty(""));
+    }
+
+    @Test
+    void testNullOrEmptyStringNull() {
+        String test = null;
+        assertEquals(true, Utility.nullOrEmpty(test));
+    }
+
+    @Test
+    void testNullOrEmptyStringOk() {
+        String test = "test";
+        assertEquals(false, Utility.nullOrEmpty(test));
+    }
+
+    @Test
+    void testNullOrEmptyCollectionEmpty() {
+        List<String> test = List.of();
+        assertEquals(true, Utility.nullOrEmpty(test));
+    }
+
+    @Test
+    void testNullOrEmptyCollectionNull() {
+        List<String> test = null;
+        assertEquals(true, Utility.nullOrEmpty(test));
+    }
+
+    @Test
+    void testNullOrEmptyCollectionOk() {
+        List<String> test = List.of("Test");
+        assertEquals(false, Utility.nullOrEmpty(test));
+    }
+
+    @Test
+    void testFormatOk() {
+        assertNotNull(Utility.format(new byte[] {
+                10,
+                22
+        }));
+    }
+
+    @Test
+    void testFormatEmpty() {
+        assertNotNull(Utility.format(new byte[] {}));
+    }
+
+    @Test
+    void testFormatNull() {
+        assertNull(Utility.format(null));
+    }
+
+    @Test
+    void testGenerateRSAPublicKey() throws NoSuchAlgorithmException, InvalidKeySpecException {
+        assertNotNull(Utility.buildRSAPublicKey("RSA", Base64.getDecoder().decode("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3iu1kH1foan71+X13MQ6WIRhuTw70zhtXxC5UyHGmNcDabqqrzdKovlPDZt05VuktpP+di0ZtKnwjRxzx2IUwO2s05kT8qI+acfEf4IJR3J6yCrnYmSdVtdb+Oy5VkqbUn/xVLidOED2dfMgvCobfDdiLL1dqp7Ll8i+UUvcDTvQ/c2LwSqHT5vY8n5mXWPRzHundNG8572AqI6DNQSCo3rRFtgP4vwbsYZX5+4o/Jvk4qrBALkfbq1RGmM6kVGokEG53yjlmAuDb2OEOeqYtQxFUulcVYRMZZY5ruuuOst77+U72hT1YHXA/gJexDVsetZnfzgMQUZABw+1ZjFjTwIDAQAB")));
+    }
 }
