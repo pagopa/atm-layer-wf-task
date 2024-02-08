@@ -172,25 +172,25 @@ public class Utility {
         return groups;
     }
 
-    /**
-     * Extract content of attribute object in for tags.
-     * 
-     * @param html - the input html
-     * @return a Set containing the contents of object attributes
-     */
-    public static Set<String> extractObjects(String html) {
-        Set<String> objectSet = new HashSet<>();
-
-        Pattern pattern = Pattern.compile(Constants.FOR_REGEX);
-        Matcher matcher = pattern.matcher(html);
-
-        while (matcher.find()) {
-            String objectValue = matcher.group(1);
-            objectSet.add(objectValue);
-        }
-
-        return objectSet;
-    }
+//    /**
+//     * Extract content of attribute object in for tags.
+//     * 
+//     * @param html - the input html
+//     * @return a Set containing the contents of object attributes
+//     */
+//    public static Set<String> extractObjects(String html) {
+//        Set<String> objectSet = new HashSet<>();
+//
+//        Pattern pattern = Pattern.compile(Constants.FOR_REGEX);
+//        Matcher matcher = pattern.matcher(html);
+//
+//        while (matcher.find()) {
+//            String objectValue = matcher.group(1);
+//            objectSet.add(objectValue);
+//        }
+//
+//        return objectSet;
+//    }
 
     /**
      * Finds and extracts matched substrings from an input string using a regular
