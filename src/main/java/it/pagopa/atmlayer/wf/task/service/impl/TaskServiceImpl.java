@@ -328,7 +328,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                     panInformation.setCircuits(panInfo.getCircuits());
                     panInformation.setLastDigits(panInfo.getPan().substring(panInfo.getPan().length() - 4));
                     try {
-                        panInformation.setPan(new String(Utility.encryptRSA(panInfo.getPan().getBytes(), rsaPublicKey)));
+                        panInformation.setPan(Utility.format(Utility.encryptRSA(panInfo.getPan().getBytes(), rsaPublicKey)));
                     } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
                         log.error(" - Error during encrypting data", e);
                     }
