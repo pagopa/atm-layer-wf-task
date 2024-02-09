@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.URL;
 import java.security.InvalidKeyException;
-import java.security.Key;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -14,9 +13,11 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -42,6 +43,35 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Utility {
     static private ObjectMapper om = new ObjectMapper();
+
+    /*
+     * Caratteri di escape standard HTML
+     */
+    public final static HashMap<String, String> ESCAPE_CHARACTER = new HashMap<>();
+
+    static {
+        ESCAPE_CHARACTER.put("&#192;", "À");
+        ESCAPE_CHARACTER.put("&#193;", "Á");
+        ESCAPE_CHARACTER.put("&#200;", "È");
+        ESCAPE_CHARACTER.put("&#201;", "É");
+        ESCAPE_CHARACTER.put("&#204;", "Ì");
+        ESCAPE_CHARACTER.put("&#205;", "Í");
+        ESCAPE_CHARACTER.put("&#210;", "Ò");
+        ESCAPE_CHARACTER.put("&#211;", "Ó");
+        ESCAPE_CHARACTER.put("&#217;", "Ù");
+        ESCAPE_CHARACTER.put("&#218;", "Ú");
+        ESCAPE_CHARACTER.put("&#224;", "à");
+        ESCAPE_CHARACTER.put("&#225;", "á");
+        ESCAPE_CHARACTER.put("&#232;", "è");
+        ESCAPE_CHARACTER.put("&#233;", "é");
+        ESCAPE_CHARACTER.put("&#236;", "ì");
+        ESCAPE_CHARACTER.put("&#237;", "í");
+        ESCAPE_CHARACTER.put("&#242;", "ò");
+        ESCAPE_CHARACTER.put("&#243;", "ó");
+        ESCAPE_CHARACTER.put("&#249;", "ù");
+        ESCAPE_CHARACTER.put("&#250;", "ú");
+        ESCAPE_CHARACTER.put("&#8364;", "€");
+    }
 
     /**
      * Converts an object to a JSON representation.
@@ -173,7 +203,7 @@ public class Utility {
     }
 
     /**
-
+    
      * Finds and extracts matched substrings from an input string using a regular
      * expression.
      *
@@ -343,6 +373,27 @@ public class Utility {
             log.error(" - Error generating public key", e);
         }
         return rsaPublicKey;
+    }
+
+    /**
+     * Escape a string.
+     * @param text
+     * @charactersEscapeList contains the list of characters to escape, associated to the corresponding escape sequence
+     * @return
+     * @author Simone Miccoli
+     * 
+     */
+    public static String escape(String text) {
+        String result = null;
+        if (text != null) {
+            result = text;
+            Set<Entry<String, String>> charactersToEscape = null;
+            charactersToEscape = ESCAPE_CHARACTER.entrySet();
+            for (Entry<String, String> entry : charactersToEscape) {
+                result = result.replaceAll(entry.getValue(), entry.getKey());
+            }
+        }
+        return result;
     }
 
 }

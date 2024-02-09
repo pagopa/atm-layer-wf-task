@@ -489,7 +489,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             forEl.remove();
             doc.html(parseLoopHtml(variables, doc.html()));
         }
-        return doc.html();
+        return Utility.escape(doc.html());
     }
 
     private static String getVarProp(String var, JsonElement jsonElement) {
@@ -588,4 +588,5 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 
         MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
     }
+    
 }
