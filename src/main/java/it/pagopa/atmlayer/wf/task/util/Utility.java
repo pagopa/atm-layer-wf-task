@@ -407,9 +407,7 @@ public class Utility {
                 result = text;
                 Set<Entry<String, String>> charactersToEscape = null;
                 charactersToEscape = escapeHtmlChars.entrySet();
-                System.out.println(escapeHtmlChars);
                 for (Entry<String, String> entry : charactersToEscape) {
-                    log.info("{}", entry);
                     result = result.replaceAll(entry.getValue(), entry.getKey());
                 }
             }
