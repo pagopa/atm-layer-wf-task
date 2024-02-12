@@ -6,6 +6,7 @@ public enum Command {
 	PRINT_RECEIPT, // Stampa dello scontrino
 	SCAN_BIIL_DATA, // Scansione QR code o Data matrix (o Bar code)
 	SCAN_FISCAL_CODE, // Scansione Codice Fiscale
-	END // Fine della transazione
-
+	END, // Fine della transazione
+	GET_IBAN, // Recupero iban
+	GET_PAN // Recupero PAN
 }
