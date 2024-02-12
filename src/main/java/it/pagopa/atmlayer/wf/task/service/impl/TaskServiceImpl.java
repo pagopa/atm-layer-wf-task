@@ -489,7 +489,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             forEl.remove();
             doc.html(parseLoopHtml(variables, doc.html()));
         }
-        return Utility.escape(doc.html());
+        return Utility.escape(doc.html(), properties.escape());
     }
 
     private static String getVarProp(String var, JsonElement jsonElement) {

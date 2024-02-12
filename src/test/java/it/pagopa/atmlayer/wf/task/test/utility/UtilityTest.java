@@ -14,19 +14,26 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.bean.enumartive.Channel;
+import it.pagopa.atmlayer.wf.task.util.Properties;
 import it.pagopa.atmlayer.wf.task.util.Utility;
+import jakarta.inject.Inject;
 
 @QuarkusTest
 class UtilityTest {
+    
+    @Inject
+    Properties properties;
 
     @Test
     void testGetJson() {
@@ -179,6 +186,20 @@ class UtilityTest {
     void testEscapeHtml() {
         String html = "<?xml version=\"1.0\" encoding=\"iso-8859-1\" ?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\"><head><link rel=\"stylesheet\" href=\"css/emulatore.css\" /></head><body><img id=\"logo\" src=\"https://d2xduy7tbgu2d3.cloudfront.net/files/ICON/default_logo.svg\"/><h1>Servizi di pubblica utilit&agrave;</h1><h2>Riepilogo del pagamento</h2><table id=\"table\"><thead><tr><th><span>${company}</span></th><th class=\"right\"><span>${amount} &euro;</span></th></tr></thead><tbody><tr><td><span>Commissioni</span></td><td class=\"right\"><span>${fee} &euro;</span></td></tr></tbody><tfoot><tr><td><span class=\"large\">Totale</span></td><td class=\"right\"><span class=\"large\">${totale} &euro;</span></td></tr></tfoot></table><button class=\"negative\" data-fdk=\"S4\" id=\"back\"><span>Indietro</span></button><button class=\"negative\" id=\"exit\"><span>Esci</span></button><button class=\"positive\" data-fdk=\"S8\" id=\"confirm\"><span>Paga  ${totale} &euro;</span></button><for object=\"pulsante\" list=\"pulsanti\"><button class=\"negative\" data-fdk=\"S${pulsante.i}\" id=\"${pulsante}\"><span>${pulsante}</span><span>${pulsante.paragrafo}</span></button></for></body></html>";
         String newHtml = Utility.escape(html);
+        assertFalse(Utility.ESCAPE_CHARACTER.values().stream().anyMatch(value -> newHtml.contains(value)));
+    }
+
+    @Test
+    void testEscapeHtmlConfig() {
+        String html = "<?xml version=\"1.0\" encoding=\"iso-8859-1\" ?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\"><head><link rel=\"stylesheet\" href=\"css/emulatore.css\" /></head><body><img id=\"logo\" src=\"https://d2xduy7tbgu2d3.cloudfront.net/files/ICON/default_logo.svg\"/><h1>Servizi di pubblica utilit&agrave;</h1><h2>Riepilogo del pagamento</h2><table id=\"table\"><thead><tr><th><span>${company}</span></th><th class=\"right\"><span>${amount} &euro;</span></th></tr></thead><tbody><tr><td><span>Commissioni</span></td><td class=\"right\"><span>${fee} &euro;</span></td></tr></tbody><tfoot><tr><td><span class=\"large\">Totale</span></td><td class=\"right\"><span class=\"large\">${totale} &euro;</span></td></tr></tfoot></table><button class=\"negative\" data-fdk=\"S4\" id=\"back\"><span>Indietro</span></button><button class=\"negative\" id=\"exit\"><span>Esci</span></button><button class=\"positive\" data-fdk=\"S8\" id=\"confirm\"><span>Paga  ${totale} &euro;</span></button><for object=\"pulsante\" list=\"pulsanti\"><button class=\"negative\" data-fdk=\"S${pulsante.i}\" id=\"${pulsante}\"><span>${pulsante}</span><span>${pulsante.paragrafo}</span></button></for></body></html>";
+        String newHtml = Utility.escape(html, properties.escape());
+        assertFalse(properties.escape().values().stream().anyMatch(value -> newHtml.contains(value)));
+    }
+    
+    @Test
+    void testEscapeHtmlConfigMapNull() {
+        String html = "<?xml version=\"1.0\" encoding=\"iso-8859-1\" ?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\"><head><link rel=\"stylesheet\" href=\"css/emulatore.css\" /></head><body><img id=\"logo\" src=\"https://d2xduy7tbgu2d3.cloudfront.net/files/ICON/default_logo.svg\"/><h1>Servizi di pubblica utilit&agrave;</h1><h2>Riepilogo del pagamento</h2><table id=\"table\"><thead><tr><th><span>${company}</span></th><th class=\"right\"><span>${amount} &euro;</span></th></tr></thead><tbody><tr><td><span>Commissioni</span></td><td class=\"right\"><span>${fee} &euro;</span></td></tr></tbody><tfoot><tr><td><span class=\"large\">Totale</span></td><td class=\"right\"><span class=\"large\">${totale} &euro;</span></td></tr></tfoot></table><button class=\"negative\" data-fdk=\"S4\" id=\"back\"><span>Indietro</span></button><button class=\"negative\" id=\"exit\"><span>Esci</span></button><button class=\"positive\" data-fdk=\"S8\" id=\"confirm\"><span>Paga  ${totale} &euro;</span></button><for object=\"pulsante\" list=\"pulsanti\"><button class=\"negative\" data-fdk=\"S${pulsante.i}\" id=\"${pulsante}\"><span>${pulsante}</span><span>${pulsante.paragrafo}</span></button></for></body></html>";
+        String newHtml = Utility.escape(html, null);
         assertFalse(Utility.ESCAPE_CHARACTER.values().stream().anyMatch(value -> newHtml.contains(value)));
     }
 

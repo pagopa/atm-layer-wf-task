@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
@@ -385,12 +386,30 @@ public class Utility {
      */
     public static String escape(String text) {
         String result = null;
+        log.debug(" - Using default escape chars map");
         if (text != null) {
             result = text;
             Set<Entry<String, String>> charactersToEscape = null;
             charactersToEscape = ESCAPE_CHARACTER.entrySet();
             for (Entry<String, String> entry : charactersToEscape) {
                 result = result.replaceAll(entry.getValue(), entry.getKey());
+            }
+        }
+        return result;
+    }
+
+    public static String escape(String text, Map<String, String> escapeHtmlChars) {
+        String result = null;
+        if (escapeHtmlChars == null) {
+            result = escape(text);
+        } else {
+            if (text != null) {
+                result = text;
+                Set<Entry<String, String>> charactersToEscape = null;
+                charactersToEscape = escapeHtmlChars.entrySet();
+                for (Entry<String, String> entry : charactersToEscape) {
+                    result = result.replaceAll(entry.getValue(), entry.getKey());
+                }
             }
         }
         return result;

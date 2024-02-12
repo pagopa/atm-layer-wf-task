@@ -1,5 +1,7 @@
 package it.pagopa.atmlayer.wf.task.util;
 
+import java.util.Map;
+
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.config.spi.Converter;
 
@@ -26,6 +28,9 @@ public interface Properties {
     
     @ConfigProperty(name = "tokenization-is-mock")
     boolean tokenizationIsMock();
+    
+    @ConfigProperty(name = "escape")
+    Map<String, String> escape();
 
     public static class ConverterImplement implements Converter<String> {
         @Override
