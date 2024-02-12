@@ -2,6 +2,7 @@ package it.pagopa.atmlayer.wf.task.service.impl;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
@@ -31,9 +32,11 @@ import org.jsoup.nodes.Entities.EscapeMode;
 import org.jsoup.parser.Parser;
 import org.slf4j.MDC;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
 import it.pagopa.atmlayer.wf.task.bean.Button;
 import it.pagopa.atmlayer.wf.task.bean.Device;
@@ -471,14 +474,22 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 
             List<?> list = (List<?>) variables.get(forEl.attr("list"));
             int i = 0;
+            Type listType = new TypeToken<ArrayList<Object>>(){}.getType();
+            Gson gson = new Gson();
             if (list != null) {
                 for (Object element : list) {
+                    JsonElement jsonElement = JsonParser.parseString(Utility.getJson(element));
                     i++;
+                    for(Element e: forEl.select("for")) {
+                        String listName = e.attr("list");
+                        if(listName.startsWith(obj)) {
+                            ArrayList<Object> listProva = gson.fromJson(getVarPropJsonElement(listName, jsonElement), listType);  
+                            variables.put(listName, listProva);
+                        }
+                    }
                     String htmlTemp = parseLoopHtml(variables, forEl.html());
                     htmlTemp = htmlTemp.replace("${" + obj + "}", String.valueOf(element));
                     htmlTemp = htmlTemp.replace("${" + obj + ".i}", String.valueOf(i));
-
-                    JsonElement jsonElement = JsonParser.parseString(Utility.getJson(element));
 
                     for (String var : placeholders) {
                         htmlTemp = htmlTemp.replace("${" + var + "}", getVarProp(var, jsonElement));
@@ -504,6 +515,20 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             }
         }
         return propElement.getAsString();
+    }
+    
+    private static JsonElement getVarPropJsonElement(String var, JsonElement jsonElement) {
+        String[] varProperties = var.split("\\.");
+        JsonElement propElement = jsonElement;
+        for (int j = 1; j < varProperties.length; j++) {
+            JsonObject jsonObject = propElement.getAsJsonObject();
+            if (jsonObject.has(varProperties[j])) {
+                propElement = jsonObject.get(varProperties[j]);
+            } else {
+                return null;
+            }
+        }
+        return propElement;
     }
 
     private void updateTemplate(it.pagopa.atmlayer.wf.task.bean.Task atmTask) {

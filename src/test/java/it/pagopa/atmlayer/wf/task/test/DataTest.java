@@ -127,11 +127,17 @@ public class DataTest {
         variableResponse.getVariables().put("totale", 11.50);
         variableResponse.getVariables().put("variable1", "11.50");
         variableResponse.getVariables().put(Constants.COMMAND_VARIABLE_VALUE, Command.PRINT_RECEIPT.name());
-        ArrayList<Object> list = new ArrayList<Object>();
+        ArrayList<Object> list = new ArrayList<>();
         Dato elemento = new Dato();
         elemento.setParagrafo("vedi2");
+        elemento.setCircuits(new ArrayList<String>());
+        elemento.getCircuits().add("VISA");
+        elemento.getCircuits().add("MASTERCARD");
         list.add(elemento);
+        
+        
         variableResponse.getVariables().put("pulsanti", list);
+        
 
         Map<String, Object> buttonMap = new HashMap<>();
         buttonMap.put("prop1", "value1");
@@ -155,6 +161,9 @@ public class DataTest {
         ArrayList<Object> list = new ArrayList<Object>();
         Dato elemento = new Dato();
         elemento.setParagrafo("vedi2");
+        elemento.setCircuits(new ArrayList<String>());
+        elemento.getCircuits().add("VISA");
+        elemento.getCircuits().add("MASTERCARD");
         list.add(elemento);
 
         variableResponse.getVariables().put("pulsanti", list);
@@ -260,6 +269,9 @@ public class DataTest {
 
         Dato elemento = new Dato();
         elemento.setParagrafo("vedi2");
+        elemento.setCircuits(new ArrayList<String>());
+        elemento.getCircuits().add("VISA");
+        elemento.getCircuits().add("MASTERCARD");
         list.add(elemento);
 
         varResponse.getVariables().put("pulsanti", list);

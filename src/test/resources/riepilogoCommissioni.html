@@ -54,6 +54,9 @@
         <button class="negative" data-fdk="S${pulsante.i}" id="${pulsante}">
             <span>${pulsante}</span>			
 			<span>${pulsante.paragrafo}</span>
+			<for object="circuit" list="pulsante.circuits">
+					<img src="${CDN_URL}ICON/${circuit}.svg"/>
+				</for>
         </button>
   	</for>
 
