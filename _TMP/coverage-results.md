@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 91.34%               |
-| :heavy_check_mark: Number of Lines Covered | 538    |
-| :x: Number of Lines Missed  | 51     |
-| Total Number of Lines   | 589     |
+| Code Coverage %         | 91.4%               |
+| :heavy_check_mark: Number of Lines Covered | 553    |
+| :x: Number of Lines Missed  | 52     |
+| Total Number of Lines   | 605     |
 
 
 ## Details:
@@ -332,23 +332,23 @@
         
 #### Lines Missed:
         
-- Line #246
+- Line #249
 ```
                 } catch (UnsupportedEncodingException e) {
 ```
-- Line #315
+- Line #318
 ```
                     } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 ```
-- Line #317
+- Line #320
 ```
                     }
 ```
-- Line #332
+- Line #335
 ```
                     } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
 ```
-- Line #513
+- Line #538
 ```
             } catch (UnsupportedEncodingException e) {
 ```
