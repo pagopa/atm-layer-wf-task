@@ -445,7 +445,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
     private String replaceVarValue(Map<String, Object> variables, String html) {
         String htmlTemp = html;
         if (htmlTemp != null) {
-            log.info("-----START replacing variables in html-----");
+            log.debug("-----START replacing variables in html-----");
 
             htmlTemp = parseLoopHtml(variables, html);
             for (Entry<String, Object> value : variables.entrySet()) {
@@ -458,7 +458,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                 log.error("Value not found for placeholders: {}", placeholders);
                 throw new ErrorException(ErrorEnum.PROCESS_ERROR);
             }
-            log.info("-----END replacing variables in html-----");
+            log.debug("-----END replacing variables in html-----");
         }
         return htmlTemp;
     }
@@ -473,6 +473,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             placeholders.removeIf(p -> !p.startsWith(obj + "."));
 
             List<?> list = (List<?>) variables.get(forEl.attr("list"));
+            log.info(" - list of obj: {}", list);
             int i = 0;
             Type listType = new TypeToken<ArrayList<Object>>(){}.getType();
             Gson gson = new Gson();
@@ -483,8 +484,8 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                     for(Element e: forEl.select("for")) {
                         String listName = e.attr("list");
                         if(listName.startsWith(obj)) {
-                            ArrayList<Object> listProva = gson.fromJson(getVarPropJsonElement(listName, jsonElement), listType);  
-                            variables.put(listName, listProva);
+                            ArrayList<Object> lista = gson.fromJson(getVarPropJsonElement(listName, jsonElement), listType);  
+                            variables.put(listName, lista);
                         }
                     }
                     String htmlTemp = parseLoopHtml(variables, forEl.html());
