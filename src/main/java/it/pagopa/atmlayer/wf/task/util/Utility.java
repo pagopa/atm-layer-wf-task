@@ -43,8 +43,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Utility {
-    static private ObjectMapper om = new ObjectMapper();
+    private static ObjectMapper om = new ObjectMapper();
 
+    private static final String CDN_GET_FILE = "CDN.getResource";
+    
     /*
      * Caratteri di escape standard HTML
      */
@@ -290,9 +292,10 @@ public class Utility {
 
         InputStream ioStream = null;
         log.info("Getting file [{}]", path);
-
+        long start = System.currentTimeMillis();
         ioStream = new URL(path).openStream();
-
+        long stop = System.currentTimeMillis();
+        log.info(" {} - Elapsed time [ms] = {}", CDN_GET_FILE , stop - start);
         return ioStream;
     }
 

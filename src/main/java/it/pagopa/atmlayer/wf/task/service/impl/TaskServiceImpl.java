@@ -311,12 +311,15 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                 rsaPublicKey = Utility.generateRandomRSAPublicKey();
             } else {
                 log.info("Calling to get public key.");
+                long start = System.currentTimeMillis();
                 publicKeyResponse = tokenizationClient.getKey();
                 if (publicKeyResponse.getStatus() == 200) {
                     try {
                         rsaPublicKey = Utility.buildRSAPublicKey(Constants.RSA, publicKeyResponse.getEntity().getModulus());
                     } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
                         log.error(" - Error during generating RSAPublicKey", e);
+                    } finally {
+                        logElapsedTime(CREATE_MAIN_SCENE_LOG_ID, start);
                     }
                     log.info("key retrieved successfully.");
                 }
