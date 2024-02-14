@@ -126,6 +126,7 @@ public class DataTest {
         variableResponse.getVariables().put("fee", 2.30);
         variableResponse.getVariables().put("totale", 11.50);
         variableResponse.getVariables().put("variable1", "11.50");
+        variableResponse.getVariables().put(Constants.FUNCTION_ID_CONTEXT_LOG, "FUNCTION_ID");
         variableResponse.getVariables().put(Constants.COMMAND_VARIABLE_VALUE, Command.PRINT_RECEIPT.name());
         ArrayList<Object> list = new ArrayList<>();
         Dato elemento = new Dato();

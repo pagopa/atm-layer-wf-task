@@ -206,7 +206,9 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                 Map<String, Object> workingVariables = variableResponse.getVariables();
 
                 //Aggiungo al contesto dei log la functionId
-                MDC.put(Constants.FUNCTION_ID_CONTEXT_LOG, (String) workingVariables.get(Constants.FUNCTION_ID_CONTEXT_LOG));
+                if(workingVariables.get(Constants.FUNCTION_ID_CONTEXT_LOG) != null) {
+                    MDC.put(Constants.FUNCTION_ID_CONTEXT_LOG, (String) workingVariables.get(Constants.FUNCTION_ID_CONTEXT_LOG));
+                }
                 
                 manageReceipt(workingVariables, atmTask);
 
