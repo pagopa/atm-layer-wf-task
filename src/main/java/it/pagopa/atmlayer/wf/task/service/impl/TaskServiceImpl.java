@@ -400,6 +400,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                 String htmlString = new String(Utility.getFileFromCdn(properties.cdnUrl() + properties.htmlResourcesPath() + receiptTemplateName).readAllBytes(), properties.htmlCharset());
                 Set<String> placeholders = Utility.findStringsByGroup(htmlString, Constants.VARIABLES_REGEX);
                 atmTask.setReceiptTemplate(htmlString);
+                placeholders.addAll(Utility.getForVar(htmlString));
                 log.debug("Placeholders found: {}", placeholders);
                 if (placeholders != null && !placeholders.isEmpty()) {
                     log.debug("Number of variables found in receipt template: {}", placeholders.size());
@@ -473,7 +474,6 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             placeholders.removeIf(p -> !p.startsWith(obj + "."));
 
             List<?> list = (List<?>) variables.get(forEl.attr("list"));
-            log.info(" - list of obj: {}", list);
             int i = 0;
             Type listType = new TypeToken<ArrayList<Object>>(){}.getType();
             Gson gson = new Gson();
