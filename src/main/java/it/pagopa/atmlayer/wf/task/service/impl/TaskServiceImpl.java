@@ -566,7 +566,6 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
      * @param state
      */
     private String getToken(State state) {
-        MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, state.getTransactionId());
         Device device = state.getDevice();
         log.info("Calling milAuth get Token.");
         String token = null;
@@ -587,7 +586,6 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
         } finally {
             logElapsedTime(GET_TOKEN_LOG_ID, start);
         }
-        MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
         return token;
     }
 
@@ -596,7 +594,6 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
      */
     @Override
     public void deleteToken(State state) {
-        MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, state.getTransactionId());
         Device device = state.getDevice();
         log.info("Calling milAuth delete Token.");
         long start = System.currentTimeMillis();
@@ -615,7 +612,6 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             logElapsedTime(DELETE_TOKEN_LOG_ID, start);
         }
 
-        MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
     }
     
 }
