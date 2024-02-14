@@ -7,14 +7,12 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import it.pagopa.atmlayer.wf.task.bean.enumartive.PeripheralStatus;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @JsonInclude(Include.NON_NULL)
 @Schema(description = "Oggetto che rappresenta una periferica del Device e il suo stato")
 public class Peripheral {
