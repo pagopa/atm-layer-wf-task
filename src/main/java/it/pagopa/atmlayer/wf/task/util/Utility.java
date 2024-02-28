@@ -74,6 +74,7 @@ public class Utility {
         ESCAPE_CHARACTER.put("&#249;", "ù");
         ESCAPE_CHARACTER.put("&#250;", "ú");
         ESCAPE_CHARACTER.put("&#8364;", "€");
+        ESCAPE_CHARACTER.put("&#9632;", "■");
     }
 
     /**
