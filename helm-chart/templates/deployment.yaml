@@ -61,7 +61,6 @@ spec:
             mountPath: "/mnt/secrets-store"
             readOnly: true
           {{- end }}
-          {{- if .Values.autoscaling.enabled }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
   strategy:
