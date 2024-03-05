@@ -63,13 +63,6 @@ spec:
           {{- end }}
           {{- if .Values.autoscaling.enabled }}
           resources:
-            limits:
-              cpu: {{ .Values.autoscaling.cpuLimits }}
-              memory: {{ .Values.autoscaling.memoryLimits }}
-            requests:
-              cpu: {{ .Values.autoscaling.cpuRequest }}
-              memory: {{ .Values.autoscaling.memoryRequests }}
-          {{- end }}
-
+            {{- toYaml .Values.resources | nindent 12 }}
   strategy:
     type: Recreate
