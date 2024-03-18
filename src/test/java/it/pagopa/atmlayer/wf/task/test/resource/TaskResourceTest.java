@@ -25,7 +25,6 @@ import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
 import it.pagopa.atmlayer.wf.task.resource.TaskResource;
 import it.pagopa.atmlayer.wf.task.test.DataTest;
-import it.pagopa.atmlayer.wf.task.util.Properties;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response.Status;
@@ -94,7 +93,7 @@ class TaskResourceTest {
                         .getKey()).thenReturn(RestResponse.status(Status.OK,
                                         DataTest.createPublicKeyResponse()));
 
-                Response response = given().body("{\"device\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"12345\",\"terminalId\":\"1234567890\",\"opTimestamp\":1707323349628,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"panInfo\":[{\"pan\":\"1234567891234567\",\"circuits\":[\"VISA\",\"MASTERCARD\"],\"bankName\":\"ISYBANK\"}]}")
+                Response response = given().body("{\"device\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"1234\",\"terminalId\":\"1234567890\",\"opTimestamp\":1707323349628,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"panInfo\":[{\"pan\":\"1234567891234567\",\"circuits\":[\"VISA\",\"MASTERCARD\"],\"bankName\":\"ISYBANK\"}]}")
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/main").then().extract().response();
 
@@ -308,7 +307,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/next/trns/{transactionId}", "00001-0002-12345-1234567890-aaaaaaaaaaaaa")
+                                .post("/next/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa")
                                 .then().extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
@@ -322,7 +321,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/next/trns/{transactionId}", "00001-0002-12345-1234567890-aaaaaaaaaaaaa")
+                                .post("/next/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa")
                                 .then().extract().response();
 
                 Assertions.assertEquals(500, response.statusCode());
@@ -336,7 +335,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/next/trns/{transactionId}", "00001-0002-12345-1234567890-aaaaaaaaaaaaa")
+                                .post("/next/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa")
                                 .then().extract().response();
 
                 Assertions.assertEquals(209, response.statusCode());
@@ -354,7 +353,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/next/trns/{transactionId}", "00001-0002-12345-1234567890-aaaaaaaaaaaaa")
+                                .post("/next/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa")
                                 .then().extract().response();
 
                 Assertions.assertEquals(500, response.statusCode());
@@ -372,7 +371,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/next/trns/{transactionId}", "00001-0002-12345-1234567890-aaaaaaaaaaaaa")
+                                .post("/next/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa")
                                 .then().extract().response();
 
                 Assertions.assertEquals(209, response.statusCode());
@@ -415,17 +414,17 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/next/trns/{transactionId}", "00001-0002-12345-1234567890-aaaaaaaaaaaaa")
+                                .post("/next/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa")
                                 .then().extract().response();
 
                 Assertions.assertEquals(209, response.statusCode());
         }
 
         @ParameterizedTest
-        @ValueSource(strings = { "10001-0002-12345-1234567890-aaaaaaaaaaaaa",
-                        "00001-1002-12345-1234567890-aaaaaaaaaaaaa",
-                        "00001-0002-12346-1234567890-aaaaaaaaaaaaa",
-                        "00001-0002-12345-1234567891-aaaaaaaaaaaaa" })
+        @ValueSource(strings = { "10001-0002-1234-1234567890-aaaaaaaaaaaaa",
+                        "00001-1002-1235-1234567890-aaaaaaaaaaaaa",
+                        "00001-0002-1236-1234567890-aaaaaaaaaaaaa",
+                        "00001-0002-1235-1234567891-aaaaaaaaaaaaa" })
         void wrongTransactionIdOnNext(String transactionId) {
 
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
@@ -459,7 +458,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestNextNoBranchId())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/next/trns/{transactionId}", "00001--12345-1234567890-aaaaaaaaaaaaa")
+                                .post("/next/trns/{transactionId}", "00001--1234-1234567890-aaaaaaaaaaaaa")
                                 .then().extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
@@ -499,7 +498,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestNextNoTerminalId())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/next/trns/{transactionId}", "00001-0002-12345--aaaaaaaaaaaaa")
+                                .post("/next/trns/{transactionId}", "00001-0002-1234--aaaaaaaaaaaaa")
                                 .then().extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
@@ -602,7 +601,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/next/trns/{transactionId}", "00001-0002-12345-1234567890-aaaaaaaaaaaaa").then()
+                                .post("/next/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa").then()
                                 .extract().response();
 
                 Assertions.assertEquals(202, response.statusCode());
@@ -643,7 +642,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/next/trns/{transactionId}", "00001-0002-12345-1234567890-aaaaaaaaaaaaa").then()
+                                .post("/next/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa").then()
                                 .extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
@@ -661,7 +660,7 @@ class TaskResourceTest {
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/next/trns/{transactionId}", "00001-0002-12345-1234567890-aaaaaaaaaaaaa").then()
+                                .post("/next/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa").then()
                                 .extract().response();
 
                 Assertions.assertEquals(200, response.statusCode());
@@ -755,7 +754,7 @@ class TaskResourceTest {
                 .thenReturn(RestResponse.status(Status.OK,
                                 DataTest.createVariableResponseNoData()));
 
-                Response response = given().body("{\"device\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"12345\",\"terminalId\":\"1234567890\",\"opTimestamp\":1705499660669,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"fiscalCode\":\"BBTFNC\"}")
+                Response response = given().body("{\"device\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"1234\",\"terminalId\":\"1234567890\",\"opTimestamp\":1705499660669,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"fiscalCode\":\"BBTFNC\"}")
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/main").then().extract().response();
 

@@ -40,7 +40,7 @@ public class Device {
 	/*
 	 * Device ID.
 	 */
-	@Pattern(regexp = "^[0-9]{1,4}$", message = "Device ID deve matchare l'espressione regolare")
+	@Pattern(regexp = "^[0-9]{1,4}$", message = "Device code deve matchare l'espressione regolare")
 	@Schema(description = "Il codice identificativo dello sportello ATM (Codice Sportello o S.A. del Quadro Informativo. SPE-DEF-200)", example = "0001")
 	private String code;
 
