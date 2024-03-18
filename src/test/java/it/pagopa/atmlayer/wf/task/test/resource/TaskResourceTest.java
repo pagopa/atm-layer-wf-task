@@ -760,5 +760,32 @@ class TaskResourceTest {
 
                 Assertions.assertEquals(201, response.statusCode());
         }
+        
+        @Test
+        void startProcessOKMalformed() {            
+            Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
+            .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
+                
+                Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
+                .thenReturn(RestResponse.status(Status.OK,
+                                DataTest.createTaskResponse(1)));
+
+                Mockito.when(processRestClient
+                .retrieveVariables(Mockito.any(VariableRequest.class)))
+                .thenReturn(RestResponse.status(Status.OK,
+                                DataTest.createVariableResponseNoData()));
+
+                Response response = given().body("{\"devicee\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"1234\",\"terminalId\":\"1234567890\",\"opTimestamp\":1705499660669,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"fiscalCode\":\"BBTFNC\"}")
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/main").then().extract().response();
+
+                Assertions.assertEquals(400, response.statusCode());
+                 response = given().body("{\"devicee\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"1234\",\"terminalId\":\"1234567890\",\"opTimestamp\":1705499660669,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"fiscalCode\":\"BBTFNC\"}")
+                        .contentType(MediaType.APPLICATION_JSON).when()
+                        .post("/next/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa").then()
+                        .extract().response();
+
+        Assertions.assertEquals(400, response.statusCode());
+        }
 
 }
