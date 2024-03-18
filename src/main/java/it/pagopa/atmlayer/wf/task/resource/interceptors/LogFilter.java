@@ -31,12 +31,15 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
             }
             byte[] entity = requestContext.getEntityStream().readAllBytes();
             State state = Utility.getObject(new String(entity), State.class);
-            if (transactionId == null) {
-                transactionId = Utility.generateTransactionId(state);
-            }
-            state.setTransactionId(transactionId);
+            if (state != null) {
+                if (transactionId == null) {
+                    transactionId = Utility.generateTransactionId(state);
+                }
+                state.setTransactionId(transactionId);
 
-            MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, transactionId);
+                MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, transactionId);
+            }
+            
             log.info("============== REQUEST ==============");
             if (pathParameters != null) {
                 log.info("PATH PARAMS: {}", pathParameters);

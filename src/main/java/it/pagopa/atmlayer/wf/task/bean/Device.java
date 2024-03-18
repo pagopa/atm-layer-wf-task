@@ -34,7 +34,7 @@ public class Device {
 	/*
 	 * Device branch ID.
 	 */
-	@Schema(required = true, description = "Il codice identificativo della filiale (o codice CAB)", example = "12345")
+	@Schema( description = "Il codice identificativo della filiale (o codice CAB)", example = "12345")
 	private String branchId;
 
 	/*
