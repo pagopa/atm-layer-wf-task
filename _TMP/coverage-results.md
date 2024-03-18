@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 90.13%               |
-| :heavy_check_mark: Number of Lines Covered | 566    |
-| :x: Number of Lines Missed  | 62     |
-| Total Number of Lines   | 628     |
+| Code Coverage %         | 91.44%               |
+| :heavy_check_mark: Number of Lines Covered | 577    |
+| :x: Number of Lines Missed  | 54     |
+| Total Number of Lines   | 631     |
 
 
 ## Details:
@@ -41,11 +41,11 @@
 
 <details>
     <summary>
-:x: ErrorEnum.java
+:heavy_check_mark: ErrorEnum.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
 </details>
 
@@ -168,17 +168,9 @@
         
 #### Lines Missed:
         
-- Line #65
-```
-            }
-```
 - Line #81
 ```
 		} catch (ProcessingException e) {
-```
-- Line #109
-```
-            }
 ```
 - Line #151
 ```
