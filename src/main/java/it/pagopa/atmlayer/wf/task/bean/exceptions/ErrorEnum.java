@@ -10,10 +10,11 @@ public enum ErrorEnum {
     GET_TASKS_ERROR("TASK_ERROR", "Error retrieve next step", 500),
     GET_VARIABLES_ERROR("VARIABLE_ERROR", "Error retrieve variables on next step", 500),
     PROCESS_ERROR("PROCESS_ERROR", "Error while running the process", 209),
-    CONNECTION_PROBLEM("CONNECTION_PROBLEM", "Could not connect to other microservices", 500);
+    CONNECTION_PROBLEM("CONNECTION_PROBLEM", "Could not connect to other microservices", 500),
+    MALFORMED_REQUEST("MALFORMED_REQUEST", "Request id not valid", 400);
 
     private final String errorCode;
-    private final String description;
+    private String description;
     private final int status;
 
     ErrorEnum(String errorCode, String description, int status) {
@@ -21,5 +22,8 @@ public enum ErrorEnum {
         this.status = status;
         this.description = description;
     }
+    
+    public void setDescription(String description) {
+        this.description += " - " +description;}
 
 }
