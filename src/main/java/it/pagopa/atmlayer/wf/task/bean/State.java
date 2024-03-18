@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.ToString;
@@ -23,6 +24,7 @@ public class State {
 
 	@NotNull(message = "Device non può essere null")
 	@Schema(required = true)
+	@Valid
 	private Device device;
 
 	@Schema(description = "ID del task che da completato")
@@ -40,6 +42,7 @@ public class State {
 	private String fiscalCode;
     
     @Schema(description = "Informazioni del pan (dato sensibile)")
+    @Valid
     private List<PanInfo> panInfo;
     
 }
