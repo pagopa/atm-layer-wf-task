@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>it.pagopa.atmlayer</groupId>
   <artifactId>workflow-task</artifactId>
-  <version>1.3.0-dev.13</version>
+  <version>1.3.0-dev.20</version>
 
   <properties>
     <jacoco.version>0.8.11</jacoco.version>
@@ -122,6 +122,10 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-extension-trace-propagators</artifactId>
+    </dependency>
+    <dependency>
+    	<groupId>io.quarkus</groupId>
+	<artifactId>quarkus-hibernate-validator</artifactId>
     </dependency>
   </dependencies>
   <build>

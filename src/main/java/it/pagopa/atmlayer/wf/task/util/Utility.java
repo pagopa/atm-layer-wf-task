@@ -33,8 +33,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import it.pagopa.atmlayer.wf.task.bean.Device;
@@ -43,7 +45,9 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Utility {
-    private static ObjectMapper om = new ObjectMapper();
+    private static ObjectMapper om = JsonMapper.builder()
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .build();
 
     private static final String CDN_GET_FILE = "CDN.getResource";
     
