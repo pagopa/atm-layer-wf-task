@@ -1,7 +1,7 @@
 {
   "branches": ["+([0-9])?(.{+([0-9]),x}).x", "uat", "main",{
     "name": "dev", 
-    "prerelease": true
+    "prerelease": "dev"
   },{
     "name": "hotfix/*",
     "prerelease": "hotfix"
