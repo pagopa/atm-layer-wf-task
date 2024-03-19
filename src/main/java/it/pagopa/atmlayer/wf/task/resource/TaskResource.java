@@ -57,14 +57,8 @@ public class TaskResource extends CommonLogic{
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 		
 		long start = System.currentTimeMillis();
-		Set<ConstraintViolation<State>> violations = validator.validate(state);
-        if (!violations.isEmpty()) {     
-            ErrorEnum error = ErrorEnum.MALFORMED_REQUEST;
-            for (ConstraintViolation<State> violation: violations) {
-                error.setDescription(violation.getMessage());
-            }
-            throw new ErrorException(error);
-        }   
+		
+        validateRequest(state);
 
 		try {
 		    RestResponse<Scene> response;       
@@ -86,6 +80,18 @@ public class TaskResource extends CommonLogic{
 		}
 
 	}
+	
+	private void validateRequest(State state) {
+	    Set<ConstraintViolation<State>> violations = validator.validate(state);
+        if (!violations.isEmpty()) {     
+            StringBuilder additionalDescription = new StringBuilder();
+            for (ConstraintViolation<State> violation: violations) {
+                additionalDescription.append("\n - ");
+                additionalDescription.append(violation.getMessage());
+            }
+            throw new ErrorException(ErrorEnum.MALFORMED_REQUEST, additionalDescription.toString());
+        }
+	}
 
 	@Path("/next/trns/{transactionId}")
 	@POST
@@ -101,14 +107,7 @@ public class TaskResource extends CommonLogic{
 			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 
 		long start = System.currentTimeMillis();
-		Set<ConstraintViolation<State>> violations = validator.validate(state);
-		if (!violations.isEmpty()) {     
-		    ErrorEnum error = ErrorEnum.MALFORMED_REQUEST;
-            for (ConstraintViolation<State> violation: violations) {
-                error.setDescription(violation.getMessage());
-            }
-            throw new ErrorException(error);
-		}    
+		validateRequest(state);   
 		String[] transactionIdParts = transactionId.split("-");
 		if (!transactionIdParts[0].equals(state.getDevice().getBankId())) {
 			log.error("TransactionId not valid -> [BankId]");
