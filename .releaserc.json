@@ -4,7 +4,7 @@
     "prerelease": true
   },{
     "name": "hotfix/*",
-    "prerelease": true
+    "prerelease": "hotfix"
   }],
   "ci": false,
   "plugins": [
