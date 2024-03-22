@@ -8,5 +8,6 @@ public enum Command {
 	SCAN_FISCAL_CODE, // Scansione Codice Fiscale
 	END, // Fine della transazione
 	GET_IBAN, // Recupero iban
-	GET_PAN // Recupero PAN
+	GET_PAN, // Recupero PAN
+	NEXT // Recupero PAN
 }
