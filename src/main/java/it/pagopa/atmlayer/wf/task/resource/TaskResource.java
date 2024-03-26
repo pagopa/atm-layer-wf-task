@@ -86,7 +86,7 @@ public class TaskResource extends CommonLogic{
         if (!violations.isEmpty()) {     
             StringBuilder additionalDescription = new StringBuilder();
             for (ConstraintViolation<State> violation: violations) {
-                additionalDescription.append("\n - ");
+                additionalDescription.append(" - ");
                 additionalDescription.append(violation.getMessage());
             }
             throw new ErrorException(ErrorEnum.MALFORMED_REQUEST, additionalDescription.toString());
