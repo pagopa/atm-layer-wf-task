@@ -1,0 +1,726 @@
+2024-03-26 14:38:08  | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:08  | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:08  | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=241,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:08  | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:08  | INFO  | LogAux - BODY: {"devicee":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1705499660669,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"},"fiscalCode":"BBTFNC"}
+2024-03-26 14:38:08  | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:08  | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:08  | INFO  | LogAux - STATUS: 400
+2024-03-26 14:38:08  | INFO  | LogAux - BODY: {"errorCode":"MALFORMED_REQUEST","description":"Request not valid - Device non può essere null","status":400}
+2024-03-26 14:38:08  | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:08  | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:08  | INFO  | LogAux - PATH PARAMS: {transactionId=[00001-0002-1234-1234567890-aaaaaaaaaaaaa]}
+2024-03-26 14:38:08  | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=241,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:08  | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:08  | INFO  | LogAux - BODY: {"devicee":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1705499660669,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"},"fiscalCode":"BBTFNC"}
+2024-03-26 14:38:08  | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:08  | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:08  | INFO  | LogAux - STATUS: 400
+2024-03-26 14:38:08  | INFO  | LogAux - BODY: {"errorCode":"MALFORMED_REQUEST","description":"Request not valid - Device non può essere null","status":400}
+2024-03-26 14:38:08  | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:08 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:08 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - PATH PARAMS: {transactionId=[00001-0002-1234-1234567890-aaaaaaaaaaaaa]}
+2024-03-26 14:38:08 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=231,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:08 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:08 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463888746,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"taskId":"1","data":{"var1":"test"}}
+2024-03-26 14:38:08 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:08 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:08 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - STATUS: 202
+2024-03-26 14:38:08 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"transactionId":"00001-0002-1234-1234567890-aaaaaaaaaaaaa","outcome":{"result":"PROCESSING","description":"Process still running, retry later"}}
+2024-03-26 14:38:08 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:08 00001-0002-1234-1234567890-1711463888899-6649b3f4- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:08 00001-0002-1234-1234567890-1711463888899-6649b3f4- | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:08 00001-0002-1234-1234567890-1711463888899-6649b3f4- | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=218,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:08 00001-0002-1234-1234567890-1711463888899-6649b3f4- | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:08 00001-0002-1234-1234567890-1711463888899-6649b3f4- | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463888899,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"}}
+2024-03-26 14:38:08 00001-0002-1234-1234567890-1711463888899-6649b3f4- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463888899-6649b3f4- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463888899-6649b3f4- | INFO  | LogAux - STATUS: 201
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463888899-6649b3f4- | INFO  | LogAux - BODY: {"task":{"id":"jtfWSXNSN0","data":{"variable1":"11.50","amount":"10000","functionId":"FUNCTION_ID","pulsanti":"[it.pagopa.atmlayer.wf.task.test.bean.Dato@17fbac91]","totale":"11.5","fee":"2.3","description":"descrizione","pulsante.circuits":"[VISA, MASTERCARD]","company":"Auriga"},"onError":{"error":"Auriga"},"timeout":50,"onTimeout":{"error":"Auriga"},"template":{"content":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgaHRtbCBQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KPGhlYWQ+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJjc3MvZW11bGF0b3JlLmNzcyIgLz48L2hlYWQ+Cjxib2R5PgoJPGltZyBpZD0ibG9nbyIgc3JjPSJodHRwczovL2QyeGR1eTd0Ymd1MmQzLmNsb3VkZnJvbnQubmV0L2ZpbGVzL0lDT04vZGVmYXVsdF9sb2dvLnN2ZyIgLz4KCTxoMT5TZXJ2aXppIGRpIHB1YmJsaWNhIHV0aWxpdCYjMjI0OzwvaDE+CQoJCgk8aDI+UmllcGlsb2dvIGRlbCBwYWdhbWVudG88L2gyPgoJCgk8dGFibGUgaWQ9InRhYmxlIj4KCTx0aGVhZD4KCSA8dHI+CgkJPHRoPgoJCQk8c3Bhbj5BdXJpZ2E8L3NwYW4+CgkJPC90aD4KCQk8dGggY2xhc3M9InJpZ2h0Ij4KCQkJPHNwYW4+MTAwMDAgJiM4MzY0Ozwvc3Bhbj4KCQk8L3RoPgkJCgkgIDwvdHI+Cgk8L3RoZWFkPgoKCTx0Ym9keT4JCgkgIDx0cj4KCQk8dGQ+PHNwYW4+Q29tbWlzc2lvbmk8L3NwYW4+PC90ZD4KCQk8dGQgY2xhc3M9InJpZ2h0Ij4JCQkKCQkJPHNwYW4+Mi4zICYjODM2NDs8L3NwYW4+CgkJPC90ZD4JCQoJICA8L3RyPgkgIAoJIDwvdGJvZHk+CQoJIDx0Zm9vdD4KCQk8dHI+CgkJCTx0ZD48c3BhbiBjbGFzcz0ibGFyZ2UiPlRvdGFsZTwvc3Bhbj4JPC90ZD4KCQkJPHRkIGNsYXNzPSJyaWdodCI+PHNwYW4gY2xhc3M9ImxhcmdlIj4xMS41ICYjODM2NDs8L3NwYW4+PC90ZD4JCQoJCTwvdHI+CgkgIDwvdGZvb3Q+CgoJIAoJPC90YWJsZT4JCiAKICAgIDxidXR0b24gY2xhc3M9Im5lZ2F0aXZlIiBkYXRhLWZkaz0iUzQiIGlkPSJiYWNrIj4KICAgICAgPHNwYW4+SW5kaWV0cm88L3NwYW4+CiAgICA8L2J1dHRvbj4KCQoJPGJ1dHRvbiBjbGFzcz0ibmVnYXRpdmUiIGlkPSJleGl0Ij4KICAgICAgPHNwYW4+RXNjaTwvc3Bhbj4KICAgIDwvYnV0dG9uPgoJCgk8YnV0dG9uIGNsYXNzPSJwb3NpdGl2ZSIgZGF0YS1mZGs9IlM4IiBpZD0iY29uZmlybSI+CiAgICAgIDxzcGFuPlBhZ2EgIDExLjUgJiM4MzY0Ozwvc3Bhbj4KCTwvYnV0dG9uPgoJCgkKICAgICAgICA8YnV0dG9uIGNsYXNzPSJuZWdhdGl2ZSIgZGF0YS1mZGs9IlMxIiBpZD0iaXQucGFnb3BhLmF0bWxheWVyLndmLnRhc2sudGVzdC5iZWFuLkRhdG9AMTdmYmFjOTEiPgogICAgICAgICAgICA8c3Bhbj5pdC5wYWdvcGEuYXRtbGF5ZXIud2YudGFzay50ZXN0LmJlYW4uRGF0b0AxN2ZiYWM5MTwvc3Bhbj4JCQkKCQkJPHNwYW4+dmVkaTI8L3NwYW4+CgkJCQoJCQkJCTxpbWcgc3JjPSJmaWxlOnNyYy90ZXN0L0lDT04vTUFTVEVSQ0FSRC5zdmciIC8+CgkJCQkKCQkJCQk8aW1nIHNyYz0iZmlsZTpzcmMvdGVzdC9JQ09OL1ZJU0Euc3ZnIiAvPgoJCQkJCiAgICAgICAgPC9idXR0b24+CiAgCQoKCTwvYm9keT4KCQo8L2h0bWw+"},"command":"PRINT_RECEIPT","eppMode":"DATA","buttons":[{"id":"button1","data":{"error":"Auriga"}}]},"transactionId":"00001-0002-1234-1234567890-1711463888899-6649b3f4-","outcome":{"result":"OK","description":"The operation completed successfully"}}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463888899-6649b3f4- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001----1711463889064-53cef73f-4539-4566-8e2d-f12 | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001----1711463889064-53cef73f-4539-4566-8e2d-f12 | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:09 00001----1711463889064-53cef73f-4539-4566-8e2d-f12 | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=160,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:09 00001----1711463889064-53cef73f-4539-4566-8e2d-f12 | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:09 00001----1711463889064-53cef73f-4539-4566-8e2d-f12 | INFO  | LogAux - BODY: {"device":{"bankId":"00001","opTimestamp":1711463889064,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"}}
+2024-03-26 14:38:09 00001----1711463889064-53cef73f-4539-4566-8e2d-f12 | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001----1711463889064-53cef73f-4539-4566-8e2d-f12 | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001----1711463889064-53cef73f-4539-4566-8e2d-f12 | INFO  | LogAux - STATUS: 201
+2024-03-26 14:38:09 00001----1711463889064-53cef73f-4539-4566-8e2d-f12 | INFO  | LogAux - BODY: {"task":{"id":"5x6KM0Jiq8","data":{"amount":"10000","pulsanti":"[it.pagopa.atmlayer.wf.task.test.bean.Dato@3f24b7e0]","totale":"2.3","fee":"2.3","description":"descrizione","company":"Auriga","test1":"data1"},"timeout":0,"buttons":[]},"transactionId":"00001----1711463889064-53cef73f-4539-4566-8e2d-f12","outcome":{"result":"OK","description":"The operation completed successfully"}}
+2024-03-26 14:38:09 00001----1711463889064-53cef73f-4539-4566-8e2d-f12 | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889109-8894919b- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889109-8894919b- | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889109-8894919b- | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=218,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889109-8894919b- | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889109-8894919b- | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463889109,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"}}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889109-8894919b- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889109-8894919b- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889109-8894919b- | INFO  | LogAux - STATUS: 201
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889109-8894919b- | INFO  | LogAux - BODY: {"task":{"id":"NwWs04nJjC","data":{"variable1":"11.50","amount":"10000","functionId":"FUNCTION_ID","pulsanti":"[it.pagopa.atmlayer.wf.task.test.bean.Dato@1b0f8460]","totale":"11.5","fee":"2.3","description":"descrizione","pulsante.circuits":"[VISA, MASTERCARD]","company":"Auriga"},"onError":{"error":"Auriga"},"timeout":50,"onTimeout":{"error":"Auriga"},"template":{"content":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgaHRtbCBQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KPGhlYWQ+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJjc3MvZW11bGF0b3JlLmNzcyIgLz48L2hlYWQ+Cjxib2R5PgoJPGltZyBpZD0ibG9nbyIgc3JjPSJodHRwczovL2QyeGR1eTd0Ymd1MmQzLmNsb3VkZnJvbnQubmV0L2ZpbGVzL0lDT04vZGVmYXVsdF9sb2dvLnN2ZyIgLz4KCTxoMT5TZXJ2aXppIGRpIHB1YmJsaWNhIHV0aWxpdCYjMjI0OzwvaDE+CQoJCgk8aDI+UmllcGlsb2dvIGRlbCBwYWdhbWVudG88L2gyPgoJCgk8dGFibGUgaWQ9InRhYmxlIj4KCTx0aGVhZD4KCSA8dHI+CgkJPHRoPgoJCQk8c3Bhbj5BdXJpZ2E8L3NwYW4+CgkJPC90aD4KCQk8dGggY2xhc3M9InJpZ2h0Ij4KCQkJPHNwYW4+MTAwMDAgJiM4MzY0Ozwvc3Bhbj4KCQk8L3RoPgkJCgkgIDwvdHI+Cgk8L3RoZWFkPgoKCTx0Ym9keT4JCgkgIDx0cj4KCQk8dGQ+PHNwYW4+Q29tbWlzc2lvbmk8L3NwYW4+PC90ZD4KCQk8dGQgY2xhc3M9InJpZ2h0Ij4JCQkKCQkJPHNwYW4+Mi4zICYjODM2NDs8L3NwYW4+CgkJPC90ZD4JCQoJICA8L3RyPgkgIAoJIDwvdGJvZHk+CQoJIDx0Zm9vdD4KCQk8dHI+CgkJCTx0ZD48c3BhbiBjbGFzcz0ibGFyZ2UiPlRvdGFsZTwvc3Bhbj4JPC90ZD4KCQkJPHRkIGNsYXNzPSJyaWdodCI+PHNwYW4gY2xhc3M9ImxhcmdlIj4xMS41ICYjODM2NDs8L3NwYW4+PC90ZD4JCQoJCTwvdHI+CgkgIDwvdGZvb3Q+CgoJIAoJPC90YWJsZT4JCiAKICAgIDxidXR0b24gY2xhc3M9Im5lZ2F0aXZlIiBkYXRhLWZkaz0iUzQiIGlkPSJiYWNrIj4KICAgICAgPHNwYW4+SW5kaWV0cm88L3NwYW4+CiAgICA8L2J1dHRvbj4KCQoJPGJ1dHRvbiBjbGFzcz0ibmVnYXRpdmUiIGlkPSJleGl0Ij4KICAgICAgPHNwYW4+RXNjaTwvc3Bhbj4KICAgIDwvYnV0dG9uPgoJCgk8YnV0dG9uIGNsYXNzPSJwb3NpdGl2ZSIgZGF0YS1mZGs9IlM4IiBpZD0iY29uZmlybSI+CiAgICAgIDxzcGFuPlBhZ2EgIDExLjUgJiM4MzY0Ozwvc3Bhbj4KCTwvYnV0dG9uPgoJCgkKICAgICAgICA8YnV0dG9uIGNsYXNzPSJuZWdhdGl2ZSIgZGF0YS1mZGs9IlMxIiBpZD0iaXQucGFnb3BhLmF0bWxheWVyLndmLnRhc2sudGVzdC5iZWFuLkRhdG9AMWIwZjg0NjAiPgogICAgICAgICAgICA8c3Bhbj5pdC5wYWdvcGEuYXRtbGF5ZXIud2YudGFzay50ZXN0LmJlYW4uRGF0b0AxYjBmODQ2MDwvc3Bhbj4JCQkKCQkJPHNwYW4+dmVkaTI8L3NwYW4+CgkJCQoJCQkJCTxpbWcgc3JjPSJmaWxlOnNyYy90ZXN0L0lDT04vTUFTVEVSQ0FSRC5zdmciIC8+CgkJCQkKCQkJCQk8aW1nIHNyYz0iZmlsZTpzcmMvdGVzdC9JQ09OL1ZJU0Euc3ZnIiAvPgoJCQkJCiAgICAgICAgPC9idXR0b24+CiAgCQoKCTwvYm9keT4KCQo8L2h0bWw+"},"command":"PRINT_RECEIPT","eppMode":"DATA","buttons":[{"id":"button1","data":{"error":"Auriga"}}]},"transactionId":"00001-0002-1234-1234567890-1711463889109-8894919b-","outcome":{"result":"OK","description":"The operation completed successfully"}}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889109-8894919b- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889162-2d7d1415- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889162-2d7d1415- | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889162-2d7d1415- | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=218,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889162-2d7d1415- | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889162-2d7d1415- | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463889162,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"}}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889162-2d7d1415- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889162-2d7d1415- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889162-2d7d1415- | INFO  | LogAux - STATUS: 500
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889162-2d7d1415- | INFO  | LogAux - BODY: {"errorCode":"TASK_ERROR","description":"Error retrieve next step","status":500}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889162-2d7d1415- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889198-79d6c70c- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889198-79d6c70c- | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889198-79d6c70c- | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=218,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889198-79d6c70c- | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889198-79d6c70c- | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463889198,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"}}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889198-79d6c70c- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889198-79d6c70c- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889198-79d6c70c- | INFO  | LogAux - STATUS: 209
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889198-79d6c70c- | INFO  | LogAux - BODY: {"errorCode":"PROCESS_ERROR","description":"Error while running the process","status":209}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889198-79d6c70c- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - PATH PARAMS: {transactionId=[00001-0002-1234-1234567890-aaaaaaaaaaaaa]}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=231,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463889238,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"taskId":"1","data":{"var1":"test"}}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - STATUS: 201
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"task":{"id":"y33Jg9GEOY","data":{"variable1":"11.50","amount":"10000","functionId":"FUNCTION_ID","pulsanti":"[it.pagopa.atmlayer.wf.task.test.bean.Dato@4ad72ddc]","totale":"11.5","fee":"2.3","description":"descrizione","pulsante.circuits":"[VISA, MASTERCARD]","company":"Auriga"},"onError":{"error":"Auriga"},"timeout":50,"onTimeout":{"error":"Auriga"},"template":{"content":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgaHRtbCBQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KPGhlYWQ+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJjc3MvZW11bGF0b3JlLmNzcyIgLz48L2hlYWQ+Cjxib2R5PgoJPGltZyBpZD0ibG9nbyIgc3JjPSJodHRwczovL2QyeGR1eTd0Ymd1MmQzLmNsb3VkZnJvbnQubmV0L2ZpbGVzL0lDT04vZGVmYXVsdF9sb2dvLnN2ZyIgLz4KCTxoMT5TZXJ2aXppIGRpIHB1YmJsaWNhIHV0aWxpdCYjMjI0OzwvaDE+CQoJCgk8aDI+UmllcGlsb2dvIGRlbCBwYWdhbWVudG88L2gyPgoJCgk8dGFibGUgaWQ9InRhYmxlIj4KCTx0aGVhZD4KCSA8dHI+CgkJPHRoPgoJCQk8c3Bhbj5BdXJpZ2E8L3NwYW4+CgkJPC90aD4KCQk8dGggY2xhc3M9InJpZ2h0Ij4KCQkJPHNwYW4+MTAwMDAgJiM4MzY0Ozwvc3Bhbj4KCQk8L3RoPgkJCgkgIDwvdHI+Cgk8L3RoZWFkPgoKCTx0Ym9keT4JCgkgIDx0cj4KCQk8dGQ+PHNwYW4+Q29tbWlzc2lvbmk8L3NwYW4+PC90ZD4KCQk8dGQgY2xhc3M9InJpZ2h0Ij4JCQkKCQkJPHNwYW4+Mi4zICYjODM2NDs8L3NwYW4+CgkJPC90ZD4JCQoJICA8L3RyPgkgIAoJIDwvdGJvZHk+CQoJIDx0Zm9vdD4KCQk8dHI+CgkJCTx0ZD48c3BhbiBjbGFzcz0ibGFyZ2UiPlRvdGFsZTwvc3Bhbj4JPC90ZD4KCQkJPHRkIGNsYXNzPSJyaWdodCI+PHNwYW4gY2xhc3M9ImxhcmdlIj4xMS41ICYjODM2NDs8L3NwYW4+PC90ZD4JCQoJCTwvdHI+CgkgIDwvdGZvb3Q+CgoJIAoJPC90YWJsZT4JCiAKICAgIDxidXR0b24gY2xhc3M9Im5lZ2F0aXZlIiBkYXRhLWZkaz0iUzQiIGlkPSJiYWNrIj4KICAgICAgPHNwYW4+SW5kaWV0cm88L3NwYW4+CiAgICA8L2J1dHRvbj4KCQoJPGJ1dHRvbiBjbGFzcz0ibmVnYXRpdmUiIGlkPSJleGl0Ij4KICAgICAgPHNwYW4+RXNjaTwvc3Bhbj4KICAgIDwvYnV0dG9uPgoJCgk8YnV0dG9uIGNsYXNzPSJwb3NpdGl2ZSIgZGF0YS1mZGs9IlM4IiBpZD0iY29uZmlybSI+CiAgICAgIDxzcGFuPlBhZ2EgIDExLjUgJiM4MzY0Ozwvc3Bhbj4KCTwvYnV0dG9uPgoJCgkKICAgICAgICA8YnV0dG9uIGNsYXNzPSJuZWdhdGl2ZSIgZGF0YS1mZGs9IlMxIiBpZD0iaXQucGFnb3BhLmF0bWxheWVyLndmLnRhc2sudGVzdC5iZWFuLkRhdG9ANGFkNzJkZGMiPgogICAgICAgICAgICA8c3Bhbj5pdC5wYWdvcGEuYXRtbGF5ZXIud2YudGFzay50ZXN0LmJlYW4uRGF0b0A0YWQ3MmRkYzwvc3Bhbj4JCQkKCQkJPHNwYW4+dmVkaTI8L3NwYW4+CgkJCQoJCQkJCTxpbWcgc3JjPSJmaWxlOnNyYy90ZXN0L0lDT04vTUFTVEVSQ0FSRC5zdmciIC8+CgkJCQkKCQkJCQk8aW1nIHNyYz0iZmlsZTpzcmMvdGVzdC9JQ09OL1ZJU0Euc3ZnIiAvPgoJCQkJCiAgICAgICAgPC9idXR0b24+CiAgCQoKCTwvYm9keT4KCQo8L2h0bWw+"},"command":"PRINT_RECEIPT","eppMode":"DATA","buttons":[{"id":"button1","data":{"error":"Auriga"}}]},"transactionId":"00001-0002-1234-1234567890-aaaaaaaaaaaaa","outcome":{"result":"OK","description":"The operation completed successfully"}}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889290-960fba38- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889290-960fba38- | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889290-960fba38- | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=195,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889290-960fba38- | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889290-960fba38- | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463889290,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]}}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889290-960fba38- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889290-960fba38- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889290-960fba38- | INFO  | LogAux - STATUS: 201
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889290-960fba38- | INFO  | LogAux - BODY: {"task":{"id":"kHeW3AG5a5","data":{"variable1":"11.50","amount":"10000","functionId":"FUNCTION_ID","pulsanti":"[it.pagopa.atmlayer.wf.task.test.bean.Dato@5df8b317]","totale":"11.5","fee":"2.3","description":"descrizione","pulsante.circuits":"[VISA, MASTERCARD]","company":"Auriga"},"onError":{"error":"Auriga"},"timeout":50,"onTimeout":{"error":"Auriga"},"template":{"content":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgaHRtbCBQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KPGhlYWQ+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJjc3MvZW11bGF0b3JlLmNzcyIgLz48L2hlYWQ+Cjxib2R5PgoJPGltZyBpZD0ibG9nbyIgc3JjPSJodHRwczovL2QyeGR1eTd0Ymd1MmQzLmNsb3VkZnJvbnQubmV0L2ZpbGVzL0lDT04vZGVmYXVsdF9sb2dvLnN2ZyIgLz4KCTxoMT5TZXJ2aXppIGRpIHB1YmJsaWNhIHV0aWxpdCYjMjI0OzwvaDE+CQoJCgk8aDI+UmllcGlsb2dvIGRlbCBwYWdhbWVudG88L2gyPgoJCgk8dGFibGUgaWQ9InRhYmxlIj4KCTx0aGVhZD4KCSA8dHI+CgkJPHRoPgoJCQk8c3Bhbj5BdXJpZ2E8L3NwYW4+CgkJPC90aD4KCQk8dGggY2xhc3M9InJpZ2h0Ij4KCQkJPHNwYW4+MTAwMDAgJiM4MzY0Ozwvc3Bhbj4KCQk8L3RoPgkJCgkgIDwvdHI+Cgk8L3RoZWFkPgoKCTx0Ym9keT4JCgkgIDx0cj4KCQk8dGQ+PHNwYW4+Q29tbWlzc2lvbmk8L3NwYW4+PC90ZD4KCQk8dGQgY2xhc3M9InJpZ2h0Ij4JCQkKCQkJPHNwYW4+Mi4zICYjODM2NDs8L3NwYW4+CgkJPC90ZD4JCQoJICA8L3RyPgkgIAoJIDwvdGJvZHk+CQoJIDx0Zm9vdD4KCQk8dHI+CgkJCTx0ZD48c3BhbiBjbGFzcz0ibGFyZ2UiPlRvdGFsZTwvc3Bhbj4JPC90ZD4KCQkJPHRkIGNsYXNzPSJyaWdodCI+PHNwYW4gY2xhc3M9ImxhcmdlIj4xMS41ICYjODM2NDs8L3NwYW4+PC90ZD4JCQoJCTwvdHI+CgkgIDwvdGZvb3Q+CgoJIAoJPC90YWJsZT4JCiAKICAgIDxidXR0b24gY2xhc3M9Im5lZ2F0aXZlIiBkYXRhLWZkaz0iUzQiIGlkPSJiYWNrIj4KICAgICAgPHNwYW4+SW5kaWV0cm88L3NwYW4+CiAgICA8L2J1dHRvbj4KCQoJPGJ1dHRvbiBjbGFzcz0ibmVnYXRpdmUiIGlkPSJleGl0Ij4KICAgICAgPHNwYW4+RXNjaTwvc3Bhbj4KICAgIDwvYnV0dG9uPgoJCgk8YnV0dG9uIGNsYXNzPSJwb3NpdGl2ZSIgZGF0YS1mZGs9IlM4IiBpZD0iY29uZmlybSI+CiAgICAgIDxzcGFuPlBhZ2EgIDExLjUgJiM4MzY0Ozwvc3Bhbj4KCTwvYnV0dG9uPgoJCgkKICAgICAgICA8YnV0dG9uIGNsYXNzPSJuZWdhdGl2ZSIgZGF0YS1mZGs9IlMxIiBpZD0iaXQucGFnb3BhLmF0bWxheWVyLndmLnRhc2sudGVzdC5iZWFuLkRhdG9ANWRmOGIzMTciPgogICAgICAgICAgICA8c3Bhbj5pdC5wYWdvcGEuYXRtbGF5ZXIud2YudGFzay50ZXN0LmJlYW4uRGF0b0A1ZGY4YjMxNzwvc3Bhbj4JCQkKCQkJPHNwYW4+dmVkaTI8L3NwYW4+CgkJCQoJCQkJCTxpbWcgc3JjPSJmaWxlOnNyYy90ZXN0L0lDT04vTUFTVEVSQ0FSRC5zdmciIC8+CgkJCQkKCQkJCQk8aW1nIHNyYz0iZmlsZTpzcmMvdGVzdC9JQ09OL1ZJU0Euc3ZnIiAvPgoJCQkJCiAgICAgICAgPC9idXR0b24+CiAgCQoKCTwvYm9keT4KCQo8L2h0bWw+"},"command":"PRINT_RECEIPT","eppMode":"DATA","buttons":[{"id":"button1","data":{"error":"Auriga"}}]},"transactionId":"00001-0002-1234-1234567890-1711463889290-960fba38-","outcome":{"result":"OK","description":"The operation completed successfully"}}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889290-960fba38- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889343-8ab27a94- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889343-8ab27a94- | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889343-8ab27a94- | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=218,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889343-8ab27a94- | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889343-8ab27a94- | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463889343,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"}}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889343-8ab27a94- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889343-8ab27a94- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889343-8ab27a94- | INFO  | LogAux - STATUS: 202
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889343-8ab27a94- | INFO  | LogAux - BODY: {"transactionId":"00001-0002-1234-1234567890-1711463889343-8ab27a94-","outcome":{"result":"PROCESSING","description":"Process still running, retry later"}}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889343-8ab27a94- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889377-f484ecfb- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889377-f484ecfb- | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889377-f484ecfb- | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=218,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889377-f484ecfb- | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889377-f484ecfb- | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463889377,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"}}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889377-f484ecfb- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889377-f484ecfb- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889377-f484ecfb- | INFO  | LogAux - STATUS: 201
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889377-f484ecfb- | INFO  | LogAux - BODY: {"task":{"id":"jXLr0CMBaL","data":{"variable1":"11.50","amount":"10000","functionId":"FUNCTION_ID","pulsanti":"[it.pagopa.atmlayer.wf.task.test.bean.Dato@4fb5929f]","totale":"11.5","fee":"2.3","description":"descrizione","pulsante.circuits":"[VISA, MASTERCARD]","company":"Auriga"},"onError":{"error":"Auriga"},"timeout":50,"onTimeout":{"error":"Auriga"},"template":{"content":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgaHRtbCBQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KPGhlYWQ+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJjc3MvZW11bGF0b3JlLmNzcyIgLz48L2hlYWQ+Cjxib2R5PgoJPGltZyBpZD0ibG9nbyIgc3JjPSJodHRwczovL2QyeGR1eTd0Ymd1MmQzLmNsb3VkZnJvbnQubmV0L2ZpbGVzL0lDT04vZGVmYXVsdF9sb2dvLnN2ZyIgLz4KCTxoMT5TZXJ2aXppIGRpIHB1YmJsaWNhIHV0aWxpdCYjMjI0OzwvaDE+CQoJCgk8aDI+UmllcGlsb2dvIGRlbCBwYWdhbWVudG88L2gyPgoJCgk8dGFibGUgaWQ9InRhYmxlIj4KCTx0aGVhZD4KCSA8dHI+CgkJPHRoPgoJCQk8c3Bhbj5BdXJpZ2E8L3NwYW4+CgkJPC90aD4KCQk8dGggY2xhc3M9InJpZ2h0Ij4KCQkJPHNwYW4+MTAwMDAgJiM4MzY0Ozwvc3Bhbj4KCQk8L3RoPgkJCgkgIDwvdHI+Cgk8L3RoZWFkPgoKCTx0Ym9keT4JCgkgIDx0cj4KCQk8dGQ+PHNwYW4+Q29tbWlzc2lvbmk8L3NwYW4+PC90ZD4KCQk8dGQgY2xhc3M9InJpZ2h0Ij4JCQkKCQkJPHNwYW4+Mi4zICYjODM2NDs8L3NwYW4+CgkJPC90ZD4JCQoJICA8L3RyPgkgIAoJIDwvdGJvZHk+CQoJIDx0Zm9vdD4KCQk8dHI+CgkJCTx0ZD48c3BhbiBjbGFzcz0ibGFyZ2UiPlRvdGFsZTwvc3Bhbj4JPC90ZD4KCQkJPHRkIGNsYXNzPSJyaWdodCI+PHNwYW4gY2xhc3M9ImxhcmdlIj4xMS41ICYjODM2NDs8L3NwYW4+PC90ZD4JCQoJCTwvdHI+CgkgIDwvdGZvb3Q+CgoJIAoJPC90YWJsZT4JCiAKICAgIDxidXR0b24gY2xhc3M9Im5lZ2F0aXZlIiBkYXRhLWZkaz0iUzQiIGlkPSJiYWNrIj4KICAgICAgPHNwYW4+SW5kaWV0cm88L3NwYW4+CiAgICA8L2J1dHRvbj4KCQoJPGJ1dHRvbiBjbGFzcz0ibmVnYXRpdmUiIGlkPSJleGl0Ij4KICAgICAgPHNwYW4+RXNjaTwvc3Bhbj4KICAgIDwvYnV0dG9uPgoJCgk8YnV0dG9uIGNsYXNzPSJwb3NpdGl2ZSIgZGF0YS1mZGs9IlM4IiBpZD0iY29uZmlybSI+CiAgICAgIDxzcGFuPlBhZ2EgIDExLjUgJiM4MzY0Ozwvc3Bhbj4KCTwvYnV0dG9uPgoJCgkKICAgICAgICA8YnV0dG9uIGNsYXNzPSJuZWdhdGl2ZSIgZGF0YS1mZGs9IlMxIiBpZD0iaXQucGFnb3BhLmF0bWxheWVyLndmLnRhc2sudGVzdC5iZWFuLkRhdG9ANGZiNTkyOWYiPgogICAgICAgICAgICA8c3Bhbj5pdC5wYWdvcGEuYXRtbGF5ZXIud2YudGFzay50ZXN0LmJlYW4uRGF0b0A0ZmI1OTI5Zjwvc3Bhbj4JCQkKCQkJPHNwYW4+dmVkaTI8L3NwYW4+CgkJCQoJCQkJCTxpbWcgc3JjPSJmaWxlOnNyYy90ZXN0L0lDT04vTUFTVEVSQ0FSRC5zdmciIC8+CgkJCQkKCQkJCQk8aW1nIHNyYz0iZmlsZTpzcmMvdGVzdC9JQ09OL1ZJU0Euc3ZnIiAvPgoJCQkJCiAgICAgICAgPC9idXR0b24+CiAgCQoKCTwvYm9keT4KCQo8L2h0bWw+"},"command":"PRINT_RECEIPT","eppMode":"DATA","buttons":[{"id":"button1","data":{"error":"Auriga"}}]},"transactionId":"00001-0002-1234-1234567890-1711463889377-f484ecfb-","outcome":{"result":"OK","description":"The operation completed successfully"}}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1711463889377-f484ecfb- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - PATH PARAMS: {transactionId=[00001-0002-1234-1234567890-aaaaaaaaaaaaa]}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=231,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463889423,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"taskId":"1","data":{"var1":"test"}}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - STATUS: 500
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"errorCode":"TASK_ERROR","description":"Error retrieve next step","status":500}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - PATH PARAMS: {transactionId=[00001-0002-1234-1234567890-aaaaaaaaaaaaa]}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=231,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463889448,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"taskId":"1","data":{"var1":"test"}}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - STATUS: 209
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"errorCode":"PROCESS_ERROR","description":"Error while running the process","status":209}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - PATH PARAMS: {transactionId=[00001-0002-1234-1234567890-aaaaaaaaaaaaa]}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=218,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463889478,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"}}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - STATUS: 200
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"transactionId":"00001-0002-1234-1234567890-aaaaaaaaaaaaa","outcome":{"result":"END","description":"The process is terminated"}}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001----1711463889507-9192ecbd-7083-4d02-81a2-7ff | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001----1711463889507-9192ecbd-7083-4d02-81a2-7ff | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:09 00001----1711463889507-9192ecbd-7083-4d02-81a2-7ff | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=160,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:09 00001----1711463889507-9192ecbd-7083-4d02-81a2-7ff | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:09 00001----1711463889507-9192ecbd-7083-4d02-81a2-7ff | INFO  | LogAux - BODY: {"device":{"bankId":"00001","opTimestamp":1711463889507,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"}}
+2024-03-26 14:38:09 00001----1711463889507-9192ecbd-7083-4d02-81a2-7ff | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001----1711463889507-9192ecbd-7083-4d02-81a2-7ff | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001----1711463889507-9192ecbd-7083-4d02-81a2-7ff | INFO  | LogAux - STATUS: 201
+2024-03-26 14:38:09 00001----1711463889507-9192ecbd-7083-4d02-81a2-7ff | INFO  | LogAux - BODY: {"task":{"id":"yLlqS0bZOR","data":{"variable1":"11.50","amount":"10000","functionId":"FUNCTION_ID","pulsanti":"[it.pagopa.atmlayer.wf.task.test.bean.Dato@68d1c8be]","totale":"11.5","fee":"2.3","description":"descrizione","pulsante.circuits":"[VISA, MASTERCARD]","company":"Auriga"},"onError":{"error":"Auriga"},"timeout":50,"onTimeout":{"error":"Auriga"},"template":{"content":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgaHRtbCBQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KPGhlYWQ+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJjc3MvZW11bGF0b3JlLmNzcyIgLz48L2hlYWQ+Cjxib2R5PgoJPGltZyBpZD0ibG9nbyIgc3JjPSJodHRwczovL2QyeGR1eTd0Ymd1MmQzLmNsb3VkZnJvbnQubmV0L2ZpbGVzL0lDT04vZGVmYXVsdF9sb2dvLnN2ZyIgLz4KCTxoMT5TZXJ2aXppIGRpIHB1YmJsaWNhIHV0aWxpdCYjMjI0OzwvaDE+CQoJCgk8aDI+UmllcGlsb2dvIGRlbCBwYWdhbWVudG88L2gyPgoJCgk8dGFibGUgaWQ9InRhYmxlIj4KCTx0aGVhZD4KCSA8dHI+CgkJPHRoPgoJCQk8c3Bhbj5BdXJpZ2E8L3NwYW4+CgkJPC90aD4KCQk8dGggY2xhc3M9InJpZ2h0Ij4KCQkJPHNwYW4+MTAwMDAgJiM4MzY0Ozwvc3Bhbj4KCQk8L3RoPgkJCgkgIDwvdHI+Cgk8L3RoZWFkPgoKCTx0Ym9keT4JCgkgIDx0cj4KCQk8dGQ+PHNwYW4+Q29tbWlzc2lvbmk8L3NwYW4+PC90ZD4KCQk8dGQgY2xhc3M9InJpZ2h0Ij4JCQkKCQkJPHNwYW4+Mi4zICYjODM2NDs8L3NwYW4+CgkJPC90ZD4JCQoJICA8L3RyPgkgIAoJIDwvdGJvZHk+CQoJIDx0Zm9vdD4KCQk8dHI+CgkJCTx0ZD48c3BhbiBjbGFzcz0ibGFyZ2UiPlRvdGFsZTwvc3Bhbj4JPC90ZD4KCQkJPHRkIGNsYXNzPSJyaWdodCI+PHNwYW4gY2xhc3M9ImxhcmdlIj4xMS41ICYjODM2NDs8L3NwYW4+PC90ZD4JCQoJCTwvdHI+CgkgIDwvdGZvb3Q+CgoJIAoJPC90YWJsZT4JCiAKICAgIDxidXR0b24gY2xhc3M9Im5lZ2F0aXZlIiBkYXRhLWZkaz0iUzQiIGlkPSJiYWNrIj4KICAgICAgPHNwYW4+SW5kaWV0cm88L3NwYW4+CiAgICA8L2J1dHRvbj4KCQoJPGJ1dHRvbiBjbGFzcz0ibmVnYXRpdmUiIGlkPSJleGl0Ij4KICAgICAgPHNwYW4+RXNjaTwvc3Bhbj4KICAgIDwvYnV0dG9uPgoJCgk8YnV0dG9uIGNsYXNzPSJwb3NpdGl2ZSIgZGF0YS1mZGs9IlM4IiBpZD0iY29uZmlybSI+CiAgICAgIDxzcGFuPlBhZ2EgIDExLjUgJiM4MzY0Ozwvc3Bhbj4KCTwvYnV0dG9uPgoJCgkKICAgICAgICA8YnV0dG9uIGNsYXNzPSJuZWdhdGl2ZSIgZGF0YS1mZGs9IlMxIiBpZD0iaXQucGFnb3BhLmF0bWxheWVyLndmLnRhc2sudGVzdC5iZWFuLkRhdG9ANjhkMWM4YmUiPgogICAgICAgICAgICA8c3Bhbj5pdC5wYWdvcGEuYXRtbGF5ZXIud2YudGFzay50ZXN0LmJlYW4uRGF0b0A2OGQxYzhiZTwvc3Bhbj4JCQkKCQkJPHNwYW4+dmVkaTI8L3NwYW4+CgkJCQoJCQkJCTxpbWcgc3JjPSJmaWxlOnNyYy90ZXN0L0lDT04vTUFTVEVSQ0FSRC5zdmciIC8+CgkJCQkKCQkJCQk8aW1nIHNyYz0iZmlsZTpzcmMvdGVzdC9JQ09OL1ZJU0Euc3ZnIiAvPgoJCQkJCiAgICAgICAgPC9idXR0b24+CiAgCQoKCTwvYm9keT4KCQo8L2h0bWw+"},"command":"PRINT_RECEIPT","eppMode":"DATA","buttons":[{"id":"button1","data":{"error":"Auriga"}}]},"transactionId":"00001----1711463889507-9192ecbd-7083-4d02-81a2-7ff","outcome":{"result":"OK","description":"The operation completed successfully"}}
+2024-03-26 14:38:09 00001----1711463889507-9192ecbd-7083-4d02-81a2-7ff | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 10001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 10001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - PATH PARAMS: {transactionId=[10001-0002-1234-1234567890-aaaaaaaaaaaaa]}
+2024-03-26 14:38:09 10001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=231,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:09 10001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:09 10001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463889604,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"taskId":"1","data":{"var1":"test"}}
+2024-03-26 14:38:09 10001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 10001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 10001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - STATUS: 400
+2024-03-26 14:38:09 10001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"errorCode":"MALFORMED_TRANSACTION_ID","description":"Transaction id not valid","status":400}
+2024-03-26 14:38:09 10001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-1002-1235-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-1002-1235-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - PATH PARAMS: {transactionId=[00001-1002-1235-1234567890-aaaaaaaaaaaaa]}
+2024-03-26 14:38:09 00001-1002-1235-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=231,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:09 00001-1002-1235-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:09 00001-1002-1235-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463889632,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"taskId":"1","data":{"var1":"test"}}
+2024-03-26 14:38:09 00001-1002-1235-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-1002-1235-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-1002-1235-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - STATUS: 400
+2024-03-26 14:38:09 00001-1002-1235-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"errorCode":"MALFORMED_TRANSACTION_ID","description":"Transaction id not valid","status":400}
+2024-03-26 14:38:09 00001-1002-1235-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1236-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1236-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - PATH PARAMS: {transactionId=[00001-0002-1236-1234567890-aaaaaaaaaaaaa]}
+2024-03-26 14:38:09 00001-0002-1236-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=231,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:09 00001-0002-1236-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:09 00001-0002-1236-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463889660,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"taskId":"1","data":{"var1":"test"}}
+2024-03-26 14:38:09 00001-0002-1236-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1236-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1236-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - STATUS: 400
+2024-03-26 14:38:09 00001-0002-1236-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"errorCode":"MALFORMED_TRANSACTION_ID","description":"Transaction id not valid","status":400}
+2024-03-26 14:38:09 00001-0002-1236-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1235-1234567891-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1235-1234567891-aaaaaaaaaaaaa | INFO  | LogAux - PATH PARAMS: {transactionId=[00001-0002-1235-1234567891-aaaaaaaaaaaaa]}
+2024-03-26 14:38:09 00001-0002-1235-1234567891-aaaaaaaaaaaaa | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=231,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:09 00001-0002-1235-1234567891-aaaaaaaaaaaaa | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:09 00001-0002-1235-1234567891-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463889684,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"taskId":"1","data":{"var1":"test"}}
+2024-03-26 14:38:09 00001-0002-1235-1234567891-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1235-1234567891-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1235-1234567891-aaaaaaaaaaaaa | INFO  | LogAux - STATUS: 400
+2024-03-26 14:38:09 00001-0002-1235-1234567891-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"errorCode":"MALFORMED_TRANSACTION_ID","description":"Transaction id not valid","status":400}
+2024-03-26 14:38:09 00001-0002-1235-1234567891-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002--1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002--1234567890-aaaaaaaaaaaaa | INFO  | LogAux - PATH PARAMS: {transactionId=[00001-0002--1234567890-aaaaaaaaaaaaa]}
+2024-03-26 14:38:09 00001-0002--1234567890-aaaaaaaaaaaaa | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=217,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:09 00001-0002--1234567890-aaaaaaaaaaaaa | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:09 00001-0002--1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","terminalId":"1234567890","opTimestamp":1711463889708,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"taskId":"1","data":{"var1":"test"}}
+2024-03-26 14:38:09 00001-0002--1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002--1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002--1234567890-aaaaaaaaaaaaa | INFO  | LogAux - STATUS: 201
+2024-03-26 14:38:09 00001-0002--1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"task":{"id":"lqJOe2h2ev","data":{"variable1":"11.50","amount":"10000","functionId":"FUNCTION_ID","pulsanti":"[it.pagopa.atmlayer.wf.task.test.bean.Dato@13efa58b]","totale":"11.5","fee":"2.3","description":"descrizione","pulsante.circuits":"[VISA, MASTERCARD]","company":"Auriga"},"onError":{"error":"Auriga"},"timeout":50,"onTimeout":{"error":"Auriga"},"template":{"content":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgaHRtbCBQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KPGhlYWQ+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJjc3MvZW11bGF0b3JlLmNzcyIgLz48L2hlYWQ+Cjxib2R5PgoJPGltZyBpZD0ibG9nbyIgc3JjPSJodHRwczovL2QyeGR1eTd0Ymd1MmQzLmNsb3VkZnJvbnQubmV0L2ZpbGVzL0lDT04vZGVmYXVsdF9sb2dvLnN2ZyIgLz4KCTxoMT5TZXJ2aXppIGRpIHB1YmJsaWNhIHV0aWxpdCYjMjI0OzwvaDE+CQoJCgk8aDI+UmllcGlsb2dvIGRlbCBwYWdhbWVudG88L2gyPgoJCgk8dGFibGUgaWQ9InRhYmxlIj4KCTx0aGVhZD4KCSA8dHI+CgkJPHRoPgoJCQk8c3Bhbj5BdXJpZ2E8L3NwYW4+CgkJPC90aD4KCQk8dGggY2xhc3M9InJpZ2h0Ij4KCQkJPHNwYW4+MTAwMDAgJiM4MzY0Ozwvc3Bhbj4KCQk8L3RoPgkJCgkgIDwvdHI+Cgk8L3RoZWFkPgoKCTx0Ym9keT4JCgkgIDx0cj4KCQk8dGQ+PHNwYW4+Q29tbWlzc2lvbmk8L3NwYW4+PC90ZD4KCQk8dGQgY2xhc3M9InJpZ2h0Ij4JCQkKCQkJPHNwYW4+Mi4zICYjODM2NDs8L3NwYW4+CgkJPC90ZD4JCQoJICA8L3RyPgkgIAoJIDwvdGJvZHk+CQoJIDx0Zm9vdD4KCQk8dHI+CgkJCTx0ZD48c3BhbiBjbGFzcz0ibGFyZ2UiPlRvdGFsZTwvc3Bhbj4JPC90ZD4KCQkJPHRkIGNsYXNzPSJyaWdodCI+PHNwYW4gY2xhc3M9ImxhcmdlIj4xMS41ICYjODM2NDs8L3NwYW4+PC90ZD4JCQoJCTwvdHI+CgkgIDwvdGZvb3Q+CgoJIAoJPC90YWJsZT4JCiAKICAgIDxidXR0b24gY2xhc3M9Im5lZ2F0aXZlIiBkYXRhLWZkaz0iUzQiIGlkPSJiYWNrIj4KICAgICAgPHNwYW4+SW5kaWV0cm88L3NwYW4+CiAgICA8L2J1dHRvbj4KCQoJPGJ1dHRvbiBjbGFzcz0ibmVnYXRpdmUiIGlkPSJleGl0Ij4KICAgICAgPHNwYW4+RXNjaTwvc3Bhbj4KICAgIDwvYnV0dG9uPgoJCgk8YnV0dG9uIGNsYXNzPSJwb3NpdGl2ZSIgZGF0YS1mZGs9IlM4IiBpZD0iY29uZmlybSI+CiAgICAgIDxzcGFuPlBhZ2EgIDExLjUgJiM4MzY0Ozwvc3Bhbj4KCTwvYnV0dG9uPgoJCgkKICAgICAgICA8YnV0dG9uIGNsYXNzPSJuZWdhdGl2ZSIgZGF0YS1mZGs9IlMxIiBpZD0iaXQucGFnb3BhLmF0bWxheWVyLndmLnRhc2sudGVzdC5iZWFuLkRhdG9AMTNlZmE1OGIiPgogICAgICAgICAgICA8c3Bhbj5pdC5wYWdvcGEuYXRtbGF5ZXIud2YudGFzay50ZXN0LmJlYW4uRGF0b0AxM2VmYTU4Yjwvc3Bhbj4JCQkKCQkJPHNwYW4+dmVkaTI8L3NwYW4+CgkJCQoJCQkJCTxpbWcgc3JjPSJmaWxlOnNyYy90ZXN0L0lDT04vTUFTVEVSQ0FSRC5zdmciIC8+CgkJCQkKCQkJCQk8aW1nIHNyYz0iZmlsZTpzcmMvdGVzdC9JQ09OL1ZJU0Euc3ZnIiAvPgoJCQkJCiAgICAgICAgPC9idXR0b24+CiAgCQoKCTwvYm9keT4KCQo8L2h0bWw+"},"command":"PRINT_RECEIPT","eppMode":"DATA","buttons":[{"id":"button1","data":{"error":"Auriga"}}]},"transactionId":"00001-0002--1234567890-aaaaaaaaaaaaa","outcome":{"result":"OK","description":"The operation completed successfully"}}
+2024-03-26 14:38:09 00001-0002--1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1707323349628-bab4e800- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1707323349628-bab4e800- | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1707323349628-bab4e800- | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=311,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1707323349628-bab4e800- | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1707323349628-bab4e800- | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1707323349628,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"},"panInfo":[{"pan":"1234567891234567","circuits":["VISA","MASTERCARD"],"bankName":"ISYBANK"}]}
+2024-03-26 14:38:09 00001-0002-1234-1234567890-1707323349628-bab4e800- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1707323349628-bab4e800- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1707323349628-bab4e800- | INFO  | LogAux - STATUS: 201
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1707323349628-bab4e800- | INFO  | LogAux - BODY: {"task":{"id":"pzfAwzS9b7","data":{"variable1":"11.50","amount":"10000","functionId":"FUNCTION_ID","pulsanti":"[it.pagopa.atmlayer.wf.task.test.bean.Dato@1e38cbc]","totale":"11.5","fee":"2.3","description":"descrizione","pulsante.circuits":"[VISA, MASTERCARD]","company":"Auriga"},"onError":{"error":"Auriga"},"timeout":50,"onTimeout":{"error":"Auriga"},"template":{"content":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgaHRtbCBQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KPGhlYWQ+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJjc3MvZW11bGF0b3JlLmNzcyIgLz48L2hlYWQ+Cjxib2R5PgoJPGltZyBpZD0ibG9nbyIgc3JjPSJodHRwczovL2QyeGR1eTd0Ymd1MmQzLmNsb3VkZnJvbnQubmV0L2ZpbGVzL0lDT04vZGVmYXVsdF9sb2dvLnN2ZyIgLz4KCTxoMT5TZXJ2aXppIGRpIHB1YmJsaWNhIHV0aWxpdCYjMjI0OzwvaDE+CQoJCgk8aDI+UmllcGlsb2dvIGRlbCBwYWdhbWVudG88L2gyPgoJCgk8dGFibGUgaWQ9InRhYmxlIj4KCTx0aGVhZD4KCSA8dHI+CgkJPHRoPgoJCQk8c3Bhbj5BdXJpZ2E8L3NwYW4+CgkJPC90aD4KCQk8dGggY2xhc3M9InJpZ2h0Ij4KCQkJPHNwYW4+MTAwMDAgJiM4MzY0Ozwvc3Bhbj4KCQk8L3RoPgkJCgkgIDwvdHI+Cgk8L3RoZWFkPgoKCTx0Ym9keT4JCgkgIDx0cj4KCQk8dGQ+PHNwYW4+Q29tbWlzc2lvbmk8L3NwYW4+PC90ZD4KCQk8dGQgY2xhc3M9InJpZ2h0Ij4JCQkKCQkJPHNwYW4+Mi4zICYjODM2NDs8L3NwYW4+CgkJPC90ZD4JCQoJICA8L3RyPgkgIAoJIDwvdGJvZHk+CQoJIDx0Zm9vdD4KCQk8dHI+CgkJCTx0ZD48c3BhbiBjbGFzcz0ibGFyZ2UiPlRvdGFsZTwvc3Bhbj4JPC90ZD4KCQkJPHRkIGNsYXNzPSJyaWdodCI+PHNwYW4gY2xhc3M9ImxhcmdlIj4xMS41ICYjODM2NDs8L3NwYW4+PC90ZD4JCQoJCTwvdHI+CgkgIDwvdGZvb3Q+CgoJIAoJPC90YWJsZT4JCiAKICAgIDxidXR0b24gY2xhc3M9Im5lZ2F0aXZlIiBkYXRhLWZkaz0iUzQiIGlkPSJiYWNrIj4KICAgICAgPHNwYW4+SW5kaWV0cm88L3NwYW4+CiAgICA8L2J1dHRvbj4KCQoJPGJ1dHRvbiBjbGFzcz0ibmVnYXRpdmUiIGlkPSJleGl0Ij4KICAgICAgPHNwYW4+RXNjaTwvc3Bhbj4KICAgIDwvYnV0dG9uPgoJCgk8YnV0dG9uIGNsYXNzPSJwb3NpdGl2ZSIgZGF0YS1mZGs9IlM4IiBpZD0iY29uZmlybSI+CiAgICAgIDxzcGFuPlBhZ2EgIDExLjUgJiM4MzY0Ozwvc3Bhbj4KCTwvYnV0dG9uPgoJCgkKICAgICAgICA8YnV0dG9uIGNsYXNzPSJuZWdhdGl2ZSIgZGF0YS1mZGs9IlMxIiBpZD0iaXQucGFnb3BhLmF0bWxheWVyLndmLnRhc2sudGVzdC5iZWFuLkRhdG9AMWUzOGNiYyI+CiAgICAgICAgICAgIDxzcGFuPml0LnBhZ29wYS5hdG1sYXllci53Zi50YXNrLnRlc3QuYmVhbi5EYXRvQDFlMzhjYmM8L3NwYW4+CQkJCgkJCTxzcGFuPnZlZGkyPC9zcGFuPgoJCQkKCQkJCQk8aW1nIHNyYz0iZmlsZTpzcmMvdGVzdC9JQ09OL01BU1RFUkNBUkQuc3ZnIiAvPgoJCQkJCgkJCQkJPGltZyBzcmM9ImZpbGU6c3JjL3Rlc3QvSUNPTi9WSVNBLnN2ZyIgLz4KCQkJCQogICAgICAgIDwvYnV0dG9uPgogIAkKCgk8L2JvZHk+CgkKPC9odG1sPg=="},"command":"PRINT_RECEIPT","eppMode":"DATA","buttons":[{"id":"button1","data":{"error":"Auriga"}}]},"transactionId":"00001-0002-1234-1234567890-1707323349628-bab4e800-","outcome":{"result":"OK","description":"The operation completed successfully"}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1707323349628-bab4e800- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890292-1fd05454- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890292-1fd05454- | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890292-1fd05454- | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=218,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890292-1fd05454- | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890292-1fd05454- | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463890292,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890292-1fd05454- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890292-1fd05454- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890292-1fd05454- | INFO  | LogAux - STATUS: 500
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890292-1fd05454- | INFO  | LogAux - BODY: {"errorCode":"VARIABLE_ERROR","description":"Error retrieve variables on next step","status":500}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890292-1fd05454- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890317-c3269e71- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890317-c3269e71- | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890317-c3269e71- | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=218,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890317-c3269e71- | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890317-c3269e71- | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463890317,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890317-c3269e71- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890317-c3269e71- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890317-c3269e71- | INFO  | LogAux - STATUS: 209
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890317-c3269e71- | INFO  | LogAux - BODY: {"errorCode":"PROCESS_ERROR","description":"Error while running the process","status":209}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890317-c3269e71- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890342-62aed698- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890342-62aed698- | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890342-62aed698- | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=218,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890342-62aed698- | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890342-62aed698- | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463890342,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890342-62aed698- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890342-62aed698- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890342-62aed698- | INFO  | LogAux - STATUS: 500
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890342-62aed698- | INFO  | LogAux - BODY: {"errorCode":"TASK_ERROR","description":"Error retrieve next step","status":500}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890342-62aed698- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890363-59b3c6f4- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890363-59b3c6f4- | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890363-59b3c6f4- | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=218,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890363-59b3c6f4- | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890363-59b3c6f4- | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463890363,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890363-59b3c6f4- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890363-59b3c6f4- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890363-59b3c6f4- | INFO  | LogAux - STATUS: 209
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890363-59b3c6f4- | INFO  | LogAux - BODY: {"errorCode":"PROCESS_ERROR","description":"Error while running the process","status":209}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890363-59b3c6f4- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - PATH PARAMS: {transactionId=[00001-0002-1234-1234567890-aaaaaaaaaaaaa]}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=218,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463890383,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - STATUS: 201
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"task":{"id":"16nwcmUeDR","data":{"amount":"10000","pulsanti":"[it.pagopa.atmlayer.wf.task.test.bean.Dato@5399e111]","totale":"11.5","fee":"2.3","description":"descrizione","pulsante.circuits":"[VISA, MASTERCARD]","company":"Auriga"},"onError":{},"timeout":1,"onTimeout":{},"template":{"content":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgaHRtbCBQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KPGhlYWQ+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJjc3MvZW11bGF0b3JlLmNzcyIgLz48L2hlYWQ+Cjxib2R5PgoJPGRpdiBpZD0idGl0bGVfcGFnZSI+QXJyaXZlZGVyY2k8L2Rpdj4KCQoJPGRpdiBpZD0ibWVzc2FnZV9mcmVlIj5HcmF6aWU8L2Rpdj4KIAogICAgPGJ1dHRvbiBjbGFzcz0iZXhpdCI+CiAgICAgIDxzcGFuPkVzY2k8L3NwYW4+CiAgICA8L2J1dHRvbj4KCgk8L2JvZHk+CgkKPC9odG1sPg==","type":"INFO"},"command":"END","receiptTemplate":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgaHRtbCBQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KPGhlYWQ+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJjc3MvZW11bGF0b3JlLmNzcyIgLz48L2hlYWQ+Cjxib2R5PgoJPGltZyBpZD0ibG9nbyIgc3JjPSJodHRwczovL2QyeGR1eTd0Ymd1MmQzLmNsb3VkZnJvbnQubmV0L2ZpbGVzL0lDT04vZGVmYXVsdF9sb2dvLnN2ZyIgLz4KCTxoMT5TZXJ2aXppIGRpIHB1YmJsaWNhIHV0aWxpdCYjMjI0OzwvaDE+CQoJCgk8aDI+UmllcGlsb2dvIGRlbCBwYWdhbWVudG88L2gyPgoJCgk8dGFibGUgaWQ9InRhYmxlIj4KCTx0aGVhZD4KCSA8dHI+CgkJPHRoPgoJCQk8c3Bhbj5BdXJpZ2E8L3NwYW4+CgkJPC90aD4KCQk8dGggY2xhc3M9InJpZ2h0Ij4KCQkJPHNwYW4+MTAwMDAgJiM4MzY0Ozwvc3Bhbj4KCQk8L3RoPgkJCgkgIDwvdHI+Cgk8L3RoZWFkPgoKCTx0Ym9keT4JCgkgIDx0cj4KCQk8dGQ+PHNwYW4+Q29tbWlzc2lvbmk8L3NwYW4+PC90ZD4KCQk8dGQgY2xhc3M9InJpZ2h0Ij4JCQkKCQkJPHNwYW4+Mi4zICYjODM2NDs8L3NwYW4+CgkJPC90ZD4JCQoJICA8L3RyPgkgIAoJIDwvdGJvZHk+CQoJIDx0Zm9vdD4KCQk8dHI+CgkJCTx0ZD48c3BhbiBjbGFzcz0ibGFyZ2UiPlRvdGFsZTwvc3Bhbj4JPC90ZD4KCQkJPHRkIGNsYXNzPSJyaWdodCI+PHNwYW4gY2xhc3M9ImxhcmdlIj4xMS41ICYjODM2NDs8L3NwYW4+PC90ZD4JCQoJCTwvdHI+CgkgIDwvdGZvb3Q+CgoJIAoJPC90YWJsZT4JCiAKICAgIDxidXR0b24gY2xhc3M9Im5lZ2F0aXZlIiBkYXRhLWZkaz0iUzQiIGlkPSJiYWNrIj4KICAgICAgPHNwYW4+SW5kaWV0cm88L3NwYW4+CiAgICA8L2J1dHRvbj4KCQoJPGJ1dHRvbiBjbGFzcz0ibmVnYXRpdmUiIGlkPSJleGl0Ij4KICAgICAgPHNwYW4+RXNjaTwvc3Bhbj4KICAgIDwvYnV0dG9uPgoJCgk8YnV0dG9uIGNsYXNzPSJwb3NpdGl2ZSIgZGF0YS1mZGs9IlM4IiBpZD0iY29uZmlybSI+CiAgICAgIDxzcGFuPlBhZ2EgIDExLjUgJiM4MzY0Ozwvc3Bhbj4KCTwvYnV0dG9uPgoJCgkKICAgICAgICA8YnV0dG9uIGNsYXNzPSJuZWdhdGl2ZSIgZGF0YS1mZGs9IlMxIiBpZD0iaXQucGFnb3BhLmF0bWxheWVyLndmLnRhc2sudGVzdC5iZWFuLkRhdG9ANTM5OWUxMTEiPgogICAgICAgICAgICA8c3Bhbj5pdC5wYWdvcGEuYXRtbGF5ZXIud2YudGFzay50ZXN0LmJlYW4uRGF0b0A1Mzk5ZTExMTwvc3Bhbj4JCQkKCQkJPHNwYW4+dmVkaTI8L3NwYW4+CgkJCQoJCQkJCTxpbWcgc3JjPSJmaWxlOnNyYy90ZXN0L0lDT04vTUFTVEVSQ0FSRC5zdmciIC8+CgkJCQkKCQkJCQk8aW1nIHNyYz0iZmlsZTpzcmMvdGVzdC9JQ09OL1ZJU0Euc3ZnIiAvPgoJCQkJCiAgICAgICAgPC9idXR0b24+CiAgCQoKCTwvYm9keT4KCQo8L2h0bWw+","outcomeVarName":"a","buttons":[]},"transactionId":"00001-0002-1234-1234567890-aaaaaaaaaaaaa","outcome":{"result":"OK","description":"The operation completed successfully"}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890415-1739a7b4- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890415-1739a7b4- | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890415-1739a7b4- | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=218,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890415-1739a7b4- | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890415-1739a7b4- | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463890415,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890415-1739a7b4- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890415-1739a7b4- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890415-1739a7b4- | INFO  | LogAux - STATUS: 201
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890415-1739a7b4- | INFO  | LogAux - BODY: {"task":{"id":"GONSIWMLEm","data":{"amount":"10000","pulsanti":"[it.pagopa.atmlayer.wf.task.test.bean.Dato@79c339c2]","totale":"11.5","fee":"2.3","description":"descrizione","pulsante.circuits":"[VISA, MASTERCARD]","company":"Auriga"},"onError":{},"timeout":1,"onTimeout":{},"template":{"content":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgaHRtbCBQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KPGhlYWQ+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJjc3MvZW11bGF0b3JlLmNzcyIgLz48L2hlYWQ+Cjxib2R5PgoJPGltZyBpZD0ibG9nbyIgc3JjPSJodHRwczovL2QyeGR1eTd0Ymd1MmQzLmNsb3VkZnJvbnQubmV0L2ZpbGVzL0lDT04vZGVmYXVsdF9sb2dvLnN2ZyIgLz4KCTxoMT5TZXJ2aXppIGRpIHB1YmJsaWNhIHV0aWxpdCYjMjI0OzwvaDE+CQoJCgk8aDI+UmllcGlsb2dvIGRlbCBwYWdhbWVudG88L2gyPgoJCgk8dGFibGUgaWQ9InRhYmxlIj4KCTx0aGVhZD4KCSA8dHI+CgkJPHRoPgoJCQk8c3Bhbj5BdXJpZ2E8L3NwYW4+CgkJPC90aD4KCQk8dGggY2xhc3M9InJpZ2h0Ij4KCQkJPHNwYW4+MTAwMDAgJiM4MzY0Ozwvc3Bhbj4KCQk8L3RoPgkJCgkgIDwvdHI+Cgk8L3RoZWFkPgoKCTx0Ym9keT4JCgkgIDx0cj4KCQk8dGQ+PHNwYW4+Q29tbWlzc2lvbmk8L3NwYW4+PC90ZD4KCQk8dGQgY2xhc3M9InJpZ2h0Ij4JCQkKCQkJPHNwYW4+Mi4zICYjODM2NDs8L3NwYW4+CgkJPC90ZD4JCQoJICA8L3RyPgkgIAoJIDwvdGJvZHk+CQoJIDx0Zm9vdD4KCQk8dHI+CgkJCTx0ZD48c3BhbiBjbGFzcz0ibGFyZ2UiPlRvdGFsZTwvc3Bhbj4JPC90ZD4KCQkJPHRkIGNsYXNzPSJyaWdodCI+PHNwYW4gY2xhc3M9ImxhcmdlIj4xMS41ICYjODM2NDs8L3NwYW4+PC90ZD4JCQoJCTwvdHI+CgkgIDwvdGZvb3Q+CgoJIAoJPC90YWJsZT4JCiAKICAgIDxidXR0b24gY2xhc3M9Im5lZ2F0aXZlIiBkYXRhLWZkaz0iUzQiIGlkPSJiYWNrIj4KICAgICAgPHNwYW4+SW5kaWV0cm88L3NwYW4+CiAgICA8L2J1dHRvbj4KCQoJPGJ1dHRvbiBjbGFzcz0ibmVnYXRpdmUiIGlkPSJleGl0Ij4KICAgICAgPHNwYW4+RXNjaTwvc3Bhbj4KICAgIDwvYnV0dG9uPgoJCgk8YnV0dG9uIGNsYXNzPSJwb3NpdGl2ZSIgZGF0YS1mZGs9IlM4IiBpZD0iY29uZmlybSI+CiAgICAgIDxzcGFuPlBhZ2EgIDExLjUgJiM4MzY0Ozwvc3Bhbj4KCTwvYnV0dG9uPgoJCgkKICAgICAgICA8YnV0dG9uIGNsYXNzPSJuZWdhdGl2ZSIgZGF0YS1mZGs9IlMxIiBpZD0iaXQucGFnb3BhLmF0bWxheWVyLndmLnRhc2sudGVzdC5iZWFuLkRhdG9ANzljMzM5YzIiPgogICAgICAgICAgICA8c3Bhbj5pdC5wYWdvcGEuYXRtbGF5ZXIud2YudGFzay50ZXN0LmJlYW4uRGF0b0A3OWMzMzljMjwvc3Bhbj4JCQkKCQkJPHNwYW4+dmVkaTI8L3NwYW4+CgkJCQoJCQkJCTxpbWcgc3JjPSJmaWxlOnNyYy90ZXN0L0lDT04vTUFTVEVSQ0FSRC5zdmciIC8+CgkJCQkKCQkJCQk8aW1nIHNyYz0iZmlsZTpzcmMvdGVzdC9JQ09OL1ZJU0Euc3ZnIiAvPgoJCQkJCiAgICAgICAgPC9idXR0b24+CiAgCQoKCTwvYm9keT4KCQo8L2h0bWw+","type":"INFO"},"command":"END","receiptTemplate":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgaHRtbCBQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KPGhlYWQ+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJjc3MvZW11bGF0b3JlLmNzcyIgLz48L2hlYWQ+Cjxib2R5PgoJPGltZyBpZD0ibG9nbyIgc3JjPSJodHRwczovL2QyeGR1eTd0Ymd1MmQzLmNsb3VkZnJvbnQubmV0L2ZpbGVzL0lDT04vZGVmYXVsdF9sb2dvLnN2ZyIgLz4KCTxoMT5TZXJ2aXppIGRpIHB1YmJsaWNhIHV0aWxpdCYjMjI0OzwvaDE+CQoJCgk8aDI+UmllcGlsb2dvIGRlbCBwYWdhbWVudG88L2gyPgoJCgk8dGFibGUgaWQ9InRhYmxlIj4KCTx0aGVhZD4KCSA8dHI+CgkJPHRoPgoJCQk8c3Bhbj5BdXJpZ2E8L3NwYW4+CgkJPC90aD4KCQk8dGggY2xhc3M9InJpZ2h0Ij4KCQkJPHNwYW4+MTAwMDAgJiM4MzY0Ozwvc3Bhbj4KCQk8L3RoPgkJCgkgIDwvdHI+Cgk8L3RoZWFkPgoKCTx0Ym9keT4JCgkgIDx0cj4KCQk8dGQ+PHNwYW4+Q29tbWlzc2lvbmk8L3NwYW4+PC90ZD4KCQk8dGQgY2xhc3M9InJpZ2h0Ij4JCQkKCQkJPHNwYW4+Mi4zICYjODM2NDs8L3NwYW4+CgkJPC90ZD4JCQoJICA8L3RyPgkgIAoJIDwvdGJvZHk+CQoJIDx0Zm9vdD4KCQk8dHI+CgkJCTx0ZD48c3BhbiBjbGFzcz0ibGFyZ2UiPlRvdGFsZTwvc3Bhbj4JPC90ZD4KCQkJPHRkIGNsYXNzPSJyaWdodCI+PHNwYW4gY2xhc3M9ImxhcmdlIj4xMS41ICYjODM2NDs8L3NwYW4+PC90ZD4JCQoJCTwvdHI+CgkgIDwvdGZvb3Q+CgoJIAoJPC90YWJsZT4JCiAKICAgIDxidXR0b24gY2xhc3M9Im5lZ2F0aXZlIiBkYXRhLWZkaz0iUzQiIGlkPSJiYWNrIj4KICAgICAgPHNwYW4+SW5kaWV0cm88L3NwYW4+CiAgICA8L2J1dHRvbj4KCQoJPGJ1dHRvbiBjbGFzcz0ibmVnYXRpdmUiIGlkPSJleGl0Ij4KICAgICAgPHNwYW4+RXNjaTwvc3Bhbj4KICAgIDwvYnV0dG9uPgoJCgk8YnV0dG9uIGNsYXNzPSJwb3NpdGl2ZSIgZGF0YS1mZGs9IlM4IiBpZD0iY29uZmlybSI+CiAgICAgIDxzcGFuPlBhZ2EgIDExLjUgJiM4MzY0Ozwvc3Bhbj4KCTwvYnV0dG9uPgoJCgkKICAgICAgICA8YnV0dG9uIGNsYXNzPSJuZWdhdGl2ZSIgZGF0YS1mZGs9IlMxIiBpZD0iaXQucGFnb3BhLmF0bWxheWVyLndmLnRhc2sudGVzdC5iZWFuLkRhdG9ANzljMzM5YzIiPgogICAgICAgICAgICA8c3Bhbj5pdC5wYWdvcGEuYXRtbGF5ZXIud2YudGFzay50ZXN0LmJlYW4uRGF0b0A3OWMzMzljMjwvc3Bhbj4JCQkKCQkJPHNwYW4+dmVkaTI8L3NwYW4+CgkJCQoJCQkJCTxpbWcgc3JjPSJmaWxlOnNyYy90ZXN0L0lDT04vTUFTVEVSQ0FSRC5zdmciIC8+CgkJCQkKCQkJCQk8aW1nIHNyYz0iZmlsZTpzcmMvdGVzdC9JQ09OL1ZJU0Euc3ZnIiAvPgoJCQkJCiAgICAgICAgPC9idXR0b24+CiAgCQoKCTwvYm9keT4KCQo8L2h0bWw+","outcomeVarName":"a","buttons":[]},"transactionId":"00001-0002-1234-1234567890-1711463890415-1739a7b4-","outcome":{"result":"OK","description":"The operation completed successfully"}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890415-1739a7b4- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890451-a8547662- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890451-a8547662- | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890451-a8547662- | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=154,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890451-a8547662- | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890451-a8547662- | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463890451,"channel":"ATM"},"data":{"var1":"test"}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890451-a8547662- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890451-a8547662- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890451-a8547662- | INFO  | LogAux - STATUS: 201
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890451-a8547662- | INFO  | LogAux - BODY: {"task":{"id":"gLtT37ssuu","data":{"variable1":"11.50","amount":"10000","functionId":"FUNCTION_ID","pulsanti":"[it.pagopa.atmlayer.wf.task.test.bean.Dato@db67feb]","totale":"11.5","fee":"2.3","description":"descrizione","pulsante.circuits":"[VISA, MASTERCARD]","company":"Auriga"},"onError":{"error":"Auriga"},"timeout":50,"onTimeout":{"error":"Auriga"},"template":{"content":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgaHRtbCBQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KPGhlYWQ+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJjc3MvZW11bGF0b3JlLmNzcyIgLz48L2hlYWQ+Cjxib2R5PgoJPGltZyBpZD0ibG9nbyIgc3JjPSJodHRwczovL2QyeGR1eTd0Ymd1MmQzLmNsb3VkZnJvbnQubmV0L2ZpbGVzL0lDT04vZGVmYXVsdF9sb2dvLnN2ZyIgLz4KCTxoMT5TZXJ2aXppIGRpIHB1YmJsaWNhIHV0aWxpdCYjMjI0OzwvaDE+CQoJCgk8aDI+UmllcGlsb2dvIGRlbCBwYWdhbWVudG88L2gyPgoJCgk8dGFibGUgaWQ9InRhYmxlIj4KCTx0aGVhZD4KCSA8dHI+CgkJPHRoPgoJCQk8c3Bhbj5BdXJpZ2E8L3NwYW4+CgkJPC90aD4KCQk8dGggY2xhc3M9InJpZ2h0Ij4KCQkJPHNwYW4+MTAwMDAgJiM4MzY0Ozwvc3Bhbj4KCQk8L3RoPgkJCgkgIDwvdHI+Cgk8L3RoZWFkPgoKCTx0Ym9keT4JCgkgIDx0cj4KCQk8dGQ+PHNwYW4+Q29tbWlzc2lvbmk8L3NwYW4+PC90ZD4KCQk8dGQgY2xhc3M9InJpZ2h0Ij4JCQkKCQkJPHNwYW4+Mi4zICYjODM2NDs8L3NwYW4+CgkJPC90ZD4JCQoJICA8L3RyPgkgIAoJIDwvdGJvZHk+CQoJIDx0Zm9vdD4KCQk8dHI+CgkJCTx0ZD48c3BhbiBjbGFzcz0ibGFyZ2UiPlRvdGFsZTwvc3Bhbj4JPC90ZD4KCQkJPHRkIGNsYXNzPSJyaWdodCI+PHNwYW4gY2xhc3M9ImxhcmdlIj4xMS41ICYjODM2NDs8L3NwYW4+PC90ZD4JCQoJCTwvdHI+CgkgIDwvdGZvb3Q+CgoJIAoJPC90YWJsZT4JCiAKICAgIDxidXR0b24gY2xhc3M9Im5lZ2F0aXZlIiBkYXRhLWZkaz0iUzQiIGlkPSJiYWNrIj4KICAgICAgPHNwYW4+SW5kaWV0cm88L3NwYW4+CiAgICA8L2J1dHRvbj4KCQoJPGJ1dHRvbiBjbGFzcz0ibmVnYXRpdmUiIGlkPSJleGl0Ij4KICAgICAgPHNwYW4+RXNjaTwvc3Bhbj4KICAgIDwvYnV0dG9uPgoJCgk8YnV0dG9uIGNsYXNzPSJwb3NpdGl2ZSIgZGF0YS1mZGs9IlM4IiBpZD0iY29uZmlybSI+CiAgICAgIDxzcGFuPlBhZ2EgIDExLjUgJiM4MzY0Ozwvc3Bhbj4KCTwvYnV0dG9uPgoJCgkKICAgICAgICA8YnV0dG9uIGNsYXNzPSJuZWdhdGl2ZSIgZGF0YS1mZGs9IlMxIiBpZD0iaXQucGFnb3BhLmF0bWxheWVyLndmLnRhc2sudGVzdC5iZWFuLkRhdG9AZGI2N2ZlYiI+CiAgICAgICAgICAgIDxzcGFuPml0LnBhZ29wYS5hdG1sYXllci53Zi50YXNrLnRlc3QuYmVhbi5EYXRvQGRiNjdmZWI8L3NwYW4+CQkJCgkJCTxzcGFuPnZlZGkyPC9zcGFuPgoJCQkKCQkJCQk8aW1nIHNyYz0iZmlsZTpzcmMvdGVzdC9JQ09OL01BU1RFUkNBUkQuc3ZnIiAvPgoJCQkJCgkJCQkJPGltZyBzcmM9ImZpbGU6c3JjL3Rlc3QvSUNPTi9WSVNBLnN2ZyIgLz4KCQkJCQogICAgICAgIDwvYnV0dG9uPgogIAkKCgk8L2JvZHk+CgkKPC9odG1sPg=="},"command":"PRINT_RECEIPT","eppMode":"DATA","buttons":[{"id":"button1","data":{"error":"Auriga"}}]},"transactionId":"00001-0002-1234-1234567890-1711463890451-a8547662-","outcome":{"result":"OK","description":"The operation completed successfully"}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890451-a8547662- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001--1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001--1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - PATH PARAMS: {transactionId=[00001--1234-1234567890-aaaaaaaaaaaaa]}
+2024-03-26 14:38:10 00001--1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=213,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:10 00001--1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:10 00001--1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"device":{"bankId":"00001","code":"1234","terminalId":"1234567890","opTimestamp":1711463890479,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"taskId":"1","data":{"var1":"test"}}
+2024-03-26 14:38:10 00001--1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001--1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001--1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - STATUS: 201
+2024-03-26 14:38:10 00001--1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"task":{"id":"uiIKIU37Z1","data":{"variable1":"11.50","amount":"10000","functionId":"FUNCTION_ID","pulsanti":"[it.pagopa.atmlayer.wf.task.test.bean.Dato@16c07f75]","totale":"11.5","fee":"2.3","description":"descrizione","pulsante.circuits":"[VISA, MASTERCARD]","company":"Auriga"},"onError":{"error":"Auriga"},"timeout":50,"onTimeout":{"error":"Auriga"},"template":{"content":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgaHRtbCBQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KPGhlYWQ+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJjc3MvZW11bGF0b3JlLmNzcyIgLz48L2hlYWQ+Cjxib2R5PgoJPGltZyBpZD0ibG9nbyIgc3JjPSJodHRwczovL2QyeGR1eTd0Ymd1MmQzLmNsb3VkZnJvbnQubmV0L2ZpbGVzL0lDT04vZGVmYXVsdF9sb2dvLnN2ZyIgLz4KCTxoMT5TZXJ2aXppIGRpIHB1YmJsaWNhIHV0aWxpdCYjMjI0OzwvaDE+CQoJCgk8aDI+UmllcGlsb2dvIGRlbCBwYWdhbWVudG88L2gyPgoJCgk8dGFibGUgaWQ9InRhYmxlIj4KCTx0aGVhZD4KCSA8dHI+CgkJPHRoPgoJCQk8c3Bhbj5BdXJpZ2E8L3NwYW4+CgkJPC90aD4KCQk8dGggY2xhc3M9InJpZ2h0Ij4KCQkJPHNwYW4+MTAwMDAgJiM4MzY0Ozwvc3Bhbj4KCQk8L3RoPgkJCgkgIDwvdHI+Cgk8L3RoZWFkPgoKCTx0Ym9keT4JCgkgIDx0cj4KCQk8dGQ+PHNwYW4+Q29tbWlzc2lvbmk8L3NwYW4+PC90ZD4KCQk8dGQgY2xhc3M9InJpZ2h0Ij4JCQkKCQkJPHNwYW4+Mi4zICYjODM2NDs8L3NwYW4+CgkJPC90ZD4JCQoJICA8L3RyPgkgIAoJIDwvdGJvZHk+CQoJIDx0Zm9vdD4KCQk8dHI+CgkJCTx0ZD48c3BhbiBjbGFzcz0ibGFyZ2UiPlRvdGFsZTwvc3Bhbj4JPC90ZD4KCQkJPHRkIGNsYXNzPSJyaWdodCI+PHNwYW4gY2xhc3M9ImxhcmdlIj4xMS41ICYjODM2NDs8L3NwYW4+PC90ZD4JCQoJCTwvdHI+CgkgIDwvdGZvb3Q+CgoJIAoJPC90YWJsZT4JCiAKICAgIDxidXR0b24gY2xhc3M9Im5lZ2F0aXZlIiBkYXRhLWZkaz0iUzQiIGlkPSJiYWNrIj4KICAgICAgPHNwYW4+SW5kaWV0cm88L3NwYW4+CiAgICA8L2J1dHRvbj4KCQoJPGJ1dHRvbiBjbGFzcz0ibmVnYXRpdmUiIGlkPSJleGl0Ij4KICAgICAgPHNwYW4+RXNjaTwvc3Bhbj4KICAgIDwvYnV0dG9uPgoJCgk8YnV0dG9uIGNsYXNzPSJwb3NpdGl2ZSIgZGF0YS1mZGs9IlM4IiBpZD0iY29uZmlybSI+CiAgICAgIDxzcGFuPlBhZ2EgIDExLjUgJiM4MzY0Ozwvc3Bhbj4KCTwvYnV0dG9uPgoJCgkKICAgICAgICA8YnV0dG9uIGNsYXNzPSJuZWdhdGl2ZSIgZGF0YS1mZGs9IlMxIiBpZD0iaXQucGFnb3BhLmF0bWxheWVyLndmLnRhc2sudGVzdC5iZWFuLkRhdG9AMTZjMDdmNzUiPgogICAgICAgICAgICA8c3Bhbj5pdC5wYWdvcGEuYXRtbGF5ZXIud2YudGFzay50ZXN0LmJlYW4uRGF0b0AxNmMwN2Y3NTwvc3Bhbj4JCQkKCQkJPHNwYW4+dmVkaTI8L3NwYW4+CgkJCQoJCQkJCTxpbWcgc3JjPSJmaWxlOnNyYy90ZXN0L0lDT04vTUFTVEVSQ0FSRC5zdmciIC8+CgkJCQkKCQkJCQk8aW1nIHNyYz0iZmlsZTpzcmMvdGVzdC9JQ09OL1ZJU0Euc3ZnIiAvPgoJCQkJCiAgICAgICAgPC9idXR0b24+CiAgCQoKCTwvYm9keT4KCQo8L2h0bWw+"},"command":"PRINT_RECEIPT","eppMode":"DATA","buttons":[{"id":"button1","data":{"error":"Auriga"}}]},"transactionId":"00001--1234-1234567890-aaaaaaaaaaaaa","outcome":{"result":"OK","description":"The operation completed successfully"}}
+2024-03-26 14:38:10 00001--1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001----1711463890508-8173e6c4-9d98-4252-bf71-7cb | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001----1711463890508-8173e6c4-9d98-4252-bf71-7cb | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:10 00001----1711463890508-8173e6c4-9d98-4252-bf71-7cb | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=160,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:10 00001----1711463890508-8173e6c4-9d98-4252-bf71-7cb | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:10 00001----1711463890508-8173e6c4-9d98-4252-bf71-7cb | INFO  | LogAux - BODY: {"device":{"bankId":"00001","opTimestamp":1711463890508,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"}}
+2024-03-26 14:38:10 00001----1711463890508-8173e6c4-9d98-4252-bf71-7cb | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001----1711463890508-8173e6c4-9d98-4252-bf71-7cb | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001----1711463890508-8173e6c4-9d98-4252-bf71-7cb | INFO  | LogAux - STATUS: 201
+2024-03-26 14:38:10 00001----1711463890508-8173e6c4-9d98-4252-bf71-7cb | INFO  | LogAux - BODY: {"task":{"id":"9hWS87yJxI","timeout":0,"template":{"content":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSIgPz4KPCFET0NUWVBFIGh0bWwgUFVCTElDICItLy9XM0MvL0RURCBYSFRNTCAxLjAgVHJhbnNpdGlvbmFsLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSL3hodG1sMS9EVEQveGh0bWwxLXRyYW5zaXRpb25hbC5kdGQiPgo8aHRtbCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCI+CjxoZWFkPjxsaW5rIHJlbD0ic3R5bGVzaGVldCIgaHJlZj0iY3NzL2VtdWxhdG9yZS5jc3MiIC8+PC9oZWFkPgo8Ym9keT4KCTxpbWcgaWQ9ImxvZ28iIHNyYz0iaHR0cHM6Ly9kMnhkdXk3dGJndTJkMy5jbG91ZGZyb250Lm5ldC9maWxlcy9JQ09OL2RlZmF1bHRfbG9nby5zdmciLz4KCTxoMT5TZXJ2aXppIGRpIHB1YmJsaWNhIHV0aWxpdCZhZ3JhdmU7PC9oMT4JCgkKCTxoMj5SaWVwaWxvZ28gZGVsIHBhZ2FtZW50bzwvaDI+CgkKCTx0YWJsZSBpZD0idGFibGUiPgoJPHRoZWFkPgoJIDx0cj4KCQk8dGg+CgkJCTxzcGFuPiR7Y29tcGFueX08L3NwYW4+CgkJPC90aD4KCQk8dGggY2xhc3M9InJpZ2h0Ij4KCQkJPHNwYW4+JHthbW91bnR9ICZldXJvOzwvc3Bhbj4KCQk8L3RoPgkJCgkgIDwvdHI+Cgk8L3RoZWFkPgoKCTx0Ym9keT4JCgkgIDx0cj4KCQk8dGQ+PHNwYW4+Q29tbWlzc2lvbmk8L3NwYW4+PC90ZD4KCQk8dGQgY2xhc3M9InJpZ2h0Ij4JCQkKCQkJPHNwYW4+JHtmZWV9ICZldXJvOzwvc3Bhbj4KCQk8L3RkPgkJCgkgIDwvdHI+CSAgCgkgPC90Ym9keT4JCgkgPHRmb290PgoJCTx0cj4KCQkJPHRkPjxzcGFuICBjbGFzcz0ibGFyZ2UiPlRvdGFsZTwvc3Bhbj4JPC90ZD4KCQkJPHRkIGNsYXNzPSJyaWdodCI+PHNwYW4gY2xhc3M9ImxhcmdlIj4ke3RvdGFsZX0gJmV1cm87PC9zcGFuPjwvdGQ+CQkKCQk8L3RyPgoJICA8L3Rmb290PgoKCSAKCTwvdGFibGU+CQogCiAgICA8YnV0dG9uIGNsYXNzPSJuZWdhdGl2ZSIgZGF0YS1mZGs9IlM0IiBpZD0iYmFjayI+CiAgICAgIDxzcGFuPkluZGlldHJvPC9zcGFuPgogICAgPC9idXR0b24+CgkKCTxidXR0b24gY2xhc3M9Im5lZ2F0aXZlIiAgaWQ9ImV4aXQiPgogICAgICA8c3Bhbj5Fc2NpPC9zcGFuPgogICAgPC9idXR0b24+CgkKCTxidXR0b24gY2xhc3M9InBvc2l0aXZlIiBkYXRhLWZkaz0iUzgiIGlkPSJjb25maXJtIj4KICAgICAgPHNwYW4+UGFnYSAgJHt0b3RhbGV9ICZldXJvOzwvc3Bhbj4KCTwvYnV0dG9uPgoJCgk8Zm9yIG9iamVjdD0icHVsc2FudGUiIGxpc3Q9InB1bHNhbnRpIj4KICAgICAgICA8YnV0dG9uIGNsYXNzPSJuZWdhdGl2ZSIgZGF0YS1mZGs9IlMke3B1bHNhbnRlLml9IiBpZD0iJHtwdWxzYW50ZX0iPgogICAgICAgICAgICA8c3Bhbj4ke3B1bHNhbnRlfTwvc3Bhbj4JCQkKCQkJPHNwYW4+JHtwdWxzYW50ZS5wYXJhZ3JhZm99PC9zcGFuPgoJCQk8Zm9yIG9iamVjdD0iY2lyY3VpdCIgbGlzdD0icHVsc2FudGUuY2lyY3VpdHMiPgoJCQkJCTxpbWcgc3JjPSIke0NETl9VUkx9SUNPTi8ke2NpcmN1aXR9LnN2ZyIvPgoJCQkJPC9mb3I+CiAgICAgICAgPC9idXR0b24+CiAgCTwvZm9yPgoKCTwvYm9keT4KCQo8L2h0bWw+"}},"transactionId":"00001----1711463890508-8173e6c4-9d98-4252-bf71-7cb","outcome":{"result":"OK","description":"The operation completed successfully"}}
+2024-03-26 14:38:10 00001----1711463890508-8173e6c4-9d98-4252-bf71-7cb | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234--aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234--aaaaaaaaaaaaa | INFO  | LogAux - PATH PARAMS: {transactionId=[00001-0002-1234--aaaaaaaaaaaaa]}
+2024-03-26 14:38:10 00001-0002-1234--aaaaaaaaaaaaa | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=205,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:10 00001-0002-1234--aaaaaaaaaaaaa | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:10 00001-0002-1234--aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","opTimestamp":1711463890531,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"taskId":"1","data":{"var1":"test"}}
+2024-03-26 14:38:10 00001-0002-1234--aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234--aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234--aaaaaaaaaaaaa | INFO  | LogAux - STATUS: 201
+2024-03-26 14:38:10 00001-0002-1234--aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"task":{"id":"uyA5ZPXNKO","data":{"variable1":"11.50","amount":"10000","functionId":"FUNCTION_ID","pulsanti":"[it.pagopa.atmlayer.wf.task.test.bean.Dato@44e798f0]","totale":"11.5","fee":"2.3","description":"descrizione","pulsante.circuits":"[VISA, MASTERCARD]","company":"Auriga"},"onError":{"error":"Auriga"},"timeout":50,"onTimeout":{"error":"Auriga"},"template":{"content":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgaHRtbCBQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KPGhlYWQ+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJjc3MvZW11bGF0b3JlLmNzcyIgLz48L2hlYWQ+Cjxib2R5PgoJPGltZyBpZD0ibG9nbyIgc3JjPSJodHRwczovL2QyeGR1eTd0Ymd1MmQzLmNsb3VkZnJvbnQubmV0L2ZpbGVzL0lDT04vZGVmYXVsdF9sb2dvLnN2ZyIgLz4KCTxoMT5TZXJ2aXppIGRpIHB1YmJsaWNhIHV0aWxpdCYjMjI0OzwvaDE+CQoJCgk8aDI+UmllcGlsb2dvIGRlbCBwYWdhbWVudG88L2gyPgoJCgk8dGFibGUgaWQ9InRhYmxlIj4KCTx0aGVhZD4KCSA8dHI+CgkJPHRoPgoJCQk8c3Bhbj5BdXJpZ2E8L3NwYW4+CgkJPC90aD4KCQk8dGggY2xhc3M9InJpZ2h0Ij4KCQkJPHNwYW4+MTAwMDAgJiM4MzY0Ozwvc3Bhbj4KCQk8L3RoPgkJCgkgIDwvdHI+Cgk8L3RoZWFkPgoKCTx0Ym9keT4JCgkgIDx0cj4KCQk8dGQ+PHNwYW4+Q29tbWlzc2lvbmk8L3NwYW4+PC90ZD4KCQk8dGQgY2xhc3M9InJpZ2h0Ij4JCQkKCQkJPHNwYW4+Mi4zICYjODM2NDs8L3NwYW4+CgkJPC90ZD4JCQoJICA8L3RyPgkgIAoJIDwvdGJvZHk+CQoJIDx0Zm9vdD4KCQk8dHI+CgkJCTx0ZD48c3BhbiBjbGFzcz0ibGFyZ2UiPlRvdGFsZTwvc3Bhbj4JPC90ZD4KCQkJPHRkIGNsYXNzPSJyaWdodCI+PHNwYW4gY2xhc3M9ImxhcmdlIj4xMS41ICYjODM2NDs8L3NwYW4+PC90ZD4JCQoJCTwvdHI+CgkgIDwvdGZvb3Q+CgoJIAoJPC90YWJsZT4JCiAKICAgIDxidXR0b24gY2xhc3M9Im5lZ2F0aXZlIiBkYXRhLWZkaz0iUzQiIGlkPSJiYWNrIj4KICAgICAgPHNwYW4+SW5kaWV0cm88L3NwYW4+CiAgICA8L2J1dHRvbj4KCQoJPGJ1dHRvbiBjbGFzcz0ibmVnYXRpdmUiIGlkPSJleGl0Ij4KICAgICAgPHNwYW4+RXNjaTwvc3Bhbj4KICAgIDwvYnV0dG9uPgoJCgk8YnV0dG9uIGNsYXNzPSJwb3NpdGl2ZSIgZGF0YS1mZGs9IlM4IiBpZD0iY29uZmlybSI+CiAgICAgIDxzcGFuPlBhZ2EgIDExLjUgJiM4MzY0Ozwvc3Bhbj4KCTwvYnV0dG9uPgoJCgkKICAgICAgICA8YnV0dG9uIGNsYXNzPSJuZWdhdGl2ZSIgZGF0YS1mZGs9IlMxIiBpZD0iaXQucGFnb3BhLmF0bWxheWVyLndmLnRhc2sudGVzdC5iZWFuLkRhdG9ANDRlNzk4ZjAiPgogICAgICAgICAgICA8c3Bhbj5pdC5wYWdvcGEuYXRtbGF5ZXIud2YudGFzay50ZXN0LmJlYW4uRGF0b0A0NGU3OThmMDwvc3Bhbj4JCQkKCQkJPHNwYW4+dmVkaTI8L3NwYW4+CgkJCQoJCQkJCTxpbWcgc3JjPSJmaWxlOnNyYy90ZXN0L0lDT04vTUFTVEVSQ0FSRC5zdmciIC8+CgkJCQkKCQkJCQk8aW1nIHNyYz0iZmlsZTpzcmMvdGVzdC9JQ09OL1ZJU0Euc3ZnIiAvPgoJCQkJCiAgICAgICAgPC9idXR0b24+CiAgCQoKCTwvYm9keT4KCQo8L2h0bWw+"},"command":"PRINT_RECEIPT","eppMode":"DATA","buttons":[{"id":"button1","data":{"error":"Auriga"}}]},"transactionId":"00001-0002-1234--aaaaaaaaaaaaa","outcome":{"result":"OK","description":"The operation completed successfully"}}
+2024-03-26 14:38:10 00001-0002-1234--aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1705499660669-23c60257- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1705499660669-23c60257- | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1705499660669-23c60257- | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=240,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1705499660669-23c60257- | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1705499660669-23c60257- | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1705499660669,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"},"fiscalCode":"BBTFNC"}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1705499660669-23c60257- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1705499660669-23c60257- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1705499660669-23c60257- | INFO  | LogAux - STATUS: 201
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1705499660669-23c60257- | INFO  | LogAux - BODY: {"task":{"id":"6pvK3GfDZ5","data":{"variable1":"11.50","amount":"10000","functionId":"FUNCTION_ID","pulsanti":"[it.pagopa.atmlayer.wf.task.test.bean.Dato@4f87f45e]","totale":"11.5","fee":"2.3","description":"descrizione","pulsante.circuits":"[VISA, MASTERCARD]","company":"Auriga"},"onError":{"error":"Auriga"},"timeout":50,"onTimeout":{"error":"Auriga"},"template":{"content":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgaHRtbCBQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KPGhlYWQ+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJjc3MvZW11bGF0b3JlLmNzcyIgLz48L2hlYWQ+Cjxib2R5PgoJPGltZyBpZD0ibG9nbyIgc3JjPSJodHRwczovL2QyeGR1eTd0Ymd1MmQzLmNsb3VkZnJvbnQubmV0L2ZpbGVzL0lDT04vZGVmYXVsdF9sb2dvLnN2ZyIgLz4KCTxoMT5TZXJ2aXppIGRpIHB1YmJsaWNhIHV0aWxpdCYjMjI0OzwvaDE+CQoJCgk8aDI+UmllcGlsb2dvIGRlbCBwYWdhbWVudG88L2gyPgoJCgk8dGFibGUgaWQ9InRhYmxlIj4KCTx0aGVhZD4KCSA8dHI+CgkJPHRoPgoJCQk8c3Bhbj5BdXJpZ2E8L3NwYW4+CgkJPC90aD4KCQk8dGggY2xhc3M9InJpZ2h0Ij4KCQkJPHNwYW4+MTAwMDAgJiM4MzY0Ozwvc3Bhbj4KCQk8L3RoPgkJCgkgIDwvdHI+Cgk8L3RoZWFkPgoKCTx0Ym9keT4JCgkgIDx0cj4KCQk8dGQ+PHNwYW4+Q29tbWlzc2lvbmk8L3NwYW4+PC90ZD4KCQk8dGQgY2xhc3M9InJpZ2h0Ij4JCQkKCQkJPHNwYW4+Mi4zICYjODM2NDs8L3NwYW4+CgkJPC90ZD4JCQoJICA8L3RyPgkgIAoJIDwvdGJvZHk+CQoJIDx0Zm9vdD4KCQk8dHI+CgkJCTx0ZD48c3BhbiBjbGFzcz0ibGFyZ2UiPlRvdGFsZTwvc3Bhbj4JPC90ZD4KCQkJPHRkIGNsYXNzPSJyaWdodCI+PHNwYW4gY2xhc3M9ImxhcmdlIj4xMS41ICYjODM2NDs8L3NwYW4+PC90ZD4JCQoJCTwvdHI+CgkgIDwvdGZvb3Q+CgoJIAoJPC90YWJsZT4JCiAKICAgIDxidXR0b24gY2xhc3M9Im5lZ2F0aXZlIiBkYXRhLWZkaz0iUzQiIGlkPSJiYWNrIj4KICAgICAgPHNwYW4+SW5kaWV0cm88L3NwYW4+CiAgICA8L2J1dHRvbj4KCQoJPGJ1dHRvbiBjbGFzcz0ibmVnYXRpdmUiIGlkPSJleGl0Ij4KICAgICAgPHNwYW4+RXNjaTwvc3Bhbj4KICAgIDwvYnV0dG9uPgoJCgk8YnV0dG9uIGNsYXNzPSJwb3NpdGl2ZSIgZGF0YS1mZGs9IlM4IiBpZD0iY29uZmlybSI+CiAgICAgIDxzcGFuPlBhZ2EgIDExLjUgJiM4MzY0Ozwvc3Bhbj4KCTwvYnV0dG9uPgoJCgkKICAgICAgICA8YnV0dG9uIGNsYXNzPSJuZWdhdGl2ZSIgZGF0YS1mZGs9IlMxIiBpZD0iaXQucGFnb3BhLmF0bWxheWVyLndmLnRhc2sudGVzdC5iZWFuLkRhdG9ANGY4N2Y0NWUiPgogICAgICAgICAgICA8c3Bhbj5pdC5wYWdvcGEuYXRtbGF5ZXIud2YudGFzay50ZXN0LmJlYW4uRGF0b0A0Zjg3ZjQ1ZTwvc3Bhbj4JCQkKCQkJPHNwYW4+dmVkaTI8L3NwYW4+CgkJCQoJCQkJCTxpbWcgc3JjPSJmaWxlOnNyYy90ZXN0L0lDT04vTUFTVEVSQ0FSRC5zdmciIC8+CgkJCQkKCQkJCQk8aW1nIHNyYz0iZmlsZTpzcmMvdGVzdC9JQ09OL1ZJU0Euc3ZnIiAvPgoJCQkJCiAgICAgICAgPC9idXR0b24+CiAgCQoKCTwvYm9keT4KCQo8L2h0bWw+"},"command":"PRINT_RECEIPT","eppMode":"DATA","buttons":[{"id":"button1","data":{"error":"Auriga"}}]},"transactionId":"00001-0002-1234-1234567890-1705499660669-23c60257-","outcome":{"result":"OK","description":"The operation completed successfully"}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1705499660669-23c60257- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890582-3bca7f4b- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890582-3bca7f4b- | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890582-3bca7f4b- | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=218,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890582-3bca7f4b- | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890582-3bca7f4b- | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463890582,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890582-3bca7f4b- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890582-3bca7f4b- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890582-3bca7f4b- | INFO  | LogAux - STATUS: 209
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890582-3bca7f4b- | INFO  | LogAux - BODY: {"errorCode":"PROCESS_ERROR","description":"Error while running the process","status":209}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890582-3bca7f4b- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - PATH PARAMS: {transactionId=[00001-0002-1234-1234567890-aaaaaaaaaaaaa]}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=231,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463890603,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"taskId":"1","data":{"var1":"test"}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - STATUS: 209
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"errorCode":"PROCESS_ERROR","description":"Error while running the process","status":209}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890625-10cffef9- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890625-10cffef9- | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890625-10cffef9- | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=195,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890625-10cffef9- | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890625-10cffef9- | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463890625,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890625-10cffef9- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890625-10cffef9- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890625-10cffef9- | INFO  | LogAux - STATUS: 200
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890625-10cffef9- | INFO  | LogAux - BODY: {"transactionId":"00001-0002-1234-1234567890-1711463890625-10cffef9-","outcome":{"result":"END","description":"The process is terminated"}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890625-10cffef9- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890644-727e7475- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890644-727e7475- | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890644-727e7475- | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=218,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890644-727e7475- | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890644-727e7475- | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463890644,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"data":{"var1":"test"}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890644-727e7475- | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890644-727e7475- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890644-727e7475- | INFO  | LogAux - STATUS: 201
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890644-727e7475- | INFO  | LogAux - BODY: {"task":{"id":"J7nxIQpFh3","data":{"amount":"10000","pulsanti":"[it.pagopa.atmlayer.wf.task.test.bean.Dato@5a7b1242]","totale":"2.3","fee":"2.3","description":"descrizione","company":"Auriga","pulsante.circuits":"[VISA, MASTERCARD]","test1":"data1"},"timeout":0,"template":{"content":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgaHRtbCBQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KPGhlYWQ+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJjc3MvZW11bGF0b3JlLmNzcyIgLz48L2hlYWQ+Cjxib2R5PgoJPGltZyBpZD0ibG9nbyIgc3JjPSJodHRwczovL2QyeGR1eTd0Ymd1MmQzLmNsb3VkZnJvbnQubmV0L2ZpbGVzL0lDT04vZGVmYXVsdF9sb2dvLnN2ZyIgLz4KCTxoMT5TZXJ2aXppIGRpIHB1YmJsaWNhIHV0aWxpdCYjMjI0OzwvaDE+CQoJCgk8aDI+UmllcGlsb2dvIGRlbCBwYWdhbWVudG88L2gyPgoJCgk8dGFibGUgaWQ9InRhYmxlIj4KCTx0aGVhZD4KCSA8dHI+CgkJPHRoPgoJCQk8c3Bhbj5BdXJpZ2E8L3NwYW4+CgkJPC90aD4KCQk8dGggY2xhc3M9InJpZ2h0Ij4KCQkJPHNwYW4+MTAwMDAgJiM4MzY0Ozwvc3Bhbj4KCQk8L3RoPgkJCgkgIDwvdHI+Cgk8L3RoZWFkPgoKCTx0Ym9keT4JCgkgIDx0cj4KCQk8dGQ+PHNwYW4+Q29tbWlzc2lvbmk8L3NwYW4+PC90ZD4KCQk8dGQgY2xhc3M9InJpZ2h0Ij4JCQkKCQkJPHNwYW4+Mi4zICYjODM2NDs8L3NwYW4+CgkJPC90ZD4JCQoJICA8L3RyPgkgIAoJIDwvdGJvZHk+CQoJIDx0Zm9vdD4KCQk8dHI+CgkJCTx0ZD48c3BhbiBjbGFzcz0ibGFyZ2UiPlRvdGFsZTwvc3Bhbj4JPC90ZD4KCQkJPHRkIGNsYXNzPSJyaWdodCI+PHNwYW4gY2xhc3M9ImxhcmdlIj4yLjMgJiM4MzY0Ozwvc3Bhbj48L3RkPgkJCgkJPC90cj4KCSAgPC90Zm9vdD4KCgkgCgk8L3RhYmxlPgkKIAogICAgPGJ1dHRvbiBjbGFzcz0ibmVnYXRpdmUiIGRhdGEtZmRrPSJTNCIgaWQ9ImJhY2siPgogICAgICA8c3Bhbj5JbmRpZXRybzwvc3Bhbj4KICAgIDwvYnV0dG9uPgoJCgk8YnV0dG9uIGNsYXNzPSJuZWdhdGl2ZSIgaWQ9ImV4aXQiPgogICAgICA8c3Bhbj5Fc2NpPC9zcGFuPgogICAgPC9idXR0b24+CgkKCTxidXR0b24gY2xhc3M9InBvc2l0aXZlIiBkYXRhLWZkaz0iUzgiIGlkPSJjb25maXJtIj4KICAgICAgPHNwYW4+UGFnYSAgMi4zICYjODM2NDs8L3NwYW4+Cgk8L2J1dHRvbj4KCQoJCiAgICAgICAgPGJ1dHRvbiBjbGFzcz0ibmVnYXRpdmUiIGRhdGEtZmRrPSJTMSIgaWQ9Iml0LnBhZ29wYS5hdG1sYXllci53Zi50YXNrLnRlc3QuYmVhbi5EYXRvQDVhN2IxMjQyIj4KICAgICAgICAgICAgPHNwYW4+aXQucGFnb3BhLmF0bWxheWVyLndmLnRhc2sudGVzdC5iZWFuLkRhdG9ANWE3YjEyNDI8L3NwYW4+CQkJCgkJCTxzcGFuPnZlZGkyPC9zcGFuPgoJCQkKCQkJCQk8aW1nIHNyYz0iZmlsZTpzcmMvdGVzdC9JQ09OL01BU1RFUkNBUkQuc3ZnIiAvPgoJCQkJCgkJCQkJPGltZyBzcmM9ImZpbGU6c3JjL3Rlc3QvSUNPTi9WSVNBLnN2ZyIgLz4KCQkJCQogICAgICAgIDwvYnV0dG9uPgogIAkKCgk8L2JvZHk+CgkKPC9odG1sPg=="},"buttons":[]},"transactionId":"00001-0002-1234-1234567890-1711463890644-727e7475-","outcome":{"result":"OK","description":"The operation completed successfully"}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-1711463890644-727e7475- | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - PATH PARAMS: {transactionId=[00001-0002-1234-1234567890-aaaaaaaaaaaaa]}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=231,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463890669,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"taskId":"1","data":{"var1":"test"}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - STATUS: 500
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"errorCode":"VARIABLE_ERROR","description":"Error retrieve variables on next step","status":500}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - PATH PARAMS: {transactionId=[00001-0002-1234-1234567890-aaaaaaaaaaaaa]}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip,deflate,Connection=Keep-Alive,Content-Length=231,Content-Type=application/json,Host=localhost:8086,User-Agent=Apache-HttpClient/4.5.14 (Java/17.0.10)]
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - METHOD: POST
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"device":{"bankId":"00001","branchId":"0002","code":"1234","terminalId":"1234567890","opTimestamp":1711463890693,"channel":"ATM","peripherals":[{"id":"PRINTER","name":"PRINTER","status":"OK"}]},"taskId":"1","data":{"var1":"test"}}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - STATUS: 209
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - BODY: {"errorCode":"PROCESS_ERROR","description":"Error while running the process","status":209}
+2024-03-26 14:38:10 00001-0002-1234-1234567890-aaaaaaaaaaaaa | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10  | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10  | INFO  | LogAux - STATUS: 404
+2024-03-26 14:38:10  | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10  | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:38:10  | INFO  | LogAux - STATUS: 404
+2024-03-26 14:38:10  | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:29 06789-12345-0001-64874412-1698769800000-f2bbc957-4 | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:29 06789-12345-0001-64874412-1698769800000-f2bbc957-4 | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:39:29 06789-12345-0001-64874412-1698769800000-f2bbc957-4 | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip, deflate, br,Cache-Control=no-cache,Connection=keep-alive,Content-Length=494,Content-Type=application/json,Host=host.testcontainers.internal:8086,Postman-Token=dd225f09-8d7e-4f0a-bc8c-17693377914a,User-Agent=PostmanRuntime/7.37.1]
+2024-03-26 14:39:29 06789-12345-0001-64874412-1698769800000-f2bbc957-4 | INFO  | LogAux - METHOD: POST
+2024-03-26 14:39:29 06789-12345-0001-64874412-1698769800000-f2bbc957-4 | INFO  | LogAux - BODY: {
+    "device": {
+        "bankId": "06789",
+        "branchId": "12345",
+        "code": "0001",
+        "terminalId": "64874412",
+        "opTimestamp": "2023-10-31T16:30:00",
+        "channel": "ATM",
+        "peripherals": [
+            {
+                "id": "PRINTER",
+                "name": "Receipt printer",
+                "status": "OK"
+            },
+            {
+                "id": "SCANNER",
+                "status": "OK"
+            }
+        ]
+    }
+}
+2024-03-26 14:39:29 06789-12345-0001-64874412-1698769800000-f2bbc957-4 | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:30 06789-12345-0001-64874412-1698769800000-f2bbc957-4 | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:30 06789-12345-0001-64874412-1698769800000-f2bbc957-4 | INFO  | LogAux - STATUS: 201
+2024-03-26 14:39:30 06789-12345-0001-64874412-1698769800000-f2bbc957-4 | INFO  | LogAux - BODY: {"task":{"id":"1","data":{"test1":"data1","variable1":"11.50","amount":"10000","totale":"11.5","fee":"2.3","description":"descrizione","company":"Auriga"},"onError":{"error":"Auriga"},"timeout":50,"onTimeout":{"error":"Auriga"},"template":{"content":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgaHRtbCBQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KPGhlYWQ+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJjc3MvZW11bGF0b3JlLmNzcyIgLz48L2hlYWQ+Cjxib2R5PgoJPGltZyBpZD0ibG9nbyIgc3JjPSJodHRwczovL2QyeGR1eTd0Ymd1MmQzLmNsb3VkZnJvbnQubmV0L2ZpbGVzL0lDT04vZGVmYXVsdF9sb2dvLnN2ZyIgLz4KCTxoMT5TZXJ2aXppIGRpIHB1YmJsaWNhIHV0aWxpdCYjMjI0OzwvaDE+CQoJCgk8aDI+UmllcGlsb2dvIGRlbCBwYWdhbWVudG88L2gyPgoJCgk8dGFibGUgaWQ9InRhYmxlIj4KCTx0aGVhZD4KCSA8dHI+CgkJPHRoPgoJCQk8c3Bhbj5BdXJpZ2E8L3NwYW4+CgkJPC90aD4KCQk8dGggY2xhc3M9InJpZ2h0Ij4KCQkJPHNwYW4+MTAwMDAgJiM4MzY0Ozwvc3Bhbj4KCQk8L3RoPgkJCgkgIDwvdHI+Cgk8L3RoZWFkPgoKCTx0Ym9keT4JCgkgIDx0cj4KCQk8dGQ+PHNwYW4+Q29tbWlzc2lvbmk8L3NwYW4+PC90ZD4KCQk8dGQgY2xhc3M9InJpZ2h0Ij4JCQkKCQkJPHNwYW4+Mi4zICYjODM2NDs8L3NwYW4+CgkJPC90ZD4JCQoJICA8L3RyPgkgIAoJIDwvdGJvZHk+CQoJIDx0Zm9vdD4KCQk8dHI+CgkJCTx0ZD48c3BhbiBjbGFzcz0ibGFyZ2UiPlRvdGFsZTwvc3Bhbj4JPC90ZD4KCQkJPHRkIGNsYXNzPSJyaWdodCI+PHNwYW4gY2xhc3M9ImxhcmdlIj4xMS41ICYjODM2NDs8L3NwYW4+PC90ZD4JCQoJCTwvdHI+CgkgIDwvdGZvb3Q+CgoJIAoJPC90YWJsZT4JCiAKICAgIDxidXR0b24gY2xhc3M9Im5lZ2F0aXZlIiBkYXRhLWZkaz0iUzQiIGlkPSJiYWNrIj4KICAgICAgPHNwYW4+SW5kaWV0cm88L3NwYW4+CiAgICA8L2J1dHRvbj4KCQoJPGJ1dHRvbiBjbGFzcz0ibmVnYXRpdmUiIGlkPSJleGl0Ij4KICAgICAgPHNwYW4+RXNjaTwvc3Bhbj4KICAgIDwvYnV0dG9uPgoJCgk8YnV0dG9uIGNsYXNzPSJwb3NpdGl2ZSIgZGF0YS1mZGs9IlM4IiBpZD0iY29uZmlybSI+CiAgICAgIDxzcGFuPlBhZ2EgIDExLjUgJiM4MzY0Ozwvc3Bhbj4KCTwvYnV0dG9uPgoJCgkKCgk8L2JvZHk+CgkKPC9odG1sPg=="},"command":"PRINT_RECEIPT","buttons":[{"id":"button1","data":{"error":"Auriga"}}]},"transactionId":"06789-12345-0001-64874412-1698769800000-f2bbc957-4","outcome":{"result":"OK","description":"The operation completed successfully"}}
+2024-03-26 14:39:30 06789-12345-0001-64874412-1698769800000-f2bbc957-4 | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-5a1dfcff-f | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-5a1dfcff-f | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-5a1dfcff-f | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip, deflate, br,Cache-Control=no-cache,Connection=keep-alive,Content-Length=494,Content-Type=application/json,Host=host.testcontainers.internal:8086,Postman-Token=50476013-4ea5-4ff2-9baf-b577ed4cb4bc,User-Agent=PostmanRuntime/7.37.1]
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-5a1dfcff-f | INFO  | LogAux - METHOD: POST
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-5a1dfcff-f | INFO  | LogAux - BODY: {
+    "device": {
+        "bankId": "00001",
+        "branchId": "12345",
+        "code": "0001",
+        "terminalId": "64874412",
+        "opTimestamp": "2023-10-31T16:30:00",
+        "channel": "ATM",
+        "peripherals": [
+            {
+                "id": "PRINTER",
+                "name": "Receipt printer",
+                "status": "OK"
+            },
+            {
+                "id": "SCANNER",
+                "status": "OK"
+            }
+        ]
+    }
+}
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-5a1dfcff-f | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-5a1dfcff-f | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-5a1dfcff-f | INFO  | LogAux - STATUS: 200
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-5a1dfcff-f | INFO  | LogAux - BODY: {"transactionId":"00001-12345-0001-64874412-1698769800000-5a1dfcff-f","outcome":{"result":"END","description":"The process is terminated"}}
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-5a1dfcff-f | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-ebc44bfb-3 | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-ebc44bfb-3 | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-ebc44bfb-3 | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip, deflate, br,Cache-Control=no-cache,Connection=keep-alive,Content-Length=494,Content-Type=application/json,Host=host.testcontainers.internal:8086,Postman-Token=b8b3fa3b-c51c-42b3-aea3-f4d453f5b56d,User-Agent=PostmanRuntime/7.37.1]
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-ebc44bfb-3 | INFO  | LogAux - METHOD: POST
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-ebc44bfb-3 | INFO  | LogAux - BODY: {
+    "device": {
+        "bankId": "00002",
+        "branchId": "12345",
+        "code": "0001",
+        "terminalId": "64874412",
+        "opTimestamp": "2023-10-31T16:30:00",
+        "channel": "ATM",
+        "peripherals": [
+            {
+                "id": "PRINTER",
+                "name": "Receipt printer",
+                "status": "OK"
+            },
+            {
+                "id": "SCANNER",
+                "status": "OK"
+            }
+        ]
+    }
+}
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-ebc44bfb-3 | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-ebc44bfb-3 | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-ebc44bfb-3 | INFO  | LogAux - STATUS: 202
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-ebc44bfb-3 | INFO  | LogAux - BODY: {"transactionId":"00002-12345-0001-64874412-1698769800000-ebc44bfb-3","outcome":{"result":"PROCESSING","description":"Process still running, retry later"}}
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-ebc44bfb-3 | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-ee807ad9-5 | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-ee807ad9-5 | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-ee807ad9-5 | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip, deflate, br,Cache-Control=no-cache,Connection=keep-alive,Content-Length=494,Content-Type=application/json,Host=host.testcontainers.internal:8086,Postman-Token=3a759c2a-be46-4b59-96de-3be188958047,User-Agent=PostmanRuntime/7.37.1]
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-ee807ad9-5 | INFO  | LogAux - METHOD: POST
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-ee807ad9-5 | INFO  | LogAux - BODY: {
+    "device": {
+        "bankId": "00003",
+        "branchId": "12345",
+        "code": "0001",
+        "terminalId": "64874412",
+        "opTimestamp": "2023-10-31T16:30:00",
+        "channel": "ATM",
+        "peripherals": [
+            {
+                "id": "PRINTER",
+                "name": "Receipt printer",
+                "status": "OK"
+            },
+            {
+                "id": "SCANNER",
+                "status": "OK"
+            }
+        ]
+    }
+}
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-ee807ad9-5 | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-ee807ad9-5 | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-ee807ad9-5 | INFO  | LogAux - STATUS: 209
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-ee807ad9-5 | INFO  | LogAux - BODY: {"errorCode":"PROCESS_ERROR","description":"Error while running the process","status":209}
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-ee807ad9-5 | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-7a3cebc7-e | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-7a3cebc7-e | INFO  | LogAux - PATH PARAMS: {}
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-7a3cebc7-e | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip, deflate, br,Cache-Control=no-cache,Connection=keep-alive,Content-Length=494,Content-Type=application/json,Host=host.testcontainers.internal:8086,Postman-Token=80de74dc-cc49-4a11-a44b-7b71946b1aa5,User-Agent=PostmanRuntime/7.37.1]
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-7a3cebc7-e | INFO  | LogAux - METHOD: POST
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-7a3cebc7-e | INFO  | LogAux - BODY: {
+    "device": {
+        "bankId": "00004",
+        "branchId": "12345",
+        "code": "0001",
+        "terminalId": "64874412",
+        "opTimestamp": "2023-10-31T16:30:00",
+        "channel": "ATM",
+        "peripherals": [
+            {
+                "id": "PRINTER",
+                "name": "Receipt printer",
+                "status": "OK"
+            },
+            {
+                "id": "SCANNER",
+                "status": "OK"
+            }
+        ]
+    }
+}
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-7a3cebc7-e | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-7a3cebc7-e | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-7a3cebc7-e | INFO  | LogAux - STATUS: 500
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-7a3cebc7-e | INFO  | LogAux - BODY: {"errorCode":"TASK_ERROR","description":"Error retrieve next step","status":500}
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-7a3cebc7-e | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:30 06789-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:30 06789-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - PATH PARAMS: {transactionId=[06789-12345-0001-64874412-1698769800000-363cc36d-0]}
+2024-03-26 14:39:30 06789-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip, deflate, br,Cache-Control=no-cache,Connection=keep-alive,Content-Length=680,Content-Type=application/json,Host=host.testcontainers.internal:8086,Postman-Token=97d6e835-3eb9-491a-860c-44f356e26eb5,User-Agent=PostmanRuntime/7.37.1]
+2024-03-26 14:39:30 06789-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - METHOD: POST
+2024-03-26 14:39:30 06789-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - BODY: {
+    "device": {
+        "bankId": "06789",
+        "branchId": "12345",
+        "code": "0001",
+        "terminalId": "64874412",
+        "opTimestamp": "2023-10-31T16:30:00",
+        "channel": "ATM",
+        "peripherals": [
+            {
+                "id": "PRINTER",
+                "name": "Receipt printer",
+                "status": "OK"
+            },
+            {
+                "id": "SCANNER",
+                "name": "Scanner",
+                "status": "OK"
+            }
+        ]
+    },
+    "data": {
+        "continue": true,
+        "functionId": "SPONTANEOUS_PAYMENT"
+    },
+    "taskId": "5352663e-8a11-11ee-a28e-be1865dc64a3"
+}
+2024-03-26 14:39:30 06789-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:30 06789-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:30 06789-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - STATUS: 201
+2024-03-26 14:39:30 06789-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - BODY: {"task":{"id":"1","data":{"test1":"data1","variable1":"11.50","amount":"10000","totale":"11.5","fee":"2.3","description":"descrizione","company":"Auriga"},"onError":{"error":"Auriga"},"timeout":50,"onTimeout":{"error":"Auriga"},"template":{"content":"PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IURPQ1RZUEUgaHRtbCBQVUJMSUMgIi0vL1czQy8vRFREIFhIVE1MIDEuMCBUcmFuc2l0aW9uYWwvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvVFIveGh0bWwxL0RURC94aHRtbDEtdHJhbnNpdGlvbmFsLmR0ZCI+CjxodG1sIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hodG1sIj4KPGhlYWQ+PGxpbmsgcmVsPSJzdHlsZXNoZWV0IiBocmVmPSJjc3MvZW11bGF0b3JlLmNzcyIgLz48L2hlYWQ+Cjxib2R5PgoJPGltZyBpZD0ibG9nbyIgc3JjPSJodHRwczovL2QyeGR1eTd0Ymd1MmQzLmNsb3VkZnJvbnQubmV0L2ZpbGVzL0lDT04vZGVmYXVsdF9sb2dvLnN2ZyIgLz4KCTxoMT5TZXJ2aXppIGRpIHB1YmJsaWNhIHV0aWxpdCYjMjI0OzwvaDE+CQoJCgk8aDI+UmllcGlsb2dvIGRlbCBwYWdhbWVudG88L2gyPgoJCgk8dGFibGUgaWQ9InRhYmxlIj4KCTx0aGVhZD4KCSA8dHI+CgkJPHRoPgoJCQk8c3Bhbj5BdXJpZ2E8L3NwYW4+CgkJPC90aD4KCQk8dGggY2xhc3M9InJpZ2h0Ij4KCQkJPHNwYW4+MTAwMDAgJiM4MzY0Ozwvc3Bhbj4KCQk8L3RoPgkJCgkgIDwvdHI+Cgk8L3RoZWFkPgoKCTx0Ym9keT4JCgkgIDx0cj4KCQk8dGQ+PHNwYW4+Q29tbWlzc2lvbmk8L3NwYW4+PC90ZD4KCQk8dGQgY2xhc3M9InJpZ2h0Ij4JCQkKCQkJPHNwYW4+Mi4zICYjODM2NDs8L3NwYW4+CgkJPC90ZD4JCQoJICA8L3RyPgkgIAoJIDwvdGJvZHk+CQoJIDx0Zm9vdD4KCQk8dHI+CgkJCTx0ZD48c3BhbiBjbGFzcz0ibGFyZ2UiPlRvdGFsZTwvc3Bhbj4JPC90ZD4KCQkJPHRkIGNsYXNzPSJyaWdodCI+PHNwYW4gY2xhc3M9ImxhcmdlIj4xMS41ICYjODM2NDs8L3NwYW4+PC90ZD4JCQoJCTwvdHI+CgkgIDwvdGZvb3Q+CgoJIAoJPC90YWJsZT4JCiAKICAgIDxidXR0b24gY2xhc3M9Im5lZ2F0aXZlIiBkYXRhLWZkaz0iUzQiIGlkPSJiYWNrIj4KICAgICAgPHNwYW4+SW5kaWV0cm88L3NwYW4+CiAgICA8L2J1dHRvbj4KCQoJPGJ1dHRvbiBjbGFzcz0ibmVnYXRpdmUiIGlkPSJleGl0Ij4KICAgICAgPHNwYW4+RXNjaTwvc3Bhbj4KICAgIDwvYnV0dG9uPgoJCgk8YnV0dG9uIGNsYXNzPSJwb3NpdGl2ZSIgZGF0YS1mZGs9IlM4IiBpZD0iY29uZmlybSI+CiAgICAgIDxzcGFuPlBhZ2EgIDExLjUgJiM4MzY0Ozwvc3Bhbj4KCTwvYnV0dG9uPgoJCgkKCgk8L2JvZHk+CgkKPC9odG1sPg=="},"command":"PRINT_RECEIPT","buttons":[{"id":"button1","data":{"error":"Auriga"}}]},"transactionId":"06789-12345-0001-64874412-1698769800000-363cc36d-0","outcome":{"result":"OK","description":"The operation completed successfully"}}
+2024-03-26 14:39:30 06789-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - PATH PARAMS: {transactionId=[00001-12345-0001-64874412-1698769800000-363cc36d-0]}
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip, deflate, br,Cache-Control=no-cache,Connection=keep-alive,Content-Length=680,Content-Type=application/json,Host=host.testcontainers.internal:8086,Postman-Token=110f04f1-6282-4dfb-a29b-4f50c99c2e8f,User-Agent=PostmanRuntime/7.37.1]
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - METHOD: POST
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - BODY: {
+    "device": {
+        "bankId": "00001",
+        "branchId": "12345",
+        "code": "0001",
+        "terminalId": "64874412",
+        "opTimestamp": "2023-10-31T16:30:00",
+        "channel": "ATM",
+        "peripherals": [
+            {
+                "id": "PRINTER",
+                "name": "Receipt printer",
+                "status": "OK"
+            },
+            {
+                "id": "SCANNER",
+                "name": "Scanner",
+                "status": "OK"
+            }
+        ]
+    },
+    "data": {
+        "continue": true,
+        "functionId": "SPONTANEOUS_PAYMENT"
+    },
+    "taskId": "5352663e-8a11-11ee-a28e-be1865dc64a3"
+}
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - STATUS: 200
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - BODY: {"transactionId":"00001-12345-0001-64874412-1698769800000-363cc36d-0","outcome":{"result":"END","description":"The process is terminated"}}
+2024-03-26 14:39:30 00001-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - PATH PARAMS: {transactionId=[00002-12345-0001-64874412-1698769800000-363cc36d-0]}
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip, deflate, br,Cache-Control=no-cache,Connection=keep-alive,Content-Length=680,Content-Type=application/json,Host=host.testcontainers.internal:8086,Postman-Token=8390cc2c-bbbc-496d-b6b4-6598b1afd629,User-Agent=PostmanRuntime/7.37.1]
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - METHOD: POST
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - BODY: {
+    "device": {
+        "bankId": "00002",
+        "branchId": "12345",
+        "code": "0001",
+        "terminalId": "64874412",
+        "opTimestamp": "2023-10-31T16:30:00",
+        "channel": "ATM",
+        "peripherals": [
+            {
+                "id": "PRINTER",
+                "name": "Receipt printer",
+                "status": "OK"
+            },
+            {
+                "id": "SCANNER",
+                "name": "Scanner",
+                "status": "OK"
+            }
+        ]
+    },
+    "data": {
+        "continue": true,
+        "functionId": "SPONTANEOUS_PAYMENT"
+    },
+    "taskId": "5352663e-8a11-11ee-a28e-be1865dc64a3"
+}
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - STATUS: 202
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - BODY: {"transactionId":"00002-12345-0001-64874412-1698769800000-363cc36d-0","outcome":{"result":"PROCESSING","description":"Process still running, retry later"}}
+2024-03-26 14:39:30 00002-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - PATH PARAMS: {transactionId=[00003-12345-0001-64874412-1698769800000-363cc36d-0]}
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip, deflate, br,Cache-Control=no-cache,Connection=keep-alive,Content-Length=680,Content-Type=application/json,Host=host.testcontainers.internal:8086,Postman-Token=a54ac3d0-238c-478e-8d9b-cb43e9a25f04,User-Agent=PostmanRuntime/7.37.1]
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - METHOD: POST
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - BODY: {
+    "device": {
+        "bankId": "00003",
+        "branchId": "12345",
+        "code": "0001",
+        "terminalId": "64874412",
+        "opTimestamp": "2023-10-31T16:30:00",
+        "channel": "ATM",
+        "peripherals": [
+            {
+                "id": "PRINTER",
+                "name": "Receipt printer",
+                "status": "OK"
+            },
+            {
+                "id": "SCANNER",
+                "name": "Scanner",
+                "status": "OK"
+            }
+        ]
+    },
+    "data": {
+        "continue": true,
+        "functionId": "SPONTANEOUS_PAYMENT"
+    },
+    "taskId": "5352663e-8a11-11ee-a28e-be1865dc64a3"
+}
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - STATUS: 209
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - BODY: {"errorCode":"PROCESS_ERROR","description":"Error while running the process","status":209}
+2024-03-26 14:39:30 00003-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - PATH PARAMS: {transactionId=[00004-12345-0001-64874412-1698769800000-363cc36d-0]}
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - HEADERS: [Accept=*/*,Accept-Encoding=gzip, deflate, br,Cache-Control=no-cache,Connection=keep-alive,Content-Length=680,Content-Type=application/json,Host=host.testcontainers.internal:8086,Postman-Token=132cb732-5d44-449c-95c4-a9fe7aa6eb3a,User-Agent=PostmanRuntime/7.37.1]
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - METHOD: POST
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - BODY: {
+    "device": {
+        "bankId": "00004",
+        "branchId": "12345",
+        "code": "0001",
+        "terminalId": "64874412",
+        "opTimestamp": "2023-10-31T16:30:00",
+        "channel": "ATM",
+        "peripherals": [
+            {
+                "id": "PRINTER",
+                "name": "Receipt printer",
+                "status": "OK"
+            },
+            {
+                "id": "SCANNER",
+                "name": "Scanner",
+                "status": "OK"
+            }
+        ]
+    },
+    "data": {
+        "continue": true,
+        "functionId": "SPONTANEOUS_PAYMENT"
+    },
+    "taskId": "5352663e-8a11-11ee-a28e-be1865dc64a3"
+}
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== REQUEST ==============
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== RESPONSE ==============
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - STATUS: 500
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - BODY: {"errorCode":"TASK_ERROR","description":"Error retrieve next step","status":500}
+2024-03-26 14:39:30 00004-12345-0001-64874412-1698769800000-363cc36d-0 | INFO  | LogAux - ============== RESPONSE ==============
