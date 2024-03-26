@@ -5,9 +5,8 @@ import org.slf4j.LoggerFactory;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+
 @ApplicationScoped
 public class CommonLogic{
 
@@ -26,6 +25,8 @@ public class CommonLogic{
     private static final String MIL_AUTH_REST_CLIENT_CLASS_ID = "MilAuthRestClient.";
     protected static final String GET_TOKEN_LOG_ID = MIL_AUTH_REST_CLIENT_CLASS_ID + "getToken";
     protected static final String DELETE_TOKEN_LOG_ID = MIL_AUTH_REST_CLIENT_CLASS_ID + "deleteToken";
+
+    protected static final org.slf4j.Logger log = LoggerFactory.getLogger("log");
 
     protected static final org.slf4j.Logger logAux = LoggerFactory.getLogger("LogAux");
 
