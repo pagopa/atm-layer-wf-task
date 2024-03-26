@@ -32,6 +32,9 @@ public interface Properties {
     @ConfigProperty(name = "escape")
     Map<String, String> escape();
 
+    @ConfigProperty(name = "trace-logging-enabled")
+    boolean isTraceLoggingEnabled();
+
     public static class ConverterImplement implements Converter<String> {
         @Override
         public String convert(String value) throws IllegalArgumentException, NullPointerException {

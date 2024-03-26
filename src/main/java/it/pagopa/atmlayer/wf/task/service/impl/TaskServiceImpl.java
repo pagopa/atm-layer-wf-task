@@ -66,10 +66,8 @@ import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
 import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Constants;
-import it.pagopa.atmlayer.wf.task.util.Properties;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.ws.rs.WebApplicationException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -85,9 +83,6 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 
     @RestClient
     TokenizationRestClient tokenizationClient;
-
-    @Inject
-    Properties properties;
 
     @Override
     public Scene buildFirst(String functionId, State state) {

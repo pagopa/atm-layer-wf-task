@@ -124,8 +124,13 @@
       <artifactId>opentelemetry-extension-trace-propagators</artifactId>
     </dependency>
     <dependency>
-    	<groupId>io.quarkus</groupId>
-	<artifactId>quarkus-hibernate-validator</artifactId>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-hibernate-validator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkiverse.logging.logback</groupId>
+      <artifactId>quarkus-logging-logback</artifactId>
+      <version>1.1.2</version>
     </dependency>
   </dependencies>
   <build>

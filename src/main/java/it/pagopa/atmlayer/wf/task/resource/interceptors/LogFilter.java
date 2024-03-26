@@ -7,6 +7,7 @@ import java.util.Set;
 import org.slf4j.MDC;
 
 import it.pagopa.atmlayer.wf.task.bean.State;
+import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Constants;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.validation.ConstraintViolation;
@@ -23,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Provider
 @Slf4j
-public class LogFilter implements ContainerRequestFilter, ContainerResponseFilter {
+public class LogFilter extends CommonLogic implements ContainerRequestFilter, ContainerResponseFilter {
     
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -48,30 +49,36 @@ public class LogFilter implements ContainerRequestFilter, ContainerResponseFilte
                 MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, transactionId);
             }
             
-            log.info("============== REQUEST ==============");
+            logAux("============== REQUEST ==============");
             if (pathParameters != null) {
-                log.info("PATH PARAMS: {}", pathParameters);
+                logAux("PATH PARAMS: {}", pathParameters);
             }
-            log.info("HEADERS: {}", requestContext.getHeaders());
-            log.info("METHOD: {}", requestContext.getMethod());
+            logAux("HEADERS: {}", requestContext.getHeaders());
+            logAux("METHOD: {}", requestContext.getMethod());
 
             log.info("BODY: {}", state);
+            if (isTraceLoggingEnabled) {
+                logAux.info("BODY: {}", new String(entity));
+            }
 
             requestContext.setEntityStream(new ByteArrayInputStream(Utility.setTransactionIdInJson(entity, transactionId)));
 
-            log.info("============== REQUEST ==============");
+            logAux("============== REQUEST ==============");
         }
     }
 
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
         if (requestContext.getUriInfo().getPath().startsWith("/api/v1")) {
-            log.info("============== RESPONSE ==============");
-            log.info("Response: Status: {}", responseContext.getStatus());
+            logAux("============== RESPONSE ==============");
+            logAux("STATUS: {}", responseContext.getStatus());
             if (responseContext.getEntity() != null) {
-                log.info("Body: {}", Utility.getObscuredJson(responseContext.getEntity()));
+                log.info("BODY: {}", Utility.getObscuredJson(responseContext.getEntity()));
+                if (isTraceLoggingEnabled) {
+                    logAux.info("BODY: {}", Utility.getJson(responseContext.getEntity()));
+                }
             }
-            log.info("============== RESPONSE ==============");
+            logAux("============== RESPONSE ==============");
             MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
         }
     }

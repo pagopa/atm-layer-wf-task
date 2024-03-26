@@ -1,9 +1,18 @@
 package it.pagopa.atmlayer.wf.task.util;
 
+import org.slf4j.LoggerFactory;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@ApplicationScoped
 public class CommonLogic{
+
+    @Inject
+    protected Properties properties;
 
     private static final String TASK_RESOURCE_CLASS_ID = "TaskResource.";
     protected static final String CREATE_MAIN_SCENE_LOG_ID = TASK_RESOURCE_CLASS_ID + "createMainScene";
@@ -17,6 +26,46 @@ public class CommonLogic{
     private static final String MIL_AUTH_REST_CLIENT_CLASS_ID = "MilAuthRestClient.";
     protected static final String GET_TOKEN_LOG_ID = MIL_AUTH_REST_CLIENT_CLASS_ID + "getToken";
     protected static final String DELETE_TOKEN_LOG_ID = MIL_AUTH_REST_CLIENT_CLASS_ID + "deleteToken";
+
+    protected static final org.slf4j.Logger logAux = LoggerFactory.getLogger("LogAux");
+
+    protected boolean isTraceLoggingEnabled;
+
+    @PostConstruct
+    public void init() {
+        isTraceLoggingEnabled = properties.isTraceLoggingEnabled();
+    }
+
+    /**
+     * This method serves as a provider of an <b>auxiliary logger</b> for tracing purpose.
+     * If trace logging is enabled in properties the string passed to the method will
+     * be logged also in the wf-task-trace.log file. 
+     * 
+     * @param string - string to log
+     * @see application.properties
+     */
+    protected void logAux(String string){
+        log.info(string);
+        if (isTraceLoggingEnabled) {
+            logAux.info(string);
+        }
+    }
+
+    /**
+     * This method serves as a provider of an <b>auxiliary logger</b> for tracing purpose.
+     * If trace logging is enabled in properties the string passed to the method will
+     * be logged also in the wf-task-trace.log file. 
+     * 
+     * @param string - string to log
+     * @param object - object to log
+     * @see application.properties
+     */
+    protected void logAux(String string, Object object){
+        log.info(string, object);
+        if (isTraceLoggingEnabled) {
+            logAux.info(string, object);
+        }
+    }
 
     /**
      * Logs the elapsed time occurred for the processing.
