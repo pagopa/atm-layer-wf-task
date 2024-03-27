@@ -49,36 +49,36 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
                 MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, transactionId);
             }
             
-            logAux("============== REQUEST ==============");
+            logTracePropagation("============== REQUEST ==============");
             if (pathParameters != null) {
-                logAux("PATH PARAMS: {}", pathParameters);
+                logTracePropagation("PATH PARAMS: {}", pathParameters);
             }
-            logAux("HEADERS: {}", requestContext.getHeaders());
-            logAux("METHOD: {}", requestContext.getMethod());
+            logTracePropagation("HEADERS: {}", requestContext.getHeaders());
+            logTracePropagation("METHOD: {}", requestContext.getMethod());
 
             log.info("BODY: {}", state);
             if (isTraceLoggingEnabled) {
-                logAux.info("BODY: {}", new String(entity));
+                logAux.trace("BODY: {}", new String(entity));
             }
 
             requestContext.setEntityStream(new ByteArrayInputStream(Utility.setTransactionIdInJson(entity, transactionId)));
 
-            logAux("============== REQUEST ==============");
+            logTracePropagation("============== REQUEST ==============");
         }
     }
 
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
         if (requestContext.getUriInfo().getPath().startsWith("/api/v1")) {
-            logAux("============== RESPONSE ==============");
-            logAux("STATUS: {}", responseContext.getStatus());
+            logTracePropagation("============== RESPONSE ==============");
+            logTracePropagation("STATUS: {}", responseContext.getStatus());
             if (responseContext.getEntity() != null) {
                 log.info("BODY: {}", Utility.getObscuredJson(responseContext.getEntity()));
                 if (isTraceLoggingEnabled) {
-                    logAux.info("BODY: {}", Utility.getJson(responseContext.getEntity()));
+                    logAux.trace("BODY: {}", Utility.getJson(responseContext.getEntity()));
                 }
             }
-            logAux("============== RESPONSE ==============");
+            logTracePropagation("============== RESPONSE ==============");
             MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
         }
     }

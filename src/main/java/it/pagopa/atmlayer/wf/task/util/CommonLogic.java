@@ -5,9 +5,10 @@ import org.slf4j.LoggerFactory;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-
+import lombok.extern.slf4j.Slf4j;
 
 @ApplicationScoped
+@Slf4j
 public class CommonLogic{
 
     @Inject
@@ -26,8 +27,6 @@ public class CommonLogic{
     protected static final String GET_TOKEN_LOG_ID = MIL_AUTH_REST_CLIENT_CLASS_ID + "getToken";
     protected static final String DELETE_TOKEN_LOG_ID = MIL_AUTH_REST_CLIENT_CLASS_ID + "deleteToken";
 
-    protected static final org.slf4j.Logger log = LoggerFactory.getLogger("log");
-
     protected static final org.slf4j.Logger logAux = LoggerFactory.getLogger("LogAux");
 
     protected boolean isTraceLoggingEnabled;
@@ -45,10 +44,10 @@ public class CommonLogic{
      * @param string - string to log
      * @see application.properties
      */
-    protected void logAux(String string){
+    protected void logTracePropagation(String string){
         log.info(string);
         if (isTraceLoggingEnabled) {
-            logAux.info(string);
+            logAux.trace(string);
         }
     }
 
@@ -61,10 +60,10 @@ public class CommonLogic{
      * @param object - object to log
      * @see application.properties
      */
-    protected void logAux(String string, Object object){
+    protected void logTracePropagation(String string, Object object){
         log.info(string, object);
         if (isTraceLoggingEnabled) {
-            logAux.info(string, object);
+            logAux.trace(string, object);
         }
     }
 

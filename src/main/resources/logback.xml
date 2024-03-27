@@ -1,13 +1,11 @@
 <configuration>
-    <appender name="TraceFileAppender" class="ch.qos.logback.core.FileAppender">
+    <appender name="TraceAppender" class="ch.qos.logback.core.FileAppender">
         <file>wf-task-trace.log</file> 
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} %X{transactionId} | %-5level | %logger{100} - %msg%n</pattern>
         </encoder>
     </appender>
-    <logger name="LogAux" level="debug" additivity="false">
-        <appender-ref ref="TraceFileAppender"/>
+    <logger name="LogAux" level="trace" additivity="false">
+        <appender-ref ref="TraceAppender" />
     </logger>
-
-    <root level="error"/>
 </configuration>
