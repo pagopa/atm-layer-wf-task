@@ -1,9 +1,11 @@
 package it.pagopa.atmlayer.wf.task.util;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+@ApplicationScoped
 public class FileStorageS3Utils {
     
     @Inject
