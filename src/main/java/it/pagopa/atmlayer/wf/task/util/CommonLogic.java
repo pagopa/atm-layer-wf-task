@@ -1,7 +1,6 @@
 package it.pagopa.atmlayer.wf.task.util;
 
-import org.slf4j.LoggerFactory;
-
+import it.pagopa.atmlayer.wf.task.service.impl.S3ObjectStoreServiceImpl;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -27,9 +26,10 @@ public class CommonLogic{
     protected static final String GET_TOKEN_LOG_ID = MIL_AUTH_REST_CLIENT_CLASS_ID + "getToken";
     protected static final String DELETE_TOKEN_LOG_ID = MIL_AUTH_REST_CLIENT_CLASS_ID + "deleteToken";
 
-    protected static final org.slf4j.Logger logAux = LoggerFactory.getLogger("LogAux");
-
     protected boolean isTraceLoggingEnabled;
+
+    @Inject
+    protected S3ObjectStoreServiceImpl objectStoreServiceImpl;
 
     @PostConstruct
     public void init() {
@@ -47,7 +47,7 @@ public class CommonLogic{
     protected void logTracePropagation(String string){
         log.info(string);
         if (isTraceLoggingEnabled) {
-            logAux.trace(string);
+            objectStoreServiceImpl.writeLog(string);
         }
     }
 
@@ -63,7 +63,7 @@ public class CommonLogic{
     protected void logTracePropagation(String string, Object object){
         log.info(string, object);
         if (isTraceLoggingEnabled) {
-            logAux.trace(string, object);
+            objectStoreServiceImpl.writeLog(string + object.toString());
         }
     }
 

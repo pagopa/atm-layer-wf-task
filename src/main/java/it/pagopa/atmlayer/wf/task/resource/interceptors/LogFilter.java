@@ -58,7 +58,7 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
 
             log.info("BODY: {}", state);
             if (isTraceLoggingEnabled) {
-                logAux.trace("BODY: {}", new String(entity));
+                objectStoreServiceImpl.writeLog("BODY: " + new String(entity));
             }
 
             requestContext.setEntityStream(new ByteArrayInputStream(Utility.setTransactionIdInJson(entity, transactionId)));
@@ -75,7 +75,7 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
             if (responseContext.getEntity() != null) {
                 log.info("BODY: {}", Utility.getObscuredJson(responseContext.getEntity()));
                 if (isTraceLoggingEnabled) {
-                    logAux.trace("BODY: {}", Utility.getJson(responseContext.getEntity()));
+                    objectStoreServiceImpl.writeLog("BODY: " + Utility.getJson(responseContext.getEntity()));
                 }
             }
             logTracePropagation("============== RESPONSE ==============");
