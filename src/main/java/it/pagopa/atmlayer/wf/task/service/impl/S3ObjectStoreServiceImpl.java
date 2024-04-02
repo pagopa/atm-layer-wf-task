@@ -31,7 +31,6 @@ public class S3ObjectStoreServiceImpl implements S3ObjectStoreService {
 
         log.info("string to upload: {}: length={}", message, message.length());
 
-        // Provide the stream of data to be uploaded.
         body.writeInputStream(new ByteArrayInputStream(message.getBytes()));
 
     }

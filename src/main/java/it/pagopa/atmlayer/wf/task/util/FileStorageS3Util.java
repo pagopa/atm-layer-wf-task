@@ -2,7 +2,6 @@ package it.pagopa.atmlayer.wf.task.util;
 
 import java.util.concurrent.CompletableFuture;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.Getter;
@@ -25,8 +24,7 @@ public class FileStorageS3Util {
 
     CompletableFuture<PutObjectResponse> responseFuture;
 
-    @PostConstruct
-    public void init() {
+    public FileStorageS3Util() {
         body = AsyncRequestBody.forBlockingInputStream(null);
 
         responseFuture = s3.putObject(r -> r.bucket(objectStoreProperties.bucket().name())
