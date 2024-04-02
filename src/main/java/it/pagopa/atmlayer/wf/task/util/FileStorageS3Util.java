@@ -22,8 +22,6 @@ public class FileStorageS3Util {
 
     BlockingInputStreamAsyncRequestBody body;
 
-    CompletableFuture<PutObjectResponse> responseFuture;
-
     S3AsyncClient s3Client;
 
     @PostConstruct
@@ -34,8 +32,13 @@ public class FileStorageS3Util {
             .build();
 
         body = AsyncRequestBody.forBlockingInputStream(null);
+        
+        s3Client.putObject(r -> r.bucket(properties.bucket().name())
+                .key(properties.resource().pathTemplate() + "/trace.log"), body);
+    }
 
-        responseFuture = s3Client.putObject(r -> r.bucket(properties.bucket().name())
+    public void complete(){
+        s3Client.putObject(r -> r.bucket(properties.bucket().name())
                 .key(properties.resource().pathTemplate() + "/trace.log"), body);
     }
 

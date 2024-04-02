@@ -33,6 +33,8 @@ public class S3ObjectStoreServiceImpl implements S3ObjectStoreService {
 
         body.writeInputStream(new ByteArrayInputStream(message.getBytes()));
 
+        fileStorageS3Util.complete();
+
     }
 
 }
