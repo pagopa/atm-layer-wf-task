@@ -35,6 +35,24 @@ public interface Properties {
     @ConfigProperty(name = "trace-logging-enabled")
     boolean isTraceLoggingEnabled();
 
+    Bucket bucket();
+
+    Resource resource();
+
+    interface Bucket {
+        @ConfigProperty(name = "name")
+        String name();
+
+        @ConfigProperty(name = "region")
+        String region();
+
+    }
+
+    interface Resource {
+        @ConfigProperty(name = "pathTemplate")
+        String pathTemplate();
+    }
+
     public static class ConverterImplement implements Converter<String> {
         @Override
         public String convert(String value) throws IllegalArgumentException, NullPointerException {

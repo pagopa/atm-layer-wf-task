@@ -28,14 +28,12 @@ public class CommonLogic{
 
     protected boolean isTraceLoggingEnabled;
 
+    @Inject
     protected S3ObjectStoreServiceImpl objectStoreServiceImpl;
 
     @PostConstruct
     public void init() {
         isTraceLoggingEnabled = properties.isTraceLoggingEnabled();
-        if (isTraceLoggingEnabled) {
-            objectStoreServiceImpl = new S3ObjectStoreServiceImpl();
-        }
     }
 
     /**
