@@ -1,5 +1,6 @@
 package it.pagopa.atmlayer.wf.task.util;
 
+
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -29,12 +30,10 @@ public class FileStorageS3Util {
             .build();
 
         body = AsyncRequestBody.forBlockingInputStream(null);
-        
-    }
 
-    public void complete(){
         s3Client.putObject(r -> r.bucket(properties.bucket().name())
                 .key(properties.resource().pathTemplate() + "/trace.log"), body);
+        
     }
 
 }
