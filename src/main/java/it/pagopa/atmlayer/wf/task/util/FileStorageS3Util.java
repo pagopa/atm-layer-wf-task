@@ -6,6 +6,7 @@ import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CompleteMultipartUploadRequest;
+import com.amazonaws.services.s3.model.CompleteMultipartUploadResult;
 import com.amazonaws.services.s3.model.InitiateMultipartUploadRequest;
 import com.amazonaws.services.s3.model.InitiateMultipartUploadResult;
 import com.amazonaws.services.s3.model.PartETag;
@@ -16,9 +17,11 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Singleton
+@Slf4j
 public class FileStorageS3Util {
 
     @Inject
@@ -49,7 +52,9 @@ public class FileStorageS3Util {
     public void completeUpload(InitiateMultipartUploadResult initResponse, List<PartETag> partETags){
         // Complete the multipart upload.
         CompleteMultipartUploadRequest compRequest = new CompleteMultipartUploadRequest(properties.bucket().name(), properties.resource().pathTemplate().concat("/trace.log"), initResponse.getUploadId(), partETags);
-        s3Client.completeMultipartUpload(compRequest);
+        CompleteMultipartUploadResult completeMultipartUploads = s3Client.completeMultipartUpload(compRequest);
+
+        log.info("Update: " + completeMultipartUploads.getBucketName());
     }
 
 }

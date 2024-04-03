@@ -33,8 +33,7 @@ public class S3ObjectStoreServiceImpl implements S3ObjectStoreService {
     private Properties properties;
     
     /* Create a list of ETag objects. You retrieve ETags for each object part
-    uploaded,
-    then, after each individual part has been uploaded, pass the list of ETags to
+    uploaded, then, after each individual part has been uploaded, pass the list of ETags to
     the request to complete the upload. */
     private List<PartETag> partETags  = new ArrayList<PartETag>();
 
@@ -75,6 +74,7 @@ public class S3ObjectStoreServiceImpl implements S3ObjectStoreService {
     @PreDestroy
     public void finishUpload() {
         fileStorageS3Util.completeUpload(initResponse, partETags);
+        log.info("Upload on S3 finished!");
     }
     
 }
