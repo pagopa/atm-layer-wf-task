@@ -11,6 +11,7 @@ import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.ByteArrayInputStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,8 @@ public class S3ObjectStoreServiceImpl implements S3ObjectStoreService {
     private List<PartETag> partETags  = new ArrayList<PartETag>();
 
     private InitiateMultipartUploadResult initResponse;
+
+    private int partNumber = 0;
     
     public void writeLog(String message){
         try {
@@ -51,13 +54,15 @@ public class S3ObjectStoreServiceImpl implements S3ObjectStoreService {
             .withBucketName(properties.bucket().name())
             .withKey(properties.resource().pathTemplate().concat("/trace.log"))
             .withUploadId(initResponse.getUploadId())
-            .withInputStream(new ByteArrayInputStream(message.getBytes()));
+            .withInputStream(new ByteArrayInputStream(message.getBytes()))
+            .withPartNumber(++partNumber);
+            
             
             UploadPartResult uploadResult = fileStorageS3Util.uploadPart(uploadRequest);
             log.debug("uploadRequest sent!");
 
             partETags.add(uploadResult.getPartETag());
-            
+
         } catch (AmazonServiceException e) {
             log.error("The call was transmitted successfully, but Amazon S3 couldn't process it, so it returned an error response.", e);
             throw new ErrorException(ErrorEnum.GENERIC_ERROR);
