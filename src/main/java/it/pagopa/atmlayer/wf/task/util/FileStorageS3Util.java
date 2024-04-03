@@ -16,7 +16,6 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.Getter;
-import software.amazon.awssdk.core.async.BlockingInputStreamAsyncRequestBody;
 
 @Getter
 @Singleton
@@ -24,8 +23,6 @@ public class FileStorageS3Util {
 
     @Inject
     Properties properties;
-
-    BlockingInputStreamAsyncRequestBody body;
 
     AmazonS3 s3Client;
 

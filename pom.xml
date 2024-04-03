@@ -36,13 +36,6 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <dependency>
-        <groupId>io.quarkiverse.amazonservices</groupId>
-        <artifactId>quarkus-amazon-services-bom</artifactId>
-        <version>${quarkus-amazon-services.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
     </dependencies>
   </dependencyManagement>
   <dependencies>
