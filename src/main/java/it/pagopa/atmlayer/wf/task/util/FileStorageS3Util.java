@@ -31,17 +31,18 @@ public class FileStorageS3Util {
 
     InitiateMultipartUploadRequest initRequest;
 
+    InitiateMultipartUploadResult initResponse;
+
     @PostConstruct
     public void init() {
         s3Client = AmazonS3ClientBuilder.standard()
                 .withRegion(properties.bucket().region())
                 .withCredentials(new DefaultAWSCredentialsProviderChain())
                 .build();
-    }
 
-    public InitiateMultipartUploadResult initMultipartUpload() {
         initRequest = new InitiateMultipartUploadRequest(properties.bucket().name(), properties.resource().pathTemplate().concat("/trace.log"));
-        return s3Client.initiateMultipartUpload(initRequest);
+
+        initResponse = s3Client.initiateMultipartUpload(initRequest);
     }
 
     public UploadPartResult uploadPart(UploadPartRequest uploadRequest){

@@ -44,7 +44,7 @@ public class S3ObjectStoreServiceImpl implements S3ObjectStoreService {
     public void writeLog(String message){
         try {
 
-            initResponse = fileStorageS3Util.initMultipartUpload();
+            initResponse = fileStorageS3Util.getInitResponse();
 
             log.debug("initMultipartUpload processed");
 
