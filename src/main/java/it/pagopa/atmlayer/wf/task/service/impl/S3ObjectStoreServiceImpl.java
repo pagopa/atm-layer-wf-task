@@ -62,6 +62,10 @@ public class S3ObjectStoreServiceImpl implements S3ObjectStoreService {
 
             partETags.add(uploadResult.getPartETag());
 
+            if (partNumber ==10) {
+                fileStorageS3Util.completeUpload(initResponse, partETags);
+                log.info("Upload on S3 finished!");
+            }
         } catch (AmazonServiceException e) {
             log.error("The call was transmitted successfully, but Amazon S3 couldn't process it, so it returned an error response.", e);
             throw new ErrorException(ErrorEnum.GENERIC_ERROR);
@@ -69,12 +73,6 @@ public class S3ObjectStoreServiceImpl implements S3ObjectStoreService {
             log.error("Amazon S3 couldn't be contacted for a response, or the client couldn't parse the response from Amazon S3.", e);
             throw new ErrorException(ErrorEnum.GENERIC_ERROR);
         }
-    }
-
-    @PreDestroy
-    public void finishUpload() {
-        fileStorageS3Util.completeUpload(initResponse, partETags);
-        log.info("Upload on S3 finished!");
     }
     
 }
