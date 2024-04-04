@@ -9,6 +9,7 @@ import org.slf4j.MDC;
 import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Constants;
+import it.pagopa.atmlayer.wf.task.util.Tracer;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -58,7 +59,7 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
 
             log.info("BODY: {}", state);
             if (isTraceLoggingEnabled) {
-                traceMessage = traceMessage.concat("BODY: " + new String(entity));
+                Tracer.trace("BODY: " + new String(entity));
             }
 
             requestContext.setEntityStream(new ByteArrayInputStream(Utility.setTransactionIdInJson(entity, transactionId)));
@@ -75,7 +76,7 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
             if (responseContext.getEntity() != null) {
                 log.info("BODY: {}", Utility.getObscuredJson(responseContext.getEntity()));
                 if (isTraceLoggingEnabled) {
-                    traceMessage = traceMessage.concat("BODY: " + Utility.getJson(responseContext.getEntity()));
+                    Tracer.trace(("BODY: " + Utility.getJson(responseContext.getEntity())));
                 }
             }
             logTracePropagation("============== RESPONSE ==============");
