@@ -1,10 +1,5 @@
 package it.pagopa.atmlayer.wf.task.util;
 
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import io.quarkus.scheduler.Scheduled;
-import it.pagopa.atmlayer.wf.task.service.impl.S3ObjectStoreServiceImpl;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
