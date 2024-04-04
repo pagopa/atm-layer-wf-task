@@ -85,7 +85,7 @@ public class CommonLogic{
         log.info(" {} - Elapsed time [ms] = {}", label, stop - start);
     }
 
-    @Scheduled(every = "10s")
+    @Scheduled(every = "30s")
     public void tracerJob(){
         if (isTraceLoggingEnabled){
             objectStoreServiceImpl.writeLog(traceBuffer.poll());
