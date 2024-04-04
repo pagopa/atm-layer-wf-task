@@ -12,7 +12,6 @@ import software.amazon.awssdk.core.async.BlockingInputStreamAsyncRequestBody;
 
 import java.io.ByteArrayInputStream;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import io.quarkus.scheduler.Scheduled;
 
