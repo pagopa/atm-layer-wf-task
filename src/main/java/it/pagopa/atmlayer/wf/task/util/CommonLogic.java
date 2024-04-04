@@ -1,13 +1,16 @@
 package it.pagopa.atmlayer.wf.task.util;
 
-import java.util.concurrent.TimeUnit;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import io.quarkus.scheduler.Scheduled;
 import it.pagopa.atmlayer.wf.task.service.impl.S3ObjectStoreServiceImpl;
 import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 
+@ApplicationScoped
 @Slf4j
 public class CommonLogic{
 
@@ -27,11 +30,17 @@ public class CommonLogic{
     protected static final String GET_TOKEN_LOG_ID = MIL_AUTH_REST_CLIENT_CLASS_ID + "getToken";
     protected static final String DELETE_TOKEN_LOG_ID = MIL_AUTH_REST_CLIENT_CLASS_ID + "deleteToken";
 
+    protected boolean isTraceLoggingEnabled;
+
     @Inject
     protected S3ObjectStoreServiceImpl objectStoreServiceImpl;
 
-    private String traceBuffer = new String();
-    
+    protected Queue<String> traceBuffer = new ConcurrentLinkedQueue<>();
+
+    @PostConstruct
+    public void init() {
+        isTraceLoggingEnabled = properties.isTraceLoggingEnabled();
+    }
 
     /**
      * This method serves as a provider of an <b>auxiliary logger</b> for tracing purpose.
@@ -43,8 +52,8 @@ public class CommonLogic{
      */
     protected void logTracePropagation(String string){
         log.info(string);
-        if (properties.isTraceLoggingEnabled()) {
-            traceBuffer.concat(string);
+        if (isTraceLoggingEnabled) {
+            traceBuffer.offer(string);
         }
     }
 
@@ -59,8 +68,8 @@ public class CommonLogic{
      */
     protected void logTracePropagation(String string, Object object){
         log.info(string, object);
-        if (properties.isTraceLoggingEnabled()) {
-            traceBuffer.concat(string + object.toString());
+        if (isTraceLoggingEnabled) {
+            traceBuffer.offer(string.concat(object.toString()));
         }
     }
 
@@ -76,12 +85,10 @@ public class CommonLogic{
         log.info(" {} - Elapsed time [ms] = {}", label, stop - start);
     }
 
-    @Scheduled(every = "30s", delay = 5, delayUnit = TimeUnit.SECONDS)
+    @Scheduled(every = "30s")
     public void tracerJob(){
-        log.info("MESSAGE: " + traceBuffer);
-        if (properties.isTraceLoggingEnabled()){
-            objectStoreServiceImpl.writeLog(traceBuffer);
-            traceBuffer = new String();
+        if (isTraceLoggingEnabled){
+            objectStoreServiceImpl.writeLog(traceBuffer.poll());
         }
     }
 }
