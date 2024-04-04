@@ -9,7 +9,9 @@ import org.slf4j.MDC;
 import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Constants;
+import it.pagopa.atmlayer.wf.task.util.Properties;
 import it.pagopa.atmlayer.wf.task.util.Utility;
+import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -26,6 +28,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LogFilter extends CommonLogic implements ContainerRequestFilter, ContainerResponseFilter {
     
+    @Inject
+    Properties properties;
+
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
@@ -57,7 +62,7 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
             logTracePropagation("METHOD: {}", requestContext.getMethod());
 
             log.info("BODY: {}", state);
-            if (isTraceLoggingEnabled) {
+            if (properties.isTraceLoggingEnabled()) {
                 objectStoreServiceImpl.writeLog("BODY: " + new String(entity));
             }
 
@@ -74,7 +79,7 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
             logTracePropagation("STATUS: {}", responseContext.getStatus());
             if (responseContext.getEntity() != null) {
                 log.info("BODY: {}", Utility.getObscuredJson(responseContext.getEntity()));
-                if (isTraceLoggingEnabled) {
+                if (properties.isTraceLoggingEnabled()) {
                     objectStoreServiceImpl.writeLog("BODY: " + Utility.getJson(responseContext.getEntity()));
                 }
             }

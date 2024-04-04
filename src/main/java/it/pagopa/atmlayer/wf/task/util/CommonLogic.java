@@ -1,17 +1,13 @@
 package it.pagopa.atmlayer.wf.task.util;
 
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 
 import io.quarkus.scheduler.Scheduled;
 import it.pagopa.atmlayer.wf.task.service.impl.S3ObjectStoreServiceImpl;
 import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 
-@ApplicationScoped
 @Slf4j
 public class CommonLogic{
 
@@ -31,19 +27,11 @@ public class CommonLogic{
     protected static final String GET_TOKEN_LOG_ID = MIL_AUTH_REST_CLIENT_CLASS_ID + "getToken";
     protected static final String DELETE_TOKEN_LOG_ID = MIL_AUTH_REST_CLIENT_CLASS_ID + "deleteToken";
 
-    protected boolean isTraceLoggingEnabled;
-
     @Inject
     protected S3ObjectStoreServiceImpl objectStoreServiceImpl;
 
-    private String traceBuffer;
-
-    @PostConstruct
-    public void init() {
-        isTraceLoggingEnabled = properties.isTraceLoggingEnabled();
-        traceBuffer = new String();
-        log.info("aaaaaaaaaaaaaaaaa");
-    }
+    private String traceBuffer = new String();
+    
 
     /**
      * This method serves as a provider of an <b>auxiliary logger</b> for tracing purpose.
@@ -55,7 +43,7 @@ public class CommonLogic{
      */
     protected void logTracePropagation(String string){
         log.info(string);
-        if (isTraceLoggingEnabled) {
+        if (properties.isTraceLoggingEnabled()) {
             traceBuffer.concat(string);
         }
     }
@@ -71,7 +59,7 @@ public class CommonLogic{
      */
     protected void logTracePropagation(String string, Object object){
         log.info(string, object);
-        if (isTraceLoggingEnabled) {
+        if (properties.isTraceLoggingEnabled()) {
             traceBuffer.concat(string + object.toString());
         }
     }
@@ -91,7 +79,7 @@ public class CommonLogic{
     @Scheduled(every = "30s", delay = 5, delayUnit = TimeUnit.SECONDS)
     public void tracerJob(){
         log.info("MESSAGE: " + traceBuffer);
-        if (isTraceLoggingEnabled){
+        if (properties.isTraceLoggingEnabled()){
             objectStoreServiceImpl.writeLog(traceBuffer);
             traceBuffer = new String();
         }
