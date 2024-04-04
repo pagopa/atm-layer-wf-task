@@ -15,10 +15,10 @@ public class Tracer {
     @Inject
     S3ObjectStoreServiceImpl objectStoreServiceImpl;
 
-    private static String message = new String();
+    private String message = new String();
 
-    public static void trace(String msg){
-        message.concat(msg);
+    public void trace(String message){
+        this.message.concat(message);
     }
 
     @Scheduled(every = "30s", delay = 5, delayUnit = TimeUnit.SECONDS)
