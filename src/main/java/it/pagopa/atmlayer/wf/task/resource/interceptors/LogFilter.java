@@ -9,6 +9,7 @@ import org.slf4j.MDC;
 import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Constants;
+import it.pagopa.atmlayer.wf.task.util.Tracer;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -25,6 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 @Provider
 @Slf4j
 public class LogFilter extends CommonLogic implements ContainerRequestFilter, ContainerResponseFilter {
+
+    Tracer tracer = new Tracer();
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -49,36 +52,44 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
                 MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, transactionId);
             }
             
-            logTracePropagation("============== REQUEST ==============");
+            log.info("============== REQUEST ==============");
+            tracer.trace("============== REQUEST ==============");
             if (pathParameters != null) {
-                logTracePropagation("PATH PARAMS: {}", pathParameters);
+                log.info("PATH PARAMS: {}", pathParameters);
+                tracer.trace("PATH PARAMS: " + pathParameters.toString());
             }
-            logTracePropagation("HEADERS: {}", requestContext.getHeaders());
-            logTracePropagation("METHOD: {}", requestContext.getMethod());
-
+            log.info("HEADERS: {}", requestContext.getHeaders());
+            tracer.trace("HEADERS: {}" + requestContext.getHeaders().toString());
+            log.info("METHOD: {}", requestContext.getMethod());
+            tracer.trace("HEADERS: {}" + requestContext.getMethod().toString());
             log.info("BODY: {}", state);
             if (isTraceLoggingEnabled) {
-                traceBuffer.concat("BODY: " + new String(entity));
+                tracer.trace("BODY: " + new String(entity));
             }
 
             requestContext.setEntityStream(new ByteArrayInputStream(Utility.setTransactionIdInJson(entity, transactionId)));
 
-            logTracePropagation("============== REQUEST ==============");
+            log.info("============== REQUEST ==============");
+            tracer.trace("============== REQUEST ==============");
         }
     }
 
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
         if (requestContext.getUriInfo().getPath().startsWith("/api/v1")) {
-            logTracePropagation("============== RESPONSE ==============");
-            logTracePropagation("STATUS: {}", responseContext.getStatus());
+            log.info("============== RESPONSE ==============");
+            tracer.trace("============== RESPONSE ==============");
+            log.info("STATUS: {}", responseContext.getStatus());
+            tracer.trace("STATUS: {}" + responseContext.getStatus());
             if (responseContext.getEntity() != null) {
                 log.info("BODY: {}", Utility.getObscuredJson(responseContext.getEntity()));
+                tracer.trace("BODY: {}" + Utility.getObscuredJson(responseContext.getEntity()));
                 if (isTraceLoggingEnabled) {
-                    traceBuffer.concat("BODY: " + Utility.getJson(responseContext.getEntity()));
+                    tracer.trace("BODY: " + Utility.getJson(responseContext.getEntity()));
                 }
             }
-            logTracePropagation("============== RESPONSE ==============");
+            log.info("============== RESPONSE ==============");
+            tracer.trace("============== RESPONSE ==============");
             MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
         }
     }
