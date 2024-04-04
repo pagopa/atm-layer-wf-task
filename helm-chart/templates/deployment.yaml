@@ -54,6 +54,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.uid
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
             - name: CDN_URL
               valueFrom:
                 secretKeyRef:
