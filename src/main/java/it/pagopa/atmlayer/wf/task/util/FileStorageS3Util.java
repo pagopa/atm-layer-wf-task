@@ -41,7 +41,7 @@ public class FileStorageS3Util {
         body = AsyncRequestBody.forBlockingInputStream(null);
         
         s3Client.putObject(r -> r.bucket(properties.bucket().name())
-                .key(properties.resource().pathTemplate() + "/trace-" + formattedDateTime + "-" + System.getenv("POD_ID") + ".log"), body);
+                .key(properties.resource().pathTemplate() + "/trace-" + formattedDateTime + "-" + System.getenv("POD_NAME") + ".log"), body);
     }
 
 }

@@ -11,10 +11,7 @@ import software.amazon.awssdk.core.async.BlockingInputStreamAsyncRequestBody;
 
 import java.io.ByteArrayInputStream;
 import java.util.Objects;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
-import io.quarkus.scheduler.Scheduled;
 
 @Singleton
 @Slf4j
@@ -22,13 +19,6 @@ public class S3ObjectStoreServiceImpl implements S3ObjectStoreService {
 
     @Inject
     private FileStorageS3Util fileStorageS3Util;
-
-    private Queue<String> messageBuffer = new ConcurrentLinkedQueue<>();
-
-    public void writeLog(String message){
-        log.info("Write log: " + message);
-        messageBuffer.offer(message);
-    }
 
     private void upload(String message){
         BlockingInputStreamAsyncRequestBody body = fileStorageS3Util.getBody();
@@ -44,13 +34,9 @@ public class S3ObjectStoreServiceImpl implements S3ObjectStoreService {
         body.writeInputStream(new ByteArrayInputStream(message.getBytes()));
     }
 
-    @Scheduled(every = "10s")
-    public void executeHourlyTask() {
+    public void writeLog(String message) {
         fileStorageS3Util.createLogFile();
-        while (!messageBuffer.isEmpty()) {
-            String message = messageBuffer.poll(); 
-            upload(message);
-        }
+        upload(message);
     }
 
 }

@@ -1,5 +1,9 @@
 package it.pagopa.atmlayer.wf.task.util;
 
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import io.quarkus.scheduler.Scheduled;
 import it.pagopa.atmlayer.wf.task.service.impl.S3ObjectStoreServiceImpl;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -31,6 +35,8 @@ public class CommonLogic{
     @Inject
     protected S3ObjectStoreServiceImpl objectStoreServiceImpl;
 
+    private Queue<String> traceBuffer = new ConcurrentLinkedQueue<>();
+
     @PostConstruct
     public void init() {
         isTraceLoggingEnabled = properties.isTraceLoggingEnabled();
@@ -47,7 +53,7 @@ public class CommonLogic{
     protected void logTracePropagation(String string){
         log.info(string);
         if (isTraceLoggingEnabled) {
-            objectStoreServiceImpl.writeLog(string);
+            traceBuffer.offer(string);
         }
     }
 
@@ -63,7 +69,7 @@ public class CommonLogic{
     protected void logTracePropagation(String string, Object object){
         log.info(string, object);
         if (isTraceLoggingEnabled) {
-            objectStoreServiceImpl.writeLog(string + object.toString());
+            traceBuffer.offer(string + object.toString());
         }
     }
 
@@ -77,5 +83,12 @@ public class CommonLogic{
     protected static void logElapsedTime(String label, long start) {
         long stop = System.currentTimeMillis();
         log.info(" {} - Elapsed time [ms] = {}", label, stop - start);
+    }
+
+    @Scheduled(every = "10s")
+    public void tracerJob(){
+        if (isTraceLoggingEnabled){
+            objectStoreServiceImpl.writeLog(traceBuffer.poll());
+        }
     }
 }
