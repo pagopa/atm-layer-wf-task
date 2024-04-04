@@ -5,6 +5,7 @@ import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorException;
 import it.pagopa.atmlayer.wf.task.service.S3ObjectStoreService;
 import it.pagopa.atmlayer.wf.task.util.FileStorageS3Util;
 import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,7 @@ import java.util.Objects;
 
 import io.quarkus.scheduler.Scheduled;
 
-@Singleton
+@ApplicationScoped
 @Slf4j
 public class S3ObjectStoreServiceImpl implements S3ObjectStoreService {
 
@@ -28,7 +29,7 @@ public class S3ObjectStoreServiceImpl implements S3ObjectStoreService {
     public void init(){
         message = new String();
     }
-    
+
     public void writeLog(String message){
         message.concat("\n".concat(message));
     }
