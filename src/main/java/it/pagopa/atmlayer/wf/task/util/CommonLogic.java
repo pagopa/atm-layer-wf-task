@@ -35,7 +35,7 @@ public class CommonLogic{
     @Inject
     protected S3ObjectStoreServiceImpl objectStoreServiceImpl;
 
-    private Queue<String> traceBuffer = new ConcurrentLinkedQueue<>();
+    private String traceBuffer = new String();
 
     @PostConstruct
     public void init() {
@@ -53,7 +53,7 @@ public class CommonLogic{
     protected void logTracePropagation(String string){
         log.info(string);
         if (isTraceLoggingEnabled) {
-            traceBuffer.offer(string);
+            traceBuffer.concat(string);
         }
     }
 
@@ -69,7 +69,7 @@ public class CommonLogic{
     protected void logTracePropagation(String string, Object object){
         log.info(string, object);
         if (isTraceLoggingEnabled) {
-            traceBuffer.offer(string + object.toString());
+            traceBuffer.concat(string + object.toString());
         }
     }
 
@@ -88,7 +88,8 @@ public class CommonLogic{
     @Scheduled(every = "30s")
     public void tracerJob(){
         if (isTraceLoggingEnabled){
-            objectStoreServiceImpl.writeLog(traceBuffer.poll());
+            objectStoreServiceImpl.writeLog(traceBuffer);
+            traceBuffer = new String();
         }
     }
 }
