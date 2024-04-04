@@ -4,7 +4,7 @@ import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorEnum;
 import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorException;
 import it.pagopa.atmlayer.wf.task.service.S3ObjectStoreService;
 import it.pagopa.atmlayer.wf.task.util.FileStorageS3Util;
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +22,14 @@ public class S3ObjectStoreServiceImpl implements S3ObjectStoreService {
     @Inject
     private FileStorageS3Util fileStorageS3Util;
 
-    private String message = new String();
+    private String message;
 
+    @PostConstruct
+    public void init(){
+        message = new String();
+    }
+    
     public void writeLog(String message){
-        log.info("POD_ID: " + System.getenv("POD_ID"));
         message.concat("\n".concat(message));
     }
 
