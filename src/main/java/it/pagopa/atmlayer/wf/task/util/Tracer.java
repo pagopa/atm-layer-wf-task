@@ -2,10 +2,10 @@ package it.pagopa.atmlayer.wf.task.util;
 
 import java.util.concurrent.TimeUnit;
 
-import com.oracle.svm.core.annotate.Inject;
 
 import io.quarkus.scheduler.Scheduled;
 import it.pagopa.atmlayer.wf.task.service.impl.S3ObjectStoreServiceImpl;
+import jakarta.inject.Inject;
 
 public class Tracer {
     
