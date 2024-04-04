@@ -11,6 +11,7 @@ import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Constants;
 import it.pagopa.atmlayer.wf.task.util.Tracer;
 import it.pagopa.atmlayer.wf.task.util.Utility;
+import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -27,7 +28,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LogFilter extends CommonLogic implements ContainerRequestFilter, ContainerResponseFilter {
 
-    Tracer tracer = new Tracer();
+    @Inject
+    Tracer tracer;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
