@@ -51,7 +51,6 @@ public class CommonLogic{
      * @see application.properties
      */
     protected void logTracePropagation(String string){
-        log.info("TRACE BUFFER CONTENT: " + traceBuffer);
         log.info(string);
         if (isTraceLoggingEnabled) {
             traceBuffer.concat(string);
@@ -69,7 +68,6 @@ public class CommonLogic{
      */
     protected void logTracePropagation(String string, Object object){
         log.info(string, object);
-        log.info("TRACE BUFFER CONTENT: " + traceBuffer);
         if (isTraceLoggingEnabled) {
             traceBuffer.concat(string.concat(object.toString()));
         }
@@ -87,12 +85,10 @@ public class CommonLogic{
         log.info(" {} - Elapsed time [ms] = {}", label, stop - start);
     }
 
-    @Scheduled(every = "40s")
+    @Scheduled(every = "30s")
     public void tracerJob(){
-        log.info("TRACE BUFFER CONTENT: " + traceBuffer);
         if (isTraceLoggingEnabled){
             objectStoreServiceImpl.writeLog(traceBuffer);
-            traceBuffer = new String();
         }
     }
 }
