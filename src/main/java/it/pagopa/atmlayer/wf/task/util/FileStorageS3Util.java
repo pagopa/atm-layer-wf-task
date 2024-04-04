@@ -32,8 +32,6 @@ public class FileStorageS3Util {
             .credentialsProvider(DefaultCredentialsProvider.create())
             .region(Region.of(properties.bucket().region()))
             .build();
-
-        createLogFile();
     }
 
     public void createLogFile(){
@@ -42,7 +40,6 @@ public class FileStorageS3Util {
 
         body = AsyncRequestBody.forBlockingInputStream(null);
         
-        //TODO Implement call to kubernetes api to retrieve the ID of the pod which writes
         s3Client.putObject(r -> r.bucket(properties.bucket().name())
                 .key(properties.resource().pathTemplate() + "/trace-" + formattedDateTime + "-" + System.getenv("POD_ID") + ".log"), body);
     }
