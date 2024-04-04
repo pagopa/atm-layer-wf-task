@@ -35,11 +35,6 @@ public class FileStorageS3Util {
     }
 
     public void createLogFile(){
-        s3Client = S3AsyncClient.crtBuilder()
-            .credentialsProvider(DefaultCredentialsProvider.create())
-            .region(Region.of(properties.bucket().region()))
-            .build();
-            
         LocalDateTime currentDateTime = LocalDateTime.now();
         String formattedDateTime = currentDateTime.format(formatter);
 
