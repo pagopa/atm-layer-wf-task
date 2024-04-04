@@ -36,11 +36,13 @@ public class CommonLogic{
     @Inject
     protected S3ObjectStoreServiceImpl objectStoreServiceImpl;
 
-    private String traceBuffer = new String();
+    private String traceBuffer;
 
     @PostConstruct
     public void init() {
         isTraceLoggingEnabled = properties.isTraceLoggingEnabled();
+        traceBuffer = new String();
+        log.info("aaaaaaaaaaaaaaaaa");
     }
 
     /**
@@ -88,6 +90,7 @@ public class CommonLogic{
 
     @Scheduled(every = "30s", delay = 5, delayUnit = TimeUnit.SECONDS)
     public void tracerJob(){
+        log.info("MESSAGE: " + traceBuffer);
         if (isTraceLoggingEnabled){
             objectStoreServiceImpl.writeLog(traceBuffer);
             traceBuffer = new String();
