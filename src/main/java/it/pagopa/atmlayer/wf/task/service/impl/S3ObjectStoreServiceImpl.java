@@ -12,14 +12,23 @@ import software.amazon.awssdk.core.async.BlockingInputStreamAsyncRequestBody;
 import java.io.ByteArrayInputStream;
 import java.util.Objects;
 
-
+/**
+ * Singleton implementation of the {@link S3ObjectStoreService} interface.
+ */
 @Singleton
 @Slf4j
 public class S3ObjectStoreServiceImpl implements S3ObjectStoreService {
 
+    
     @Inject
     private FileStorageS3Util fileStorageS3Util;
 
+    /**
+     * Uploads a message to Amazon S3.
+     * 
+     * @param message The message to upload
+     * @throws ErrorException If the message is null
+     */
     private void upload(String message){
         BlockingInputStreamAsyncRequestBody body = fileStorageS3Util.getBody();
 
@@ -34,6 +43,11 @@ public class S3ObjectStoreServiceImpl implements S3ObjectStoreService {
         body.writeInputStream(new ByteArrayInputStream(message.getBytes()));
     }
 
+    /**
+     * Writes a log message to Amazon S3.
+     * 
+     * @param message The log message to write
+     */
     public void writeLog(String message) {
         fileStorageS3Util.createLogFile();
         upload(message);
