@@ -329,7 +329,6 @@ class TaskResourceTest {
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createVariableResponseNoData()));
                 
-                
 
                 Response response = given().body(DataTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -344,6 +343,8 @@ class TaskResourceTest {
 
         Assertions.assertEquals(201, response.statusCode());
         }
+        
+
 
         @Test
         void nextTaskKoOnNextTask500() {
@@ -693,6 +694,24 @@ class TaskResourceTest {
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/next/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa").then()
+                                .extract().response();
+
+                Assertions.assertEquals(200, response.statusCode());
+        }
+        
+        @Test
+        void test2EndProcess() {
+
+                Mockito.when(processRestClient.next2Tasks(Mockito.any(TaskRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createTaskResponseEndProcess()));
+
+                Mockito.when(milAuthRestClient.deleteToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.NO_CONTENT));
+
+                Response response = given().body(DataTest.createStateRequestStart())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/next2/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa").then()
                                 .extract().response();
 
                 Assertions.assertEquals(200, response.statusCode());
