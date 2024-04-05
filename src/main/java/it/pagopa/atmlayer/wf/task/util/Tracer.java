@@ -1,13 +1,11 @@
 package it.pagopa.atmlayer.wf.task.util;
 
-import java.util.concurrent.TimeUnit;
-
-import io.quarkus.arc.profile.UnlessBuildProfile;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import io.quarkus.scheduler.Scheduled;
 import it.pagopa.atmlayer.wf.task.service.impl.S3ObjectStoreServiceImpl;
 import jakarta.inject.Inject;
 
-@UnlessBuildProfile(anyOf = {"prod", "native"})
+@RegisterForReflection
 public class Tracer {
     
     @Inject
