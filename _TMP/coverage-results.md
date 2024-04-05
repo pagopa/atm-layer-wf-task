@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 91.64%               |
-| :heavy_check_mark: Number of Lines Covered | 592    |
-| :x: Number of Lines Missed  | 54     |
-| Total Number of Lines   | 646     |
+| Code Coverage %         | 90.78%               |
+| :heavy_check_mark: Number of Lines Covered | 650    |
+| :x: Number of Lines Missed  | 66     |
+| Total Number of Lines   | 716     |
 
 
 ## Details:
@@ -176,6 +176,10 @@
 ```
 		} catch (ProcessingException e) {
 ```
+- Line #179
+```
+        } catch (ProcessingException e) {
+```
 </details>
 
     
@@ -286,6 +290,26 @@
 
 <details>
     <summary>
+:x: ObjectStoreService.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: S3ObjectStoreService.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
 :x: TaskService.java
     </summary>
 
@@ -332,22 +356,38 @@
         
 #### Lines Missed:
         
-- Line #249
+- Line #179
+```
+        } catch (WebApplicationException e) {
+```
+- Line #287
 ```
                 } catch (UnsupportedEncodingException e) {
 ```
-- Line #319
+- Line #357
 ```
                     } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 ```
-- Line #338
+- Line #376
 ```
                     } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
 ```
-- Line #542
+- Line #580
 ```
             } catch (UnsupportedEncodingException e) {
 ```
+</details>
+
+    
+
+<details>
+    <summary>
+:x: S3ObjectStoreServiceImpl.java
+    </summary>
+
+        
+#### Lines Missed:
+        
 </details>
 
     
@@ -429,6 +469,18 @@
 
 <details>
     <summary>
+:heavy_check_mark: FileStorageS3Util.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+
+<details>
+    <summary>
 :x: Constants.java
     </summary>
 
@@ -479,6 +531,18 @@
 ```
         } catch (NoSuchAlgorithmException e) {
 ```
+</details>
+
+    
+
+<details>
+    <summary>
+:heavy_check_mark: Tracer.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
 </details>
 
     
