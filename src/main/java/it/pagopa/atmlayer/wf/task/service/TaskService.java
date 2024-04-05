@@ -1,5 +1,7 @@
 package it.pagopa.atmlayer.wf.task.service;
 
+import org.jboss.resteasy.reactive.RestResponse;
+
 import it.pagopa.atmlayer.wf.task.bean.Scene;
 import it.pagopa.atmlayer.wf.task.bean.State;
 
@@ -22,6 +24,10 @@ public interface TaskService {
     * @return The next scene for the specified transaction and state.
     */
     Scene buildNext(String transactionId, State state);
+    
+    RestResponse completeTask (String transactionId, State state);
+    
+    Scene buildNext2(String transactionId, State state);
 
 
     /**

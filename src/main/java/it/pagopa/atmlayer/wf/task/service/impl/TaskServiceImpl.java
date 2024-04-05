@@ -109,6 +109,22 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
         scene.setTransactionId(transactionId);
         return scene;
     }
+    
+    @Override
+    public RestResponse completeTask(String transactionId, State state) {      
+        TaskRequest taskRequest = buildTaskRequest(state, transactionId, null);
+        return processRestClient.complete(taskRequest);
+    }
+    
+    @Override
+    public Scene buildNext2(String transactionId, State state) {
+        Scene scene = buildSceneNext2(transactionId, state);
+        scene.setTransactionId(transactionId);
+        return scene;
+    }
+    
+    
+   
 
     private Scene buildSceneStart(String functionId, String transactionId, State state) {
         TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
@@ -151,6 +167,28 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 
         return manageTaskResponse(restTaskResponse);
     }
+    
+    private Scene buildSceneNext2(String transactionId, State state) {
+        TaskRequest taskRequest = buildTaskRequest(state, transactionId, null);
+        RestResponse<TaskResponse> restTaskResponse = null;
+        long start = System.currentTimeMillis();
+
+        try {
+            log.info("Calling next task: [{}]", taskRequest);
+            restTaskResponse = processRestClient.next2Tasks(taskRequest);
+        } catch (WebApplicationException e) {
+            log.error("Error calling process service", e);
+            if (e.getResponse().getStatus() == StatusCode.INTERNAL_SERVER_ERROR) {
+                throw new ErrorException(ErrorEnum.GET_TASKS_ERROR);
+            }
+            throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+        } finally {
+            logElapsedTime(NEXT_TASKS_LOG_ID, start);
+        }
+
+        return manageTaskResponse(restTaskResponse);
+    }
+    
 
     private Scene manageTaskResponse(RestResponse<TaskResponse> restTaskResponse) {
         Scene scene = new Scene();
