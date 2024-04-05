@@ -22,7 +22,7 @@ public class Tracer {
         message = message.concat(toLog).concat("\n");
     }
 
-    @Scheduled(every = "2m", delay = 1, delayUnit = TimeUnit.MINUTES)
+    @Scheduled(every = "2m")
     public void tracerJob(){
         if (properties.isTraceLoggingEnabled()){
             objectStoreServiceImpl.writeLog(message);
