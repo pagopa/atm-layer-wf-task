@@ -172,30 +172,7 @@ public class TaskResource extends CommonLogic{
 
         long start = System.currentTimeMillis();
         validateRequest(state);   
-        String[] transactionIdParts = transactionId.split("-");
-        if (!transactionIdParts[0].equals(state.getDevice().getBankId())) {
-            log.error("TransactionId not valid -> [BankId]");
-            logElapsedTime(CREATE_NEXT_SCENE_LOG_ID, start);
-            throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
-        }
-        if (state.getDevice().getBranchId() != null
-                && !transactionIdParts[1].equals(state.getDevice().getBranchId())) {
-            log.error("TransactionId not valid -> [BranchId]");
-            logElapsedTime(CREATE_NEXT_SCENE_LOG_ID, start);
-            throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
-        }
-        if (state.getDevice().getCode() != null
-                && !transactionIdParts[2].equals(state.getDevice().getCode())) {
-            log.error("TransactionId not valid -> [Code]");
-            logElapsedTime(CREATE_NEXT_SCENE_LOG_ID, start);
-            throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
-        }
-        if (state.getDevice().getTerminalId() != null
-                && !transactionIdParts[3].equals(state.getDevice().getTerminalId())) {
-            log.error("TransactionId not valid -> [TerminalId]");
-            logElapsedTime(CREATE_NEXT_SCENE_LOG_ID, start);
-            throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
-        }
+       
 
         try {
             return taskService.completeTask(transactionId, state);
@@ -224,30 +201,7 @@ public class TaskResource extends CommonLogic{
 
         long start = System.currentTimeMillis();
         validateRequest(state);   
-        String[] transactionIdParts = transactionId.split("-");
-        if (!transactionIdParts[0].equals(state.getDevice().getBankId())) {
-            log.error("TransactionId not valid -> [BankId]");
-            logElapsedTime(CREATE_NEXT_SCENE_LOG_ID, start);
-            throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
-        }
-        if (state.getDevice().getBranchId() != null
-                && !transactionIdParts[1].equals(state.getDevice().getBranchId())) {
-            log.error("TransactionId not valid -> [BranchId]");
-            logElapsedTime(CREATE_NEXT_SCENE_LOG_ID, start);
-            throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
-        }
-        if (state.getDevice().getCode() != null
-                && !transactionIdParts[2].equals(state.getDevice().getCode())) {
-            log.error("TransactionId not valid -> [Code]");
-            logElapsedTime(CREATE_NEXT_SCENE_LOG_ID, start);
-            throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
-        }
-        if (state.getDevice().getTerminalId() != null
-                && !transactionIdParts[3].equals(state.getDevice().getTerminalId())) {
-            log.error("TransactionId not valid -> [TerminalId]");
-            logElapsedTime(CREATE_NEXT_SCENE_LOG_ID, start);
-            throw new ErrorException(ErrorEnum.INVALID_TRANSACTION_ID);
-        }
+        
 
         try {
             RestResponse<Scene> response = null;
