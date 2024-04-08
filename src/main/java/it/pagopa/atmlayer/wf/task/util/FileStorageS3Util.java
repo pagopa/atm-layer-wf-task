@@ -8,10 +8,11 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.Getter;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
-import software.amazon.awssdk.core.async.AsyncRequestBody;
 import software.amazon.awssdk.core.async.BlockingInputStreamAsyncRequestBody;
+import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.s3.S3AsyncClient;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Getter
 @Singleton
@@ -22,26 +23,28 @@ public class FileStorageS3Util {
 
     BlockingInputStreamAsyncRequestBody body;
 
-    S3AsyncClient s3Client;
+    S3Client s3;
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
 
     @PostConstruct
     public void init() {
-        s3Client = S3AsyncClient.builder()
+        s3 = S3Client.builder()
             .credentialsProvider(DefaultCredentialsProvider.create())
             .region(Region.of(properties.bucket().region()))
             .build();
     }
 
-    public void createLogFile(){
+    public void createLogFile(String message){
         LocalDateTime currentDateTime = LocalDateTime.now();
         String formattedDateTime = currentDateTime.format(formatter);
-
-        body = AsyncRequestBody.forBlockingInputStream(null);
         
-        s3Client.putObject(r -> r.bucket(properties.bucket().name())
-                .key(properties.resource().pathTemplate() + "/trace-" + formattedDateTime + "-" + System.getenv("POD_NAME") + ".log"), body);
+        PutObjectRequest request = PutObjectRequest.builder()
+                .bucket(properties.bucket().name())
+                .key(properties.resource().pathTemplate().concat("/trace-").concat(System.getenv("POD_NAME").concat("-").concat(formattedDateTime).concat(".log")))
+                .build();
+
+        s3.putObject(request, RequestBody.fromString(message));
     }
 
 }
