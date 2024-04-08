@@ -2,15 +2,11 @@ package it.pagopa.atmlayer.wf.task.util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.Getter;
-import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.core.async.BlockingInputStreamAsyncRequestBody;
 import software.amazon.awssdk.core.sync.RequestBody;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
@@ -42,7 +38,7 @@ public class FileStorageS3Util {
         
         PutObjectRequest request = PutObjectRequest.builder()
                 .bucket(properties.bucket().name())
-                .key(properties.resource().pathTemplate().concat("/trace-").concat(System.getenv("POD_NAME").concat("-").concat(formattedDateTime).concat(".log")))
+                .key(properties.resource().pathTemplate().concat("/trace-").concat(System.getenv("POD_NAME")).concat("-").concat(formattedDateTime).concat(".log"))
                 .build();
 
         s3.putObject(request, RequestBody.fromString(message));
