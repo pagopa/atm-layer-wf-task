@@ -28,7 +28,7 @@ public class FileStorageS3Util {
 
     @PostConstruct
     public void init() {
-        s3Client = S3AsyncClient.crtBuilder()
+        s3Client = S3AsyncClient.builder()
             .credentialsProvider(DefaultCredentialsProvider.create())
             .region(Region.of(properties.bucket().region()))
             .build();
