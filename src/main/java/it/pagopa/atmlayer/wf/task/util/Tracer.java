@@ -1,5 +1,7 @@
 package it.pagopa.atmlayer.wf.task.util;
 
+import java.util.concurrent.TimeUnit;
+
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import io.quarkus.scheduler.Scheduled;
 import it.pagopa.atmlayer.wf.task.service.impl.S3ObjectStoreServiceImpl;
@@ -20,7 +22,7 @@ public class Tracer {
         message = message.concat(toLog).concat("\n");
     }
 
-    @Scheduled(every = "1m")
+    @Scheduled(every = "1m", delay = 2, delayUnit = TimeUnit.SECONDS)
     public void tracerJob(){
         if (properties.isTraceLoggingEnabled()){
             objectStoreServiceImpl.writeLog(message);
