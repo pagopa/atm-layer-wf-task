@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 90.78%               |
-| :heavy_check_mark: Number of Lines Covered | 650    |
+| Code Coverage %         | 90.68%               |
+| :heavy_check_mark: Number of Lines Covered | 642    |
 | :x: Number of Lines Missed  | 66     |
-| Total Number of Lines   | 716     |
+| Total Number of Lines   | 708     |
 
 
 ## Details:
@@ -168,14 +168,6 @@
         
 #### Lines Missed:
         
-- Line #75
-```
-		} catch (ProcessingException e) {
-```
-- Line #150
-```
-		} catch (ProcessingException e) {
-```
 - Line #179
 ```
         } catch (ProcessingException e) {
@@ -388,6 +380,10 @@
         
 #### Lines Missed:
         
+- Line #24
+```
+    }
+```
 </details>
 
     
@@ -469,12 +465,16 @@
 
 <details>
     <summary>
-:heavy_check_mark: FileStorageS3Util.java
+:x: FileStorageS3Util.java
     </summary>
 
         
-#### All Lines Covered!
+#### Lines Missed:
         
+- Line #48
+```
+    }
+```
 </details>
 
     
@@ -537,12 +537,16 @@
 
 <details>
     <summary>
-:heavy_check_mark: Tracer.java
+:x: Tracer.java
     </summary>
 
         
-#### All Lines Covered!
+#### Lines Missed:
         
+- Line #29
+```
+    }
+```
 </details>
 
     
