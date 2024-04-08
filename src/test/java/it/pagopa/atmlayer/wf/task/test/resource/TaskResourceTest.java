@@ -4,6 +4,7 @@ import static io.restassured.RestAssured.given;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse;
+import org.jboss.resteasy.reactive.RestResponse.StatusCode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -25,6 +26,7 @@ import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
 import it.pagopa.atmlayer.wf.task.resource.TaskResource;
 import it.pagopa.atmlayer.wf.task.test.DataTest;
+import jakarta.ws.rs.ProcessingException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response.Status;
@@ -33,31 +35,28 @@ import jakarta.ws.rs.core.Response.Status;
 @TestHTTPEndpoint(TaskResource.class)
 @TestInstance(Lifecycle.PER_CLASS)
 class TaskResourceTest {
-    
+
         @InjectMock
-        @RestClient    
-        @MockitoConfig(convertScopes = true)       
+        @RestClient
+        @MockitoConfig(convertScopes = true)
         MilAuthRestClient milAuthRestClient;
 
         @InjectMock
         @RestClient
         @MockitoConfig(convertScopes = true)
         ProcessRestClient processRestClient;
-        
+
         @InjectMock
         @RestClient
         @MockitoConfig(convertScopes = true)
         TokenizationRestClient tokenizationRestClient;
-        
-        
-        
 
         @Test
         void startProcessOk() {
-            
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));   
-            
+
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -74,13 +73,13 @@ class TaskResourceTest {
 
                 Assertions.assertEquals(201, response.statusCode());
         }
-        
+
         @Test
         void startProcessOkWithPan() {
-            
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));   
-            
+
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -90,48 +89,54 @@ class TaskResourceTest {
                                 .retrieveVariables(Mockito.any(VariableRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createVariableResponseNoData()));
-                
-                Mockito.when(tokenizationRestClient
-                        .getKey()).thenReturn(RestResponse.status(Status.OK,
-                                        DataTest.createPublicKeyResponse()));
 
-                Response response = given().body("{\"device\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"1234\",\"terminalId\":\"1234567890\",\"opTimestamp\":1707323349628,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"panInfo\":[{\"pan\":\"1234567891234567\",\"circuits\":[\"VISA\",\"MASTERCARD\"],\"bankName\":\"ISYBANK\"}]}")
+                Mockito.when(tokenizationRestClient
+                                .getKey()).thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createPublicKeyResponse()));
+
+                Response response = given().body(
+                                "{\"device\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"1234\",\"terminalId\":\"1234567890\",\"opTimestamp\":1707323349628,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"panInfo\":[{\"pan\":\"1234567891234567\",\"circuits\":[\"VISA\",\"MASTERCARD\"],\"bankName\":\"ISYBANK\"}]}")
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/main").then().extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
         }
 
-//        @Test
-//        void startProcessOkWithPanGenerateKey() {
-//            
-//                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-//                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));   
-//            
-//
-//                Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
-//                                .thenReturn(RestResponse.status(Status.OK,
-//                                                DataTest.createTaskResponse(1)));
-//
-//                Mockito.when(processRestClient
-//                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-//                                .thenReturn(RestResponse.status(Status.OK,
-//                                                DataTest.createVariableResponseNoData()));
-//                
-//                Mockito.when(prop.tokenizationIsMock()).thenReturn(false);
-//
-//                Response response = given().body("{\"device\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"12345\",\"terminalId\":\"1234567890\",\"opTimestamp\":1707323349628,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"panInfo\":[{\"pan\":\"1234567891234567\",\"circuits\":[\"VISA\",\"MASTERCARD\"],\"bankName\":\"ISYBANK\"}]}")
-//                                .contentType(MediaType.APPLICATION_JSON).when()
-//                                .post("/main").then().extract().response();
-//
-//                Assertions.assertEquals(201, response.statusCode());
-//        }
-        
+        // @Test
+        // void startProcessOkWithPanGenerateKey() {
+        //
+        // Mockito.when(milAuthRestClient.getToken(Mockito.anyString(),
+        // Mockito.anyString(), Mockito.any(), Mockito.anyString(),
+        // Mockito.anyString()))
+        // .thenReturn(RestResponse.status(Status.OK, new
+        // TokenResponse("****fiscalcode****")));
+        //
+        //
+        // Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
+        // .thenReturn(RestResponse.status(Status.OK,
+        // DataTest.createTaskResponse(1)));
+        //
+        // Mockito.when(processRestClient
+        // .retrieveVariables(Mockito.any(VariableRequest.class)))
+        // .thenReturn(RestResponse.status(Status.OK,
+        // DataTest.createVariableResponseNoData()));
+        //
+        // Mockito.when(prop.tokenizationIsMock()).thenReturn(false);
+        //
+        // Response response =
+        // given().body("{\"device\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"12345\",\"terminalId\":\"1234567890\",\"opTimestamp\":1707323349628,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"panInfo\":[{\"pan\":\"1234567891234567\",\"circuits\":[\"VISA\",\"MASTERCARD\"],\"bankName\":\"ISYBANK\"}]}")
+        // .contentType(MediaType.APPLICATION_JSON).when()
+        // .post("/main").then().extract().response();
+        //
+        // Assertions.assertEquals(201, response.statusCode());
+        // }
+
         @Test
         void startProcessOkWithoutDeviceData() {
-            
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
+
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -150,10 +155,27 @@ class TaskResourceTest {
         }
 
         @Test
+        void startProcessConnectionProblem() {
+
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
+
+                Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
+                                .thenThrow(new ProcessingException("error"));
+
+                given().body(DataTest.createStateRequestStart())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/main").then().statusCode(StatusCode.INTERNAL_SERVER_ERROR);
+
+        }
+
+        @Test
         void taskWithoutButtons() {
-            
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
+
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -173,9 +195,10 @@ class TaskResourceTest {
 
         @Test
         void taskWithoutForm() {
-            
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
+
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -186,7 +209,6 @@ class TaskResourceTest {
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createVariableResponseWithData()));
 
-                        
                 Response response = given().body(DataTest.createStateRequestStartWithoutDeviceData())
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/main").then().extract().response();
@@ -197,9 +219,10 @@ class TaskResourceTest {
 
         @Test
         void startProcessKoOnStart500() {
-            
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
+
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.INTERNAL_SERVER_ERROR));
@@ -218,9 +241,10 @@ class TaskResourceTest {
 
         @Test
         void startProcessKoOnStart503() {
-                
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
+
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenThrow(new WebApplicationException(Status.SERVICE_UNAVAILABLE));
@@ -239,8 +263,9 @@ class TaskResourceTest {
 
         @Test
         void startProcessKoOnVariables500() {
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK, DataTest.createTaskResponse(1)));
@@ -258,8 +283,9 @@ class TaskResourceTest {
 
         @Test
         void startProcessKoOnVariables503() {
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK, DataTest.createTaskResponse(1)));
@@ -277,8 +303,9 @@ class TaskResourceTest {
 
         @Test
         void variableResponseWithData() {
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -314,12 +341,30 @@ class TaskResourceTest {
 
                 Assertions.assertEquals(201, response.statusCode());
         }
-        
+
+        @Test
+        void nextTaskConnectionProblem() {
+
+                Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createTaskResponse(1)));
+
+                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenThrow(new ProcessingException("error"));
+
+                given().body(DataTest.createStateRequestNext())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/next/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa")
+                                .then()
+                                .statusCode(StatusCode.INTERNAL_SERVER_ERROR);
+
+        }
+
         @Test
         void next2TaskOk() {
-            
-            Mockito.when(processRestClient.complete(Mockito.any(TaskRequest.class)))
-            .thenReturn(RestResponse.status(Status.OK));
+
+                Mockito.when(processRestClient.complete(Mockito.any(TaskRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK));
 
                 Mockito.when(processRestClient.next2Tasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -328,22 +373,20 @@ class TaskResourceTest {
                 Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createVariableResponseNoData()));
-                
 
                 Response response = given().body(DataTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/complete/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa")
                                 .then().extract().response();
                 Assertions.assertEquals(200, response.statusCode());
-                
-                response = given().body(DataTest.createStateRequestNext())
-                        .contentType(MediaType.APPLICATION_JSON).when()
-                        .post("/next2/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa")
-                        .then().extract().response();
 
-        Assertions.assertEquals(201, response.statusCode());
+                response = given().body(DataTest.createStateRequestNext())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/next2/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa")
+                                .then().extract().response();
+
+                Assertions.assertEquals(201, response.statusCode());
         }
-        
 
 
         @Test
@@ -412,10 +455,10 @@ class TaskResourceTest {
 
         @Test
         void taskNoPeripherals() {
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
-            
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createTaskResponse(1)));
@@ -539,8 +582,9 @@ class TaskResourceTest {
 
         @Test
         void startProcessOkNoData() {
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -560,9 +604,10 @@ class TaskResourceTest {
 
         @Test
         void startProcessNoTasks() {
-            
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
+
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -582,9 +627,10 @@ class TaskResourceTest {
 
         @Test
         void testDefaultVariables() {
-            
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
+
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -603,9 +649,10 @@ class TaskResourceTest {
 
         @Test
         void testMissingReceipt() {
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
-                
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
+
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createTaskResponseMissingReceipt(1)));
@@ -642,9 +689,10 @@ class TaskResourceTest {
 
         @Test
         void testReturn202ProcessOnStart() {
-            
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
+
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.ACCEPTED,
@@ -688,7 +736,8 @@ class TaskResourceTest {
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createTaskResponseEndProcess()));
 
-                Mockito.when(milAuthRestClient.deleteToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                Mockito.when(milAuthRestClient.deleteToken(Mockito.anyString(), Mockito.anyString(),
+                                Mockito.anyString(), Mockito.anyString()))
                                 .thenReturn(RestResponse.status(Status.NO_CONTENT));
 
                 Response response = given().body(DataTest.createStateRequestStart())
@@ -698,7 +747,7 @@ class TaskResourceTest {
 
                 Assertions.assertEquals(200, response.statusCode());
         }
-        
+
         @Test
         void test2EndProcess() {
 
@@ -706,7 +755,8 @@ class TaskResourceTest {
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createTaskResponseEndProcess()));
 
-                Mockito.when(milAuthRestClient.deleteToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                Mockito.when(milAuthRestClient.deleteToken(Mockito.anyString(), Mockito.anyString(),
+                                Mockito.anyString(), Mockito.anyString()))
                                 .thenReturn(RestResponse.status(Status.NO_CONTENT));
 
                 Response response = given().body(DataTest.createStateRequestStart())
@@ -719,9 +769,10 @@ class TaskResourceTest {
 
         @Test
         void startProcessKoFromProcess500() {
-            
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
+
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenThrow(new WebApplicationException(Status.INTERNAL_SERVER_ERROR));
@@ -735,9 +786,10 @@ class TaskResourceTest {
 
         @Test
         void startProcessKoFromProcess503() {
-            
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
+
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenThrow(new WebApplicationException(Status.SERVICE_UNAVAILABLE));
@@ -748,20 +800,21 @@ class TaskResourceTest {
 
                 Assertions.assertEquals(209, response.statusCode());
         }
-        
+
         @Test
-        void startProcessKoFromGetToken() {            
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenThrow(new WebApplicationException(Status.SERVICE_UNAVAILABLE));   
-                
+        void startProcessKoFromGetToken() {
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenThrow(new WebApplicationException(Status.SERVICE_UNAVAILABLE));
+
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
-                .thenReturn(RestResponse.status(Status.OK,
-                                DataTest.createTaskResponse(1)));
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createTaskResponse(1)));
 
                 Mockito.when(processRestClient
-                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                .thenReturn(RestResponse.status(Status.OK,
-                                DataTest.createVariableResponseNoData()));
+                                .retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createVariableResponseNoData()));
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -769,20 +822,21 @@ class TaskResourceTest {
 
                 Assertions.assertEquals(201, response.statusCode());
         }
-        
+
         @Test
-        void startProcessKoForbiddenFromGetToken() {            
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.FORBIDDEN));
-                
+        void startProcessKoForbiddenFromGetToken() {
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.FORBIDDEN));
+
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
-                .thenReturn(RestResponse.status(Status.OK,
-                                DataTest.createTaskResponse(1)));
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createTaskResponse(1)));
 
                 Mockito.when(processRestClient
-                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                .thenReturn(RestResponse.status(Status.OK,
-                                DataTest.createVariableResponseNoData()));
+                                .retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createVariableResponseNoData()));
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -790,53 +844,58 @@ class TaskResourceTest {
 
                 Assertions.assertEquals(201, response.statusCode());
         }
-       
+
         @Test
-        void startProcessOKCFGetToken() {            
-            Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-            .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
-                
+        void startProcessOKCFGetToken() {
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
+
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
-                .thenReturn(RestResponse.status(Status.OK,
-                                DataTest.createTaskResponse(1)));
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createTaskResponse(1)));
 
                 Mockito.when(processRestClient
-                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                .thenReturn(RestResponse.status(Status.OK,
-                                DataTest.createVariableResponseNoData()));
+                                .retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createVariableResponseNoData()));
 
-                Response response = given().body("{\"device\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"1234\",\"terminalId\":\"1234567890\",\"opTimestamp\":1705499660669,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"fiscalCode\":\"BBTFNC\"}")
+                Response response = given().body(
+                                "{\"device\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"1234\",\"terminalId\":\"1234567890\",\"opTimestamp\":1705499660669,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"fiscalCode\":\"BBTFNC\"}")
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/main").then().extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
         }
-        
+
         @Test
-        void startProcessOKMalformed() {            
-            Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(), Mockito.anyString(), Mockito.anyString()))
-            .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));  
-                
+        void startProcessOKMalformed() {
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
+
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
-                .thenReturn(RestResponse.status(Status.OK,
-                                DataTest.createTaskResponse(1)));
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createTaskResponse(1)));
 
                 Mockito.when(processRestClient
-                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                .thenReturn(RestResponse.status(Status.OK,
-                                DataTest.createVariableResponseNoData()));
+                                .retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createVariableResponseNoData()));
 
-                Response response = given().body("{\"devicee\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"1234\",\"terminalId\":\"1234567890\",\"opTimestamp\":1705499660669,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"fiscalCode\":\"BBTFNC\"}")
+                Response response = given().body(
+                                "{\"devicee\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"1234\",\"terminalId\":\"1234567890\",\"opTimestamp\":1705499660669,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"fiscalCode\":\"BBTFNC\"}")
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/main").then().extract().response();
 
                 Assertions.assertEquals(400, response.statusCode());
-                 response = given().body("{\"devicee\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"1234\",\"terminalId\":\"1234567890\",\"opTimestamp\":1705499660669,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"fiscalCode\":\"BBTFNC\"}")
-                        .contentType(MediaType.APPLICATION_JSON).when()
-                        .post("/next/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa").then()
-                        .extract().response();
+                response = given().body(
+                                "{\"devicee\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"1234\",\"terminalId\":\"1234567890\",\"opTimestamp\":1705499660669,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"fiscalCode\":\"BBTFNC\"}")
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/next/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa").then()
+                                .extract().response();
 
-        Assertions.assertEquals(400, response.statusCode());
+                Assertions.assertEquals(400, response.statusCode());
         }
 
 }
