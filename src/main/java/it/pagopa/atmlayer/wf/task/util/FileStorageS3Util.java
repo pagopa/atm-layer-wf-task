@@ -5,13 +5,17 @@ import java.time.format.DateTimeFormatter;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.core.async.BlockingInputStreamAsyncRequestBody;
+import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Getter
 @Singleton
+@Slf4j
 public class FileStorageS3Util {
 
     @Inject
@@ -38,10 +42,11 @@ public class FileStorageS3Util {
         
         PutObjectRequest request = PutObjectRequest.builder()
                 .bucket(properties.bucket().name())
-                .key(properties.resource().pathTemplate().concat("/trace-").concat(System.getenv("POD_NAME")).concat("-").concat(formattedDateTime).concat(".log"))
+                .key(properties.resource().pathTemplate() +"/trace-" + System.getenv("POD_NAME") + "-" + formattedDateTime + ".log")
                 .build();
 
         s3.putObject(request, RequestBody.fromString(message));
+        
     }
 
 }
