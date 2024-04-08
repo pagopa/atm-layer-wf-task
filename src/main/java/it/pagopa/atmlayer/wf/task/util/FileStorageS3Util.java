@@ -23,17 +23,18 @@ public class FileStorageS3Util {
 
     BlockingInputStreamAsyncRequestBody body;
 
+    @Inject
     S3Client s3;
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
 
-    @PostConstruct
+    /* @PostConstruct
     public void init() {
         s3 = S3Client.builder()
             .credentialsProvider(DefaultCredentialsProvider.create())
             .region(Region.of(properties.bucket().region()))
             .build();
-    }
+    } */
 
     public void createLogFile(String message){
         LocalDateTime currentDateTime = LocalDateTime.now();
