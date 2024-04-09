@@ -2,6 +2,8 @@ package it.pagopa.atmlayer.wf.task.util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.quarkus.arc.profile.UnlessBuildProfile;
 import jakarta.annotation.PostConstruct;
@@ -29,6 +31,7 @@ public class FileStorageS3Util {
     S3Client s3;
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH");
+    
 
     @PostConstruct
     public void init() {
@@ -43,11 +46,15 @@ public class FileStorageS3Util {
         LocalDateTime currentDateTime = LocalDateTime.now();
         String formattedDateTime = currentDateTime.format(formatter);
 
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("Content-Type", "binary/octet-stream");
+
         PutObjectRequest request = PutObjectRequest.builder()
                 .bucket(properties.bucket().name())
                 .key(properties.resource().pathTemplate().concat("/").concat(formattedDateTime.substring(0, 10))
                         .concat("/").concat(formattedDateTime.substring(11, 13)).concat("/")
-                        .concat(System.getenv("POD_NAME")).concat("/trace").concat(formattedDateTime).concat(".log"))
+                        .concat(System.getenv("POD_NAME")).concat("/trace-").concat(formattedDateTime).concat(".log"))
+                .metadata(metadata)
                 .build();
 
         s3.putObject(request, RequestBody.fromString(message));
