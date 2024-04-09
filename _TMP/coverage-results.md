@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 90.61%               |
-| :heavy_check_mark: Number of Lines Covered | 637    |
-| :x: Number of Lines Missed  | 66     |
-| Total Number of Lines   | 703     |
+| Code Coverage %         | 91.96%               |
+| :heavy_check_mark: Number of Lines Covered | 652    |
+| :x: Number of Lines Missed  | 57     |
+| Total Number of Lines   | 709     |
 
 
 ## Details:
@@ -374,16 +374,12 @@
 
 <details>
     <summary>
-:x: S3ObjectStoreServiceImpl.java
+:heavy_check_mark: S3ObjectStoreServiceImpl.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
-- Line #24
-```
-    }
-```
 </details>
 
     
@@ -465,16 +461,12 @@
 
 <details>
     <summary>
-:x: FileStorageS3Util.java
+:heavy_check_mark: FileStorageS3Util.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
-- Line #45
-```
-    }
-```
 </details>
 
     
@@ -537,16 +529,12 @@
 
 <details>
     <summary>
-:x: Tracer.java
+:heavy_check_mark: Tracer.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
-- Line #29
-```
-    }
-```
 </details>
 
     
