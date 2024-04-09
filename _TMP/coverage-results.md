@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 90.76%               |
-| :heavy_check_mark: Number of Lines Covered | 648    |
+| Code Coverage %         | 90.81%               |
+| :heavy_check_mark: Number of Lines Covered | 652    |
 | :x: Number of Lines Missed  | 66     |
-| Total Number of Lines   | 714     |
+| Total Number of Lines   | 718     |
 
 
 ## Details:
@@ -471,7 +471,11 @@
         
 #### Lines Missed:
         
-- Line #53
+- Line #48
+```
+                .key(properties.resource().pathTemplate().concat("/").concat(formattedDateTime.substring(0, 10))
+```
+- Line #55
 ```
     }
 ```
@@ -543,7 +547,7 @@
         
 #### Lines Missed:
         
-- Line #38
+- Line #41
 ```
     }
 ```
