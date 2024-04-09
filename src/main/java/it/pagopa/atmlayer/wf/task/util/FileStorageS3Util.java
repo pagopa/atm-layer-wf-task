@@ -3,15 +3,13 @@ package it.pagopa.atmlayer.wf.task.util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import io.quarkus.arc.profile.UnlessBuildProfile;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
-import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.core.async.BlockingInputStreamAsyncRequestBody;
-import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
 import software.amazon.awssdk.regions.Region;
@@ -20,6 +18,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Getter
 @Singleton
+@UnlessBuildProfile(anyOf = {"native"})
 public class FileStorageS3Util {
 
     @Inject
@@ -29,7 +28,7 @@ public class FileStorageS3Util {
 
     S3Client s3;
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH");
 
     @PostConstruct
     public void init() {
@@ -46,7 +45,7 @@ public class FileStorageS3Util {
         
         PutObjectRequest request = PutObjectRequest.builder()
                 .bucket(properties.bucket().name())
-                .key(properties.resource().pathTemplate() +"/trace-" + System.getenv("POD_NAME") + "-" + formattedDateTime + ".log")
+                .key(properties.resource().pathTemplate().concat("/").concat(formattedDateTime.substring(0,9)).concat("/").concat(formattedDateTime.substring(11,12)).concat("/").concat(System.getenv("POD_NAME")).concat("/trace.log"))
                 .build();
 
         s3.putObject(request, RequestBody.fromString(message));

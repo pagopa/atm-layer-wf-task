@@ -26,10 +26,9 @@ import lombok.extern.slf4j.Slf4j;
 @Provider
 @Slf4j
 public class LogFilter extends CommonLogic implements ContainerRequestFilter, ContainerResponseFilter {
-
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-
+        
         if (requestContext.getUriInfo().getPath().startsWith("/api/v1")) {
             String transactionId = null;
             MultivaluedMap<String, String> pathParameters = requestContext.getUriInfo().getPathParameters();
@@ -49,37 +48,40 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
 
                 MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, transactionId);
             }
+
+            requestContext.setProperty("transactionId", transactionId);
             
-            logTracePropagation("============== REQUEST ==============");
+            logTracePropagation("============== REQUEST ==============", transactionId);
             if (pathParameters != null) {
-                logTracePropagation("PATH PARAMS: {}", pathParameters);
+                logTracePropagation("PATH PARAMS: {}", pathParameters, transactionId);
             }
-            logTracePropagation("HEADERS: {}", requestContext.getHeaders());
-            logTracePropagation("METHOD: {}", requestContext.getMethod());
+            logTracePropagation("HEADERS: {}", requestContext.getHeaders(), transactionId);
+            logTracePropagation("METHOD: {}", requestContext.getMethod(), transactionId);
 
             log.info("BODY: {}", state);
             if (isTraceLoggingEnabled) {
-                Tracer.trace("BODY: " + new String(entity));
+                Tracer.trace(transactionId + " BODY: ".concat(new String(entity)));
             }
 
             requestContext.setEntityStream(new ByteArrayInputStream(Utility.setTransactionIdInJson(entity, transactionId)));
-
-            logTracePropagation("============== REQUEST ==============");
+            logTracePropagation("============== REQUEST ==============", transactionId);
         }
     }
 
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
         if (requestContext.getUriInfo().getPath().startsWith("/api/v1")) {
-            logTracePropagation("============== RESPONSE ==============");
-            logTracePropagation("STATUS: {}", responseContext.getStatus());
+            String transactionId = String.valueOf(requestContext.getProperty("transactionId"));
+
+            logTracePropagation("============== RESPONSE ==============", transactionId);
+            logTracePropagation("STATUS: {}", responseContext.getStatus(), transactionId);
             if (responseContext.getEntity() != null) {
                 log.info("BODY: {}", Utility.getObscuredJson(responseContext.getEntity()));
                 if (isTraceLoggingEnabled) {
-                    Tracer.trace(("BODY: " + Utility.getJson(responseContext.getEntity())));
+                    Tracer.trace((transactionId + " BODY: " + Utility.getJson(responseContext.getEntity())));
                 }
             }
-            logTracePropagation("============== RESPONSE ==============");
+            logTracePropagation("============== RESPONSE ==============", transactionId);
             MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
         }
     }
