@@ -40,10 +40,10 @@ public class CommonLogic{
      * @param string - string to log
      * @see application.properties
      */
-    protected void logTracePropagation(String string){
-        log.info(string);
+    protected void logTracePropagation(String message, String transactionId){
+        log.info(message);
         if (isTraceLoggingEnabled){
-            Tracer.trace(string);
+            Tracer.trace(transactionId.concat(message));
         }
     }
 
@@ -56,10 +56,10 @@ public class CommonLogic{
      * @param object - object to log
      * @see application.properties
      */
-    protected void logTracePropagation(String string, Object object){
-        log.info(string, object);
+    protected void logTracePropagation(String message, Object object, String transactionId){
+        log.info(message, object);
         if (isTraceLoggingEnabled){
-            Tracer.trace(string.concat(object.toString()));
+            Tracer.trace(transactionId.concat(message).concat(object.toString()));
         }
     }
 

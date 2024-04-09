@@ -1,5 +1,7 @@
 package it.pagopa.atmlayer.wf.task.util;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -18,11 +20,16 @@ public class Tracer {
 
     private static String message = new String();
 
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+
     public static void trace(String toLog){
-        message = message.concat(toLog).concat("\n");
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        String formattedDateTime = currentDateTime.format(formatter);
+        
+        message = formattedDateTime.concat(" ").concat(message).concat(toLog).concat("\n");
     }
 
-    @Scheduled(every = "1m", delay = 2, delayUnit = TimeUnit.SECONDS)
+    @Scheduled(every = "5m", delay = 5, delayUnit = TimeUnit.SECONDS)
     public void tracerJob(){
         if (properties.isTraceLoggingEnabled()){
             objectStoreServiceImpl.writeLog(message);
