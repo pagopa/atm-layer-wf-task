@@ -25,14 +25,17 @@ public class Tracer {
     public static void trace(String toLog){
         LocalDateTime currentDateTime = LocalDateTime.now();
         String formattedDateTime = currentDateTime.format(formatter);
-        
-        message = formattedDateTime.concat(" ").concat(message).concat(toLog).concat("\n");
+        if (message.isEmpty()){
+            message = formattedDateTime.concat(" ").concat(toLog).concat("\n");
+        } else {
+            message = message.concat(formattedDateTime).concat(" ").concat(toLog).concat("\n");
+        }
     }
 
-    @Scheduled(every = "5m", delay = 5, delayUnit = TimeUnit.SECONDS)
+    @Scheduled(every = "2m", delay = 5, delayUnit = TimeUnit.SECONDS)
     public void tracerJob(){
         if (properties.isTraceLoggingEnabled()){
-            objectStoreServiceImpl.writeLog(message);
+            objectStoreServiceImpl.writeLog(message.replaceAll("\\{\\}", ""));
             message = new String();
         }
     }
