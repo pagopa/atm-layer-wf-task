@@ -18,7 +18,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Getter
 @Singleton
-@UnlessBuildProfile(anyOf = {"native"})
+@UnlessBuildProfile(anyOf = { "native" })
 public class FileStorageS3Util {
 
     @Inject
@@ -33,23 +33,25 @@ public class FileStorageS3Util {
     @PostConstruct
     public void init() {
         s3 = S3Client.builder()
-            .httpClient(UrlConnectionHttpClient.create())
-            .credentialsProvider(DefaultCredentialsProvider.create())
-            .region(Region.of(properties.bucket().region()))
-            .build();
-    } 
+                .httpClient(UrlConnectionHttpClient.create())
+                .credentialsProvider(DefaultCredentialsProvider.create())
+                .region(Region.of(properties.bucket().region()))
+                .build();
+    }
 
-    public void createLogFile(String message){
+    public void createLogFile(String message) {
         LocalDateTime currentDateTime = LocalDateTime.now();
         String formattedDateTime = currentDateTime.format(formatter);
-        
+
         PutObjectRequest request = PutObjectRequest.builder()
                 .bucket(properties.bucket().name())
-                .key(properties.resource().pathTemplate().concat("/").concat(formattedDateTime.substring(0,9)).concat("/").concat(formattedDateTime.substring(11,12)).concat("/").concat(System.getenv("POD_NAME")).concat("/trace.log"))
+                .key(properties.resource().pathTemplate().concat("/").concat(formattedDateTime.substring(0, 10))
+                        .concat("/").concat(formattedDateTime.substring(11, 13)).concat("/")
+                        .concat(System.getenv("POD_NAME")).concat("/trace").concat(formattedDateTime).concat(".log"))
                 .build();
 
         s3.putObject(request, RequestBody.fromString(message));
-        
+
     }
 
 }
