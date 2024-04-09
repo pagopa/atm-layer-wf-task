@@ -24,7 +24,7 @@ public class Tracer {
 
     public static void trace(String toLog){
         LocalDateTime currentDateTime = LocalDateTime.now();
-        String formattedDateTime = currentDateTime.format(formatter);
+        String formattedDateTime = currentDateTime.format(formatter).concat(" | ");
         if (message.isEmpty()){
             message = formattedDateTime.concat(" ").concat(toLog).concat("\n");
         } else {
