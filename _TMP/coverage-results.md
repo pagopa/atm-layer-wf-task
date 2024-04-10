@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 91.34%               |
-| :heavy_check_mark: Number of Lines Covered | 675    |
-| :x: Number of Lines Missed  | 64     |
-| Total Number of Lines   | 739     |
+| Code Coverage %         | 91.06%               |
+| :heavy_check_mark: Number of Lines Covered | 672    |
+| :x: Number of Lines Missed  | 66     |
+| Total Number of Lines   | 738     |
 
 
 ## Details:
@@ -348,23 +348,23 @@
         
 #### Lines Missed:
         
-- Line #179
+- Line #180
 ```
         } catch (WebApplicationException e) {
 ```
-- Line #287
+- Line #288
 ```
                 } catch (UnsupportedEncodingException e) {
 ```
-- Line #357
+- Line #358
 ```
                     } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 ```
-- Line #376
+- Line #377
 ```
                     } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
 ```
-- Line #580
+- Line #581
 ```
             } catch (UnsupportedEncodingException e) {
 ```
@@ -449,18 +449,6 @@
 </details>
 
     
-
-<details>
-    <summary>
-:heavy_check_mark: MilAuthFilter.java
-    </summary>
-
-        
-#### All Lines Covered!
-        
-</details>
-
-    
 ### it/pagopa/atmlayer/wf/task/util
 
 <details>
@@ -527,6 +515,10 @@
         
 #### Lines Missed:
         
+- Line #103
+```
+        } catch (JsonProcessingException e) {
+```
 - Line #116
 ```
         } catch (JsonProcessingException e) {
