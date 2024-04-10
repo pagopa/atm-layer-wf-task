@@ -1,10 +1,5 @@
 package it.pagopa.atmlayer.wf.task.resource.interceptors;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-
-import org.jboss.resteasy.reactive.RestResponse.StatusCode;
 import org.jboss.resteasy.reactive.client.spi.ResteasyReactiveClientRequestContext;
 import org.jboss.resteasy.reactive.client.spi.ResteasyReactiveClientRequestFilter;
 import org.jboss.resteasy.reactive.client.spi.ResteasyReactiveClientResponseFilter;

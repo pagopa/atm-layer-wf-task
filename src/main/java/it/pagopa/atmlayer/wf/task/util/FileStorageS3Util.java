@@ -53,7 +53,6 @@ public class FileStorageS3Util {
                 .build();
 
         s3.putObject(request, RequestBody.fromString(message));
-
     }
 
 }
