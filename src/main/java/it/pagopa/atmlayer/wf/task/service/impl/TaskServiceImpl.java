@@ -66,6 +66,7 @@ import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
 import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Constants;
+import it.pagopa.atmlayer.wf.task.util.Tracer;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.WebApplicationException;
@@ -618,6 +619,10 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                 } else {
                     log.warn("Calling milAuth Status: [{}]", restTokenResponse.getStatus());
                 }
+            }
+            
+            if (properties.isTraceLoggingEnabled()){
+                Tracer.traceMilAuthClientComm(state, device, restTokenResponse);
             }
         } catch (WebApplicationException e) {
             log.error("Error calling milAuth get Token service", e);
