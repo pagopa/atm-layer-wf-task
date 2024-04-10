@@ -18,25 +18,21 @@ public class Tracer {
     @Inject 
     private S3ObjectStoreServiceImpl objectStoreServiceImpl;
 
-    private static String message = new String();
+    private static StringBuilder messageBuilder = new StringBuilder();
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
     public static void trace(String toLog){
         LocalDateTime currentDateTime = LocalDateTime.now();
         String formattedDateTime = currentDateTime.format(formatter).concat(" | ");
-        if (message.isEmpty()){
-            message = formattedDateTime.concat(" ").concat(toLog).concat("\n");
-        } else {
-            message = message.concat(formattedDateTime).concat(" ").concat(toLog).concat("\n");
-        }
+        messageBuilder.append(formattedDateTime).append(" ").append(toLog).append("\n");
     }
 
     @Scheduled(every = "2m", delay = 5, delayUnit = TimeUnit.SECONDS)
     public void tracerJob(){
-        if (properties.isTraceLoggingEnabled() && !message.isEmpty()){
-            objectStoreServiceImpl.writeLog(message.replaceAll("\\{\\}", ""));
-            message = new String();
+        if (properties.isTraceLoggingEnabled() && messageBuilder.length() > 0){
+            objectStoreServiceImpl.writeLog(messageBuilder.toString().replaceAll("\\{\\}", ""));
+            messageBuilder.setLength(0);
         }
     }
 }
