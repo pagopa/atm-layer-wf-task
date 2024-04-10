@@ -1,5 +1,8 @@
 package it.pagopa.atmlayer.wf.task.resource.interceptors;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 import org.jboss.resteasy.reactive.client.spi.ResteasyReactiveClientRequestContext;
 import org.jboss.resteasy.reactive.client.spi.ResteasyReactiveClientRequestFilter;
 import org.jboss.resteasy.reactive.client.spi.ResteasyReactiveClientResponseFilter;
@@ -36,7 +39,11 @@ public class MilAuthFilter implements ResteasyReactiveClientRequestFilter, Reste
             Tracer.trace(transactionId + " | STATUS: " + responseContext.getStatus());
             Tracer.trace(transactionId + " | HEADERS: " + responseContext.getHeaders());
             if (responseContext.getEntityStream() != null) {
-                Tracer.trace(transactionId + " | BODY: " + Utility.getJson(responseContext.getEntityStream()));
+                try (InputStream entityStream = responseContext.getEntityStream()) {
+                    if (entityStream != null) {
+                      byte[] bytes = entityStream.readAllBytes();
+                      Tracer.trace(transactionId + " | BODY: " + new String(bytes));
+                    }
             }
             Tracer.trace(transactionId + " | ============== RESPONSE MIL AUTH CLIENT ==============");
         }
