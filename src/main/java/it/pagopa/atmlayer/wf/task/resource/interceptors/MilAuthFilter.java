@@ -40,8 +40,8 @@ public class MilAuthFilter implements ResteasyReactiveClientRequestFilter, Reste
             Tracer.trace(transactionId + " | ============== RESPONSE MIL AUTH CLIENT ==============");
             Tracer.trace(transactionId + " | STATUS: " + responseContext.getStatus());
             Tracer.trace(transactionId + " | HEADERS: " + responseContext.getHeaders());
-            if (responseContext.getEntityStream() != null && responseContext.getStatus() != StatusCode.NOT_FOUND) {
-                Tracer.trace(transactionId + " | BODY: " + Utility.convertToString(responseContext.getEntityStream()));
+            if (responseContext.getEntityStream() != null) {
+                Tracer.trace(transactionId + " | BODY: " + Utility.getJson(responseContext.getEntityStream()));
             }
             Tracer.trace(transactionId + " | ============== RESPONSE MIL AUTH CLIENT ==============");
         }
