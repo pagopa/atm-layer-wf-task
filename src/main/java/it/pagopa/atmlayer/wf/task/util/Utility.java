@@ -441,19 +441,4 @@ public class Utility {
         }
         return result;
     }
-
-    public static String convertToString(InputStream inputStream) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        StringBuilder stringBuilder = new StringBuilder();
-        try {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                stringBuilder.append(line).append("\n");
-            }
-            reader.close();
-        } catch (IOException e) {
-            Tracer.trace("Error during tracing...");
-        }
-        return stringBuilder.toString();
-    }
 }
