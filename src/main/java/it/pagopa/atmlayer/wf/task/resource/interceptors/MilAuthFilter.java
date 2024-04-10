@@ -21,7 +21,7 @@ public class MilAuthFilter implements ResteasyReactiveClientRequestFilter, Reste
         if (properties.isTraceLoggingEnabled()){
             String transactionId = requestContext.getHeaderString("TransactionId");
             Tracer.trace(transactionId + " | ============== REQUEST MIL AUTH CLIENT ==============");
-            Tracer.trace(transactionId + " | HEADERS: " + requestContext.getHeaders());
+            Tracer.trace(transactionId + " | HEADERS: " + requestContext.getHeaders().toString());
             Tracer.trace(transactionId + " | METHOD: " + requestContext.getMethod());
             Tracer.trace(transactionId + " | ============== REQUEST MIL AUTH CLIENT ==============");
         }
