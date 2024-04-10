@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 90.81%               |
-| :heavy_check_mark: Number of Lines Covered | 652    |
-| :x: Number of Lines Missed  | 66     |
-| Total Number of Lines   | 718     |
+| Code Coverage %         | 90.91%               |
+| :heavy_check_mark: Number of Lines Covered | 670    |
+| :x: Number of Lines Missed  | 67     |
+| Total Number of Lines   | 737     |
 
 
 ## Details:
@@ -449,6 +449,18 @@
 </details>
 
     
+
+<details>
+    <summary>
+:heavy_check_mark: MilAuthFilter.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
 ### it/pagopa/atmlayer/wf/task/util
 
 <details>
@@ -471,11 +483,11 @@
         
 #### Lines Missed:
         
-- Line #48
+- Line #57
 ```
-                .key(properties.resource().pathTemplate().concat("/").concat(formattedDateTime.substring(0, 10))
+                .metadata(metadata)
 ```
-- Line #55
+- Line #62
 ```
     }
 ```
