@@ -11,10 +11,8 @@ import it.pagopa.atmlayer.wf.task.util.Tracer;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.client.ClientResponseContext;
 import jakarta.ws.rs.ext.Provider;
-import lombok.extern.slf4j.Slf4j;
 
 @Provider
-@Slf4j
 public class MilAuthFilter implements ResteasyReactiveClientRequestFilter, ResteasyReactiveClientResponseFilter{
 
     @Inject
@@ -39,11 +37,7 @@ public class MilAuthFilter implements ResteasyReactiveClientRequestFilter, Reste
             Tracer.trace(transactionId + " | STATUS: " + responseContext.getStatus());
             Tracer.trace(transactionId + " | HEADERS: " + responseContext.getHeaders());
             if (responseContext.getEntityStream() != null) {
-                    try {
-                        Tracer.trace(transactionId + " | BODY: " + new String(responseContext.getEntityStream().readAllBytes()));
-                    } catch (IOException e) {
-                        Tracer.trace(transactionId + " | Error during tracing: " + e.getMessage());
-                    }
+                Tracer.trace(transactionId + " | BODY: " + responseContext.getEntityStream());
             }
             Tracer.trace(transactionId + " | ============== RESPONSE MIL AUTH CLIENT ==============");
         }
