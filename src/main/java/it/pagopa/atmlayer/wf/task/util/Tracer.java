@@ -34,7 +34,7 @@ public class Tracer {
 
     @Scheduled(every = "2m", delay = 5, delayUnit = TimeUnit.SECONDS)
     public void tracerJob(){
-        if (properties.isTraceLoggingEnabled()){
+        if (properties.isTraceLoggingEnabled() && !message.isEmpty()){
             objectStoreServiceImpl.writeLog(message.replaceAll("\\{\\}", ""));
             message = new String();
         }
