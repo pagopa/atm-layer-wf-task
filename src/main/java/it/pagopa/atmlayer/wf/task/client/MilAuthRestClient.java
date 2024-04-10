@@ -1,14 +1,17 @@
 package it.pagopa.atmlayer.wf.task.client;
 
+import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.jboss.resteasy.reactive.RestResponse;
 
 import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
+import it.pagopa.atmlayer.wf.task.resource.interceptors.MilAuthFilter;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 
+@RegisterProvider(MilAuthFilter.class)
 @RegisterRestClient(configKey = "mil-auth-rest-client")
 public interface MilAuthRestClient {
     
