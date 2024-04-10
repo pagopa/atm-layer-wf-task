@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 91.36%               |
-| :heavy_check_mark: Number of Lines Covered | 677    |
+| Code Coverage %         | 91.34%               |
+| :heavy_check_mark: Number of Lines Covered | 675    |
 | :x: Number of Lines Missed  | 64     |
-| Total Number of Lines   | 741     |
+| Total Number of Lines   | 739     |
 
 
 ## Details:
@@ -487,7 +487,7 @@
 ```
                 .contentType("binary/octet-stream")
 ```
-- Line #57
+- Line #56
 ```
     }
 ```
