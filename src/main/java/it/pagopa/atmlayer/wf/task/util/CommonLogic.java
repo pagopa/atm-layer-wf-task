@@ -43,7 +43,7 @@ public class CommonLogic{
     protected void logTracePropagation(String message, String transactionId){
         log.info(message);
         if (isTraceLoggingEnabled){
-            Tracer.trace(transactionId + " | " + message);
+            Tracer.trace(transactionId,  message);
         }
     }
 
@@ -59,7 +59,7 @@ public class CommonLogic{
     protected void logTracePropagation(String message, Object object, String transactionId){
         log.info(message, object);
         if (isTraceLoggingEnabled){
-            Tracer.trace(transactionId + " | " + message.concat(object.toString()));
+            Tracer.trace(transactionId, message.concat(object.toString()));
         }
     }
 
