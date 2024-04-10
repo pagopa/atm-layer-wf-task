@@ -1,5 +1,7 @@
 package it.pagopa.atmlayer.wf.task.resource.interceptors;
 
+import java.io.IOException;
+
 import org.jboss.resteasy.reactive.client.spi.ResteasyReactiveClientRequestContext;
 import org.jboss.resteasy.reactive.client.spi.ResteasyReactiveClientRequestFilter;
 import org.jboss.resteasy.reactive.client.spi.ResteasyReactiveClientResponseFilter;
@@ -9,8 +11,10 @@ import it.pagopa.atmlayer.wf.task.util.Tracer;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.client.ClientResponseContext;
 import jakarta.ws.rs.ext.Provider;
+import lombok.extern.slf4j.Slf4j;
 
 @Provider
+@Slf4j
 public class MilAuthFilter implements ResteasyReactiveClientRequestFilter, ResteasyReactiveClientResponseFilter{
 
     @Inject
@@ -21,7 +25,7 @@ public class MilAuthFilter implements ResteasyReactiveClientRequestFilter, Reste
         if (properties.isTraceLoggingEnabled()){
             String transactionId = requestContext.getHeaderString("TransactionId");
             Tracer.trace(transactionId + " | ============== REQUEST MIL AUTH CLIENT ==============");
-            Tracer.trace(transactionId + " | HEADERS: " + requestContext.getHeaders().toString());
+            Tracer.trace(transactionId + " | HEADERS: " + requestContext.getStringHeaders());
             Tracer.trace(transactionId + " | METHOD: " + requestContext.getMethod());
             Tracer.trace(transactionId + " | ============== REQUEST MIL AUTH CLIENT ==============");
         }
@@ -32,9 +36,14 @@ public class MilAuthFilter implements ResteasyReactiveClientRequestFilter, Reste
         if (properties.isTraceLoggingEnabled()){
             String transactionId = requestContext.getHeaderString("TransactionId");
             Tracer.trace(transactionId + " | ============== RESPONSE MIL AUTH CLIENT ==============");
+            Tracer.trace(transactionId + " | STATUS: " + responseContext.getStatus());
             Tracer.trace(transactionId + " | HEADERS: " + responseContext.getHeaders());
             if (responseContext.getEntityStream() != null) {
-                Tracer.trace(transactionId + " | BODY: " + responseContext.getEntityStream().toString());
+                    try {
+                        Tracer.trace(transactionId + " | BODY: " + new String(responseContext.getEntityStream().readAllBytes()));
+                    } catch (IOException e) {
+                        Tracer.trace(transactionId + " | Error during tracing: " + e.getMessage());
+                    }
             }
             Tracer.trace(transactionId + " | ============== RESPONSE MIL AUTH CLIENT ==============");
         }
