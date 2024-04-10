@@ -1,7 +1,9 @@
 package it.pagopa.atmlayer.wf.task.util;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.net.URL;
 import java.security.InvalidKeyException;
@@ -50,7 +52,7 @@ public class Utility {
             .build();
 
     private static final String CDN_GET_FILE = "CDN.getResource";
-    
+
     /*
      * Caratteri di escape standard HTML
      */
@@ -165,7 +167,11 @@ public class Utility {
      */
     public static String generateTransactionId(State state) {
         Device device = state.getDevice();
-        return (device.getBankId() + "-" + (device.getBranchId() != null ? device.getBranchId() : "") + "-" + (device.getCode() != null ? device.getCode() : "") + "-" + (device.getTerminalId() != null ? device.getTerminalId() : "") + "-" + (device.getOpTimestamp().getTime()) + "-" + UUID.randomUUID().toString()).substring(0, Constants.TRANSACTION_ID_LENGTH);
+        return (device.getBankId() + "-" + (device.getBranchId() != null ? device.getBranchId() : "") + "-"
+                + (device.getCode() != null ? device.getCode() : "") + "-"
+                + (device.getTerminalId() != null ? device.getTerminalId() : "") + "-"
+                + (device.getOpTimestamp().getTime()) + "-" + UUID.randomUUID().toString())
+                .substring(0, Constants.TRANSACTION_ID_LENGTH);
     }
 
     /**
@@ -189,8 +195,10 @@ public class Utility {
     public static Set<String> findStringsByGroup(String inputString, String regex) {
         Set<String> groups = new HashSet<>();
 
-        /* Set<String> forObjectsAttributes = extractObjects(regex);
-        log.debug("For object attributes {} :", forObjectsAttributes); */
+        /*
+         * Set<String> forObjectsAttributes = extractObjects(regex);
+         * log.debug("For object attributes {} :", forObjectsAttributes);
+         */
 
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(inputString);
@@ -201,17 +209,19 @@ public class Utility {
             }
         }
 
-        /* groups = forObjectsAttributes.isEmpty() ? groups
-                : groups.stream()
-                        .filter(groupsElement -> forObjectsAttributes.stream()
-                                .noneMatch(groupsElement::startsWith))
-                        .collect(Collectors.toSet()); */
+        /*
+         * groups = forObjectsAttributes.isEmpty() ? groups
+         * : groups.stream()
+         * .filter(groupsElement -> forObjectsAttributes.stream()
+         * .noneMatch(groupsElement::startsWith))
+         * .collect(Collectors.toSet());
+         */
 
         return groups;
     }
 
     /**
-    
+     * 
      * Finds and extracts matched substrings from an input string using a regular
      * expression.
      *
@@ -300,7 +310,7 @@ public class Utility {
         long start = System.currentTimeMillis();
         ioStream = new URL(path).openStream();
         long stop = System.currentTimeMillis();
-        log.info(" {} - Elapsed time [ms] = {}", CDN_GET_FILE , stop - start);
+        log.info(" {} - Elapsed time [ms] = {}", CDN_GET_FILE, stop - start);
         return ioStream;
     }
 
@@ -316,7 +326,9 @@ public class Utility {
     }
 
     /**
-     * <p>Test input String value to check if it's null or empty</p>
+     * <p>
+     * Test input String value to check if it's null or empty
+     * </p>
      *
      * @param value - value to be checked
      * @return true if the input value is null or empty, false otherwise
@@ -326,7 +338,9 @@ public class Utility {
     }
 
     /**
-     * <p>Test input Collection value to check if it's null or empty</p>
+     * <p>
+     * Test input Collection value to check if it's null or empty
+     * </p>
      *
      * @param value - value to be checked
      * @return true if the input value is null or empty, false otherwise
@@ -335,7 +349,8 @@ public class Utility {
         return value == null || value.isEmpty();
     }
 
-    public static byte[] encryptRSA(byte[] dataToEncrypt, RSAPublicKey encryptionKey) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+    public static byte[] encryptRSA(byte[] dataToEncrypt, RSAPublicKey encryptionKey) throws NoSuchAlgorithmException,
+            InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 
         Cipher cipher;
         cipher = Cipher.getInstance(Constants.RSA_ALGORITHM_PADDING);
@@ -344,9 +359,11 @@ public class Utility {
         return cipher.doFinal(dataToEncrypt);
     }
 
-    public static RSAPublicKey buildRSAPublicKey(String algorithm, byte[] keyModulus) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public static RSAPublicKey buildRSAPublicKey(String algorithm, byte[] keyModulus)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
         KeyFactory factory = KeyFactory.getInstance(algorithm);
-        RSAPublicKeySpec publicSpec = new RSAPublicKeySpec(new BigInteger(format(keyModulus), 16), BigInteger.valueOf(65537));
+        RSAPublicKeySpec publicSpec = new RSAPublicKeySpec(new BigInteger(format(keyModulus), 16),
+                BigInteger.valueOf(65537));
         return (RSAPublicKey) factory.generatePublic(publicSpec);
     }
 
@@ -386,8 +403,10 @@ public class Utility {
 
     /**
      * Escape a string.
+     * 
      * @param text
-     * @charactersEscapeList contains the list of characters to escape, associated to the corresponding escape sequence
+     * @charactersEscapeList contains the list of characters to escape, associated
+     *                       to the corresponding escape sequence
      * @return
      * @author Simone Miccoli
      * 
@@ -423,4 +442,18 @@ public class Utility {
         return result;
     }
 
+    public static String convertToString(InputStream inputStream) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        StringBuilder stringBuilder = new StringBuilder();
+        try {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line).append("\n");
+            }
+            reader.close();
+        } catch (IOException e) {
+            Tracer.trace("Error during tracing...");
+        }
+        return stringBuilder.toString();
+    }
 }
