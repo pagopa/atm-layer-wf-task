@@ -66,7 +66,6 @@ import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
 import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Constants;
-import it.pagopa.atmlayer.wf.task.util.Tracer;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.WebApplicationException;
