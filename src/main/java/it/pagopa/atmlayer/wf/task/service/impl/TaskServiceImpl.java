@@ -124,9 +124,6 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
         return scene;
     }
     
-    
-   
-
     private Scene buildSceneStart(String functionId, String transactionId, State state) {
         TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
         RestResponse<TaskResponse> restTaskResponse = null;
@@ -189,7 +186,6 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 
         return manageTaskResponse(restTaskResponse);
     }
-    
 
     private Scene manageTaskResponse(RestResponse<TaskResponse> restTaskResponse) {
         Scene scene = new Scene();
@@ -351,6 +347,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             } else {
                 log.info("Calling to get public key.");
                 long start = System.currentTimeMillis();
+
                 publicKeyResponse = tokenizationClient.getKey();
                 if (publicKeyResponse.getStatus() == 200) {
                     try {
