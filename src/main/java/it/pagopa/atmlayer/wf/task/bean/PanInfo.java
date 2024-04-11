@@ -11,10 +11,12 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.Data;
+import lombok.Getter;
 import lombok.ToString;
 
 @Data
 @JsonInclude(Include.NON_NULL)
+@Getter
 @Schema(description = "Oggetto che rappresenta le informazioni del pan")
 @RegisterForReflection
 public class PanInfo {

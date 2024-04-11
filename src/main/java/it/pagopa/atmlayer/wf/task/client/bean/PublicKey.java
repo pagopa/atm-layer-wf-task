@@ -7,9 +7,11 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @JsonInclude(Include.NON_NULL)
+@ToString
 @Schema(description = "Oggetto che rappresenta lo stato di una transazione")
 @RegisterForReflection
 public class PublicKey {

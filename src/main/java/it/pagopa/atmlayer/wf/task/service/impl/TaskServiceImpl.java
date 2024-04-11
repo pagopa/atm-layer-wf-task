@@ -110,7 +110,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
         scene.setTransactionId(transactionId);
         return scene;
     }
-
+    
     private Scene buildSceneStart(String functionId, String transactionId, State state) {
         TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
         RestResponse<TaskResponse> restTaskResponse = null;
@@ -313,6 +313,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             } else {
                 log.info("Calling to get public key.");
                 long start = System.currentTimeMillis();
+
                 publicKeyResponse = tokenizationClient.getKey();
                 if (publicKeyResponse.getStatus() == 200) {
                     try {
@@ -583,9 +584,6 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                 }
             }
             
-            if (properties.isTraceLoggingEnabled()){
-                Tracer.traceMilAuthClientComm(state, device, restTokenResponse);
-            }
         } catch (WebApplicationException e) {
             log.error("Error calling milAuth get Token service", e);
         } finally {
