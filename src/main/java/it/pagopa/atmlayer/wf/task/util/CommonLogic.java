@@ -14,7 +14,6 @@ import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.MultivaluedMap;
 import lombok.extern.slf4j.Slf4j;
 
@@ -80,7 +79,7 @@ public class CommonLogic {
 
     }
 
-    protected void traceMilAuthClientComm(State state, Device device,
+    public void traceMilAuthClientComm(State state, Device device,
             RestResponse<TokenResponse> restTokenResponse) {
         if (isTraceLoggingEnabled) {
             String milAuthClientAddress = System.getenv("MIL_AUTH_SERVICE_ADDRESS");
@@ -110,7 +109,7 @@ public class CommonLogic {
         }
     }
 
-    protected void tracePanTokenizationClientComm(String transactionId, RestResponse<PublicKey> restPanTokenizationKeyResponse, List<PanInfo> panInfoList) {
+    public void tracePanTokenizationClientComm(String transactionId, RestResponse<PublicKey> restPanTokenizationKeyResponse, List<PanInfo> panInfoList) {
         if (isTraceLoggingEnabled) {
             String tokenizetionClientAddress = System.getenv("TOKENIZATION_ADDRESS");
             if (restPanTokenizationKeyResponse != null) {
