@@ -60,11 +60,13 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
+            {{- if .Values.cdn.credentialsSecretEnabled }}
             - name: CDN_URL
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.cdn.credentialsSecretName }}
                   key: {{ .Values.cdn.credentialsSecretKeys.cdn_base_path }}
+            {{- end }}
           volumeMounts:
           {{- if .Values.secretProviderClass.enabled }}
           - name: secrets-store-inline
