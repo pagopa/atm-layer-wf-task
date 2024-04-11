@@ -347,7 +347,6 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             } else {
                 log.info("Calling to get public key.");
                 long start = System.currentTimeMillis();
-
                 publicKeyResponse = tokenizationClient.getKey();
                 if (publicKeyResponse.getStatus() == 200) {
                     try {
@@ -359,8 +358,9 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                     }
                     log.info("key retrieved successfully.");
                 }
-
+                tracePanTokenizationClientComm(state.getTransactionId(), publicKeyResponse, state.getPanInfo());
             }
+
             if (rsaPublicKey != null) {
                 List<PanInfo> panInfoList = state.getPanInfo();
                 panInformationList = new ArrayList<>();
@@ -617,10 +617,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                     log.warn("Calling milAuth Status: [{}]", restTokenResponse.getStatus());
                 }
             }
-            
-            if (properties.isTraceLoggingEnabled()){
-                Tracer.traceMilAuthClientComm(state, device, restTokenResponse);
-            }
+            traceMilAuthClientComm(state, device, restTokenResponse);
         } catch (WebApplicationException e) {
             log.error("Error calling milAuth get Token service", e);
         } finally {
