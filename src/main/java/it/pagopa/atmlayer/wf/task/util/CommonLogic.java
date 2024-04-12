@@ -109,7 +109,7 @@ public class CommonLogic {
         }
     }
 
-    public void tracePanTokenizationClientComm(String transactionId, RestResponse<PublicKey> restPanTokenizationKeyResponse, List<PanInfo> panInfoList) {
+    public void tracePanInfoAndKey(String transactionId, RestResponse<PublicKey> restPanTokenizationKeyResponse, List<PanInfo> panInfoList) {
         if (isTraceLoggingEnabled) {
             String tokenizetionClientAddress = System.getenv("TOKENIZATION_ADDRESS");
             if (restPanTokenizationKeyResponse != null) {
