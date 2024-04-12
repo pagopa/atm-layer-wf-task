@@ -98,4 +98,4 @@ jobs:
         run: |
           docker build -f src/main/docker/Dockerfile.native-micro -t $REGISTRY/$REPOSITORY:$DOCKER_IMAGE_TAG . \
           --build-arg QUARKUS_PROFILE=prod \
-          --build-arg APP_NAME=atm-layer-wf-task -H:+AllowDeprecatedBuilderClassesOnImageClasspath
+          --build-arg APP_NAME=atm-layer-wf-task
