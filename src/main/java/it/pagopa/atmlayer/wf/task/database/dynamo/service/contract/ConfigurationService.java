@@ -1,4 +1,4 @@
-package it.pagopa.atmlayer.wf.task.database.service.contract;
+package it.pagopa.atmlayer.wf.task.database.dynamo.service.contract;
 
 import java.util.HashMap;
 import java.util.Map;

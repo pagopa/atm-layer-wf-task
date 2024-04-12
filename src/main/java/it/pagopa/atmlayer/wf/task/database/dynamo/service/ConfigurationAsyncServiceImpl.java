@@ -1,9 +1,9 @@
-package it.pagopa.atmlayer.wf.task.database.service;
+package it.pagopa.atmlayer.wf.task.database.dynamo.service;
 
 import io.quarkus.amazon.dynamodb.enhanced.runtime.NamedDynamoDbTable;
 import io.smallrye.mutiny.Uni;
-import it.pagopa.atmlayer.wf.task.database.entity.Configuration;
-import it.pagopa.atmlayer.wf.task.database.service.contract.ConfigurationService;
+import it.pagopa.atmlayer.wf.task.database.dynamo.entity.Configuration;
+import it.pagopa.atmlayer.wf.task.database.dynamo.service.contract.ConfigurationService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbAsyncTable;

@@ -47,8 +47,6 @@ public class CommonLogic {
      */
     protected void logTracePropagation(String transactionId, String method, String URI,
             MultivaluedMap<String, String> pathParameters, MultivaluedMap<String, String> headers, String body) {
-
-        if (Tracer.isTraceLoggingEnabled) {
             StringBuilder messageBuilder = new StringBuilder(" REQUEST ")
                     .append(method)
                     .append(" URI: ")
@@ -67,13 +65,10 @@ public class CommonLogic {
             }
 
             Tracer.trace(transactionId, messageBuilder.toString());
-        }
-
     }
 
     protected void traceMilAuthClientComm(State state, Device device,
             RestResponse<TokenResponse> restTokenResponse) {
-        if (Tracer.isTraceLoggingEnabled) {
             String milAuthClientAddress = System.getenv("MIL_AUTH_SERVICE_ADDRESS");
             String transactionId = state.getTransactionId();
             StringBuilder requestMessageBuilder = new StringBuilder(" REQUEST POST URI: ")
@@ -98,11 +93,9 @@ public class CommonLogic {
             } else {
                 Tracer.trace(transactionId, " - Error while communicating with MilAuthenticator. . .");
             }
-        }
     }
 
     protected void tracePanInfoAndKey(String transactionId, RestResponse<PublicKey> restPanTokenizationKeyResponse, List<PanInfo> panInfoList) {
-        if (Tracer.isTraceLoggingEnabled) {
             String tokenizetionClientAddress = System.getenv("TOKENIZATION_ADDRESS");
             if (restPanTokenizationKeyResponse != null) {
                 StringBuilder responseMessageBuilder = new StringBuilder(" RESPONSE GET URI: ")
@@ -118,7 +111,6 @@ public class CommonLogic {
                 StringBuilder panMessageBuilder = new StringBuilder(" RETRIEVED PAN LIST: ").append(panInfoList.stream().map(PanInfo::getPan).collect(Collectors.joining(", ")));
                 Tracer.trace(transactionId, panMessageBuilder.toString());
             }
-        }
     }
 
     /**
