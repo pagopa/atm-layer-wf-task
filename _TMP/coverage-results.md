@@ -6,9 +6,9 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 92.16%               |
-| :heavy_check_mark: Number of Lines Covered | 705    |
-| :x: Number of Lines Missed  | 60     |
+| Code Coverage %         | 92.29%               |
+| :heavy_check_mark: Number of Lines Covered | 706    |
+| :x: Number of Lines Missed  | 59     |
 | Total Number of Lines   | 765     |
 
 
@@ -360,11 +360,11 @@
 ```
                     } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 ```
-- Line #373
+- Line #374
 ```
                     } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
 ```
-- Line #577
+- Line #578
 ```
             } catch (UnsupportedEncodingException e) {
 ```
@@ -453,11 +453,11 @@
 
 <details>
     <summary>
-:x: CommonLogic.java
+:heavy_check_mark: CommonLogic.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
 </details>
 
