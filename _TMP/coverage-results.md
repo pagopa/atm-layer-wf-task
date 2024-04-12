@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 91.06%               |
-| :heavy_check_mark: Number of Lines Covered | 672    |
-| :x: Number of Lines Missed  | 66     |
-| Total Number of Lines   | 738     |
+| Code Coverage %         | 92.16%               |
+| :heavy_check_mark: Number of Lines Covered | 705    |
+| :x: Number of Lines Missed  | 60     |
+| Total Number of Lines   | 765     |
 
 
 ## Details:
@@ -348,23 +348,23 @@
         
 #### Lines Missed:
         
-- Line #180
+- Line #176
 ```
         } catch (WebApplicationException e) {
 ```
-- Line #288
+- Line #283
 ```
                 } catch (UnsupportedEncodingException e) {
 ```
-- Line #358
+- Line #353
 ```
                     } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 ```
-- Line #377
+- Line #373
 ```
                     } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
 ```
-- Line #581
+- Line #577
 ```
             } catch (UnsupportedEncodingException e) {
 ```
@@ -453,11 +453,11 @@
 
 <details>
     <summary>
-:heavy_check_mark: CommonLogic.java
+:x: CommonLogic.java
     </summary>
 
         
-#### All Lines Covered!
+#### Lines Missed:
         
 </details>
 
@@ -515,23 +515,23 @@
         
 #### Lines Missed:
         
-- Line #103
+- Line #101
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #116
+- Line #114
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #141
+- Line #139
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #326
+- Line #324
 ```
     }
 ```
-- Line #398
+- Line #396
 ```
         } catch (NoSuchAlgorithmException e) {
 ```
