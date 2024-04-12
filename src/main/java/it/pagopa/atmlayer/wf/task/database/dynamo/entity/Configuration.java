@@ -1,7 +1,7 @@
-package it.pagopa.atmlayer.wf.task.database.entity;
+package it.pagopa.atmlayer.wf.task.database.dynamo.entity;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import it.pagopa.atmlayer.wf.task.database.service.contract.ConfigurationService;
+import it.pagopa.atmlayer.wf.task.database.dynamo.service.contract.ConfigurationService;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;

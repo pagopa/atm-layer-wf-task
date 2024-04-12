@@ -6,12 +6,11 @@ import java.util.concurrent.TimeUnit;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import io.quarkus.scheduler.Scheduled;
-import it.pagopa.atmlayer.wf.task.database.service.ConfigurationAsyncServiceImpl;
-import it.pagopa.atmlayer.wf.task.database.service.contract.ConfigurationService;
+import it.pagopa.atmlayer.wf.task.database.dynamo.service.ConfigurationAsyncServiceImpl;
+import it.pagopa.atmlayer.wf.task.database.dynamo.service.contract.ConfigurationService;
 import it.pagopa.atmlayer.wf.task.service.impl.S3ObjectStoreServiceImpl;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-
 
 @RegisterForReflection
 @Slf4j
@@ -29,7 +28,7 @@ public class Tracer {
 
     public static Boolean isTraceLoggingEnabled = false;
 
-    @Scheduled(every = "2m", delay = 5, delayUnit = TimeUnit.SECONDS)
+    @Scheduled(every = "2m")
     public void tracerJob() {
         configurationAsyncServiceImpl.get(ConfigurationService.TRACING).subscribe().with(configuration -> {
             isTraceLoggingEnabled = configuration.isEnabled();
