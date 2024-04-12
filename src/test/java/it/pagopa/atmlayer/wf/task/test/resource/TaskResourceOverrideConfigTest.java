@@ -1,4 +1,4 @@
-package it.pagopa.atmlayer.wf.task.test.utility;
+package it.pagopa.atmlayer.wf.task.test.resource;
 
 
 import static io.restassured.RestAssured.given;
@@ -65,7 +65,7 @@ public class TaskResourceOverrideConfigTest {
     @Test
     public void test(){
         Tracer.isTraceLoggingEnabled = true;
-        
+
         Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
                                 Mockito.anyString(), Mockito.anyString()))
                                 .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
