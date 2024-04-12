@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 92.29%               |
-| :heavy_check_mark: Number of Lines Covered | 706    |
+| Code Coverage %         | 92.28%               |
+| :heavy_check_mark: Number of Lines Covered | 705    |
 | :x: Number of Lines Missed  | 59     |
-| Total Number of Lines   | 765     |
+| Total Number of Lines   | 764     |
 
 
 ## Details:
