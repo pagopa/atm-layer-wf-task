@@ -41,10 +41,12 @@ public class Tracer {
     }
 
     public static void trace(String transactionId, String toLog) {
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        String formattedDateTime = currentDateTime.format(formatter).concat(" | ");
-        messageBuilder.append(formattedDateTime).append(" ").append(transactionId).append(" | ").append(toLog)
+        if (isTraceLoggingEnabled){
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            String formattedDateTime = currentDateTime.format(formatter).concat(" | ");
+            messageBuilder.append(formattedDateTime).append(" ").append(transactionId).append(" | ").append(toLog)
                 .append("\n");
+        }
     }
 
 }
