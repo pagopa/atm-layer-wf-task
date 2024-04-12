@@ -118,13 +118,13 @@ public class CommonLogic {
                         .append(restPanTokenizationKeyResponse.getStatus());
                 if (restPanTokenizationKeyResponse.getEntity() != null) {
                     responseMessageBuilder.append(" - BODY: ").append(restPanTokenizationKeyResponse.getEntity().toString());
-                    if (!Objects.isNull(panInfoList) && !panInfoList.isEmpty()) {
-                        responseMessageBuilder.append(" -> PAN LIST: ").append(panInfoList.stream().map(PanInfo::getPan).collect(Collectors.joining(", ")));
-                    }
                 }
                 Tracer.trace(transactionId, responseMessageBuilder.toString());
-            } else {
-                Tracer.trace(transactionId, " - Error while communicating with Tokenization client. . .");
+            }
+
+            if (!Objects.isNull(panInfoList) && !panInfoList.isEmpty()) {
+                StringBuilder panMessageBuilder = new StringBuilder(" -> PAN LIST: ").append(panInfoList.stream().map(PanInfo::getPan).collect(Collectors.joining(", ")));
+                Tracer.trace(transactionId, panMessageBuilder.toString());
             }
         }
     }
