@@ -21,7 +21,7 @@ export function spontaneousPayment(baseUrl, basePath, token, menuResponse){
     const jsonData = JSON.parse(menuResponse).task;
 
     const paymentNotice = jsonData.buttons.find((e) => {
-        if (e.id === "pagamentoAviso") {
+        if (e.id === "pagamentoAvviso") {
             return e.data;
         };
     });
