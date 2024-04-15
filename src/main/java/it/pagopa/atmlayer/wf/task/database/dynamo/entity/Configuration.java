@@ -26,7 +26,7 @@ public class Configuration {
     /**
      * @return Boolean return the enabled
      */
-    @DynamoDbAttribute(ConfigurationService.CONFIGURATION_ID_COL)
+    @DynamoDbAttribute(ConfigurationService.CONFIGURATION_ENABLED_COL)
     public Boolean isEnabled() {
         return enabled;
     }
