@@ -1,24 +1,21 @@
 package it.pagopa.atmlayer.wf.task.database.dynamo.service;
 
-import io.quarkus.amazon.dynamodb.enhanced.runtime.NamedDynamoDbTable;
 import io.smallrye.mutiny.Uni;
 import it.pagopa.atmlayer.wf.task.database.dynamo.entity.Configuration;
 import it.pagopa.atmlayer.wf.task.database.dynamo.service.contract.ConfigurationService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import software.amazon.awssdk.enhanced.dynamodb.DynamoDbAsyncTable;
-import software.amazon.awssdk.enhanced.dynamodb.Key;
+import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
 
 @ApplicationScoped
 public class ConfigurationAsyncServiceImpl extends ConfigurationService{
 
     @Inject
-    @NamedDynamoDbTable(CONFIGURATION_TABLE_NAME)
-    private DynamoDbAsyncTable<Configuration> configurationTable;
+    DynamoDbAsyncClient dynamoDB;
 
     public Uni<Configuration> get(String name) {
-        Key partitionKey = Key.builder().partitionValue(name).build();
-        return Uni.createFrom().completionStage(() -> configurationTable.getItem(partitionKey));
+        return Uni.createFrom().completionStage(() -> dynamoDB.getItem(getRequest(name)))
+                .onItem().transform(resp -> Configuration.from(resp.item()));
     }
 
 }
