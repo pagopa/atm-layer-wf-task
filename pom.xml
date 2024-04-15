@@ -169,6 +169,25 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-scheduler</artifactId>
     </dependency>
+    <dependency>
+      <groupId>me.nithanim.quarkus</groupId>
+      <artifactId>quarkus-amazon-dynamodb-enhanced</artifactId>
+      <version>1.0.1</version>
+      <exclusions>
+          <exclusion>
+              <groupId>io.quarkus</groupId>
+              <artifactId>quarkus-arc</artifactId>
+          </exclusion>
+          <exclusion>
+              <groupId>io.quarkus</groupId>
+              <artifactId>quarkus-amazon-dynamodb</artifactId>
+          </exclusion>
+          <exclusion>
+              <groupId>software.amazon.awssdk</groupId>
+              <artifactId>dynamodb-enhanced</artifactId>
+          </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
