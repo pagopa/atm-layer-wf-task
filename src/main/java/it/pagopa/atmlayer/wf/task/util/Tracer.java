@@ -3,6 +3,7 @@ package it.pagopa.atmlayer.wf.task.util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import io.quarkus.arc.profile.UnlessBuildProfile;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import io.quarkus.scheduler.Scheduled;
 import it.pagopa.atmlayer.wf.task.database.dynamo.service.ConfigurationAsyncServiceImpl;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RegisterForReflection
 @Slf4j
+@UnlessBuildProfile(anyOf = { "native" })
 public class Tracer {
 
     @Inject
