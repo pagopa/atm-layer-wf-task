@@ -2,7 +2,6 @@ package it.pagopa.atmlayer.wf.task.util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.concurrent.TimeUnit;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import io.quarkus.scheduler.Scheduled;
@@ -31,7 +30,7 @@ public class Tracer {
     @Scheduled(every = "2m")
     public void tracerJob() {
         configurationAsyncServiceImpl.get(ConfigurationService.TRACING).subscribe().with(configuration -> {
-            isTraceLoggingEnabled = configuration.isEnabled();
+            isTraceLoggingEnabled = configuration.getEnabled();
             log.info("isTraceLoggingEnabled: {}", isTraceLoggingEnabled);
             if (isTraceLoggingEnabled && messageBuilder.length() > 0) {
                 objectStoreServiceImpl.writeLog(messageBuilder.toString().replaceAll("\\{\\}", ""));
