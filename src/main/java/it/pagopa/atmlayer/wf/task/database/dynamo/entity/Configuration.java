@@ -31,4 +31,18 @@ public class Configuration {
         return enabled;
     }
 
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     * @param enabled the enabled to set
+     */
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
 }
