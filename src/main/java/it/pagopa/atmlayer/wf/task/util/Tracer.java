@@ -27,7 +27,7 @@ public class Tracer {
 
     public static Boolean isTraceLoggingEnabled;
 
-    @Scheduled(every = "2m")
+    @Scheduled(every = "1h")
     public void tracerJob() {
         configurationAsyncServiceImpl.get(ConfigurationService.TRACING)
                 .subscribe().with(configuration -> {
