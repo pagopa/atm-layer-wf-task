@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 90.8%               |
-| :heavy_check_mark: Number of Lines Covered | 711    |
-| :x: Number of Lines Missed  | 72     |
-| Total Number of Lines   | 783     |
+| Code Coverage %         | 90.71%               |
+| :heavy_check_mark: Number of Lines Covered | 713    |
+| :x: Number of Lines Missed  | 73     |
+| Total Number of Lines   | 786     |
 
 
 ## Details:
@@ -359,10 +359,6 @@
         
 #### Lines Missed:
         
-- Line #46
-```
-    }
-```
 </details>
 
     
@@ -590,6 +586,14 @@
         
 #### Lines Missed:
         
+- Line #34
+```
+                    isTraceLoggingEnabled = configuration.isEnabled() != null ? configuration.isEnabled() : false;
+```
+- Line #43
+```
+                });
+```
 </details>
 
     
