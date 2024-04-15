@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 92.28%               |
-| :heavy_check_mark: Number of Lines Covered | 705    |
-| :x: Number of Lines Missed  | 59     |
-| Total Number of Lines   | 764     |
+| Code Coverage %         | 90.26%               |
+| :heavy_check_mark: Number of Lines Covered | 704    |
+| :x: Number of Lines Missed  | 76     |
+| Total Number of Lines   | 780     |
 
 
 ## Details:
@@ -46,19 +46,6 @@
 
         
 #### All Lines Covered!
-        
-</details>
-
-    
-### it/pagopa/atmlayer/wf/task
-
-<details>
-    <summary>
-:x: TaskMicroservice.java
-    </summary>
-
-        
-#### Lines Missed:
         
 </details>
 
@@ -168,10 +155,81 @@
         
 #### Lines Missed:
         
-- Line #179
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/service/impl
+
+<details>
+    <summary>
+:x: TaskServiceImpl.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #176
 ```
-        } catch (ProcessingException e) {
+        } catch (WebApplicationException e) {
 ```
+- Line #283
+```
+                } catch (UnsupportedEncodingException e) {
+```
+- Line #353
+```
+                    } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+```
+- Line #374
+```
+                    } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
+```
+- Line #578
+```
+            } catch (UnsupportedEncodingException e) {
+```
+</details>
+
+    
+
+<details>
+    <summary>
+:x: S3ObjectStoreServiceImpl.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #24
+```
+    }
+```
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/resource/interceptors
+
+<details>
+    <summary>
+:heavy_check_mark: LogFilter.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task
+
+<details>
+    <summary>
+:x: TaskMicroservice.java
+    </summary>
+
+        
+#### Lines Missed:
+        
 </details>
 
     
@@ -278,6 +336,32 @@
 </details>
 
     
+### it/pagopa/atmlayer/wf/task/database/dynamo/service
+
+<details>
+    <summary>
+:heavy_check_mark: ConfigurationAsyncServiceImpl.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/database/dynamo/entity
+
+<details>
+    <summary>
+:x: Configuration.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+</details>
+
+    
 ### it/pagopa/atmlayer/wf/task/service
 
 <details>
@@ -338,51 +422,19 @@
 </details>
 
     
-### it/pagopa/atmlayer/wf/task/service/impl
+### it/pagopa/atmlayer/wf/task/database/dynamo/service/contract
 
 <details>
     <summary>
-:x: TaskServiceImpl.java
+:x: ConfigurationService.java
     </summary>
 
         
 #### Lines Missed:
         
-- Line #176
+- Line #26
 ```
-        } catch (WebApplicationException e) {
-```
-- Line #283
-```
-                } catch (UnsupportedEncodingException e) {
-```
-- Line #353
-```
-                    } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-```
-- Line #374
-```
-                    } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
-```
-- Line #578
-```
-            } catch (UnsupportedEncodingException e) {
-```
-</details>
-
-    
-
-<details>
-    <summary>
-:x: S3ObjectStoreServiceImpl.java
-    </summary>
-
-        
-#### Lines Missed:
-        
-- Line #24
-```
-    }
+                .attributesToGet(CONFIGURATION_ID_COL, CONFIGURATION_ENABLED_COL)
 ```
 </details>
 
@@ -428,19 +480,6 @@
 <details>
     <summary>
 :heavy_check_mark: Command.java
-    </summary>
-
-        
-#### All Lines Covered!
-        
-</details>
-
-    
-### it/pagopa/atmlayer/wf/task/resource/interceptors
-
-<details>
-    <summary>
-:heavy_check_mark: LogFilter.java
     </summary>
 
         
@@ -547,6 +586,10 @@
         
 #### Lines Missed:
         
+- Line #39
+```
+        });
+```
 </details>
 
     
