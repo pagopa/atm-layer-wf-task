@@ -3,7 +3,6 @@ package it.pagopa.atmlayer.wf.task.util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import io.quarkus.arc.profile.UnlessBuildProfile;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -18,7 +17,6 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Getter
 @Singleton
-@UnlessBuildProfile(anyOf = { "native" })
 public class FileStorageS3Util {
 
     @Inject
