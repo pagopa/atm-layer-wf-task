@@ -2,11 +2,13 @@ package it.pagopa.atmlayer.wf.task.database.dynamo.entity;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import it.pagopa.atmlayer.wf.task.database.dynamo.service.contract.ConfigurationService;
+import lombok.Data;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
 @RegisterForReflection
+@Data
 @DynamoDbBean
 public class Configuration {
     

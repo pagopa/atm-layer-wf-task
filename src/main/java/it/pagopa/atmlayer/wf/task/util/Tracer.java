@@ -29,22 +29,26 @@ public class Tracer {
 
     @Scheduled(every = "2m")
     public void tracerJob() {
-        configurationAsyncServiceImpl.get(ConfigurationService.TRACING).subscribe().with(configuration -> {
-            isTraceLoggingEnabled = configuration.isEnabled() != null ? configuration.isEnabled() : false;
-            log.info("isTraceLoggingEnabled: {}", isTraceLoggingEnabled);
-            if (isTraceLoggingEnabled && messageBuilder.length() > 0) {
-                objectStoreServiceImpl.writeLog(messageBuilder.toString().replaceAll("\\{\\}", ""));
-                messageBuilder.setLength(0);
-            }
-        });
+        configurationAsyncServiceImpl.get(ConfigurationService.TRACING)
+                .subscribe().with(configuration -> {
+                    isTraceLoggingEnabled = configuration.isEnabled() != null ? configuration.isEnabled() : false;
+                    log.info("isTraceLoggingEnabled: {}", isTraceLoggingEnabled);
+                    if (isTraceLoggingEnabled && messageBuilder.length() > 0) {
+                        objectStoreServiceImpl.writeLog(messageBuilder.toString().replaceAll("\\{\\}", ""));
+                        messageBuilder.setLength(0);
+                    }
+                }, throwable -> {
+                    isTraceLoggingEnabled = false;
+                    log.error("Error during communication with DynamoDB: {}", throwable.getMessage());
+                });
     }
 
     public static void trace(String transactionId, String toLog) {
-        if (isTraceLoggingEnabled){
+        if (isTraceLoggingEnabled) {
             LocalDateTime currentDateTime = LocalDateTime.now();
             String formattedDateTime = currentDateTime.format(formatter).concat(" | ");
             messageBuilder.append(formattedDateTime).append(" ").append(transactionId).append(" | ").append(toLog)
-                .append("\n");
+                    .append("\n");
         }
     }
 
