@@ -152,7 +152,7 @@
     <dependency>
       <groupId>io.quarkiverse.amazonservices</groupId>
       <artifactId>quarkus-amazon-dynamodb</artifactId>
-    </dependency> -->
+    </dependency>
     <dependency>
       <groupId>io.quarkiverse.amazonservices</groupId>
       <artifactId>quarkus-amazon-dynamodb-enhanced</artifactId>
@@ -160,7 +160,7 @@
     <dependency>
       <groupId>software.amazon.awssdk</groupId>
       <artifactId>netty-nio-client</artifactId>
-    </dependency>
+    </dependency> -->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
