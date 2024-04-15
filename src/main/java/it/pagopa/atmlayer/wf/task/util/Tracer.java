@@ -3,7 +3,6 @@ package it.pagopa.atmlayer.wf.task.util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import io.quarkus.arc.profile.UnlessBuildProfile;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import io.quarkus.scheduler.Scheduled;
 import it.pagopa.atmlayer.wf.task.database.dynamo.service.ConfigurationAsyncServiceImpl;
@@ -14,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @RegisterForReflection
 @Slf4j
-@UnlessBuildProfile(anyOf = { "native" })
 public class Tracer {
 
     @Inject
@@ -27,12 +25,12 @@ public class Tracer {
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
-    public static Boolean isTraceLoggingEnabled = false;
+    public static Boolean isTraceLoggingEnabled;
 
     @Scheduled(every = "2m")
     public void tracerJob() {
         configurationAsyncServiceImpl.get(ConfigurationService.TRACING).subscribe().with(configuration -> {
-            isTraceLoggingEnabled = configuration.isEnabled();
+            isTraceLoggingEnabled = configuration.isEnabled() != null ? configuration.isEnabled() : false;
             log.info("isTraceLoggingEnabled: {}", isTraceLoggingEnabled);
             if (isTraceLoggingEnabled && messageBuilder.length() > 0) {
                 objectStoreServiceImpl.writeLog(messageBuilder.toString().replaceAll("\\{\\}", ""));
