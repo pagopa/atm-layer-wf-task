@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 90.71%               |
-| :heavy_check_mark: Number of Lines Covered | 713    |
-| :x: Number of Lines Missed  | 73     |
-| Total Number of Lines   | 786     |
+| Code Coverage %         | 90.33%               |
+| :heavy_check_mark: Number of Lines Covered | 691    |
+| :x: Number of Lines Missed  | 74     |
+| Total Number of Lines   | 765     |
 
 
 ## Details:
@@ -116,11 +116,11 @@
 
 <details>
     <summary>
-:heavy_check_mark: Button.java
+:x: Button.java
     </summary>
 
         
-#### All Lines Covered!
+#### Lines Missed:
         
 </details>
 
@@ -155,6 +155,10 @@
         
 #### Lines Missed:
         
+- Line #150
+```
+		} catch (ProcessingException e) {
+```
 </details>
 
     
@@ -168,23 +172,23 @@
         
 #### Lines Missed:
         
-- Line #176
+- Line #175
 ```
         } catch (WebApplicationException e) {
 ```
-- Line #283
+- Line #295
 ```
-                } catch (UnsupportedEncodingException e) {
+            } catch (UnsupportedEncodingException e) {
 ```
-- Line #353
+- Line #417
 ```
                     } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 ```
-- Line #374
+- Line #438
 ```
                     } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
 ```
-- Line #578
+- Line #642
 ```
             } catch (UnsupportedEncodingException e) {
 ```
@@ -510,11 +514,11 @@
         
 #### Lines Missed:
         
-- Line #52
+- Line #51
 ```
                 .contentType("binary/octet-stream")
 ```
-- Line #56
+- Line #55
 ```
     }
 ```
@@ -554,23 +558,23 @@
         
 #### Lines Missed:
         
-- Line #101
+- Line #106
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #114
+- Line #119
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #139
+- Line #144
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #324
+- Line #329
 ```
     }
 ```
-- Line #396
+- Line #401
 ```
         } catch (NoSuchAlgorithmException e) {
 ```
@@ -589,10 +593,6 @@
 - Line #34
 ```
                     isTraceLoggingEnabled = configuration.isEnabled() != null ? configuration.isEnabled() : false;
-```
-- Line #43
-```
-                });
 ```
 </details>
 
