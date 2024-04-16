@@ -5,8 +5,6 @@ import org.jboss.resteasy.reactive.RestResponse;
 
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
-import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
-import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 
@@ -29,9 +27,9 @@ public interface ProcessRestClient {
     @Path("/next2")
     RestResponse<TaskResponse> next2Tasks(TaskRequest taskRequest);    
     
-
+/*
     @POST
     @Path("/variables")
     RestResponse<VariableResponse> retrieveVariables(VariableRequest taskRequest);
-
+*/
 }

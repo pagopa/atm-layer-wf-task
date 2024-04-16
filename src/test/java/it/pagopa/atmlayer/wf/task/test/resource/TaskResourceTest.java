@@ -23,7 +23,6 @@ import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
 import it.pagopa.atmlayer.wf.task.client.TokenizationRestClient;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
-import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
 import it.pagopa.atmlayer.wf.task.resource.TaskResource;
 import it.pagopa.atmlayer.wf.task.test.DataTest;
 import jakarta.ws.rs.ProcessingException;
@@ -60,12 +59,8 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient
-                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createTaskResponse(1,DataTest.createVariableResponseNoData())));
+               
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -83,13 +78,9 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
+                                                DataTest.createTaskResponse(1,DataTest.createVariableResponseNoData())));
 
-                Mockito.when(processRestClient
-                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
-
+              
                 Mockito.when(tokenizationRestClient
                                 .getKey()).thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createPublicKeyResponse()));
@@ -111,12 +102,7 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient
-                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createTaskResponse(1,DataTest.createVariableResponseNoData())));              
 
                 Response response = given().body(DataTest.createStateRequestStartWithoutDeviceData())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -150,12 +136,7 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient
-                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoButtons()));
+                                                DataTest.createTaskResponse(1, DataTest.createVariableResponseNoButtons())));               
 
 
                 Response response = given().body(DataTest.createStateRequestStartWithoutDeviceData())
@@ -174,12 +155,8 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponseNoForm(1)));
+                                                DataTest.createTaskResponseNoForm(1, DataTest.createVariableResponseWithData())));
 
-                Mockito.when(processRestClient
-                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseWithData()));
 
                 Response response = given().body(DataTest.createStateRequestStartWithoutDeviceData())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -199,10 +176,10 @@ class TaskResourceTest {
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.INTERNAL_SERVER_ERROR));
 
-                Mockito.when(processRestClient
+         /*       Mockito.when(processRestClient
                                 .retrieveVariables(Mockito.any(VariableRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createVariableResponseNoData()));*/
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -221,10 +198,10 @@ class TaskResourceTest {
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenThrow(new WebApplicationException(Status.SERVICE_UNAVAILABLE));
 
-                Mockito.when(processRestClient
+              /*  Mockito.when(processRestClient
                                 .retrieveVariables(Mockito.any(VariableRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createVariableResponseNoData()));*/
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -232,7 +209,7 @@ class TaskResourceTest {
 
                 Assertions.assertEquals(209, response.statusCode());
         }
-
+/*
         @Test
         void startProcessKoOnVariables500() {
                 Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
@@ -272,7 +249,7 @@ class TaskResourceTest {
 
                 Assertions.assertEquals(209, response.statusCode());
         }
-
+*/
         @Test
         void variableResponseWithData() {
                 Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
@@ -281,12 +258,7 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient
-                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseWithData()));
+                                                DataTest.createTaskResponse(1,  DataTest.createVariableResponseWithData())));
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -300,11 +272,7 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createTaskResponse(1,DataTest.createVariableResponseNoData())));
 
                 Response response = given().body(DataTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -313,7 +281,7 @@ class TaskResourceTest {
 
                 Assertions.assertEquals(201, response.statusCode());
         }
-
+/*
         @Test
         void nextTaskConnectionProblem() {
 
@@ -331,7 +299,7 @@ class TaskResourceTest {
                                 .statusCode(StatusCode.INTERNAL_SERVER_ERROR);
 
         }
-
+*/
         @Test
         void next2TaskOk() {
 
@@ -340,11 +308,7 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.next2Tasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createTaskResponse(1,DataTest.createVariableResponseNoData())));
 
                 Response response = given().body(DataTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -406,7 +370,7 @@ class TaskResourceTest {
 
                 Assertions.assertEquals(209, response.statusCode());
         }
-
+/*
         @Test
         void nextTaskKoOnVariables500() {
 
@@ -442,7 +406,7 @@ class TaskResourceTest {
 
                 Assertions.assertEquals(209, response.statusCode());
         }
-
+*/
         @Test
         void taskNoPeripherals() {
                 Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
@@ -451,12 +415,7 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient
-                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createTaskResponse(1, DataTest.createVariableResponseNoData())));;
 
                 Response response = given().body(DataTest.createStateRequestNoPeripheral())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -471,12 +430,7 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponseMissingHtml(1)));
-
-                Mockito.when(processRestClient
-                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createTaskResponseMissingHtml(1, DataTest.createVariableResponseNoData())));
 
                 Response response = given().body(DataTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -495,12 +449,7 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient
-                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createTaskResponse(1, DataTest.createVariableResponseNoData())));
 
                 Response response = given().body(DataTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -515,12 +464,7 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient
-                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createTaskResponse(1,DataTest.createVariableResponseNoData())));
 
                 Response response = given().body(DataTest.createStateRequestNextNoBranchId())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -535,13 +479,8 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient
-                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
-
+                                                DataTest.createTaskResponse(1,  DataTest.createVariableResponseNoData())));
+              
                 Response response = given().body(DataTest.createStateRequestNextNoCode())
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/next/trns/{transactionId}", "00001-0002--1234567890-aaaaaaaaaaaaa")
@@ -555,12 +494,7 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient
-                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createTaskResponse(1,  DataTest.createVariableResponseNoData())));
 
                 Response response = given().body(DataTest.createStateRequestNextNoTerminalId())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -578,12 +512,7 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient
-                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createTaskResponse(1,  DataTest.createVariableResponseNoData())));
 
                 Response response = given().body(DataTest.createStateRequestNoData())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -603,10 +532,10 @@ class TaskResourceTest {
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createTaskResponseNoTasks()));
 
-                Mockito.when(processRestClient
+             /*   Mockito.when(processRestClient
                                 .retrieveVariables(Mockito.any(VariableRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createVariableResponseNoData()));*/
 
                 Response response = given().body(DataTest.createStateRequestNoData())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -624,11 +553,8 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
+                                                DataTest.createTaskResponse(1, DataTest.createvaVariableResponseDefaultVariables())));
 
-                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createvaVariableResponseDefaultVariables()));
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -645,11 +571,7 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponseMissingReceipt(1)));
-
-                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createvaVariableResponseMissingReceipt()));
+                                                DataTest.createTaskResponseMissingReceipt(1, DataTest.createvaVariableResponseMissingReceipt())));
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -665,9 +587,9 @@ class TaskResourceTest {
                                 .thenReturn(RestResponse.status(Status.ACCEPTED,
                                                 DataTest.createTaskResponseEndProcess()));
 
-                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
+               /* Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createvaVariableResponseDefaultVariables()));
+                                                DataTest.createvaVariableResponseDefaultVariables()));*/
 
                 Response response = given().body(DataTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -688,9 +610,9 @@ class TaskResourceTest {
                                 .thenReturn(RestResponse.status(Status.ACCEPTED,
                                                 DataTest.createTaskResponseEndProcess()));
 
-                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
+             /*   Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createvaVariableResponseDefaultVariables()));
+                                                DataTest.createvaVariableResponseDefaultVariables()));*/
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -705,11 +627,7 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponseNoVariablesRequest(1)));
-
-                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createvaVariableResponseDefaultVariables()));
+                                                DataTest.createTaskResponseNoVariablesRequest(1, DataTest.createvaVariableResponseDefaultVariables())));
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -835,12 +753,7 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient
-                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createTaskResponse(1, DataTest.createVariableResponseNoData())));
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -899,12 +812,7 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient
-                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createTaskResponse(1,  DataTest.createVariableResponseNoData())));
 
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -921,12 +829,7 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient
-                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createTaskResponse(1, DataTest.createVariableResponseNoData())));
 
                 Response response = given().body(
                                 "{\"device\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"1234\",\"terminalId\":\"1234567890\",\"opTimestamp\":1705499660669,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"fiscalCode\":\"BBTFNC\"}")
@@ -944,12 +847,7 @@ class TaskResourceTest {
 
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient
-                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                                                DataTest.createTaskResponse(1, DataTest.createVariableResponseNoData())));
 
                 Response response = given().body(
                                 "{\"devicee\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"1234\",\"terminalId\":\"1234567890\",\"opTimestamp\":1705499660669,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"fiscalCode\":\"BBTFNC\"}")
