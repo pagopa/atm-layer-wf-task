@@ -62,7 +62,6 @@ import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
-import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
 import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Constants;
@@ -202,11 +201,11 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
         }
     }
 
-    private it.pagopa.atmlayer.wf.task.bean.Task manageOkResponse(TaskResponse response) {
+    /*private it.pagopa.atmlayer.wf.task.bean.Task manageOkResponse(TaskResponse response) {
         it.pagopa.atmlayer.wf.task.bean.Task atmTask = null;
         // Recupero il primo task ordinato per priorità
         Collections.sort(response.getTasks(), Comparator.comparingInt(Task::getPriority));
-
+    
         if (!response.getTasks().isEmpty()) {
             Task workingTask = response.getTasks().get(0);
             atmTask = new it.pagopa.atmlayer.wf.task.bean.Task();
@@ -226,25 +225,25 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             } finally {
                 logElapsedTime(RETRIEVE_VARIABLES_LOG_ID, start);
             }
-
+    
             if (restVariableResponse.getStatus() == 200) {
-
+    
                 VariableResponse variableResponse = restVariableResponse.getEntity();
                 log.info("Retrieved variables: [{}]", variableResponse);
                 atmTask.setId(workingTask.getId());
                 Map<String, Object> workingVariables = variableResponse.getVariables();
-
+    
                 //Aggiungo al contesto dei log la functionId
                 if (workingVariables != null && workingVariables.get(Constants.FUNCTION_ID_CONTEXT_LOG) != null) {
                     MDC.put(Constants.FUNCTION_ID_CONTEXT_LOG, (String) workingVariables.get(Constants.FUNCTION_ID_CONTEXT_LOG));
                 }
                 
                 manageReceipt(workingVariables, atmTask);
-
+    
                 manageVariables(workingVariables, atmTask, variableRequest);
-
+    
                 updateTemplate(atmTask);
-
+    
                 setButtonInAtmTask(atmTask, variableResponse.getButtons());
             } else if (restVariableResponse.getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
                 throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
@@ -253,30 +252,77 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             }
         }
         return atmTask;
+    }*/
+    
+    private it.pagopa.atmlayer.wf.task.bean.Task manageOkResponse(TaskResponse response) {
+        it.pagopa.atmlayer.wf.task.bean.Task atmTask = null;
+        // Recupero il primo task ordinato per priorità
+        Collections.sort(response.getTasks(), Comparator.comparingInt(Task::getPriority));
+
+        if (!response.getTasks().isEmpty()) {
+            Task workingTask = response.getTasks().get(0);
+            atmTask = new it.pagopa.atmlayer.wf.task.bean.Task();
+            VariableRequest variableRequest = createVariableRequestForTemplate(workingTask, atmTask);
+           
+            atmTask.setId(workingTask.getId());
+            Map<String, Object> workingVariables = workingTask.getVariables();
+
+            //Aggiungo al contesto dei log la functionId
+            if (workingVariables != null && workingVariables.get(Constants.FUNCTION_ID_CONTEXT_LOG) != null) {
+                MDC.put(Constants.FUNCTION_ID_CONTEXT_LOG, (String) workingVariables.get(Constants.FUNCTION_ID_CONTEXT_LOG));
+            }
+            
+            manageReceipt(workingVariables, atmTask);
+
+            manageVariables(workingVariables, atmTask, variableRequest);
+
+            updateTemplate(atmTask);
+
+            setButtonInAtmTask(atmTask, workingVariables, variableRequest.getButtons());          
+           
+        }
+        return atmTask;
     }
+    
 
     private void manageReceipt(Map<String, Object> workingVariables, it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
 
         if (workingVariables != null && workingVariables.get(Constants.RECEIPT_TEMPLATE) != null) {
+            createVariableRequestForReceipt(workingVariables, atmTask);  
+            workingVariables.remove(Constants.RECEIPT_TEMPLATE);
+            try {
+                atmTask.setReceiptTemplate(Base64.getEncoder().encodeToString(replaceVarValue(workingVariables, atmTask.getReceiptTemplate()).getBytes(properties.htmlCharset())));
+            } catch (UnsupportedEncodingException e) {
+                log.error(" - ERROR:", e);
+                throw new ErrorException(ErrorEnum.GENERIC_ERROR);
+            }
+            
+        }
+
+    }
+
+    /*    private void manageReceipt(Map<String, Object> workingVariables, it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
+    
+        if (workingVariables != null && workingVariables.get(Constants.RECEIPT_TEMPLATE) != null) {
             RestResponse<VariableResponse> restVariableResponse = null;
             long start = System.currentTimeMillis();
-
+    
             try {
                 restVariableResponse = processRestClient.retrieveVariables(createVariableRequestForReceipt(workingVariables, atmTask));
             } catch (WebApplicationException e) {
-
+    
                 log.error("Error calling process service", e);
                 if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
                     throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
                 }
-
+    
                 throw new ErrorException(ErrorEnum.PROCESS_ERROR);
             } finally {
                 logElapsedTime(RETRIEVE_VARIABLES_LOG_ID, start);
             }
-
+    
             workingVariables.remove(Constants.RECEIPT_TEMPLATE);
-
+    
             if (restVariableResponse.getStatus() == 200) {
                 try {
                     atmTask.setReceiptTemplate(Base64.getEncoder().encodeToString(replaceVarValue(restVariableResponse.getEntity().getVariables(), atmTask.getReceiptTemplate()).getBytes(properties.htmlCharset())));
@@ -290,10 +336,10 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                 throw new ErrorException(ErrorEnum.PROCESS_ERROR);
             }
         }
+    
+    }*/
 
-    }
-
-    @SuppressWarnings("unchecked")
+    /*    @SuppressWarnings("unchecked")
     private void setButtonInAtmTask(it.pagopa.atmlayer.wf.task.bean.Task atmTask, Map<String, Object> buttons) {
         if (buttons != null) {
             List<Button> buttonsList = new ArrayList<>();
@@ -306,9 +352,27 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             }
             atmTask.setButtons(buttonsList);
         }
+    }*/
+    
+    @SuppressWarnings("unchecked")
+    private static void setButtonInAtmTask(it.pagopa.atmlayer.wf.task.bean.Task atmTask, Map<String, Object> variables, Set<String> buttons) {
+        if (buttons != null) {
+            List<Button> buttonsList = new ArrayList<>();
+            log.debug("Getting buttons value...");
+            Button button;
+            for (String key : buttons) {
+                if (variables.containsKey(key)) {
+                    button = new Button();
+                    button.setData((Map<String, Object>) variables.get(key));
+                    button.setId(key);
+                    buttonsList.add(button);
+                }
+            }
+            atmTask.setButtons(buttonsList);
+        }
     }
 
-    private DeviceInfo convertDeviceInDeviceInfo(Device device) {
+    private static DeviceInfo convertDeviceInDeviceInfo(Device device) {
         return DeviceInfo.builder().bankId(device.getBankId()).branchId(device.getBranchId()).code(device.getCode()).terminalId(device.getTerminalId()).channel(DeviceType.valueOf(device.getChannel().name())).opTimestamp(device.getOpTimestamp()).build();
     }
 
