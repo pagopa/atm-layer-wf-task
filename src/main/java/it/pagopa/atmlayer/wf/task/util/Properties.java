@@ -32,9 +32,6 @@ public interface Properties {
     @ConfigProperty(name = "escape")
     Map<String, String> escape();
 
-    @ConfigProperty(name = "trace-logging-enabled")
-    boolean isTraceLoggingEnabled();
-
     Bucket bucket();
 
     Resource resource();

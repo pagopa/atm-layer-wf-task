@@ -12,6 +12,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,10 +40,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.type.MapType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.State;
 import lombok.extern.slf4j.Slf4j;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 @Slf4j
 public class Utility {
@@ -439,4 +444,15 @@ public class Utility {
         }
         return result;
     }
+
+    public static String tracerJobTimeLeft() {
+        LocalTime oraCorrente = LocalTime.now();
+        LocalTime oraAggiornata = oraCorrente.plusHours(1);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        String orarioFormattato = oraAggiornata.format(formatter);
+
+        return orarioFormattato;
+    }
+
 }

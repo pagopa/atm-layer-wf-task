@@ -11,7 +11,6 @@ import it.pagopa.atmlayer.wf.task.bean.PanInfo;
 import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.client.bean.PublicKey;
 import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
-import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MultivaluedMap;
@@ -20,9 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 @ApplicationScoped
 @Slf4j
 public class CommonLogic {
-
-    @Inject
-    protected Properties properties;
 
     private static final String TASK_RESOURCE_CLASS_ID = "TaskResource.";
     protected static final String CREATE_MAIN_SCENE_LOG_ID = TASK_RESOURCE_CLASS_ID + "createMainScene";
@@ -36,12 +32,8 @@ public class CommonLogic {
     protected static final String GET_TOKEN_LOG_ID = MIL_AUTH_REST_CLIENT_CLASS_ID + "getToken";
     protected static final String DELETE_TOKEN_LOG_ID = MIL_AUTH_REST_CLIENT_CLASS_ID + "deleteToken";
 
-    protected boolean isTraceLoggingEnabled;
-
-    @PostConstruct
-    public void init() {
-        isTraceLoggingEnabled = properties.isTraceLoggingEnabled();
-    }
+    @Inject
+    protected Properties properties;
 
     /**
      * This method serves as a provider of an <b>auxiliary logger</b> for tracing
@@ -55,8 +47,6 @@ public class CommonLogic {
      */
     protected void logTracePropagation(String transactionId, String method, String URI,
             MultivaluedMap<String, String> pathParameters, MultivaluedMap<String, String> headers, String body) {
-
-        if (isTraceLoggingEnabled) {
             StringBuilder messageBuilder = new StringBuilder(" REQUEST ")
                     .append(method)
                     .append(" URI: ")
@@ -75,13 +65,10 @@ public class CommonLogic {
             }
 
             Tracer.trace(transactionId, messageBuilder.toString());
-        }
-
     }
 
-    public void traceMilAuthClientComm(State state, Device device,
+    protected void traceMilAuthClientComm(State state, Device device,
             RestResponse<TokenResponse> restTokenResponse) {
-        if (isTraceLoggingEnabled) {
             String milAuthClientAddress = System.getenv("MIL_AUTH_SERVICE_ADDRESS");
             String transactionId = state.getTransactionId();
             StringBuilder requestMessageBuilder = new StringBuilder(" REQUEST POST URI: ")
@@ -106,11 +93,9 @@ public class CommonLogic {
             } else {
                 Tracer.trace(transactionId, " - Error while communicating with MilAuthenticator. . .");
             }
-        }
     }
 
-    public void tracePanInfoAndKey(String transactionId, RestResponse<PublicKey> restPanTokenizationKeyResponse, List<PanInfo> panInfoList) {
-        if (isTraceLoggingEnabled) {
+    protected void tracePanInfoAndKey(String transactionId, RestResponse<PublicKey> restPanTokenizationKeyResponse, List<PanInfo> panInfoList) {
             String tokenizetionClientAddress = System.getenv("TOKENIZATION_ADDRESS");
             if (restPanTokenizationKeyResponse != null) {
                 StringBuilder responseMessageBuilder = new StringBuilder(" RESPONSE GET URI: ")
@@ -123,10 +108,9 @@ public class CommonLogic {
             }
 
             if (!Objects.isNull(panInfoList) && !panInfoList.isEmpty()) {
-                StringBuilder panMessageBuilder = new StringBuilder(" -> PAN LIST: ").append(panInfoList.stream().map(PanInfo::getPan).collect(Collectors.joining(", ")));
+                StringBuilder panMessageBuilder = new StringBuilder(" RETRIEVED PAN LIST: ").append(panInfoList.stream().map(PanInfo::getPan).collect(Collectors.joining(", ")));
                 Tracer.trace(transactionId, panMessageBuilder.toString());
             }
-        }
     }
 
     /**

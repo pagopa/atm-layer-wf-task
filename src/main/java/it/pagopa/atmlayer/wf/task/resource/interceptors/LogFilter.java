@@ -2,7 +2,6 @@ package it.pagopa.atmlayer.wf.task.resource.interceptors;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.Set;
 
 import org.slf4j.MDC;
@@ -10,7 +9,6 @@ import org.slf4j.MDC;
 import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Constants;
-import it.pagopa.atmlayer.wf.task.util.Tracer;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;

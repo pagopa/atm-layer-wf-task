@@ -2,45 +2,55 @@ package it.pagopa.atmlayer.wf.task.util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-
-import org.jboss.resteasy.reactive.RestResponse;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import io.quarkus.scheduler.Scheduled;
-import it.pagopa.atmlayer.wf.task.bean.Device;
-import it.pagopa.atmlayer.wf.task.bean.State;
-import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
+import it.pagopa.atmlayer.wf.task.database.dynamo.service.ConfigurationAsyncServiceImpl;
+import it.pagopa.atmlayer.wf.task.database.dynamo.service.contract.ConfigurationService;
 import it.pagopa.atmlayer.wf.task.service.impl.S3ObjectStoreServiceImpl;
 import jakarta.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 
 @RegisterForReflection
+@Slf4j
 public class Tracer {
 
     @Inject
-    private Properties properties;
+    private S3ObjectStoreServiceImpl objectStoreServiceImpl;
 
     @Inject
-    private S3ObjectStoreServiceImpl objectStoreServiceImpl;
+    private ConfigurationAsyncServiceImpl configurationAsyncServiceImpl;
 
     private static StringBuilder messageBuilder = new StringBuilder();
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
-    @Scheduled(every = "2m", delay = 5, delayUnit = TimeUnit.SECONDS)
+    public static Boolean isTraceLoggingEnabled;
+
+    @Scheduled(every = "1h")
     public void tracerJob() {
-        if (properties.isTraceLoggingEnabled() && messageBuilder.length() > 0) {
-            objectStoreServiceImpl.writeLog(messageBuilder.toString().replaceAll("\\{\\}", ""));
-            messageBuilder.setLength(0);
-        }
+        configurationAsyncServiceImpl.get(ConfigurationService.TRACING)
+                .subscribe().with(configuration -> {
+                    isTraceLoggingEnabled = configuration.isEnabled() != null ? configuration.isEnabled() : false;
+                    log.info("isTraceLoggingEnabled: {}", isTraceLoggingEnabled);
+                    log.info("Next tracer job starts at {}", Utility.tracerJobTimeLeft());
+                    if (isTraceLoggingEnabled && messageBuilder.length() > 0) {
+                        objectStoreServiceImpl.writeLog(messageBuilder.toString().replaceAll("\\{\\}", ""));
+                        messageBuilder.setLength(0);
+                    }
+                }, throwable -> {
+                    isTraceLoggingEnabled = false;
+                    log.error("Error during communication with DynamoDB: {}", throwable.getMessage());
+                });
     }
 
     public static void trace(String transactionId, String toLog) {
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        String formattedDateTime = currentDateTime.format(formatter).concat(" | ");
-        messageBuilder.append(formattedDateTime).append(" ").append(transactionId).append(" | ").append(toLog)
-                .append("\n");
+        if (isTraceLoggingEnabled) {
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            String formattedDateTime = currentDateTime.format(formatter).concat(" | ");
+            messageBuilder.append(formattedDateTime).append(" ").append(transactionId).append(" | ").append(toLog)
+                    .append("\n");
+        }
     }
 
 }

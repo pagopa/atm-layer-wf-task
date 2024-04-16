@@ -30,7 +30,6 @@ public class FileStorageS3Util {
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH");
     
-
     @PostConstruct
     public void init() {
         s3 = S3Client.builder()

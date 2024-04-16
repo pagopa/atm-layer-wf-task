@@ -352,6 +352,18 @@ class TaskResourceTest {
                 Assertions.assertEquals(201, response.statusCode());
         }
 
+        @Test
+        void completeProcessingException() {
+                Mockito.when(processRestClient.complete(Mockito.any(TaskRequest.class)))
+                                .thenThrow(new ProcessingException("error"));
+
+                Response response = given().body(DataTest.createStateRequestNext())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/complete/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa")
+                                .then().extract().response();
+
+                Assertions.assertEquals(500, response.statusCode());
+        }
 
         @Test
         void nextTaskKoOnNextTask500() {
