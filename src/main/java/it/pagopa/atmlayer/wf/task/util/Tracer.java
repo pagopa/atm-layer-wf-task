@@ -33,6 +33,7 @@ public class Tracer {
                 .subscribe().with(configuration -> {
                     isTraceLoggingEnabled = configuration.isEnabled() != null ? configuration.isEnabled() : false;
                     log.info("isTraceLoggingEnabled: {}", isTraceLoggingEnabled);
+                    log.info("Next tracer job starts at {}", Utility.tracerJobTimeLeft());
                     if (isTraceLoggingEnabled && messageBuilder.length() > 0) {
                         objectStoreServiceImpl.writeLog(messageBuilder.toString().replaceAll("\\{\\}", ""));
                         messageBuilder.setLength(0);
