@@ -25,7 +25,7 @@ public class Tracer {
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
-    public static Boolean isTraceLoggingEnabled;
+    public static Boolean isTraceLoggingEnabled = false;
 
     @Scheduled(every = "1h")
     public void tracerJob() {

@@ -25,7 +25,6 @@ import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
 import it.pagopa.atmlayer.wf.task.client.TokenizationRestClient;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
-import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
 import it.pagopa.atmlayer.wf.task.resource.TaskResource;
 import it.pagopa.atmlayer.wf.task.test.DataTest;
 import it.pagopa.atmlayer.wf.task.util.Tracer;
@@ -72,13 +71,13 @@ public class TaskResourceOverrideConfigTest {
 
         Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
+                                                DataTest.createTaskResponse(1,DataTest.createVariableResponseNoData())));
+/*
         Mockito.when(processRestClient
                                 .retrieveVariables(Mockito.any(VariableRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createVariableResponseNoData()));
-
+*/
         Mockito.when(tokenizationRestClient
                                 .getKey()).thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createPublicKeyResponse()));
