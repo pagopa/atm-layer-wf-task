@@ -48,4 +48,6 @@ public class Constants {
 
     public static final String PAN_INFO = "panInfo";
 
+    public static final String START_TIME = "startTime";
+
 }
