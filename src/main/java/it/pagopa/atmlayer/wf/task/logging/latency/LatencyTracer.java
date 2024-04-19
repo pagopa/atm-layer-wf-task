@@ -1,5 +1,6 @@
 package it.pagopa.atmlayer.wf.task.logging.latency;
 
+import io.quarkus.arc.profile.UnlessBuildProfile;
 import io.smallrye.mutiny.Uni;
 import it.pagopa.atmlayer.wf.task.logging.latency.producer.CloudWatchLogsProducer;
 import jakarta.inject.Inject;
@@ -7,6 +8,7 @@ import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsAsyncClient;
 
+@UnlessBuildProfile(anyOf = { "native" })
 @Slf4j
 @Singleton
 public class LatencyTracer extends CloudWatchLogsProducer {
