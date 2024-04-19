@@ -1,6 +1,5 @@
 package it.pagopa.atmlayer.wf.task.logging.latency;
 
-import io.quarkus.logging.Log;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import io.smallrye.mutiny.Uni;
 import it.pagopa.atmlayer.wf.task.logging.latency.producer.CloudWatchLogsProducer;
@@ -27,9 +26,9 @@ public class LatencyTracer extends CloudWatchLogsProducer {
      * @param label - LOG_ID of the function to display in the log
      * @param start - the start time, when the execution is started
      */
-    public static void logElapsedTime(String label, String communicationType, long start) {
+    public static void logElapsedTime(String label, String communicationType, Object start) {
         messageBuilder.append(label).append(" - Latency ").append(communicationType).append(" - Elapsed time [ms] = ")
-                .append(System.currentTimeMillis() - start);
+                .append(System.currentTimeMillis() - ((Number) start).longValue());
         Uni.createFrom().completionStage(
                 client.putLogEvents(generatePutLogEventRequest(GROUP_NAME, STREAM_NAME, messageBuilder.toString())))
                 .onFailure().invoke(throwable -> {

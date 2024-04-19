@@ -121,9 +121,9 @@ public class CommonLogic {
      * @param start - the start time, when the execution is started
      * @param stop  - the stop time, when the execution is finished
      */
-    protected static void logElapsedTime(String label, Object start) {
+    protected static void logElapsedTime(String label, long start) {
         long stop = System.currentTimeMillis();
-        log.info(" {} - Elapsed time [ms] = {}", label, stop - ((Number) start).longValue());
+        log.info(" {} - Elapsed time [ms] = {}", label, stop - start);
     }
 
 }
