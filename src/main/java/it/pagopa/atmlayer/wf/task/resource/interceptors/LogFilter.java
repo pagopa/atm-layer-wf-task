@@ -62,12 +62,16 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
 
             requestContext.setEntityStream(new ByteArrayInputStream(Utility.setTransactionIdInJson(entity, transactionId)));
             log.info("============== REQUEST ==============");
+
+            requestContext.setProperty(Constants.TRANSACTION_ID_LOG_CONFIGURATION, transactionId);
+            requestContext.setProperty(Constants.START_TIME, System.currentTimeMillis());
         }
     }
 
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
-        if (requestContext.getUriInfo().getPath().startsWith("/api/v1")) {
+        String URI = requestContext.getUriInfo().getPath();
+        if (URI.startsWith("/api/v1")) {
             log.info("============== RESPONSE ==============");
             log.info("STATUS: {}", responseContext.getStatus());
             if (responseContext.getEntity() != null) {
@@ -75,6 +79,12 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
             }
             log.info("============== RESPONSE ==============");
             MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
+            
+            if (URI.contains("main")) {
+                logElapsedTime("TaskResource.createMainScene", requestContext.getProperty(Constants.START_TIME));
+            } else if (URI.contains("next")) {
+                logElapsedTime("TaskResource.createNextScene", requestContext.getProperty(Constants.START_TIME));
+            }
         }
     }
 

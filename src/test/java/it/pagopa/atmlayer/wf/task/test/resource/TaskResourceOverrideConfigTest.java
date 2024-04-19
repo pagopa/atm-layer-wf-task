@@ -26,9 +26,9 @@ import it.pagopa.atmlayer.wf.task.client.TokenizationRestClient;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
+import it.pagopa.atmlayer.wf.task.logging.sensitive.ClearDataTracer;
 import it.pagopa.atmlayer.wf.task.resource.TaskResource;
 import it.pagopa.atmlayer.wf.task.test.DataTest;
-import it.pagopa.atmlayer.wf.task.util.Tracer;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response.Status;
 
@@ -64,7 +64,7 @@ public class TaskResourceOverrideConfigTest {
     
     @Test
     public void test(){
-        Tracer.isTraceLoggingEnabled = true;
+        ClearDataTracer.isTraceLoggingEnabled = true;
 
         Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
                                 Mockito.anyString(), Mockito.anyString()))

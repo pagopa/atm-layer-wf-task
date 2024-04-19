@@ -11,6 +11,7 @@ import it.pagopa.atmlayer.wf.task.bean.PanInfo;
 import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.client.bean.PublicKey;
 import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
+import it.pagopa.atmlayer.wf.task.logging.sensitive.ClearDataTracer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MultivaluedMap;
@@ -64,7 +65,7 @@ public class CommonLogic {
                 messageBuilder.append(" - BODY: ").append(body);
             }
 
-            Tracer.trace(transactionId, messageBuilder.toString());
+            ClearDataTracer.trace(transactionId, messageBuilder.toString());
     }
 
     protected void traceMilAuthClientComm(State state, Device device,
@@ -79,7 +80,7 @@ public class CommonLogic {
                     .append(" TerminalId: ").append(Objects.toString(device.getTerminalId()))
                     .append(" TransactionId: ").append(transactionId).append("}");
 
-            Tracer.trace(transactionId, requestMessageBuilder.toString());
+            ClearDataTracer.trace(transactionId, requestMessageBuilder.toString());
 
             if (restTokenResponse != null) {
                 StringBuilder responseMessageBuilder = new StringBuilder(" RESPONSE POST URI: ")
@@ -89,9 +90,9 @@ public class CommonLogic {
                     responseMessageBuilder.append(" - BODY: Access token: ")
                             .append(restTokenResponse.getEntity().getAccess_token());
                 }
-                Tracer.trace(transactionId, responseMessageBuilder.toString());
+                ClearDataTracer.trace(transactionId, responseMessageBuilder.toString());
             } else {
-                Tracer.trace(transactionId, " - Error while communicating with MilAuthenticator. . .");
+                ClearDataTracer.trace(transactionId, " - Error while communicating with MilAuthenticator. . .");
             }
     }
 
@@ -104,12 +105,12 @@ public class CommonLogic {
                 if (restPanTokenizationKeyResponse.getEntity() != null) {
                     responseMessageBuilder.append(" - BODY: ").append(restPanTokenizationKeyResponse.getEntity().toString());
                 }
-                Tracer.trace(transactionId, responseMessageBuilder.toString());
+                ClearDataTracer.trace(transactionId, responseMessageBuilder.toString());
             }
 
             if (!Objects.isNull(panInfoList) && !panInfoList.isEmpty()) {
                 StringBuilder panMessageBuilder = new StringBuilder(" RETRIEVED PAN LIST: ").append(panInfoList.stream().map(PanInfo::getPan).collect(Collectors.joining(", ")));
-                Tracer.trace(transactionId, panMessageBuilder.toString());
+                ClearDataTracer.trace(transactionId, panMessageBuilder.toString());
             }
     }
 
@@ -120,9 +121,9 @@ public class CommonLogic {
      * @param start - the start time, when the execution is started
      * @param stop  - the stop time, when the execution is finished
      */
-    protected static void logElapsedTime(String label, long start) {
+    protected static void logElapsedTime(String label, Object start) {
         long stop = System.currentTimeMillis();
-        log.info(" {} - Elapsed time [ms] = {}", label, stop - start);
+        log.info(" {} - Elapsed time [ms] = {}", label, stop - ((Number) start).longValue());
     }
 
 }
