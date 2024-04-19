@@ -7,6 +7,7 @@ import java.util.Set;
 import org.slf4j.MDC;
 
 import it.pagopa.atmlayer.wf.task.bean.State;
+import it.pagopa.atmlayer.wf.task.logging.latency.LatencyTracer;
 import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Constants;
 import it.pagopa.atmlayer.wf.task.util.Utility;
@@ -81,9 +82,9 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
             MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
             
             if (URI.contains("main")) {
-                logElapsedTime("TaskResource.createMainScene", requestContext.getProperty(Constants.START_TIME));
+                LatencyTracer.logElapsedTime("TaskResource.createMainScene", "Internal",requestContext.getProperty(Constants.START_TIME));
             } else if (URI.contains("next")) {
-                logElapsedTime("TaskResource.createNextScene", requestContext.getProperty(Constants.START_TIME));
+                LatencyTracer.logElapsedTime("TaskResource.createNextScene", "Internal", requestContext.getProperty(Constants.START_TIME));
             }
         }
     }
