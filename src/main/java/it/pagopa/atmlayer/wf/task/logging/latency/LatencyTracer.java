@@ -4,15 +4,16 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 import io.smallrye.mutiny.Uni;
 import it.pagopa.atmlayer.wf.task.logging.latency.producer.CloudWatchLogsProducer;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsAsyncClient;
 
 @Slf4j
-@RegisterForReflection
+@Singleton
 public class LatencyTracer extends CloudWatchLogsProducer {
 
     @Inject
-    private static CloudWatchLogsAsyncClient client;
+    private CloudWatchLogsAsyncClient client;
 
     private static StringBuilder messageBuilder = new StringBuilder();
 
@@ -26,7 +27,7 @@ public class LatencyTracer extends CloudWatchLogsProducer {
      * @param label - LOG_ID of the function to display in the log
      * @param start - the start time, when the execution is started
      */
-    public static void logElapsedTime(String label, String communicationType, Object start) {
+    public void logElapsedTime(String label, String communicationType, Object start) {
         messageBuilder.append(label).append(" - Latency ").append(communicationType).append(" - Elapsed time [ms] = ")
                 .append(System.currentTimeMillis() - ((Number) start).longValue());
         Uni.createFrom().completionStage(
