@@ -18,10 +18,6 @@ import java.util.Map;
 @QuarkusTest
 class EnvironmentTestServicesResource {
 
-    @InjectMock
-    @MockitoConfig(convertScopes = true)
-    LatencyTracer latencyTracer;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(EnvironmentTestServicesResource.class);
 
     public static class DockerCompose implements QuarkusTestResourceLifecycleManager {

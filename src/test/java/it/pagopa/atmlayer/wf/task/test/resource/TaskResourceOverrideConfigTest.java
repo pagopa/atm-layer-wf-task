@@ -54,10 +54,6 @@ public class TaskResourceOverrideConfigTest {
     @MockitoConfig(convertScopes = true)
     TokenizationRestClient tokenizationRestClient;
 
-    @InjectMock
-    @MockitoConfig(convertScopes = true)
-    LatencyTracer latencyTracer;
-
     public static class BuildTimeValueChangeTestProfile implements QuarkusTestProfile {
     
         @Override
