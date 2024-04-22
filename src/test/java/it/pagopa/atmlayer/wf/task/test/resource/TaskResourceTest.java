@@ -24,6 +24,7 @@ import it.pagopa.atmlayer.wf.task.client.TokenizationRestClient;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
+import it.pagopa.atmlayer.wf.task.logging.latency.LatencyTracer;
 import it.pagopa.atmlayer.wf.task.resource.TaskResource;
 import it.pagopa.atmlayer.wf.task.test.DataTest;
 import jakarta.ws.rs.ProcessingException;
@@ -52,6 +53,10 @@ class TaskResourceTest {
         TokenizationRestClient tokenizationRestClient;
         
 
+        @InjectMock
+        @MockitoConfig(convertScopes = true)
+        LatencyTracer latencyTracer;
+
         @Test
         void startProcessOk() {
 
@@ -71,7 +76,7 @@ class TaskResourceTest {
                 Response response = given().body(DataTest.createStateRequestStart())
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/main").then().extract().response();
-
+                
                 Assertions.assertEquals(201, response.statusCode());
         }
 
@@ -186,6 +191,7 @@ class TaskResourceTest {
                                 .retrieveVariables(Mockito.any(VariableRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createVariableResponseNoButtons()));
+
 
                 Response response = given().body(DataTest.createStateRequestStartWithoutDeviceData())
                                 .contentType(MediaType.APPLICATION_JSON).when()
