@@ -23,7 +23,7 @@ export function payementScan(baseUrl, basePath, token, spontaneousPayementRespon
     const scanPaymentRequestBody = {
         continue: true,
         result: "OK",
-        scanData: "UEFHT1BBfDAwMnwwMTIzNDU2Nzg5MDEyMzQ1Njd8MDAwMDAwMDAyMDF8MTAwMDA"
+        scanData: "UEFHT1BBfDAwMnwzMDIwNTEyMzQ1NjcwMDAwNzB8Nzc3Nzc3Nzc3Nzd8MTAwMDA"
     }
 
     const body = mockedRequestBody(scanPaymentRequestBody, jsonData.id);
