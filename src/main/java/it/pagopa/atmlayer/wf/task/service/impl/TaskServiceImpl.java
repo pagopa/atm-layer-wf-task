@@ -256,10 +256,9 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
     
     private it.pagopa.atmlayer.wf.task.bean.Task manageOkResponse(TaskResponse response) {
         it.pagopa.atmlayer.wf.task.bean.Task atmTask = null;
-        // Recupero il primo task ordinato per priorità
-        Collections.sort(response.getTasks(), Comparator.comparingInt(Task::getPriority));
-
-        if (!response.getTasks().isEmpty()) {
+        if (response.getTasks() != null && !response.getTasks().isEmpty()) {
+         // Recupero il primo task ordinato per priorità
+            Collections.sort(response.getTasks(), Comparator.comparingInt(Task::getPriority));
             Task workingTask = response.getTasks().get(0);
             atmTask = new it.pagopa.atmlayer.wf.task.bean.Task();
             VariableRequest variableRequest = createVariableRequestForTemplate(workingTask, atmTask);
@@ -486,10 +485,10 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             log.debug("Getting generic variables...");
             atmTask.setData(workingVariables.get(Constants.DATA_VARIABLES) == null ? new HashMap<String, Object>() : (Map<String, Object>) workingVariables.get(Constants.DATA_VARIABLES));
             workingVariables.remove(Constants.DATA_VARIABLES);
-            for (Map.Entry<String, Object> entry : workingVariables.entrySet()) {
+          /*  for (Map.Entry<String, Object> entry : workingVariables.entrySet()) {
                 log.info("Variable {}", entry.getKey());
                 atmTask.getData().put(entry.getKey(), String.valueOf(entry.getValue()));
-            }
+            }*/
         }
 
     }
