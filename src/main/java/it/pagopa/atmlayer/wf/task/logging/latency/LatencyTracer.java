@@ -1,5 +1,6 @@
 package it.pagopa.atmlayer.wf.task.logging.latency;
 
+import io.quarkus.arc.profile.UnlessBuildProfile;
 import io.smallrye.mutiny.Uni;
 import it.pagopa.atmlayer.wf.task.logging.latency.producer.CloudWatchLogsProducer;
 import jakarta.inject.Inject;
