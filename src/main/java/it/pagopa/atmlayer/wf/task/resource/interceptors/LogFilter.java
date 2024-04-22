@@ -87,9 +87,9 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
             MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
             
             if (URI.contains("main")) {
-                latencyTracer.logElapsedTime("TaskResource.createMainScene", "Internal",requestContext.getProperty(Constants.START_TIME));
+                latencyTracer.logElapsedTime("TaskResource.createMainScene", "External",requestContext.getProperty(Constants.START_TIME));
             } else if (URI.contains("next")) {
-                latencyTracer.logElapsedTime("TaskResource.createNextScene", "Internal", requestContext.getProperty(Constants.START_TIME));
+                latencyTracer.logElapsedTime("TaskResource.createNextScene", "External", requestContext.getProperty(Constants.START_TIME));
             }
         }
     }
