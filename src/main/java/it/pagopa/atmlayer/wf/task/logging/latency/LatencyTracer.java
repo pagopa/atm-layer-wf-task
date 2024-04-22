@@ -8,7 +8,6 @@ import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsAsyncClient;
 
-@UnlessBuildProfile(anyOf = { "native" })
 @Slf4j
 @Singleton
 public class LatencyTracer extends CloudWatchLogsProducer {
