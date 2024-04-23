@@ -12,9 +12,12 @@ import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Utility class for tracing and logging sensitive data.
+ */
 @RegisterForReflection
 @Slf4j
-public class ClearDataTracer {
+public class SensitiveDataTracer {
 
     @Inject
     private S3ObjectStoreServiceImpl objectStoreServiceImpl;
@@ -26,8 +29,14 @@ public class ClearDataTracer {
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
+    /**
+     * Indicates whether trace logging is enabled.
+     */
     public static Boolean isTraceLoggingEnabled = false;
 
+    /**
+     * Scheduled method to run tracer job every hour.
+     */
     @Scheduled(every = "1h")
     public void tracerJob() {
         configurationAsyncServiceImpl.get(ConfigurationService.TRACING)
@@ -45,6 +54,12 @@ public class ClearDataTracer {
                 });
     }
 
+    /**
+     * Traces sensitive data.
+     *
+     * @param transactionId The ID of the transaction.
+     * @param toLog         The data to be logged.
+     */
     public static void trace(String transactionId, String toLog) {
         if (isTraceLoggingEnabled) {
             LocalDateTime currentDateTime = LocalDateTime.now();
