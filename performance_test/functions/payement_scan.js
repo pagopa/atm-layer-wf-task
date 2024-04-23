@@ -38,7 +38,7 @@ export function payementScan(baseUrl, basePath, token, spontaneousPayementRespon
     
     var count=0;
     while (response.status === 202 && count < 3) {
-        console.log('Retry Scan Payement:' count+1);
+        console.log('Retry Scan Payement:', count+1);
         response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
         count++;
     }
