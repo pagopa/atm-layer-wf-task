@@ -27,7 +27,7 @@ export function menu(baseUrl, basePath, token){
     console.log('Body Menu:', responseMenu.body);
 
     var count=0;
-    while (responseMenu.status === 202 && count < 1) {
+    while (responseMenu.status === 202 && count < 3) {
         responseMenu = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
         count++;
     }

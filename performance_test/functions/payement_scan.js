@@ -37,7 +37,7 @@ export function payementScan(baseUrl, basePath, token, spontaneousPayementRespon
     console.log('Body Scan Payement:', response.body);
     
     var count=0;
-    while (response.status === 202 && count < 1) {
+    while (response.status === 202 && count < 3) {
         response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
         count++;
     }

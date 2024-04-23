@@ -35,7 +35,7 @@ export function exit(baseUrl, basePath, token, scanPaymentResponse) {
     console.log('Body Exit:', response.body);
 
     var count=0;
-    while (response.status === 202 && count < 1) {
+    while (response.status === 202 && count < 3) {
         response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
         count++;
     }
