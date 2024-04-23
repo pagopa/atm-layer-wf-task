@@ -6,10 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 90.61%               |
-| :heavy_check_mark: Number of Lines Covered | 492    |
-| :x: Number of Lines Missed  | 51     |
-| Total Number of Lines   | 543     |
+| Code Coverage %         | 90.33%               |
+| :heavy_check_mark: Number of Lines Covered | 691    |
+| :x: Number of Lines Missed  | 74     |
+| Total Number of Lines   | 765     |
 
 
 ## Details:
@@ -46,19 +46,6 @@
 
         
 #### All Lines Covered!
-        
-</details>
-
-    
-### it/pagopa/atmlayer/wf/task
-
-<details>
-    <summary>
-:x: TaskMicroservice.java
-    </summary>
-
-        
-#### Lines Missed:
         
 </details>
 
@@ -129,11 +116,11 @@
 
 <details>
     <summary>
-:heavy_check_mark: Button.java
+:x: Button.java
     </summary>
 
         
-#### All Lines Covered!
+#### Lines Missed:
         
 </details>
 
@@ -168,14 +155,85 @@
         
 #### Lines Missed:
         
-- Line #67
+- Line #150
 ```
 		} catch (ProcessingException e) {
 ```
-- Line #130
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/service/impl
+
+<details>
+    <summary>
+:x: TaskServiceImpl.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #175
 ```
-		} catch (ProcessingException e) {
+        } catch (WebApplicationException e) {
 ```
+- Line #295
+```
+            } catch (UnsupportedEncodingException e) {
+```
+- Line #417
+```
+                    } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+```
+- Line #438
+```
+                    } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
+```
+- Line #642
+```
+            } catch (UnsupportedEncodingException e) {
+```
+</details>
+
+    
+
+<details>
+    <summary>
+:x: S3ObjectStoreServiceImpl.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #24
+```
+    }
+```
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/resource/interceptors
+
+<details>
+    <summary>
+:heavy_check_mark: LogFilter.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task
+
+<details>
+    <summary>
+:x: TaskMicroservice.java
+    </summary>
+
+        
+#### Lines Missed:
+        
 </details>
 
     
@@ -282,7 +340,53 @@
 </details>
 
     
+### it/pagopa/atmlayer/wf/task/database/dynamo/service
+
+<details>
+    <summary>
+:heavy_check_mark: ConfigurationAsyncServiceImpl.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/database/dynamo/entity
+
+<details>
+    <summary>
+:x: Configuration.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+</details>
+
+    
 ### it/pagopa/atmlayer/wf/task/service
+
+<details>
+    <summary>
+:x: ObjectStoreService.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: S3ObjectStoreService.java
+    </summary>
+
+        
+</details>
+
+    
 
 <details>
     <summary>
@@ -322,35 +426,19 @@
 </details>
 
     
-### it/pagopa/atmlayer/wf/task/service/impl
+### it/pagopa/atmlayer/wf/task/database/dynamo/service/contract
 
 <details>
     <summary>
-:x: TaskServiceImpl.java
+:x: ConfigurationService.java
     </summary>
 
         
 #### Lines Missed:
         
-- Line #246
+- Line #26
 ```
-                } catch (UnsupportedEncodingException e) {
-```
-- Line #315
-```
-                    } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-```
-- Line #317
-```
-                    }
-```
-- Line #332
-```
-                    } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
-```
-- Line #513
-```
-            } catch (UnsupportedEncodingException e) {
+                .attributesToGet(CONFIGURATION_ID_COL, CONFIGURATION_ENABLED_COL)
 ```
 </details>
 
@@ -404,19 +492,6 @@
 </details>
 
     
-### it/pagopa/atmlayer/wf/task/resource/interceptors
-
-<details>
-    <summary>
-:heavy_check_mark: LogFilter.java
-    </summary>
-
-        
-#### All Lines Covered!
-        
-</details>
-
-    
 ### it/pagopa/atmlayer/wf/task/util
 
 <details>
@@ -427,6 +502,26 @@
         
 #### All Lines Covered!
         
+</details>
+
+    
+
+<details>
+    <summary>
+:x: FileStorageS3Util.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #51
+```
+                .contentType("binary/octet-stream")
+```
+- Line #55
+```
+    }
+```
 </details>
 
     
@@ -463,15 +558,15 @@
         
 #### Lines Missed:
         
-- Line #63
+- Line #106
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #76
+- Line #119
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #101
+- Line #144
 ```
         } catch (JsonProcessingException e) {
 ```
@@ -482,6 +577,22 @@
 - Line #342
 ```
         } catch (NoSuchAlgorithmException e) {
+```
+</details>
+
+    
+
+<details>
+    <summary>
+:x: Tracer.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #34
+```
+                    isTraceLoggingEnabled = configuration.isEnabled() != null ? configuration.isEnabled() : false;
 ```
 </details>
 

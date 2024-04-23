@@ -2,6 +2,7 @@ package it.pagopa.atmlayer.wf.task.service.impl;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
@@ -31,9 +32,11 @@ import org.jsoup.nodes.Entities.EscapeMode;
 import org.jsoup.parser.Parser;
 import org.slf4j.MDC;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
 import it.pagopa.atmlayer.wf.task.bean.Button;
 import it.pagopa.atmlayer.wf.task.bean.Device;
@@ -59,14 +62,11 @@ import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
-import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
 import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Constants;
-import it.pagopa.atmlayer.wf.task.util.Properties;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.ws.rs.WebApplicationException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -82,9 +82,6 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 
     @RestClient
     TokenizationRestClient tokenizationClient;
-
-    @Inject
-    Properties properties;
 
     @Override
     public Scene buildFirst(String functionId, State state) {
@@ -111,7 +108,20 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
         scene.setTransactionId(transactionId);
         return scene;
     }
-
+    
+    @Override
+    public RestResponse completeTask(String transactionId, State state) {      
+        TaskRequest taskRequest = buildTaskRequest(state, transactionId, null);
+        return processRestClient.complete(taskRequest);
+    }
+    
+    @Override
+    public Scene buildNext2(String transactionId, State state) {
+        Scene scene = buildSceneNext2(transactionId, state);
+        scene.setTransactionId(transactionId);
+        return scene;
+    }
+    
     private Scene buildSceneStart(String functionId, String transactionId, State state) {
         TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
         RestResponse<TaskResponse> restTaskResponse = null;
@@ -153,10 +163,31 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 
         return manageTaskResponse(restTaskResponse);
     }
+    
+    private Scene buildSceneNext2(String transactionId, State state) {
+        TaskRequest taskRequest = buildTaskRequest(state, transactionId, null);
+        RestResponse<TaskResponse> restTaskResponse = null;
+        long start = System.currentTimeMillis();
+
+        try {
+            log.info("Calling next task: [{}]", taskRequest);
+            restTaskResponse = processRestClient.next2Tasks(taskRequest);
+        } catch (WebApplicationException e) {
+            log.error("Error calling process service", e);
+            if (e.getResponse().getStatus() == StatusCode.INTERNAL_SERVER_ERROR) {
+                throw new ErrorException(ErrorEnum.GET_TASKS_ERROR);
+            }
+            throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+        } finally {
+            logElapsedTime(NEXT_TASKS_LOG_ID, start);
+        }
+
+        return manageTaskResponse(restTaskResponse);
+    }
 
     private Scene manageTaskResponse(RestResponse<TaskResponse> restTaskResponse) {
         Scene scene = new Scene();
-        if (restTaskResponse.getStatus() == 200) {
+        if (restTaskResponse.getStatus() == 200 || restTaskResponse.getStatus() == 201) {
             log.info("Retrieved process: [{}]", restTaskResponse.getEntity());
             scene.setOutcome(new OutcomeResponse(OutcomeEnum.OK));
             scene.setTask(manageOkResponse(restTaskResponse.getEntity()));
@@ -170,11 +201,11 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
         }
     }
 
-    private it.pagopa.atmlayer.wf.task.bean.Task manageOkResponse(TaskResponse response) {
+    /*private it.pagopa.atmlayer.wf.task.bean.Task manageOkResponse(TaskResponse response) {
         it.pagopa.atmlayer.wf.task.bean.Task atmTask = null;
         // Recupero il primo task ordinato per priorità
         Collections.sort(response.getTasks(), Comparator.comparingInt(Task::getPriority));
-
+    
         if (!response.getTasks().isEmpty()) {
             Task workingTask = response.getTasks().get(0);
             atmTask = new it.pagopa.atmlayer.wf.task.bean.Task();
@@ -194,20 +225,25 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             } finally {
                 logElapsedTime(RETRIEVE_VARIABLES_LOG_ID, start);
             }
-
+    
             if (restVariableResponse.getStatus() == 200) {
-
+    
                 VariableResponse variableResponse = restVariableResponse.getEntity();
                 log.info("Retrieved variables: [{}]", variableResponse);
                 atmTask.setId(workingTask.getId());
                 Map<String, Object> workingVariables = variableResponse.getVariables();
-
+    
+                //Aggiungo al contesto dei log la functionId
+                if (workingVariables != null && workingVariables.get(Constants.FUNCTION_ID_CONTEXT_LOG) != null) {
+                    MDC.put(Constants.FUNCTION_ID_CONTEXT_LOG, (String) workingVariables.get(Constants.FUNCTION_ID_CONTEXT_LOG));
+                }
+                
                 manageReceipt(workingVariables, atmTask);
-
+    
                 manageVariables(workingVariables, atmTask, variableRequest);
-
+    
                 updateTemplate(atmTask);
-
+    
                 setButtonInAtmTask(atmTask, variableResponse.getButtons());
             } else if (restVariableResponse.getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
                 throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
@@ -216,30 +252,76 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             }
         }
         return atmTask;
+    }*/
+    
+    private it.pagopa.atmlayer.wf.task.bean.Task manageOkResponse(TaskResponse response) {
+        it.pagopa.atmlayer.wf.task.bean.Task atmTask = null;
+        if (response.getTasks() != null && !response.getTasks().isEmpty()) {
+         // Recupero il primo task ordinato per priorità
+            Collections.sort(response.getTasks(), Comparator.comparingInt(Task::getPriority));
+            Task workingTask = response.getTasks().get(0);
+            atmTask = new it.pagopa.atmlayer.wf.task.bean.Task();
+            VariableRequest variableRequest = createVariableRequestForTemplate(workingTask, atmTask);
+           
+            atmTask.setId(workingTask.getId());
+            Map<String, Object> workingVariables = workingTask.getVariables();
+
+            //Aggiungo al contesto dei log la functionId
+            if (workingVariables != null && workingVariables.get(Constants.FUNCTION_ID_CONTEXT_LOG) != null) {
+                MDC.put(Constants.FUNCTION_ID_CONTEXT_LOG, (String) workingVariables.get(Constants.FUNCTION_ID_CONTEXT_LOG));
+            }
+            
+            manageReceipt(workingVariables, atmTask);
+
+            manageVariables(workingVariables, atmTask, variableRequest);
+
+            updateTemplate(atmTask);
+
+            setButtonInAtmTask(atmTask, workingVariables, variableRequest.getButtons());          
+           
+        }
+        return atmTask;
     }
+    
 
     private void manageReceipt(Map<String, Object> workingVariables, it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
 
         if (workingVariables != null && workingVariables.get(Constants.RECEIPT_TEMPLATE) != null) {
+            createVariableRequestForReceipt(workingVariables, atmTask);  
+            workingVariables.remove(Constants.RECEIPT_TEMPLATE);
+            try {
+                atmTask.setReceiptTemplate(Base64.getEncoder().encodeToString(replaceVarValue(workingVariables, atmTask.getReceiptTemplate()).getBytes(properties.htmlCharset())));
+            } catch (UnsupportedEncodingException e) {
+                log.error(" - ERROR:", e);
+                throw new ErrorException(ErrorEnum.GENERIC_ERROR);
+            }
+            
+        }
+
+    }
+
+    /*    private void manageReceipt(Map<String, Object> workingVariables, it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
+    
+        if (workingVariables != null && workingVariables.get(Constants.RECEIPT_TEMPLATE) != null) {
             RestResponse<VariableResponse> restVariableResponse = null;
             long start = System.currentTimeMillis();
-
+    
             try {
                 restVariableResponse = processRestClient.retrieveVariables(createVariableRequestForReceipt(workingVariables, atmTask));
             } catch (WebApplicationException e) {
-
+    
                 log.error("Error calling process service", e);
                 if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
                     throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
                 }
-
+    
                 throw new ErrorException(ErrorEnum.PROCESS_ERROR);
             } finally {
                 logElapsedTime(RETRIEVE_VARIABLES_LOG_ID, start);
             }
-
+    
             workingVariables.remove(Constants.RECEIPT_TEMPLATE);
-
+    
             if (restVariableResponse.getStatus() == 200) {
                 try {
                     atmTask.setReceiptTemplate(Base64.getEncoder().encodeToString(replaceVarValue(restVariableResponse.getEntity().getVariables(), atmTask.getReceiptTemplate()).getBytes(properties.htmlCharset())));
@@ -253,10 +335,10 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                 throw new ErrorException(ErrorEnum.PROCESS_ERROR);
             }
         }
+    
+    }*/
 
-    }
-
-    @SuppressWarnings("unchecked")
+    /*    @SuppressWarnings("unchecked")
     private void setButtonInAtmTask(it.pagopa.atmlayer.wf.task.bean.Task atmTask, Map<String, Object> buttons) {
         if (buttons != null) {
             List<Button> buttonsList = new ArrayList<>();
@@ -269,9 +351,27 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             }
             atmTask.setButtons(buttonsList);
         }
+    }*/
+    
+    @SuppressWarnings("unchecked")
+    private static void setButtonInAtmTask(it.pagopa.atmlayer.wf.task.bean.Task atmTask, Map<String, Object> variables, Set<String> buttons) {
+        if (buttons != null) {
+            List<Button> buttonsList = new ArrayList<>();
+            log.debug("Getting buttons value...");
+            Button button;
+            for (String key : buttons) {
+                if (variables.containsKey(key)) {
+                    button = new Button();
+                    button.setData((Map<String, Object>) variables.get(key));
+                    button.setId(key);
+                    buttonsList.add(button);
+                }
+            }
+            atmTask.setButtons(buttonsList);
+        }
     }
 
-    private DeviceInfo convertDeviceInDeviceInfo(Device device) {
+    private static DeviceInfo convertDeviceInDeviceInfo(Device device) {
         return DeviceInfo.builder().bankId(device.getBankId()).branchId(device.getBranchId()).code(device.getCode()).terminalId(device.getTerminalId()).channel(DeviceType.valueOf(device.getChannel().name())).opTimestamp(device.getOpTimestamp()).build();
     }
 
@@ -308,17 +408,22 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                 rsaPublicKey = Utility.generateRandomRSAPublicKey();
             } else {
                 log.info("Calling to get public key.");
+                long start = System.currentTimeMillis();
                 publicKeyResponse = tokenizationClient.getKey();
                 if (publicKeyResponse.getStatus() == 200) {
                     try {
                         rsaPublicKey = Utility.buildRSAPublicKey(Constants.RSA, publicKeyResponse.getEntity().getModulus());
                     } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
                         log.error(" - Error during generating RSAPublicKey", e);
+                    } finally {
+                        logElapsedTime(CREATE_MAIN_SCENE_LOG_ID, start);
                     }
                     log.info("key retrieved successfully.");
                 }
-
             }
+
+            tracePanInfoAndKey(state.getTransactionId(), publicKeyResponse, state.getPanInfo());
+
             if (rsaPublicKey != null) {
                 List<PanInfo> panInfoList = state.getPanInfo();
                 panInformationList = new ArrayList<>();
@@ -380,10 +485,10 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             log.debug("Getting generic variables...");
             atmTask.setData(workingVariables.get(Constants.DATA_VARIABLES) == null ? new HashMap<String, Object>() : (Map<String, Object>) workingVariables.get(Constants.DATA_VARIABLES));
             workingVariables.remove(Constants.DATA_VARIABLES);
-            for (Map.Entry<String, Object> entry : workingVariables.entrySet()) {
+          /*  for (Map.Entry<String, Object> entry : workingVariables.entrySet()) {
                 log.info("Variable {}", entry.getKey());
                 atmTask.getData().put(entry.getKey(), String.valueOf(entry.getValue()));
-            }
+            }*/
         }
 
     }
@@ -397,6 +502,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                 String htmlString = new String(Utility.getFileFromCdn(properties.cdnUrl() + properties.htmlResourcesPath() + receiptTemplateName).readAllBytes(), properties.htmlCharset());
                 Set<String> placeholders = Utility.findStringsByGroup(htmlString, Constants.VARIABLES_REGEX);
                 atmTask.setReceiptTemplate(htmlString);
+                placeholders.addAll(Utility.getForVar(htmlString));
                 log.debug("Placeholders found: {}", placeholders);
                 if (placeholders != null && !placeholders.isEmpty()) {
                     log.debug("Number of variables found in receipt template: {}", placeholders.size());
@@ -442,7 +548,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
     private String replaceVarValue(Map<String, Object> variables, String html) {
         String htmlTemp = html;
         if (htmlTemp != null) {
-            log.info("-----START replacing variables in html-----");
+            log.debug("-----START replacing variables in html-----");
 
             htmlTemp = parseLoopHtml(variables, html);
             for (Entry<String, Object> value : variables.entrySet()) {
@@ -455,7 +561,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                 log.error("Value not found for placeholders: {}", placeholders);
                 throw new ErrorException(ErrorEnum.PROCESS_ERROR);
             }
-            log.info("-----END replacing variables in html-----");
+            log.debug("-----END replacing variables in html-----");
         }
         return htmlTemp;
     }
@@ -471,14 +577,22 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 
             List<?> list = (List<?>) variables.get(forEl.attr("list"));
             int i = 0;
+            Type listType = new TypeToken<ArrayList<Object>>(){}.getType();
+            Gson gson = new Gson();
             if (list != null) {
                 for (Object element : list) {
+                    JsonElement jsonElement = JsonParser.parseString(Utility.getJson(element));
                     i++;
+                    for(Element e: forEl.select("for")) {
+                        String listName = e.attr("list");
+                        if(listName.startsWith(obj)) {
+                            ArrayList<Object> lista = gson.fromJson(getVarPropJsonElement(listName, jsonElement), listType);  
+                            variables.put(listName, lista);
+                        }
+                    }
                     String htmlTemp = parseLoopHtml(variables, forEl.html());
                     htmlTemp = htmlTemp.replace("${" + obj + "}", String.valueOf(element));
                     htmlTemp = htmlTemp.replace("${" + obj + ".i}", String.valueOf(i));
-
-                    JsonElement jsonElement = JsonParser.parseString(Utility.getJson(element));
 
                     for (String var : placeholders) {
                         htmlTemp = htmlTemp.replace("${" + var + "}", getVarProp(var, jsonElement));
@@ -489,7 +603,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             forEl.remove();
             doc.html(parseLoopHtml(variables, doc.html()));
         }
-        return doc.html();
+        return Utility.escape(doc.html(), properties.escape());
     }
 
     private static String getVarProp(String var, JsonElement jsonElement) {
@@ -504,6 +618,20 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             }
         }
         return propElement.getAsString();
+    }
+    
+    private static JsonElement getVarPropJsonElement(String var, JsonElement jsonElement) {
+        String[] varProperties = var.split("\\.");
+        JsonElement propElement = jsonElement;
+        for (int j = 1; j < varProperties.length; j++) {
+            JsonObject jsonObject = propElement.getAsJsonObject();
+            if (jsonObject.has(varProperties[j])) {
+                propElement = jsonObject.get(varProperties[j]);
+            } else {
+                return null;
+            }
+        }
+        return propElement;
     }
 
     private void updateTemplate(it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
@@ -537,7 +665,6 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
      * @param state
      */
     private String getToken(State state) {
-        MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, state.getTransactionId());
         Device device = state.getDevice();
         log.info("Calling milAuth get Token.");
         String token = null;
@@ -553,12 +680,12 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                     log.warn("Calling milAuth Status: [{}]", restTokenResponse.getStatus());
                 }
             }
+            traceMilAuthClientComm(state, device, restTokenResponse);
         } catch (WebApplicationException e) {
             log.error("Error calling milAuth get Token service", e);
         } finally {
             logElapsedTime(GET_TOKEN_LOG_ID, start);
         }
-        MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
         return token;
     }
 
@@ -567,7 +694,6 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
      */
     @Override
     public void deleteToken(State state) {
-        MDC.put(Constants.TRANSACTION_ID_LOG_CONFIGURATION, state.getTransactionId());
         Device device = state.getDevice();
         log.info("Calling milAuth delete Token.");
         long start = System.currentTimeMillis();
@@ -586,6 +712,6 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             logElapsedTime(DELETE_TOKEN_LOG_ID, start);
         }
 
-        MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
     }
+    
 }

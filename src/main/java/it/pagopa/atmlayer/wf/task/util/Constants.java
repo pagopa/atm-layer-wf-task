@@ -29,6 +29,8 @@ public class Constants {
     public static final String FUNCTION_ID = "SERVIZI_PAGOPA";
 
     public static final String TRANSACTION_ID_LOG_CONFIGURATION = "transactionId";
+    
+    public static final String FUNCTION_ID_CONTEXT_LOG = "functionId";
 
     public static final String TRANSACTION_ID_PATH_PARAM_NAME = "transactionId";
 
@@ -45,5 +47,7 @@ public class Constants {
     public static final String RSA = "RSA";
 
     public static final String PAN_INFO = "panInfo";
+
+    public static final String START_TIME = "startTime";
 
 }

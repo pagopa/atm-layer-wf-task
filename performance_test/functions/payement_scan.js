@@ -23,7 +23,7 @@ export function payementScan(baseUrl, basePath, token, spontaneousPayementRespon
     const scanPaymentRequestBody = {
         continue: true,
         result: "OK",
-        scanData: "UEFHT1BBfDAwMnwwMTIzNDU2Nzg5MDEyMzQ1Njd8MDAwMDAwMDAyMDF8MTAwMDA"
+        scanData: "UEFHT1BBfDAwMnwzMDIwNTEyMzQ1NjcwMDAwNzB8Nzc3Nzc3Nzc3Nzd8MTAwMDA"
     }
 
     const body = mockedRequestBody(scanPaymentRequestBody, jsonData.id);
@@ -35,6 +35,13 @@ export function payementScan(baseUrl, basePath, token, spontaneousPayementRespon
     console.log('Request Scan Payement:', response.request);
     console.log('Status Scan Payement:', response.status);
     console.log('Body Scan Payement:', response.body);
+    
+    var count=0;
+    while (response.status === 202 && count < 3) {
+        console.log('Retry Scan Payement:', count+1);
+        response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
+        count++;
+    }
 
     check(response, {
         'response code was 201': (response) => response.status === 201,

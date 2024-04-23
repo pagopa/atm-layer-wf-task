@@ -10,7 +10,6 @@ import java.util.Map;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import it.pagopa.atmlayer.wf.task.bean.Device;
-import it.pagopa.atmlayer.wf.task.bean.PanInfo;
 import it.pagopa.atmlayer.wf.task.bean.Peripheral;
 import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.bean.enumartive.Channel;
@@ -27,7 +26,7 @@ import it.pagopa.atmlayer.wf.task.util.Utility;
 
 public class DataTest {
 
-    public static TaskResponse createTaskResponse(int numberOfTasks) {
+    public static TaskResponse createTaskResponse(int numberOfTasks, VariableResponse variableResponse) {
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setTasks(new ArrayList<Task>());
         for (int i = 0; i <= numberOfTasks; i++) {
@@ -43,11 +42,15 @@ public class DataTest {
         templateMap.put(Constants.RECEIPT_TEMPLATE, "riepilogoCommissioni.html");
         taskResponse.getTasks().get(0).setVariables(templateMap);
         taskResponse.setTransactionId("1000");
+        if (variableResponse.getVariables() != null)
+            taskResponse.getTasks().get(0).getVariables().putAll(variableResponse.getVariables());
+        if (variableResponse.getButtons() != null)
+            taskResponse.getTasks().get(0).getVariables().putAll(variableResponse.getButtons());
 
         return taskResponse;
     }
 
-    public static TaskResponse createTaskResponseMissingReceipt(int numberOfTasks) {
+    public static TaskResponse createTaskResponseMissingReceipt(int numberOfTasks, VariableResponse variableResponse) {
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setTasks(new ArrayList<Task>());
         for (int i = 0; i <= numberOfTasks; i++) {
@@ -60,11 +63,15 @@ public class DataTest {
 
         taskResponse.getTasks().get(0).setForm("riepilogoCommissioni.html");
         taskResponse.setTransactionId("1000");
+        taskResponse.getTasks().get(0).setVariables(variableResponse.getVariables());
+        if (variableResponse.getButtons() != null)
+            taskResponse.getTasks().get(0).getVariables().putAll(variableResponse.getButtons());
+
 
         return taskResponse;
     }
 
-    public static TaskResponse createTaskResponseNoForm(int numberOfTasks) {
+    public static TaskResponse createTaskResponseNoForm(int numberOfTasks, VariableResponse variableResponse) {
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setTasks(new ArrayList<Task>());
         for (int i = 0; i <= numberOfTasks; i++) {
@@ -80,10 +87,13 @@ public class DataTest {
         taskResponse.getTasks().get(0).setVariables(templateMap);
         taskResponse.setTransactionId("1000");
 
+        taskResponse.getTasks().get(0).getVariables().putAll(variableResponse.getVariables());
+        taskResponse.getTasks().get(0).getVariables().putAll(variableResponse.getButtons());
+
         return taskResponse;
     }
 
-    public static TaskResponse createTaskResponseMissingHtml(int numberOfTasks) {
+    public static TaskResponse createTaskResponseMissingHtml(int numberOfTasks, VariableResponse variableResponse) {
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setTasks(new ArrayList<Task>());
         for (int i = 0; i <= numberOfTasks; i++) {
@@ -96,6 +106,9 @@ public class DataTest {
 
         taskResponse.getTasks().get(0).setForm("test.html");
         taskResponse.setTransactionId("1000");
+
+        taskResponse.getTasks().get(0).setVariables(variableResponse.getVariables());
+        taskResponse.getTasks().get(0).getVariables().putAll(variableResponse.getButtons());
 
         return taskResponse;
     }
@@ -126,12 +139,19 @@ public class DataTest {
         variableResponse.getVariables().put("fee", 2.30);
         variableResponse.getVariables().put("totale", 11.50);
         variableResponse.getVariables().put("variable1", "11.50");
+        variableResponse.getVariables().put(Constants.FUNCTION_ID_CONTEXT_LOG, "FUNCTION_ID");
         variableResponse.getVariables().put(Constants.COMMAND_VARIABLE_VALUE, Command.PRINT_RECEIPT.name());
-        ArrayList<Object> list = new ArrayList<Object>();
+        ArrayList<Object> list = new ArrayList<>();
         Dato elemento = new Dato();
         elemento.setParagrafo("vedi2");
+        elemento.setCircuits(new ArrayList<String>());
+        elemento.getCircuits().add("VISA");
+        elemento.getCircuits().add("MASTERCARD");
         list.add(elemento);
+        
+        
         variableResponse.getVariables().put("pulsanti", list);
+        
 
         Map<String, Object> buttonMap = new HashMap<>();
         buttonMap.put("prop1", "value1");
@@ -155,6 +175,9 @@ public class DataTest {
         ArrayList<Object> list = new ArrayList<Object>();
         Dato elemento = new Dato();
         elemento.setParagrafo("vedi2");
+        elemento.setCircuits(new ArrayList<String>());
+        elemento.getCircuits().add("VISA");
+        elemento.getCircuits().add("MASTERCARD");
         list.add(elemento);
 
         variableResponse.getVariables().put("pulsanti", list);
@@ -164,6 +187,12 @@ public class DataTest {
 
     public static VariableResponse createVariableResponseNoButtons() {
         VariableResponse variableResponse = new VariableResponse();
+        variableResponse.setVariables(new HashMap<String, Object>());
+        variableResponse.getVariables().put("company", "Auriga");
+        variableResponse.getVariables().put("description", "descrizione");
+        variableResponse.getVariables().put("amount", 10000);
+        variableResponse.getVariables().put("fee", 2.30);
+        variableResponse.getVariables().put("totale", 2.30);
         return variableResponse;
     }
 
@@ -174,7 +203,7 @@ public class DataTest {
         per.setName("PRINTER");
         per.setStatus(PeripheralStatus.OK);
         perList.add(per);
-        Device deviceInfo = Device.builder().bankId("00001").branchId("0002").channel(Channel.ATM).code("12345").terminalId("1234567890").opTimestamp(new Date()).peripherals(perList).build();
+        Device deviceInfo = Device.builder().bankId("00001").branchId("0002").channel(Channel.ATM).code("1234").terminalId("1234567890").opTimestamp(new Date()).peripherals(perList).build();
         State state = new State();
         state.setDevice(deviceInfo);
         Map<String, Object> variablesData = new HashMap<>();
@@ -249,17 +278,21 @@ public class DataTest {
         varResponse.getVariables().put(Constants.TIMEOUT_VALUE, 1);
         varResponse.getVariables().put(Constants.COMMAND_VARIABLE_VALUE, "END");
         varResponse.getVariables().put(Constants.OUTCOME_VAR_NAME, "a");
-        varResponse.getVariables().put(Constants.RECEIPT_TEMPLATE, "arrivederci.html");
+        varResponse.getVariables().put(Constants.RECEIPT_TEMPLATE, "riepilogoCommissioni.html");
+        //varResponse.getVariables().put(Constants.RECEIPT_TEMPLATE, "arrivederci.html");
         varResponse.getVariables().put(Constants.TEMPLATE_TYPE, "INFO");
         varResponse.getVariables().put("company", "Auriga");
         varResponse.getVariables().put("description", "descrizione");
         varResponse.getVariables().put("amount", 10000);
         varResponse.getVariables().put("fee", 2.30);
         varResponse.getVariables().put("totale", 11.50);
-        ArrayList<Object> list = new ArrayList<Object>();
+        ArrayList<Object> list = new ArrayList<>();
 
         Dato elemento = new Dato();
         elemento.setParagrafo("vedi2");
+        elemento.setCircuits(new ArrayList<String>());
+        elemento.getCircuits().add("VISA");
+        elemento.getCircuits().add("MASTERCARD");
         list.add(elemento);
 
         varResponse.getVariables().put("pulsanti", list);
@@ -286,10 +319,9 @@ public class DataTest {
         return varResponse;
     }
 
-    public static TaskResponse createTaskResponseNoVariablesRequest(int numberOfTasks) {
-        TaskResponse taskResponse = createTaskResponse(numberOfTasks);
-        taskResponse.getTasks().get(0).setForm("arrivederci.html");
-        taskResponse.getTasks().get(0).setVariables(null);
+    public static TaskResponse createTaskResponseNoVariablesRequest(int numberOfTasks, VariableResponse variableResponse) {
+        TaskResponse taskResponse = createTaskResponse(numberOfTasks, variableResponse);
+        taskResponse.getTasks().get(0).setForm("arrivederci.html");     
         return taskResponse;
     }
 

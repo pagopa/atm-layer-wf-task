@@ -11,23 +11,25 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.Data;
+import lombok.Getter;
 import lombok.ToString;
 
 @Data
 @JsonInclude(Include.NON_NULL)
+@Getter
 @Schema(description = "Oggetto che rappresenta le informazioni del pan")
 @RegisterForReflection
 public class PanInfo {
 
     @ToString.Exclude
     @JsonProperty(access = Access.WRITE_ONLY)
-    @Schema(description = "Pan (dato sensibile)")
+    @Schema(required = true, description = "Pan (dato sensibile)")
     private String pan;
     
-    @Schema(description = "Circuito del pan")
+    @Schema(description = "Circuito del pan", example = "[VISA, MASTERCARD]")
     private List<String> circuits;
     
-    @Schema(description = "Nome della banca associata al pan")
+    @Schema(description = "Nome della banca associata al pan", example = "NEXI")
     private String bankName;
     
 }

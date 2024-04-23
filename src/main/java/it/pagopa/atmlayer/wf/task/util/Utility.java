@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.URL;
 import java.security.InvalidKeyException;
-import java.security.Key;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -13,10 +12,15 @@ import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -31,8 +35,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import it.pagopa.atmlayer.wf.task.bean.Device;
@@ -41,7 +47,41 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Utility {
-    static private ObjectMapper om = new ObjectMapper();
+    private static ObjectMapper om = JsonMapper.builder()
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .build();
+
+    private static final String CDN_GET_FILE = "CDN.getResource";
+
+    /*
+     * Caratteri di escape standard HTML
+     */
+    public final static HashMap<String, String> ESCAPE_CHARACTER = new HashMap<>();
+
+    static {
+        ESCAPE_CHARACTER.put("&#192;", "À");
+        ESCAPE_CHARACTER.put("&#193;", "Á");
+        ESCAPE_CHARACTER.put("&#200;", "È");
+        ESCAPE_CHARACTER.put("&#201;", "É");
+        ESCAPE_CHARACTER.put("&#204;", "Ì");
+        ESCAPE_CHARACTER.put("&#205;", "Í");
+        ESCAPE_CHARACTER.put("&#210;", "Ò");
+        ESCAPE_CHARACTER.put("&#211;", "Ó");
+        ESCAPE_CHARACTER.put("&#217;", "Ù");
+        ESCAPE_CHARACTER.put("&#218;", "Ú");
+        ESCAPE_CHARACTER.put("&#224;", "à");
+        ESCAPE_CHARACTER.put("&#225;", "á");
+        ESCAPE_CHARACTER.put("&#232;", "è");
+        ESCAPE_CHARACTER.put("&#233;", "é");
+        ESCAPE_CHARACTER.put("&#236;", "ì");
+        ESCAPE_CHARACTER.put("&#237;", "í");
+        ESCAPE_CHARACTER.put("&#242;", "ò");
+        ESCAPE_CHARACTER.put("&#243;", "ó");
+        ESCAPE_CHARACTER.put("&#249;", "ù");
+        ESCAPE_CHARACTER.put("&#250;", "ú");
+        ESCAPE_CHARACTER.put("&#8364;", "€");
+        ESCAPE_CHARACTER.put("&#9632;", "■");
+    }
 
     /**
      * Converts an object to a JSON representation.
@@ -127,7 +167,11 @@ public class Utility {
      */
     public static String generateTransactionId(State state) {
         Device device = state.getDevice();
-        return (device.getBankId() + "-" + (device.getBranchId() != null ? device.getBranchId() : "") + "-" + (device.getCode() != null ? device.getCode() : "") + "-" + (device.getTerminalId() != null ? device.getTerminalId() : "") + "-" + (device.getOpTimestamp().getTime()) + "-" + UUID.randomUUID().toString()).substring(0, Constants.TRANSACTION_ID_LENGTH);
+        return (device.getBankId() + "-" + (device.getBranchId() != null ? device.getBranchId() : "") + "-"
+                + (device.getCode() != null ? device.getCode() : "") + "-"
+                + (device.getTerminalId() != null ? device.getTerminalId() : "") + "-"
+                + (device.getOpTimestamp().getTime()) + "-" + UUID.randomUUID().toString())
+                .substring(0, Constants.TRANSACTION_ID_LENGTH);
     }
 
     /**
@@ -151,8 +195,10 @@ public class Utility {
     public static Set<String> findStringsByGroup(String inputString, String regex) {
         Set<String> groups = new HashSet<>();
 
-        /* Set<String> forObjectsAttributes = extractObjects(regex);
-        log.debug("For object attributes {} :", forObjectsAttributes); */
+        /*
+         * Set<String> forObjectsAttributes = extractObjects(regex);
+         * log.debug("For object attributes {} :", forObjectsAttributes);
+         */
 
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(inputString);
@@ -163,17 +209,19 @@ public class Utility {
             }
         }
 
-        /* groups = forObjectsAttributes.isEmpty() ? groups
-                : groups.stream()
-                        .filter(groupsElement -> forObjectsAttributes.stream()
-                                .noneMatch(groupsElement::startsWith))
-                        .collect(Collectors.toSet()); */
+        /*
+         * groups = forObjectsAttributes.isEmpty() ? groups
+         * : groups.stream()
+         * .filter(groupsElement -> forObjectsAttributes.stream()
+         * .noneMatch(groupsElement::startsWith))
+         * .collect(Collectors.toSet());
+         */
 
         return groups;
     }
 
     /**
-
+     * 
      * Finds and extracts matched substrings from an input string using a regular
      * expression.
      *
@@ -259,9 +307,10 @@ public class Utility {
 
         InputStream ioStream = null;
         log.info("Getting file [{}]", path);
-
+        long start = System.currentTimeMillis();
         ioStream = new URL(path).openStream();
-
+        long stop = System.currentTimeMillis();
+        log.info(" {} - Elapsed time [ms] = {}", CDN_GET_FILE, stop - start);
         return ioStream;
     }
 
@@ -277,7 +326,9 @@ public class Utility {
     }
 
     /**
-     * <p>Test input String value to check if it's null or empty</p>
+     * <p>
+     * Test input String value to check if it's null or empty
+     * </p>
      *
      * @param value - value to be checked
      * @return true if the input value is null or empty, false otherwise
@@ -287,7 +338,9 @@ public class Utility {
     }
 
     /**
-     * <p>Test input Collection value to check if it's null or empty</p>
+     * <p>
+     * Test input Collection value to check if it's null or empty
+     * </p>
      *
      * @param value - value to be checked
      * @return true if the input value is null or empty, false otherwise
@@ -296,7 +349,8 @@ public class Utility {
         return value == null || value.isEmpty();
     }
 
-    public static byte[] encryptRSA(byte[] dataToEncrypt, RSAPublicKey encryptionKey) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+    public static byte[] encryptRSA(byte[] dataToEncrypt, RSAPublicKey encryptionKey) throws NoSuchAlgorithmException,
+            InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 
         Cipher cipher;
         cipher = Cipher.getInstance(Constants.RSA_ALGORITHM_PADDING);
@@ -305,9 +359,11 @@ public class Utility {
         return cipher.doFinal(dataToEncrypt);
     }
 
-    public static RSAPublicKey buildRSAPublicKey(String algorithm, byte[] keyModulus) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public static RSAPublicKey buildRSAPublicKey(String algorithm, byte[] keyModulus)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
         KeyFactory factory = KeyFactory.getInstance(algorithm);
-        RSAPublicKeySpec publicSpec = new RSAPublicKeySpec(new BigInteger(format(keyModulus), 16), BigInteger.valueOf(65537));
+        RSAPublicKeySpec publicSpec = new RSAPublicKeySpec(new BigInteger(format(keyModulus), 16),
+                BigInteger.valueOf(65537));
         return (RSAPublicKey) factory.generatePublic(publicSpec);
     }
 
@@ -343,6 +399,57 @@ public class Utility {
             log.error(" - Error generating public key", e);
         }
         return rsaPublicKey;
+    }
+
+    /**
+     * Escape a string.
+     * 
+     * @param text
+     * @charactersEscapeList contains the list of characters to escape, associated
+     *                       to the corresponding escape sequence
+     * @return
+     * @author Simone Miccoli
+     * 
+     */
+    public static String escape(String text) {
+        String result = null;
+        log.debug(" - Using default escape chars map");
+        if (text != null) {
+            result = text;
+            Set<Entry<String, String>> charactersToEscape = null;
+            charactersToEscape = ESCAPE_CHARACTER.entrySet();
+            for (Entry<String, String> entry : charactersToEscape) {
+                result = result.replaceAll(entry.getValue(), entry.getKey());
+            }
+        }
+        return result;
+    }
+
+    public static String escape(String text, Map<String, String> escapeHtmlChars) {
+        String result = null;
+        if (escapeHtmlChars == null) {
+            result = escape(text);
+        } else {
+            if (text != null) {
+                result = text;
+                Set<Entry<String, String>> charactersToEscape = null;
+                charactersToEscape = escapeHtmlChars.entrySet();
+                for (Entry<String, String> entry : charactersToEscape) {
+                    result = result.replaceAll(entry.getValue(), entry.getKey());
+                }
+            }
+        }
+        return result;
+    }
+
+    public static String tracerJobTimeLeft() {
+        LocalTime oraCorrente = LocalTime.now();
+        LocalTime oraAggiornata = oraCorrente.plusHours(1);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        String orarioFormattato = oraAggiornata.format(formatter);
+
+        return orarioFormattato;
     }
 
 }

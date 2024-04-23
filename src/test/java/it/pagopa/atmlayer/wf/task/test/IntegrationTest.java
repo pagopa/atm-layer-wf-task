@@ -37,6 +37,9 @@ class IntegrationTest {
     void executePostmanCollectionWithNewmann() {
 
         NEWMAN.start();
+        NEWMAN.withEnv("AWS_ACCESS_KEY_ID", "test")
+                .withEnv("AWS_SECRET_ACCESS_KEY", "test")
+                .withEnv("AWS_REGION", "test");
         log.info(NEWMAN.getLogs());
         assertEquals(Long.valueOf(0), NEWMAN.getCurrentContainerInfo().getState().getExitCodeLong());
     }
