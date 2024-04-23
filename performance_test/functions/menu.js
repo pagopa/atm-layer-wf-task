@@ -26,6 +26,12 @@ export function menu(baseUrl, basePath, token){
     console.log('Status Menu:', responseMenu.status);
     console.log('Body Menu:', responseMenu.body);
 
+    var count=0;
+    while (responseMenu.status === 202 && count < 1) {
+        responseMenu = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
+        count++;
+    }
+
     check(responseMenu, {
         'response code was 201' : (res) => res.status == 201,
     })

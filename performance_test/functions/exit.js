@@ -34,6 +34,12 @@ export function exit(baseUrl, basePath, token, scanPaymentResponse) {
     console.log('Status Exit:', response.status);
     console.log('Body Exit:', response.body);
 
+    var count=0;
+    while (response.status === 202 && count < 1) {
+        response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
+        count++;
+    }
+
     check(response, {
         'response code was 201': (response) => response.status === 201,
     })

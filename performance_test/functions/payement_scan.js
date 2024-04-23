@@ -35,6 +35,12 @@ export function payementScan(baseUrl, basePath, token, spontaneousPayementRespon
     console.log('Request Scan Payement:', response.request);
     console.log('Status Scan Payement:', response.status);
     console.log('Body Scan Payement:', response.body);
+    
+    var count=0;
+    while (response.status === 202 && count < 1) {
+        response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
+        count++;
+    }
 
     check(response, {
         'response code was 201': (response) => response.status === 201,
