@@ -28,7 +28,7 @@ public class ClearDataTracer {
 
     public static Boolean isTraceLoggingEnabled = false;
 
-    @Scheduled(every = "1h")
+    @Scheduled(every = "2m")
     public void tracerJob() {
         configurationAsyncServiceImpl.get(ConfigurationService.TRACING)
                 .subscribe().with(configuration -> {
