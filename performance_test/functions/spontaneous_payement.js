@@ -35,6 +35,12 @@ export function spontaneousPayment(baseUrl, basePath, token, menuResponse){
     console.log('Status Spontaneous Payement:', responseSpsPayment.status);
     console.log('Body Spontaneous Payement:', responseSpsPayment.body);
 
+    var count=0;
+    while (responseSpsPayment.status === 202 && count < 1) {
+        responseSpsPayment = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
+        count++;
+    }
+
     check(responseSpsPayment, {
         'response code was 201' : (res) => res.status === 201,
     })
