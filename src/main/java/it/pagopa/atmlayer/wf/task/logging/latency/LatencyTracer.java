@@ -8,6 +8,9 @@ import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsAsyncClient;
 
+/**
+ * Class for logging latency data.
+ */
 @Slf4j
 @Singleton
 public class LatencyTracer extends CloudWatchLogsProducer {
@@ -23,9 +26,10 @@ public class LatencyTracer extends CloudWatchLogsProducer {
 
     /**
      * Logs the elapsed time occurred for the processing.
-     * 
-     * @param label - LOG_ID of the function to display in the log
-     * @param start - the start time, when the execution is started
+     *
+     * @param label            LOG_ID of the function to display in the log
+     * @param communicationType The type of communication
+     * @param start            The start time, when the execution is started
      */
     public void logElapsedTime(String label, String communicationType, Object start) {
         messageBuilder.append(label).append(" - Latency ").append(communicationType).append(" - Elapsed time [ms] = ")
