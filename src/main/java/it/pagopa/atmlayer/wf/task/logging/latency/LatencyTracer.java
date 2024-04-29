@@ -3,6 +3,7 @@ package it.pagopa.atmlayer.wf.task.logging.latency;
 import io.quarkus.arc.profile.UnlessBuildProfile;
 import io.smallrye.mutiny.Uni;
 import it.pagopa.atmlayer.wf.task.logging.latency.producer.CloudWatchLogsProducer;
+import it.pagopa.atmlayer.wf.task.util.Properties;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -16,13 +17,12 @@ import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsAsyncClient;
 public class LatencyTracer extends CloudWatchLogsProducer {
 
     @Inject
+    private Properties properties;
+    
+    @Inject
     private CloudWatchLogsAsyncClient client;
 
     private static StringBuilder messageBuilder = new StringBuilder();
-
-    private static final String GROUP_NAME = "/aws/eks/fluentbit-cloudwatch/workload/pagopa/latency";
-
-    private static final String STREAM_NAME = "latency";
 
     /**
      * Logs the elapsed time occurred for the processing.
@@ -35,7 +35,7 @@ public class LatencyTracer extends CloudWatchLogsProducer {
         messageBuilder.append(label).append(" - Latency ").append(communicationType).append(" - Elapsed time [ms] = ")
                 .append(System.currentTimeMillis() - ((Number) start).longValue());
         Uni.createFrom().completionStage(
-                client.putLogEvents(generatePutLogEventRequest(GROUP_NAME, STREAM_NAME, messageBuilder.toString())))
+                client.putLogEvents(generatePutLogEventRequest(properties.cloudwatch().groupName(), properties.cloudwatch().streamName(), messageBuilder.toString())))
                 .onFailure().invoke(throwable -> {
                     log.error("Error writing latency log on Cloudwatch: ", throwable);
                 })
