@@ -48,7 +48,7 @@ export const thresholdsSettings = {
   
   export const average_load = {
     executor: "per-vu-iterations",
-    vus: 10,
+    vus: 40,
     iterations: 10,
     startTime: "0s",
   };
