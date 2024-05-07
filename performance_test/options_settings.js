@@ -35,35 +35,26 @@ export const thresholdsSettings = {
     'http_reqs{name:Conferma uscita}':[],
   }
   
+  // export const average_load = {
+  //   executor: 'ramping-vus',
+  //   stages: [
+  //     { duration: '2s', target: 5 },
+  //     { duration: '10s', target: 10 },
+  //     { duration: '5m', target: 40 },
+  //     { duration: '5m', target: 3 },
+  //     { duration: '2s', target: 0 },
+  //   ],
+  // };
   
-//  export const average_load = {
-//     executor: 'ramping-vus',
-//     stages: [
-//       { duration: '2s', target: 5 },
-//       { duration: '10s', target: 10 },
-//       { duration: '5m', target: 40 },
-//       { duration: '5m', target: 3 },
-//       { duration: '2s', target: 0 },
-//     ],
-//   }; 
-
-
-
   export const average_load = {
     executor: "per-vu-iterations",
     vus: 10,
     iterations: 10,
     startTime: "0s",
   };
-  /*export const average_load = {
-    executor: 'ramping-vus',
-    stages: [
-      { duration: '10m', target: 1 }
-    ],
-  };*/
-  
+
   export const low_load = {
-      executor: 'constant-arrival-rate',
+      executor: 'ramping-vus',
       stages: [
         { duration: '1s', target: 1 },
         { duration: '1s', target: 0 },
