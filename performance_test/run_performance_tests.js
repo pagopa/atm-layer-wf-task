@@ -37,4 +37,3 @@ export default function () {
     confirmExit(baseUrl, basePath, token, exitResponse);
     sleep(3);
 }
-
