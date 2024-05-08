@@ -325,7 +325,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                     }
                     log.info("key retrieved successfully.");
                 }
-
+                tracePanTokenizationClientComm(state.getTransactionId(), publicKeyResponse, state.getPanInfo());
             }
             if (rsaPublicKey != null) {
                 List<PanInfo> panInfoList = state.getPanInfo();
@@ -583,7 +583,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                     log.warn("Calling milAuth Status: [{}]", restTokenResponse.getStatus());
                 }
             }
-            
+            traceMilAuthClientComm(state, device, restTokenResponse);
         } catch (WebApplicationException e) {
             log.error("Error calling milAuth get Token service", e);
         } finally {
