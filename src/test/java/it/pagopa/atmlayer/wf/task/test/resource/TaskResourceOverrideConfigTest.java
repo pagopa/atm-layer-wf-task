@@ -26,7 +26,6 @@ import it.pagopa.atmlayer.wf.task.client.TokenizationRestClient;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
-import it.pagopa.atmlayer.wf.task.logging.latency.LatencyTracer;
 import it.pagopa.atmlayer.wf.task.logging.sensitive.SensitiveDataTracer;
 import it.pagopa.atmlayer.wf.task.resource.TaskResource;
 import it.pagopa.atmlayer.wf.task.test.DataTest;
@@ -54,10 +53,6 @@ public class TaskResourceOverrideConfigTest {
     @RestClient
     @MockitoConfig(convertScopes = true)
     TokenizationRestClient tokenizationRestClient;
-
-    @InjectMock
-    @MockitoConfig(convertScopes = true)
-    LatencyTracer latencyTracer;
 
     public static class BuildTimeValueChangeTestProfile implements QuarkusTestProfile {
     

@@ -20,11 +20,11 @@
     <skipITs>true</skipITs>
     <surefire-plugin.version>3.1.2</surefire-plugin.version>
     <lombok.version>1.18.30</lombok.version>
-    <quarkus.platform.version>3.9.3</quarkus.platform.version>
+    <quarkus.platform.version>3.8.1</quarkus.platform.version>
     <skipITs>true</skipITs>
     <surefire-plugin.version>3.1.2</surefire-plugin.version>
     <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
-    <quarkus-amazon-services.version>2.13.1</quarkus-amazon-services.version>
+    <quarkus-amazon-services.version>2.12.2</quarkus-amazon-services.version>
     <apache.common.text.version>1.11.0</apache.common.text.version>
   </properties>
   <dependencyManagement>
@@ -168,10 +168,6 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-scheduler</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkiverse.amazonservices</groupId>
-      <artifactId>quarkus-amazon-cloudwatchlogs</artifactId>
     </dependency>
   </dependencies>
   <build>

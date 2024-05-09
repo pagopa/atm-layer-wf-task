@@ -7,11 +7,9 @@ import java.util.Set;
 import org.slf4j.MDC;
 
 import it.pagopa.atmlayer.wf.task.bean.State;
-import it.pagopa.atmlayer.wf.task.logging.latency.LatencyTracer;
 import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Constants;
 import it.pagopa.atmlayer.wf.task.util.Utility;
-import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -27,9 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 @Provider
 @Slf4j
 public class LogFilter extends CommonLogic implements ContainerRequestFilter, ContainerResponseFilter {
-
-    @Inject
-    LatencyTracer latencyTracer;
     
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -85,12 +80,6 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
             }
             log.info("============== RESPONSE ==============");
             MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
-            
-            if (URI.contains("main")) {
-                latencyTracer.logElapsedTime("TaskResource.createMainScene", "External",requestContext.getProperty(Constants.START_TIME));
-            } else if (URI.contains("next")) {
-                latencyTracer.logElapsedTime("TaskResource.createNextScene", "External", requestContext.getProperty(Constants.START_TIME));
-            }
         }
     }
 
