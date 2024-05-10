@@ -10,6 +10,12 @@ export const thresholdsSettings = {
     'http_req_failed{name:Menu iniziale}':['rate<0.01'],
     'http_reqs{name:Menu iniziale}':[],
 
+    //MESSAGES
+    'http_req_duration{name:Recupera messaggi di cortesia e posizione debitoria}': ['p(95)<15000'],
+    'http_req_waiting{name:Recupera messaggi di cortesia e posizione debitoria}':['p(95)<15000'],
+    'http_req_failed{name:Recupera messaggi di cortesia e posizione debitoria}':['rate<0.01'],
+    'http_reqs{name:Recupera messaggi di cortesia e posizione debitoria}':[],
+
     //SPONTANEOUS PAYEMENT
     'http_req_duration{name:Seleziona pagamento spontaneo}': ['p(95)<15000'],
     'http_req_waiting{name:Seleziona pagamento spontaneo}':['p(95)<15000'],
@@ -35,23 +41,23 @@ export const thresholdsSettings = {
     'http_reqs{name:Conferma uscita}':[],
   }
   
-  // export const average_load = {
-  //   executor: 'ramping-vus',
-  //   stages: [
-  //     { duration: '2s', target: 5 },
-  //     { duration: '10s', target: 10 },
-  //     { duration: '5m', target: 40 },
-  //     { duration: '5m', target: 3 },
-  //     { duration: '2s', target: 0 },
-  //   ],
-  // };
-  
   export const average_load = {
-    executor: "per-vu-iterations",
-    vus: 40,
-    iterations: 10,
-    startTime: "0s",
+    executor: 'ramping-vus',
+    stages: [
+      { duration: '2s', target: 5 },
+      { duration: '10s', target: 10 },
+      { duration: '5m', target: 40 },
+      { duration: '5m', target: 3 },
+      { duration: '2s', target: 0 },
+    ],
   };
+  
+  // export const average_load = {
+  //   executor: "per-vu-iterations",
+  //   vus: 40,
+  //   iterations: 10,
+  //   startTime: "0s",
+  // };
 
   export const low_load = {
       executor: 'ramping-vus',
