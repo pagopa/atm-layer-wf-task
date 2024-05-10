@@ -16,6 +16,7 @@ import it.pagopa.atmlayer.wf.task.bean.enumartive.Channel;
 import it.pagopa.atmlayer.wf.task.bean.enumartive.Command;
 import it.pagopa.atmlayer.wf.task.bean.enumartive.EppMode;
 import it.pagopa.atmlayer.wf.task.bean.enumartive.PeripheralStatus;
+import it.pagopa.atmlayer.wf.task.client.bean.GetTokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.PublicKey;
 import it.pagopa.atmlayer.wf.task.client.bean.Task;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
@@ -325,6 +326,10 @@ public class DataTest {
         key.setModulus(Base64.getDecoder().decode("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3iu1kH1foan71+X13MQ6WIRhuTw70zhtXxC5UyHGmNcDabqqrzdKovlPDZt05VuktpP+di0ZtKnwjRxzx2IUwO2s05kT8qI+acfEf4IJR3J6yCrnYmSdVtdb+Oy5VkqbUn/xVLidOED2dfMgvCobfDdiLL1dqp7Ll8i+UUvcDTvQ/c2LwSqHT5vY8n5mXWPRzHundNG8572AqI6DNQSCo3rRFtgP4vwbsYZX5+4o/Jvk4qrBALkfbq1RGmM6kVGokEG53yjlmAuDb2OEOeqYtQxFUulcVYRMZZY5ruuuOst77+U72hT1YHXA/gJexDVsetZnfzgMQUZABw+1ZjFjTwIDAQAB"));
 
         return key;
+    }
+
+    public static GetTokenResponse createGetTokenResponse() {
+        return GetTokenResponse.builder().token("TOKEN").build();
     }
 
     public static void main(String[] args) {

@@ -1,6 +1,5 @@
 package it.pagopa.atmlayer.wf.task.test.resource;
 
-
 import static io.restassured.RestAssured.given;
 
 import java.util.Map;
@@ -23,6 +22,7 @@ import io.restassured.response.Response;
 import it.pagopa.atmlayer.wf.task.client.MilAuthRestClient;
 import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
 import it.pagopa.atmlayer.wf.task.client.TokenizationRestClient;
+import it.pagopa.atmlayer.wf.task.client.bean.GetTokenRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
@@ -31,7 +31,6 @@ import it.pagopa.atmlayer.wf.task.resource.TaskResource;
 import it.pagopa.atmlayer.wf.task.test.DataTest;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response.Status;
-
 
 @QuarkusTest
 @TestHTTPEndpoint(TaskResource.class)
@@ -55,37 +54,42 @@ public class TaskResourceOverrideConfigTest {
     TokenizationRestClient tokenizationRestClient;
 
     public static class BuildTimeValueChangeTestProfile implements QuarkusTestProfile {
-    
+
         @Override
         public Map<String, String> getConfigOverrides() {
             return Map.of("wf-task.config.tokenization-is-mock", "false");
         }
-    } 
-    
+    }
+
     @Test
-    public void test(){
+    public void test() {
         SensitiveDataTracer.isTraceLoggingEnabled = true;
 
         Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
-                                Mockito.anyString(), Mockito.anyString()))
-                                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
+                Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
         Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
+                .thenReturn(RestResponse.status(Status.OK,
+                        DataTest.createTaskResponse(1)));
 
         Mockito.when(processRestClient
-                                .retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
+                .retrieveVariables(Mockito.any(VariableRequest.class)))
+                .thenReturn(RestResponse.status(Status.OK,
+                        DataTest.createVariableResponseNoData()));
 
         Mockito.when(tokenizationRestClient
-                                .getKey()).thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createPublicKeyResponse()));
+                .getKey()).thenReturn(RestResponse.status(Status.OK,
+                        DataTest.createPublicKeyResponse()));
 
-        Response response = given().body("{\"device\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"1234\",\"terminalId\":\"1234567890\",\"opTimestamp\":1707323349628,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"panInfo\":[{\"pan\":\"1234567891234567\",\"circuits\":[\"VISA\",\"MASTERCARD\"],\"bankName\":\"ISYBANK\"}]}")
-                                .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/main").then().extract().response();
+        Mockito.when(tokenizationRestClient
+                .getToken(Mockito.any(GetTokenRequest.class))).thenReturn(RestResponse.status(Status.OK,
+                        DataTest.createGetTokenResponse()));
+
+        Response response = given().body(
+                "{\"device\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"1234\",\"terminalId\":\"1234567890\",\"opTimestamp\":1707323349628,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"panInfo\":[{\"pan\":\"1234567891234567\",\"circuits\":[\"VISA\",\"MASTERCARD\"],\"bankName\":\"ISYBANK\"}]}")
+                .contentType(MediaType.APPLICATION_JSON).when()
+                .post("/main").then().extract().response();
 
         Assertions.assertEquals(201, response.statusCode());
     }

@@ -29,9 +29,13 @@ public class CommonLogic {
     protected static final String START_PROCESS_LOG_ID = PROCESS_REST_CLIENT_CLASS_ID + "startProcess";
     protected static final String NEXT_TASKS_LOG_ID = PROCESS_REST_CLIENT_CLASS_ID + "nextTasks";
     protected static final String RETRIEVE_VARIABLES_LOG_ID = PROCESS_REST_CLIENT_CLASS_ID + "retrieveVariables";
+
     private static final String MIL_AUTH_REST_CLIENT_CLASS_ID = "MilAuthRestClient.";
     protected static final String GET_TOKEN_LOG_ID = MIL_AUTH_REST_CLIENT_CLASS_ID + "getToken";
     protected static final String DELETE_TOKEN_LOG_ID = MIL_AUTH_REST_CLIENT_CLASS_ID + "deleteToken";
+
+    private static final String TOKENIZATION_REST_CLIENT_CLASS_ID = "TokenizationRestClient.";
+    protected static final String GET_TOKEN_TOKENIZER_LOG_ID = TOKENIZATION_REST_CLIENT_CLASS_ID + "getToken";
 
     @Inject
     protected Properties properties;

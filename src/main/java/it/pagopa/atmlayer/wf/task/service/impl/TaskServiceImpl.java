@@ -55,6 +55,8 @@ import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
 import it.pagopa.atmlayer.wf.task.client.TokenizationRestClient;
 import it.pagopa.atmlayer.wf.task.client.bean.DeviceInfo;
 import it.pagopa.atmlayer.wf.task.client.bean.DeviceType;
+import it.pagopa.atmlayer.wf.task.client.bean.GetTokenRequest;
+import it.pagopa.atmlayer.wf.task.client.bean.GetTokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.PanInformation;
 import it.pagopa.atmlayer.wf.task.client.bean.PublicKey;
 import it.pagopa.atmlayer.wf.task.client.bean.Task;
@@ -336,11 +338,22 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                     panInformation.setBankName(panInfo.getBankName());
                     panInformation.setCircuits(panInfo.getCircuits());
                     panInformation.setLastDigits(panInfo.getPan().substring(panInfo.getPan().length() - 4));
+
+                    RestResponse<GetTokenResponse> getTokenResponse = null;
                     try {
-                        panInformation.setPan(Utility.format(Utility.encryptRSA(panInfo.getPan().getBytes(), rsaPublicKey)));
-                    } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
-                        log.error(" - Error during encrypting data", e);
+                        if (!properties.tokenizationIsMock()) {
+                            getTokenResponse = tokenizationClient.getToken(GetTokenRequest.builder().encryptedPan(Utility.encryptRSA(panInfo.getPan().getBytes(), rsaPublicKey)).kid(publicKeyResponse.getEntity().getKid()).build());
+                            log.info("GetToken executed successfully. Status code: {}", getTokenResponse.getStatus());
+                            panInformation.setPan(getTokenResponse.getEntity().getToken());
+                        } else {
+                            panInformation.setPan(Utility.format(Utility.encryptRSA(panInfo.getPan().getBytes(), rsaPublicKey)));
+                        }
+                    } catch (WebApplicationException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
+                        log.error("Error during Tokenization: ", e);
+                    } finally {
+                        logElapsedTime(GET_TOKEN_TOKENIZER_LOG_ID, System.currentTimeMillis());
                     }
+
                     panInformationList.add(panInformation);
 
                 }
