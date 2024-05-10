@@ -7,6 +7,7 @@ import { payementScan } from "./functions/payement_scan.js";
 import { exit } from "./functions/exit.js";
 import { sleep } from "k6";
 import { confirmExit } from "./functions/confirm_exit.js";
+import { getMessages } from "./functions/get_messages.js";
 
 const baseUrl = `${__ENV.APPLICATION_BASE_URL}`;
 const basePath = `${__ENV.APPLICATION_BASE_PATH}`;
@@ -29,7 +30,9 @@ export default function () {
     const token = retrieveToken(cognitoBaseUrl, cognitoClientId, cognitoClientSecret);
     const menuRespose = menu(baseUrl,basePath, token);
     sleep(3);
-    const spontaneousPayementResponse = spontaneousPayment(baseUrl, basePath, token, menuRespose);
+    const messagesResponse = getMessages(baseUrl, basePath, token, menuRespose);
+    sleep(3);
+    const spontaneousPayementResponse = spontaneousPayment(baseUrl, basePath, token, messagesResponse);
     sleep(3);
     const paymentScanResponse = payementScan(baseUrl, basePath, token, spontaneousPayementResponse);
     sleep(3);
