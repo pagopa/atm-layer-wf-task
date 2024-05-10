@@ -1,15 +1,15 @@
 
 # Coverage Report: JaCoCo
 
-* quarkus-application
+* TaskResourceOverrideConfigTest (QuarkusTest)
       
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 91.64%               |
-| :heavy_check_mark: Number of Lines Covered | 592    |
-| :x: Number of Lines Missed  | 54     |
-| Total Number of Lines   | 646     |
+| Code Coverage %         | 91.17%               |
+| :heavy_check_mark: Number of Lines Covered | 692    |
+| :x: Number of Lines Missed  | 67     |
+| Total Number of Lines   | 759     |
 
 
 ## Details:
@@ -46,19 +46,6 @@
 
         
 #### All Lines Covered!
-        
-</details>
-
-    
-### it/pagopa/atmlayer/wf/task
-
-<details>
-    <summary>
-:x: TaskMicroservice.java
-    </summary>
-
-        
-#### Lines Missed:
         
 </details>
 
@@ -168,14 +155,77 @@
         
 #### Lines Missed:
         
-- Line #75
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/service/impl
+
+<details>
+    <summary>
+:x: TaskServiceImpl.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #249
 ```
-		} catch (ProcessingException e) {
+                } catch (UnsupportedEncodingException e) {
 ```
-- Line #150
+- Line #320
 ```
-		} catch (ProcessingException e) {
+                    } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 ```
+- Line #341
+```
+                    } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
+```
+- Line #545
+```
+            } catch (UnsupportedEncodingException e) {
+```
+</details>
+
+    
+
+<details>
+    <summary>
+:x: S3ObjectStoreServiceImpl.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #24
+```
+    }
+```
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/resource/interceptors
+
+<details>
+    <summary>
+:heavy_check_mark: LogFilter.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task
+
+<details>
+    <summary>
+:x: TaskMicroservice.java
+    </summary>
+
+        
+#### Lines Missed:
+        
 </details>
 
     
@@ -282,7 +332,53 @@
 </details>
 
     
+### it/pagopa/atmlayer/wf/task/database/dynamo/service
+
+<details>
+    <summary>
+:heavy_check_mark: ConfigurationAsyncServiceImpl.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/database/dynamo/entity
+
+<details>
+    <summary>
+:x: Configuration.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+</details>
+
+    
 ### it/pagopa/atmlayer/wf/task/service
+
+<details>
+    <summary>
+:x: ObjectStoreService.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: S3ObjectStoreService.java
+    </summary>
+
+        
+</details>
+
+    
 
 <details>
     <summary>
@@ -322,31 +418,19 @@
 </details>
 
     
-### it/pagopa/atmlayer/wf/task/service/impl
+### it/pagopa/atmlayer/wf/task/database/dynamo/service/contract
 
 <details>
     <summary>
-:x: TaskServiceImpl.java
+:x: ConfigurationService.java
     </summary>
 
         
 #### Lines Missed:
         
-- Line #249
+- Line #26
 ```
-                } catch (UnsupportedEncodingException e) {
-```
-- Line #319
-```
-                    } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-```
-- Line #338
-```
-                    } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
-```
-- Line #542
-```
-            } catch (UnsupportedEncodingException e) {
+                .attributesToGet(CONFIGURATION_ID_COL, CONFIGURATION_ENABLED_COL)
 ```
 </details>
 
@@ -400,16 +484,24 @@
 </details>
 
     
-### it/pagopa/atmlayer/wf/task/resource/interceptors
+### it/pagopa/atmlayer/wf/task/logging/sensitive
 
 <details>
     <summary>
-:heavy_check_mark: LogFilter.java
+:x: SensitiveDataTracer.java
     </summary>
 
         
-#### All Lines Covered!
+#### Lines Missed:
         
+- Line #44
+```
+                    isTraceLoggingEnabled = configuration.isEnabled() != null ? configuration.isEnabled() : false;
+```
+- Line #54
+```
+                });
+```
 </details>
 
     
@@ -423,6 +515,26 @@
         
 #### All Lines Covered!
         
+</details>
+
+    
+
+<details>
+    <summary>
+:x: FileStorageS3Util.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #51
+```
+                .contentType("binary/octet-stream")
+```
+- Line #55
+```
+    }
+```
 </details>
 
     
@@ -459,23 +571,23 @@
         
 #### Lines Missed:
         
-- Line #101
+- Line #103
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #114
+- Line #116
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #139
+- Line #141
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #316
+- Line #326
 ```
     }
 ```
-- Line #381
+- Line #398
 ```
         } catch (NoSuchAlgorithmException e) {
 ```
