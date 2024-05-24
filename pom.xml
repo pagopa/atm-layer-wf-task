@@ -26,6 +26,8 @@
     <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
     <quarkus-amazon-services.version>2.12.2</quarkus-amazon-services.version>
     <apache.common.text.version>1.11.0</apache.common.text.version>
+    <sonarsource.scanner.version>3.11.0.3922</sonarsource.scanner.version>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -168,6 +170,11 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-scheduler</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.sonarsource.scanner.maven</groupId>
+      <artifactId>sonar-maven-plugin</artifactId>
+      <version>${sonarsource.scanner.version}</version>
     </dependency>
   </dependencies>
   <build>
