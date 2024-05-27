@@ -3,6 +3,7 @@ package it.pagopa.atmlayer.wf.task.service.impl;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
@@ -442,7 +443,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                     log.debug("Number of variables found in receipt template: {}", placeholders.size());
                     variableRequest.setVariables(placeholders);
                 }
-            } catch (IOException e) {
+            } catch (IOException | URISyntaxException e) {
                 log.error("- ERROR: File: {} not found!", receiptTemplateName, e);
                 throw new ErrorException(ErrorEnum.PROCESS_ERROR);
             }
@@ -473,7 +474,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                 Set<String> buttonList = Utility.getIdOfTag(htmlString, Constants.BUTTON_TAG);
                 buttonList.addAll(Utility.getIdOfTag(htmlString, Constants.LI_TAG));
                 variableRequest.setButtons(buttonList);
-            } catch (IOException e) {
+            } catch (IOException | URISyntaxException e) {
                 log.error("- ERROR: File: {} not found!", task.getForm(), e);
                 throw new ErrorException(ErrorEnum.PROCESS_ERROR);
             }
@@ -507,54 +508,45 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
         Document doc = Jsoup.parse(html, Parser.xmlParser());
         doc.outputSettings().prettyPrint(false).charset(properties.htmlCharset()).escapeMode(EscapeMode.extended);
         Element forEl = doc.select("for").first();
-        
         if (forEl != null) {
-            handleForElement(variables, forEl);
+            String obj = forEl.attr("object");
+            Set<String> placeholders = Utility.findStringsByGroup(html, Constants.VARIABLES_REGEX);
+            placeholders.removeIf(p -> !p.startsWith(obj + "."));
+
+            List<?> list = (List<?>) variables.get(forEl.attr("list"));
+            substitute(list, forEl, obj, variables, placeholders);
             forEl.remove();
             doc.html(parseLoopHtml(variables, doc.html()));
         }
         return Utility.escape(doc.html(), properties.escape());
     }
-    
-    private void handleForElement(Map<String, Object> variables, Element forEl) {
-        String obj = forEl.attr("object");
-        String listAttr = forEl.attr("list");
-        Set<String> placeholders = Utility.findStringsByGroup(forEl.html(), Constants.VARIABLES_REGEX);
-        placeholders.removeIf(p -> !p.startsWith(obj + "."));
-        List<?> list = (List<?>) variables.get(listAttr);
-        
-        if (list != null) {
-            int i = 0;
-            Type listType = new TypeToken<ArrayList<Object>>() {}.getType();
-            
-            for (Object element : list) {
-                JsonElement jsonElement = JsonParser.parseString(Utility.getJson(element));
-                i++;
-                handleInnerForElements(variables, forEl, obj, jsonElement, i, listType);
-                String htmlTemp = parseLoopHtml(variables, forEl.html());
-                replacePlaceholders(htmlTemp, obj, element, i, placeholders, jsonElement);
-                forEl.after(htmlTemp);
-            }
-        }
-    }
-    
-    private void handleInnerForElements(Map<String, Object> variables, Element forEl, String obj, JsonElement jsonElement, int i, Type listType) {
+
+    private void substitute(List<?> list, Element forEl, String obj, Map<String, Object> variables, Set<String> placeholders){
+        int i = 0;
+        Type listType = new TypeToken<ArrayList<Object>>() {}.getType();
         Gson gson = new Gson();
-        for (Element e : forEl.select("for")) {
-            String listName = e.attr("list");
-            if (listName.startsWith(obj)) {
-                ArrayList<Object> lista = gson.fromJson(getVarPropJsonElement(listName, jsonElement), listType);
-                variables.put(listName, lista);
+            if (list != null) {
+                for (Object element : list) {
+                    JsonElement jsonElement = JsonParser.parseString(Utility.getJson(element));
+                    i++;
+                    for (Element e : forEl.select("for")) {
+                        String listName = e.attr("list");
+                        if (listName.startsWith(obj)) {
+                            ArrayList<Object> lista = gson.fromJson(getVarPropJsonElement(listName, jsonElement),
+                                    listType);
+                            variables.put(listName, lista);
+                        }
+                    }
+                    String htmlTemp = parseLoopHtml(variables, forEl.html());
+                    htmlTemp = htmlTemp.replace("${" + obj + "}", String.valueOf(element));
+                    htmlTemp = htmlTemp.replace("${" + obj + ".i}", String.valueOf(i));
+
+                    for (String var : placeholders) {
+                        htmlTemp = htmlTemp.replace("${" + var + "}", getVarProp(var, jsonElement));
+                    }
+                    forEl.after(htmlTemp);
+                }
             }
-        }
-    }
-    
-    private void replacePlaceholders(String html, String obj, Object element, int i, Set<String> placeholders, JsonElement jsonElement) {
-        html = html.replace("${" + obj + "}", String.valueOf(element));
-        html = html.replace("${" + obj + ".i}", String.valueOf(i));
-        for (String var : placeholders) {
-            html = html.replace("${" + var + "}", getVarProp(var, jsonElement));
-        }
     }
 
     private static String getVarProp(String var, JsonElement jsonElement) {

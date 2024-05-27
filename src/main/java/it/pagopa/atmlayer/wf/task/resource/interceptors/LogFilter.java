@@ -28,8 +28,8 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
     
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        String URI = requestContext.getUriInfo().getPath();
-        if (URI.startsWith("/api/v1")) {
+        String uri = requestContext.getUriInfo().getPath();
+        if (uri.startsWith("/api/v1")) {
             String transactionId = null;
             MultivaluedMap<String, String> pathParameters = requestContext.getUriInfo().getPathParameters();
             if (pathParameters != null && pathParameters.get(Constants.TRANSACTION_ID_PATH_PARAM_NAME) != null) {
@@ -59,7 +59,7 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
             log.info("METHOD: {}", method, transactionId);
             log.info("BODY: {}", state);
 
-            logTracePropagation(transactionId, method, URI, pathParameters, headers, body);
+            logTracePropagation(transactionId, method, uri, pathParameters, headers, body);
 
             requestContext.setEntityStream(new ByteArrayInputStream(Utility.setTransactionIdInJson(entity, transactionId)));
             log.info("============== REQUEST ==============");
@@ -71,8 +71,8 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
 
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
-        String URI = requestContext.getUriInfo().getPath();
-        if (URI.startsWith("/api/v1")) {
+        String uri = requestContext.getUriInfo().getPath();
+        if (uri.startsWith("/api/v1")) {
             log.info("============== RESPONSE ==============");
             log.info("STATUS: {}", responseContext.getStatus());
             if (responseContext.getEntity() != null) {

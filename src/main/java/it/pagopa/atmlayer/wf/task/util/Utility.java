@@ -3,6 +3,8 @@ package it.pagopa.atmlayer.wf.task.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
@@ -305,13 +307,15 @@ public class Utility {
      * @return An InputStream that provides access to the content of the specified
      *         file.
      * @throws IOException
+     * @throws URISyntaxException 
      */
-    public static InputStream getFileFromCdn(String path) throws IOException {
+    public static InputStream getFileFromCdn(String path) throws IOException, URISyntaxException {
 
         InputStream ioStream = null;
         log.info("Getting file [{}]", path);
         long start = System.currentTimeMillis();
-        ioStream = new URL(path).openStream();
+        URI uri = new URI(path);
+        ioStream = uri.toURL().openStream();
         long stop = System.currentTimeMillis();
         log.info(" {} - Elapsed time [ms] = {}", CDN_GET_FILE, stop - start);
         return ioStream;
@@ -450,9 +454,8 @@ public class Utility {
         LocalTime oraAggiornata = oraCorrente.plusHours(1);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        String orarioFormattato = oraAggiornata.format(formatter);
 
-        return orarioFormattato;
+        return oraAggiornata.format(formatter);
     }
 
 }
