@@ -50,12 +50,12 @@ public class CommonLogic {
      * @param string - string to log
      * @see application.properties
      */
-    protected void logTracePropagation(String transactionId, String method, String URI,
+    protected void logTracePropagation(String transactionId, String method, String uri,
             MultivaluedMap<String, String> pathParameters, MultivaluedMap<String, String> headers, String body) {
             StringBuilder messageBuilder = new StringBuilder(" REQUEST ")
                     .append(method)
                     .append(" URI: ")
-                    .append(URI);
+                    .append(uri);
 
             if (!Objects.isNull(pathParameters) && !pathParameters.isEmpty()) {
                 messageBuilder.append(" - PATH PARAMS: ").append(pathParameters.toString());

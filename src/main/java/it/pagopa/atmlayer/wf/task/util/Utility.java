@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -61,7 +60,7 @@ public class Utility {
     /*
      * Caratteri di escape standard HTML
      */
-    public final static HashMap<String, String> ESCAPE_CHARACTER = new HashMap<>();
+    private static final Map<String, String> ESCAPE_CHARACTER = new HashMap<>();
 
     static {
         ESCAPE_CHARACTER.put("&#192;", "À");
@@ -360,7 +359,7 @@ public class Utility {
             InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 
         Cipher cipher;
-        cipher = Cipher.getInstance(Constants.RSA_ALGORITHM_PADDING);
+        cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
         cipher.init(Cipher.ENCRYPT_MODE, encryptionKey);
 
         return cipher.doFinal(dataToEncrypt);

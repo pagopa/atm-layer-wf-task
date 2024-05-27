@@ -108,7 +108,7 @@ class UtilityTest {
     }
 
     @Test
-    void testGetObjectKo() throws ParseException {
+    void testGetObjectKo() {
 
         String json = "{\r\n" + //
                 "    \"device\": {\r\n" + //
