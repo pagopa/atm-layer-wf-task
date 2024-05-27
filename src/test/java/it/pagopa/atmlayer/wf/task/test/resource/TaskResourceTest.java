@@ -722,6 +722,42 @@ class TaskResourceTest {
         }
 
         @Test
+        void testEndProcessErrorDelete() {
+
+                Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createTaskResponseEndProcess()));
+
+                Mockito.when(milAuthRestClient.deleteToken(Mockito.anyString(), Mockito.anyString(),
+                                Mockito.anyString(), Mockito.anyString())).thenReturn((RestResponse.status(Status.NOT_FOUND)));
+
+                Response response = given().body(DataTest.createStateRequestStart())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/next/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa").then()
+                                .extract().response();
+
+                Assertions.assertEquals(200, response.statusCode());
+        }
+
+        @Test
+        void testEndProcessErrorDeleteUnknown() {
+
+                Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createTaskResponseEndProcess()));
+
+                Mockito.when(milAuthRestClient.deleteToken(Mockito.anyString(), Mockito.anyString(),
+                                Mockito.anyString(), Mockito.anyString())).thenReturn(RestResponse.serverError());
+
+                Response response = given().body(DataTest.createStateRequestStart())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/next/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa").then()
+                                .extract().response();
+
+                Assertions.assertEquals(200, response.statusCode());
+        }
+
+        @Test
         void startProcessKoFromProcess500() {
 
                 Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
@@ -775,6 +811,48 @@ class TaskResourceTest {
                                 .post("/main").then().extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
+        }
+
+        @Test
+        void startProcessKoFromGetTokenError() {
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenThrow(new WebApplicationException(Status.SERVICE_UNAVAILABLE));
+
+                Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createTaskResponse(1)));
+
+                Mockito.when(processRestClient
+                                .retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.serverError());
+
+                Response response = given().body(DataTest.createStateRequestStart())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/main").then().extract().response();
+
+                Assertions.assertEquals(500, response.statusCode());
+        }
+
+        @Test
+        void startProcessKoFromGetTokenNotFound() {
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                                Mockito.anyString(), Mockito.anyString()))
+                                .thenThrow(new WebApplicationException(Status.SERVICE_UNAVAILABLE));
+
+                Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createTaskResponse(1)));
+
+                Mockito.when(processRestClient
+                                .retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.notFound());
+
+                Response response = given().body(DataTest.createStateRequestStart())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/main").then().extract().response();
+
+                Assertions.assertEquals(209, response.statusCode());
         }
 
         @Test

@@ -10,12 +10,15 @@ import it.pagopa.atmlayer.wf.task.database.dynamo.service.contract.Configuration
 import it.pagopa.atmlayer.wf.task.service.impl.S3ObjectStoreServiceImpl;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.inject.Inject;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * Utility class for tracing and logging sensitive data.
  */
 @RegisterForReflection
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Slf4j
 public class SensitiveDataTracer {
 
