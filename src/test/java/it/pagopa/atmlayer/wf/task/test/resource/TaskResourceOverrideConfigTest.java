@@ -13,6 +13,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.mockito.Mockito;
 
 import io.quarkus.test.InjectMock;
+import io.quarkus.test.Mock;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.QuarkusTestProfile;
@@ -55,7 +56,7 @@ class TaskResourceOverrideConfigTest {
     @MockitoConfig(convertScopes = true)
     TokenizationRestClient tokenizationRestClient;
 
-    @Inject
+    @Mock
     ConfigurationAsyncServiceImpl ConfigurationAsyncServiceImpl;
 
     public static class BuildTimeValueChangeTestProfile implements QuarkusTestProfile {
