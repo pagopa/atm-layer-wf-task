@@ -60,7 +60,7 @@ public class Utility {
     /*
      * Caratteri di escape standard HTML
      */
-    private static final Map<String, String> ESCAPE_CHARACTER = new HashMap<>();
+    public static final Map<String, String> ESCAPE_CHARACTER = new HashMap<>();
 
     static {
         ESCAPE_CHARACTER.put("&#192;", "À");
