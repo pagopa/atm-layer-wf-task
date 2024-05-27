@@ -26,6 +26,7 @@ import it.pagopa.atmlayer.wf.task.client.bean.GetTokenRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
+import it.pagopa.atmlayer.wf.task.database.dynamo.service.ConfigurationAsyncServiceImpl;
 import it.pagopa.atmlayer.wf.task.logging.sensitive.SensitiveDataTracer;
 import it.pagopa.atmlayer.wf.task.resource.TaskResource;
 import it.pagopa.atmlayer.wf.task.test.DataTest;
@@ -53,6 +54,9 @@ public class TaskResourceOverrideConfigTest {
     @MockitoConfig(convertScopes = true)
     TokenizationRestClient tokenizationRestClient;
 
+    @InjectMock
+    ConfigurationAsyncServiceImpl ConfigurationAsyncServiceImpl;
+
     public static class BuildTimeValueChangeTestProfile implements QuarkusTestProfile {
 
         @Override
@@ -65,7 +69,6 @@ public class TaskResourceOverrideConfigTest {
     void test() {
         SensitiveDataTracer.setIsTraceLoggingEnabled(true);
 
-        
         Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
                 Mockito.anyString(), Mockito.anyString()))
                 .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
@@ -88,7 +91,7 @@ public class TaskResourceOverrideConfigTest {
                         DataTest.createGetTokenResponse()));
 
         SensitiveDataTracer.tracerJob();
-        
+
         Response response = given().body(
                 "{\"device\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"1234\",\"terminalId\":\"1234567890\",\"opTimestamp\":1707323349628,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"panInfo\":[{\"pan\":\"1234567891234567\",\"circuits\":[\"VISA\",\"MASTERCARD\"],\"bankName\":\"ISYBANK\"}]}")
                 .contentType(MediaType.APPLICATION_JSON)
