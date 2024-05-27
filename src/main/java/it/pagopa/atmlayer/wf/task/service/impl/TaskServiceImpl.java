@@ -333,6 +333,9 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                     log.info("key retrieved successfully.");
                 }
             }
+
+            tracePanInfoAndKey(state.getTransactionId(), publicKeyResponse, state.getPanInfo());
+            
             if (rsaPublicKey != null) {
                 panInformationList = encryptPanInfoList(state.getPanInfo(), rsaPublicKey, publicKeyResponse);
             }
