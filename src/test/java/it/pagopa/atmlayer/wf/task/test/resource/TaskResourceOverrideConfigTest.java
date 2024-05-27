@@ -62,8 +62,8 @@ public class TaskResourceOverrideConfigTest {
     }
 
     @Test
-    public void test() {
-        SensitiveDataTracer.isTraceLoggingEnabled = true;
+    void test() {
+        SensitiveDataTracer.setIsTraceLoggingEnabled(true);
 
         Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
                 Mockito.anyString(), Mockito.anyString()))
