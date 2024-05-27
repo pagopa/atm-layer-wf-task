@@ -75,10 +75,6 @@ public class SensitiveDataTracer {
         }
     }
 
-    public static Boolean getIsTraceLoggingEnabled() {
-        return isTraceLoggingEnabled;
-    }
-
     public static void setIsTraceLoggingEnabled(Boolean isTraceLoggingEnabled) {
         SensitiveDataTracer.isTraceLoggingEnabled = isTraceLoggingEnabled;
     }
