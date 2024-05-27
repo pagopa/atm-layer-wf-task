@@ -26,7 +26,7 @@ public class SensitiveDataTracer {
     private static S3ObjectStoreServiceImpl objectStoreServiceImpl;
 
     @Inject
-    private static ConfigurationAsyncServiceImpl configurationAsyncServiceImpl;
+    private ConfigurationAsyncServiceImpl configurationAsyncServiceImpl;
 
     private static StringBuilder messageBuilder = new StringBuilder();
 
@@ -41,7 +41,7 @@ public class SensitiveDataTracer {
      * Scheduled method to run tracer job every hour.
      */
     @Scheduled(every = "1h")
-    public static void tracerJob() {
+    public void tracerJob() {
         configurationAsyncServiceImpl.get(ConfigurationService.TRACING)
                 .subscribe().with(configuration -> {
                     if (configuration.isEnabled() != null) {
