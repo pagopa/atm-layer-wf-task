@@ -246,6 +246,9 @@
               <exclClassLoaders>*QuarkusClassLoader</exclClassLoaders>
               <destFile>${project.build.directory}/jacoco-quarkus.exec</destFile>
               <append>true</append>
+              <excludes>
+                  <exclude>it/pagopa/atmlayer/wf/task/logging/sensitive/SensitiveDataTracer.*</exclude>
+              </excludes>
             </configuration>
           </execution>
         </executions>
