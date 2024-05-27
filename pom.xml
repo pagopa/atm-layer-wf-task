@@ -236,6 +236,11 @@
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>${jacoco.version}</version>
+        <configuration>
+          <excludes>
+            <exclude>it/pagopa/atmlayer/wf/task/logging/sensitive/SensitiveDataTracer.class</exclude>
+          </excludes>
+        </configuration>
         <executions>
           <execution>
             <id>default-prepare-agent</id>
@@ -246,9 +251,6 @@
               <exclClassLoaders>*QuarkusClassLoader</exclClassLoaders>
               <destFile>${project.build.directory}/jacoco-quarkus.exec</destFile>
               <append>true</append>
-              <excludes>
-                  <exclude>it/pagopa/atmlayer/wf/task/logging/sensitive/SensitiveDataTracer.class</exclude>
-              </excludes>
             </configuration>
           </execution>
         </executions>
