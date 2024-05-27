@@ -104,4 +104,5 @@ jobs:
         run: |
           mvn sonar:sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.projectKey=pagopa_atm-layer-wf-task \
           -Dsonar.organization=pagopa -Dsonar.java.binaries=src/main \
+          -Dsonar.exclusions=src/main/java/it/pagopa/atmlayer/wf/task/logging/sensitive/SensitiveDataTracer.java \
           -Dsonar.coverage.jacoco.xmlReportPaths=../atm-layer-wf-task/target/jacoco-report/jacoco.xml -Pcoverage
