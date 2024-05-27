@@ -56,7 +56,7 @@ class TaskResourceOverrideConfigTest {
     @MockitoConfig(convertScopes = true)
     TokenizationRestClient tokenizationRestClient;
 
-    @Mock
+    @InjectMock
     ConfigurationAsyncServiceImpl ConfigurationAsyncServiceImpl;
 
     public static class BuildTimeValueChangeTestProfile implements QuarkusTestProfile {
