@@ -56,9 +56,6 @@ class TaskResourceOverrideConfigTest {
     @MockitoConfig(convertScopes = true)
     TokenizationRestClient tokenizationRestClient;
 
-    @InjectMock
-    ConfigurationAsyncServiceImpl ConfigurationAsyncServiceImpl;
-
     public static class BuildTimeValueChangeTestProfile implements QuarkusTestProfile {
 
         @Override
@@ -91,8 +88,6 @@ class TaskResourceOverrideConfigTest {
         Mockito.when(tokenizationRestClient
                 .getToken(Mockito.any(GetTokenRequest.class))).thenReturn(RestResponse.status(Status.OK,
                         DataTest.createGetTokenResponse()));
-
-        SensitiveDataTracer.tracerJob();
 
         Response response = given().body(
                 "{\"device\":{\"bankId\":\"00001\",\"branchId\":\"0002\",\"code\":\"1234\",\"terminalId\":\"1234567890\",\"opTimestamp\":1707323349628,\"channel\":\"ATM\",\"peripherals\":[{\"id\":\"PRINTER\",\"name\":\"PRINTER\",\"status\":\"OK\"}]},\"data\":{\"var1\":\"test\"},\"panInfo\":[{\"pan\":\"1234567891234567\",\"circuits\":[\"VISA\",\"MASTERCARD\"],\"bankName\":\"ISYBANK\"}]}")
