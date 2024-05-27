@@ -30,6 +30,7 @@ import it.pagopa.atmlayer.wf.task.database.dynamo.service.ConfigurationAsyncServ
 import it.pagopa.atmlayer.wf.task.logging.sensitive.SensitiveDataTracer;
 import it.pagopa.atmlayer.wf.task.resource.TaskResource;
 import it.pagopa.atmlayer.wf.task.test.DataTest;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response.Status;
 
@@ -37,7 +38,7 @@ import jakarta.ws.rs.core.Response.Status;
 @TestHTTPEndpoint(TaskResource.class)
 @TestInstance(Lifecycle.PER_CLASS)
 @TestProfile(TaskResourceOverrideConfigTest.BuildTimeValueChangeTestProfile.class)
-public class TaskResourceOverrideConfigTest {
+class TaskResourceOverrideConfigTest {
 
     @InjectMock
     @RestClient
@@ -54,7 +55,7 @@ public class TaskResourceOverrideConfigTest {
     @MockitoConfig(convertScopes = true)
     TokenizationRestClient tokenizationRestClient;
 
-    @InjectMock
+    @Inject
     ConfigurationAsyncServiceImpl ConfigurationAsyncServiceImpl;
 
     public static class BuildTimeValueChangeTestProfile implements QuarkusTestProfile {
