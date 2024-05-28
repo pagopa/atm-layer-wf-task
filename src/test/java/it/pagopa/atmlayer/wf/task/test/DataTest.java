@@ -260,7 +260,6 @@ public class DataTest {
         varResponse.getVariables().put(Constants.COMMAND_VARIABLE_VALUE, "END");
         varResponse.getVariables().put(Constants.OUTCOME_VAR_NAME, "a");
         varResponse.getVariables().put(Constants.RECEIPT_TEMPLATE, "riepilogoCommissioni.html");
-        //varResponse.getVariables().put(Constants.RECEIPT_TEMPLATE, "arrivederci.html");
         varResponse.getVariables().put(Constants.TEMPLATE_TYPE, "INFO");
         varResponse.getVariables().put("company", "Auriga");
         varResponse.getVariables().put("description", "descrizione");
