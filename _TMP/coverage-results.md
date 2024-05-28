@@ -6,16 +6,28 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 91.17%               |
-| :heavy_check_mark: Number of Lines Covered | 692    |
-| :x: Number of Lines Missed  | 67     |
-| Total Number of Lines   | 759     |
+| Code Coverage %         | 90.86%               |
+| :heavy_check_mark: Number of Lines Covered | 716    |
+| :x: Number of Lines Missed  | 72     |
+| Total Number of Lines   | 788     |
 
 
 ## Details:
 
     
 ### it/pagopa/atmlayer/wf/task/bean/exceptions
+
+<details>
+    <summary>
+:heavy_check_mark: ErrorEnum.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
 
 <details>
     <summary>
@@ -34,18 +46,6 @@
 :x: ErrorResponse.java
     </summary>
 
-        
-</details>
-
-    
-
-<details>
-    <summary>
-:heavy_check_mark: ErrorEnum.java
-    </summary>
-
-        
-#### All Lines Covered!
         
 </details>
 
@@ -76,7 +76,7 @@
 
 <details>
     <summary>
-:x: Device.java
+:x: Template.java
     </summary>
 
         
@@ -86,7 +86,7 @@
 
 <details>
     <summary>
-:x: Template.java
+:x: Device.java
     </summary>
 
         
@@ -168,19 +168,19 @@
         
 #### Lines Missed:
         
-- Line #249
+- Line #256
 ```
                 } catch (UnsupportedEncodingException e) {
 ```
-- Line #320
+- Line #331
 ```
                     } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 ```
-- Line #341
+- Line #366
 ```
-                    } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
+            } catch (WebApplicationException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
 ```
-- Line #545
+- Line #585
 ```
             } catch (UnsupportedEncodingException e) {
 ```
@@ -233,37 +233,7 @@
 
 <details>
     <summary>
-:x: DeviceInfo.java
-    </summary>
-
-        
-</details>
-
-    
-
-<details>
-    <summary>
-:x: TaskResponse.java
-    </summary>
-
-        
-</details>
-
-    
-
-<details>
-    <summary>
 :x: TokenResponse.java
-    </summary>
-
-        
-</details>
-
-    
-
-<details>
-    <summary>
-:x: PublicKey.java
     </summary>
 
         
@@ -284,6 +254,66 @@
 <details>
     <summary>
 :x: VariableResponse.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: GetTokenResponse.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: Task.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: DeviceInfo.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: GetTokenRequest.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: TaskResponse.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: PublicKey.java
     </summary>
 
         
@@ -316,16 +346,6 @@
 <details>
     <summary>
 :x: PanInformation.java
-    </summary>
-
-        
-</details>
-
-    
-
-<details>
-    <summary>
-:x: Task.java
     </summary>
 
         
@@ -451,6 +471,18 @@
 
 <details>
     <summary>
+:heavy_check_mark: Command.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+
+<details>
+    <summary>
 :heavy_check_mark: EppMode.java
     </summary>
 
@@ -472,18 +504,6 @@
 </details>
 
     
-
-<details>
-    <summary>
-:heavy_check_mark: Command.java
-    </summary>
-
-        
-#### All Lines Covered!
-        
-</details>
-
-    
 ### it/pagopa/atmlayer/wf/task/logging/sensitive
 
 <details>
@@ -494,14 +514,6 @@
         
 #### Lines Missed:
         
-- Line #44
-```
-                    isTraceLoggingEnabled = configuration.isEnabled() != null ? configuration.isEnabled() : false;
-```
-- Line #54
-```
-                });
-```
 </details>
 
     
@@ -527,6 +539,10 @@
         
 #### Lines Missed:
         
+- Line #40
+```
+    }
+```
 - Line #51
 ```
                 .contentType("binary/octet-stream")
@@ -571,23 +587,23 @@
         
 #### Lines Missed:
         
-- Line #103
+- Line #107
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #116
+- Line #120
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #141
+- Line #145
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #326
+- Line #319
 ```
     }
 ```
-- Line #398
+- Line #391
 ```
         } catch (NoSuchAlgorithmException e) {
 ```
