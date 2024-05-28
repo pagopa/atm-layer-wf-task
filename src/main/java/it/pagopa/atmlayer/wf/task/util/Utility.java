@@ -3,7 +3,8 @@ package it.pagopa.atmlayer.wf.task.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -43,9 +44,12 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.State;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Utility {
     private static ObjectMapper om = JsonMapper.builder()
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
@@ -56,7 +60,7 @@ public class Utility {
     /*
      * Caratteri di escape standard HTML
      */
-    public final static HashMap<String, String> ESCAPE_CHARACTER = new HashMap<>();
+    public static final Map<String, String> ESCAPE_CHARACTER = new HashMap<>();
 
     static {
         ESCAPE_CHARACTER.put("&#192;", "À");
@@ -195,11 +199,6 @@ public class Utility {
     public static Set<String> findStringsByGroup(String inputString, String regex) {
         Set<String> groups = new HashSet<>();
 
-        /*
-         * Set<String> forObjectsAttributes = extractObjects(regex);
-         * log.debug("For object attributes {} :", forObjectsAttributes);
-         */
-
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(inputString);
         while (matcher.find()) {
@@ -208,14 +207,6 @@ public class Utility {
                 groups.add(matcher.group(counter));
             }
         }
-
-        /*
-         * groups = forObjectsAttributes.isEmpty() ? groups
-         * : groups.stream()
-         * .filter(groupsElement -> forObjectsAttributes.stream()
-         * .noneMatch(groupsElement::startsWith))
-         * .collect(Collectors.toSet());
-         */
 
         return groups;
     }
@@ -302,13 +293,15 @@ public class Utility {
      * @return An InputStream that provides access to the content of the specified
      *         file.
      * @throws IOException
+     * @throws URISyntaxException 
      */
-    public static InputStream getFileFromCdn(String path) throws IOException {
+    public static InputStream getFileFromCdn(String path) throws IOException, URISyntaxException {
 
         InputStream ioStream = null;
         log.info("Getting file [{}]", path);
         long start = System.currentTimeMillis();
-        ioStream = new URL(path).openStream();
+        URI uri = new URI(path);
+        ioStream = uri.toURL().openStream();
         long stop = System.currentTimeMillis();
         log.info(" {} - Elapsed time [ms] = {}", CDN_GET_FILE, stop - start);
         return ioStream;
@@ -353,7 +346,7 @@ public class Utility {
             InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 
         Cipher cipher;
-        cipher = Cipher.getInstance(Constants.RSA_ALGORITHM_PADDING);
+        cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
         cipher.init(Cipher.ENCRYPT_MODE, encryptionKey);
 
         return cipher.doFinal(dataToEncrypt);
@@ -447,9 +440,8 @@ public class Utility {
         LocalTime oraAggiornata = oraCorrente.plusHours(1);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        String orarioFormattato = oraAggiornata.format(formatter);
 
-        return orarioFormattato;
+        return oraAggiornata.format(formatter);
     }
 
 }

@@ -11,7 +11,7 @@ import it.pagopa.atmlayer.wf.task.bean.PanInfo;
 import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.client.bean.PublicKey;
 import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
-import it.pagopa.atmlayer.wf.task.logging.sensitive.ClearDataTracer;
+import it.pagopa.atmlayer.wf.task.logging.sensitive.SensitiveDataTracer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MultivaluedMap;
@@ -29,9 +29,13 @@ public class CommonLogic {
     protected static final String START_PROCESS_LOG_ID = PROCESS_REST_CLIENT_CLASS_ID + "startProcess";
     protected static final String NEXT_TASKS_LOG_ID = PROCESS_REST_CLIENT_CLASS_ID + "nextTasks";
     protected static final String RETRIEVE_VARIABLES_LOG_ID = PROCESS_REST_CLIENT_CLASS_ID + "retrieveVariables";
+
     private static final String MIL_AUTH_REST_CLIENT_CLASS_ID = "MilAuthRestClient.";
     protected static final String GET_TOKEN_LOG_ID = MIL_AUTH_REST_CLIENT_CLASS_ID + "getToken";
     protected static final String DELETE_TOKEN_LOG_ID = MIL_AUTH_REST_CLIENT_CLASS_ID + "deleteToken";
+
+    private static final String TOKENIZATION_REST_CLIENT_CLASS_ID = "TokenizationRestClient.";
+    protected static final String GET_TOKEN_TOKENIZER_LOG_ID = TOKENIZATION_REST_CLIENT_CLASS_ID + "getToken";
 
     @Inject
     protected Properties properties;
@@ -46,12 +50,12 @@ public class CommonLogic {
      * @param string - string to log
      * @see application.properties
      */
-    protected void logTracePropagation(String transactionId, String method, String URI,
+    protected void logTracePropagation(String transactionId, String method, String uri,
             MultivaluedMap<String, String> pathParameters, MultivaluedMap<String, String> headers, String body) {
             StringBuilder messageBuilder = new StringBuilder(" REQUEST ")
                     .append(method)
                     .append(" URI: ")
-                    .append(URI);
+                    .append(uri);
 
             if (!Objects.isNull(pathParameters) && !pathParameters.isEmpty()) {
                 messageBuilder.append(" - PATH PARAMS: ").append(pathParameters.toString());
@@ -65,7 +69,7 @@ public class CommonLogic {
                 messageBuilder.append(" - BODY: ").append(body);
             }
 
-            ClearDataTracer.trace(transactionId, messageBuilder.toString());
+            SensitiveDataTracer.trace(transactionId, messageBuilder.toString());
     }
 
     protected void traceMilAuthClientComm(State state, Device device,
@@ -80,7 +84,7 @@ public class CommonLogic {
                     .append(" TerminalId: ").append(Objects.toString(device.getTerminalId()))
                     .append(" TransactionId: ").append(transactionId).append("}");
 
-            ClearDataTracer.trace(transactionId, requestMessageBuilder.toString());
+            SensitiveDataTracer.trace(transactionId, requestMessageBuilder.toString());
 
             if (restTokenResponse != null) {
                 StringBuilder responseMessageBuilder = new StringBuilder(" RESPONSE POST URI: ")
@@ -90,9 +94,9 @@ public class CommonLogic {
                     responseMessageBuilder.append(" - BODY: Access token: ")
                             .append(restTokenResponse.getEntity().getAccess_token());
                 }
-                ClearDataTracer.trace(transactionId, responseMessageBuilder.toString());
+                SensitiveDataTracer.trace(transactionId, responseMessageBuilder.toString());
             } else {
-                ClearDataTracer.trace(transactionId, " - Error while communicating with MilAuthenticator. . .");
+                SensitiveDataTracer.trace(transactionId, " - Error while communicating with MilAuthenticator. . .");
             }
     }
 
@@ -105,12 +109,12 @@ public class CommonLogic {
                 if (restPanTokenizationKeyResponse.getEntity() != null) {
                     responseMessageBuilder.append(" - BODY: ").append(restPanTokenizationKeyResponse.getEntity().toString());
                 }
-                ClearDataTracer.trace(transactionId, responseMessageBuilder.toString());
+                SensitiveDataTracer.trace(transactionId, responseMessageBuilder.toString());
             }
 
             if (!Objects.isNull(panInfoList) && !panInfoList.isEmpty()) {
                 StringBuilder panMessageBuilder = new StringBuilder(" RETRIEVED PAN LIST: ").append(panInfoList.stream().map(PanInfo::getPan).collect(Collectors.joining(", ")));
-                ClearDataTracer.trace(transactionId, panMessageBuilder.toString());
+                SensitiveDataTracer.trace(transactionId, panMessageBuilder.toString());
             }
     }
 

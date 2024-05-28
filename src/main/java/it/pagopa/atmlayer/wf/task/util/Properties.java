@@ -36,6 +36,7 @@ public interface Properties {
 
     Resource resource();
 
+    Cloudwatch cloudwatch();
     interface Bucket {
         @ConfigProperty(name = "name")
         String name();
@@ -48,6 +49,14 @@ public interface Properties {
     interface Resource {
         @ConfigProperty(name = "pathTemplate")
         String pathTemplate();
+    }
+
+    interface Cloudwatch {
+        @ConfigProperty(name = "group-name")
+        String groupName();
+
+        @ConfigProperty(name = "stream-name")
+        String streamName();
     }
 
     public static class ConverterImplement implements Converter<String> {

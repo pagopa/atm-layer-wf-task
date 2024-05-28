@@ -1,11 +1,7 @@
 package it.pagopa.atmlayer.wf.task.test;
 
-import io.quarkus.test.InjectMock;
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.mockito.MockitoConfig;
-import it.pagopa.atmlayer.wf.task.logging.latency.LatencyTracer;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.DockerComposeContainer;
@@ -17,7 +13,6 @@ import java.util.Map;
 
 @QuarkusTest
 class EnvironmentTestServicesResource {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(EnvironmentTestServicesResource.class);
 
     public static class DockerCompose implements QuarkusTestResourceLifecycleManager {
@@ -31,6 +26,7 @@ class EnvironmentTestServicesResource {
                     .withExposedService("mockoon", 3000);
 
             dockerComposeContainer.withLogConsumer("mockoon", new Slf4jLogConsumer(LOGGER).withPrefix("mockoon"));
+
             dockerComposeContainer.start();
 
             return Collections.emptyMap();

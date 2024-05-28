@@ -7,11 +7,9 @@ import java.util.Set;
 import org.slf4j.MDC;
 
 import it.pagopa.atmlayer.wf.task.bean.State;
-import it.pagopa.atmlayer.wf.task.logging.latency.LatencyTracer;
 import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Constants;
 import it.pagopa.atmlayer.wf.task.util.Utility;
-import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -27,14 +25,11 @@ import lombok.extern.slf4j.Slf4j;
 @Provider
 @Slf4j
 public class LogFilter extends CommonLogic implements ContainerRequestFilter, ContainerResponseFilter {
-
-    @Inject
-    LatencyTracer latencyTracer;
     
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        String URI = requestContext.getUriInfo().getPath();
-        if (URI.startsWith("/api/v1")) {
+        String uri = requestContext.getUriInfo().getPath();
+        if (uri.startsWith("/api/v1")) {
             String transactionId = null;
             MultivaluedMap<String, String> pathParameters = requestContext.getUriInfo().getPathParameters();
             if (pathParameters != null && pathParameters.get(Constants.TRANSACTION_ID_PATH_PARAM_NAME) != null) {
@@ -64,7 +59,7 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
             log.info("METHOD: {}", method, transactionId);
             log.info("BODY: {}", state);
 
-            logTracePropagation(transactionId, method, URI, pathParameters, headers, body);
+            logTracePropagation(transactionId, method, uri, pathParameters, headers, body);
 
             requestContext.setEntityStream(new ByteArrayInputStream(Utility.setTransactionIdInJson(entity, transactionId)));
             log.info("============== REQUEST ==============");
@@ -76,8 +71,8 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
 
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
-        String URI = requestContext.getUriInfo().getPath();
-        if (URI.startsWith("/api/v1")) {
+        String uri = requestContext.getUriInfo().getPath();
+        if (uri.startsWith("/api/v1")) {
             log.info("============== RESPONSE ==============");
             log.info("STATUS: {}", responseContext.getStatus());
             if (responseContext.getEntity() != null) {
@@ -85,12 +80,6 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
             }
             log.info("============== RESPONSE ==============");
             MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
-            
-            if (URI.contains("main")) {
-                latencyTracer.logElapsedTime("TaskResource.createMainScene", "External",requestContext.getProperty(Constants.START_TIME));
-            } else if (URI.contains("next")) {
-                latencyTracer.logElapsedTime("TaskResource.createNextScene", "External", requestContext.getProperty(Constants.START_TIME));
-            }
         }
     }
 

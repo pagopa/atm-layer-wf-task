@@ -9,11 +9,11 @@ import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
 
 public abstract class ConfigurationService {
 
-    public final static String CONFIGURATION_ID_COL = "id";
-    public final static String CONFIGURATION_ENABLED_COL = "enabled";
-    public final static String CONFIGURATION_TABLE_NAME = "pagopa-dev-atm-layer-wf-task-trace-logs";
+    public static final String CONFIGURATION_ID_COL = "id";
+    public static final String CONFIGURATION_ENABLED_COL = "enabled";
+    public static final String CONFIGURATION_TABLE_NAME = "pagopa-dev-atm-layer-wf-task-trace-logs";
 
-    public final static String TRACING = "tracing";
+    public static final String TRACING = "tracing";
 
 
     protected GetItemRequest getRequest(String name) {

@@ -16,6 +16,7 @@ import it.pagopa.atmlayer.wf.task.bean.enumartive.Channel;
 import it.pagopa.atmlayer.wf.task.bean.enumartive.Command;
 import it.pagopa.atmlayer.wf.task.bean.enumartive.EppMode;
 import it.pagopa.atmlayer.wf.task.bean.enumartive.PeripheralStatus;
+import it.pagopa.atmlayer.wf.task.client.bean.GetTokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.PublicKey;
 import it.pagopa.atmlayer.wf.task.client.bean.Task;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
@@ -26,7 +27,7 @@ import it.pagopa.atmlayer.wf.task.util.Utility;
 
 public class DataTest {
 
-    public static TaskResponse createTaskResponse(int numberOfTasks, VariableResponse variableResponse) {
+    public static TaskResponse createTaskResponse(int numberOfTasks) {
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setTasks(new ArrayList<Task>());
         for (int i = 0; i <= numberOfTasks; i++) {
@@ -42,15 +43,11 @@ public class DataTest {
         templateMap.put(Constants.RECEIPT_TEMPLATE, "riepilogoCommissioni.html");
         taskResponse.getTasks().get(0).setVariables(templateMap);
         taskResponse.setTransactionId("1000");
-        if (variableResponse.getVariables() != null)
-            taskResponse.getTasks().get(0).getVariables().putAll(variableResponse.getVariables());
-        if (variableResponse.getButtons() != null)
-            taskResponse.getTasks().get(0).getVariables().putAll(variableResponse.getButtons());
 
         return taskResponse;
     }
 
-    public static TaskResponse createTaskResponseMissingReceipt(int numberOfTasks, VariableResponse variableResponse) {
+    public static TaskResponse createTaskResponseMissingReceipt(int numberOfTasks) {
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setTasks(new ArrayList<Task>());
         for (int i = 0; i <= numberOfTasks; i++) {
@@ -63,15 +60,11 @@ public class DataTest {
 
         taskResponse.getTasks().get(0).setForm("riepilogoCommissioni.html");
         taskResponse.setTransactionId("1000");
-        taskResponse.getTasks().get(0).setVariables(variableResponse.getVariables());
-        if (variableResponse.getButtons() != null)
-            taskResponse.getTasks().get(0).getVariables().putAll(variableResponse.getButtons());
-
 
         return taskResponse;
     }
 
-    public static TaskResponse createTaskResponseNoForm(int numberOfTasks, VariableResponse variableResponse) {
+    public static TaskResponse createTaskResponseNoForm(int numberOfTasks) {
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setTasks(new ArrayList<Task>());
         for (int i = 0; i <= numberOfTasks; i++) {
@@ -87,13 +80,10 @@ public class DataTest {
         taskResponse.getTasks().get(0).setVariables(templateMap);
         taskResponse.setTransactionId("1000");
 
-        taskResponse.getTasks().get(0).getVariables().putAll(variableResponse.getVariables());
-        taskResponse.getTasks().get(0).getVariables().putAll(variableResponse.getButtons());
-
         return taskResponse;
     }
 
-    public static TaskResponse createTaskResponseMissingHtml(int numberOfTasks, VariableResponse variableResponse) {
+    public static TaskResponse createTaskResponseMissingHtml(int numberOfTasks) {
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setTasks(new ArrayList<Task>());
         for (int i = 0; i <= numberOfTasks; i++) {
@@ -106,9 +96,6 @@ public class DataTest {
 
         taskResponse.getTasks().get(0).setForm("test.html");
         taskResponse.setTransactionId("1000");
-
-        taskResponse.getTasks().get(0).setVariables(variableResponse.getVariables());
-        taskResponse.getTasks().get(0).getVariables().putAll(variableResponse.getButtons());
 
         return taskResponse;
     }
@@ -187,12 +174,6 @@ public class DataTest {
 
     public static VariableResponse createVariableResponseNoButtons() {
         VariableResponse variableResponse = new VariableResponse();
-        variableResponse.setVariables(new HashMap<String, Object>());
-        variableResponse.getVariables().put("company", "Auriga");
-        variableResponse.getVariables().put("description", "descrizione");
-        variableResponse.getVariables().put("amount", 10000);
-        variableResponse.getVariables().put("fee", 2.30);
-        variableResponse.getVariables().put("totale", 2.30);
         return variableResponse;
     }
 
@@ -279,7 +260,6 @@ public class DataTest {
         varResponse.getVariables().put(Constants.COMMAND_VARIABLE_VALUE, "END");
         varResponse.getVariables().put(Constants.OUTCOME_VAR_NAME, "a");
         varResponse.getVariables().put(Constants.RECEIPT_TEMPLATE, "riepilogoCommissioni.html");
-        //varResponse.getVariables().put(Constants.RECEIPT_TEMPLATE, "arrivederci.html");
         varResponse.getVariables().put(Constants.TEMPLATE_TYPE, "INFO");
         varResponse.getVariables().put("company", "Auriga");
         varResponse.getVariables().put("description", "descrizione");
@@ -319,9 +299,10 @@ public class DataTest {
         return varResponse;
     }
 
-    public static TaskResponse createTaskResponseNoVariablesRequest(int numberOfTasks, VariableResponse variableResponse) {
-        TaskResponse taskResponse = createTaskResponse(numberOfTasks, variableResponse);
-        taskResponse.getTasks().get(0).setForm("arrivederci.html");     
+    public static TaskResponse createTaskResponseNoVariablesRequest(int numberOfTasks) {
+        TaskResponse taskResponse = createTaskResponse(numberOfTasks);
+        taskResponse.getTasks().get(0).setForm("arrivederci.html");
+        taskResponse.getTasks().get(0).setVariables(null);
         return taskResponse;
     }
 
@@ -344,6 +325,10 @@ public class DataTest {
         key.setModulus(Base64.getDecoder().decode("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3iu1kH1foan71+X13MQ6WIRhuTw70zhtXxC5UyHGmNcDabqqrzdKovlPDZt05VuktpP+di0ZtKnwjRxzx2IUwO2s05kT8qI+acfEf4IJR3J6yCrnYmSdVtdb+Oy5VkqbUn/xVLidOED2dfMgvCobfDdiLL1dqp7Ll8i+UUvcDTvQ/c2LwSqHT5vY8n5mXWPRzHundNG8572AqI6DNQSCo3rRFtgP4vwbsYZX5+4o/Jvk4qrBALkfbq1RGmM6kVGokEG53yjlmAuDb2OEOeqYtQxFUulcVYRMZZY5ruuuOst77+U72hT1YHXA/gJexDVsetZnfzgMQUZABw+1ZjFjTwIDAQAB"));
 
         return key;
+    }
+
+    public static GetTokenResponse createGetTokenResponse() {
+        return GetTokenResponse.builder().token("TOKEN").build();
     }
 
     public static void main(String[] args) {

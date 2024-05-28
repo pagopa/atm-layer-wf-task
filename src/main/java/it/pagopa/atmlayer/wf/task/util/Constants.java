@@ -42,8 +42,6 @@ public class Constants {
 
     public static final String LI_TAG = "li";
 
-    public static final String RSA_ALGORITHM_PADDING = "RSA/ECB/PKCS1Padding";
-
     public static final String RSA = "RSA";
 
     public static final String PAN_INFO = "panInfo";

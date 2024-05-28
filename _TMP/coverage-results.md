@@ -1,21 +1,33 @@
 
 # Coverage Report: JaCoCo
 
-* quarkus-application
+* TaskResourceTest (QuarkusTest)
       
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 90.33%               |
-| :heavy_check_mark: Number of Lines Covered | 691    |
-| :x: Number of Lines Missed  | 74     |
-| Total Number of Lines   | 765     |
+| Code Coverage %         | 90.86%               |
+| :heavy_check_mark: Number of Lines Covered | 716    |
+| :x: Number of Lines Missed  | 72     |
+| Total Number of Lines   | 788     |
 
 
 ## Details:
 
     
 ### it/pagopa/atmlayer/wf/task/bean/exceptions
+
+<details>
+    <summary>
+:heavy_check_mark: ErrorEnum.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
 
 <details>
     <summary>
@@ -34,18 +46,6 @@
 :x: ErrorResponse.java
     </summary>
 
-        
-</details>
-
-    
-
-<details>
-    <summary>
-:heavy_check_mark: ErrorEnum.java
-    </summary>
-
-        
-#### All Lines Covered!
         
 </details>
 
@@ -76,7 +76,7 @@
 
 <details>
     <summary>
-:x: Device.java
+:x: Template.java
     </summary>
 
         
@@ -86,7 +86,7 @@
 
 <details>
     <summary>
-:x: Template.java
+:x: Device.java
     </summary>
 
         
@@ -116,11 +116,11 @@
 
 <details>
     <summary>
-:x: Button.java
+:heavy_check_mark: Button.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
 </details>
 
@@ -155,10 +155,6 @@
         
 #### Lines Missed:
         
-- Line #150
-```
-		} catch (ProcessingException e) {
-```
 </details>
 
     
@@ -172,23 +168,19 @@
         
 #### Lines Missed:
         
-- Line #175
+- Line #256
 ```
-        } catch (WebApplicationException e) {
+                } catch (UnsupportedEncodingException e) {
 ```
-- Line #295
-```
-            } catch (UnsupportedEncodingException e) {
-```
-- Line #417
+- Line #331
 ```
                     } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 ```
-- Line #438
+- Line #366
 ```
-                    } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
+            } catch (WebApplicationException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
 ```
-- Line #642
+- Line #585
 ```
             } catch (UnsupportedEncodingException e) {
 ```
@@ -241,37 +233,7 @@
 
 <details>
     <summary>
-:x: DeviceInfo.java
-    </summary>
-
-        
-</details>
-
-    
-
-<details>
-    <summary>
-:x: TaskResponse.java
-    </summary>
-
-        
-</details>
-
-    
-
-<details>
-    <summary>
 :x: TokenResponse.java
-    </summary>
-
-        
-</details>
-
-    
-
-<details>
-    <summary>
-:x: PublicKey.java
     </summary>
 
         
@@ -292,6 +254,66 @@
 <details>
     <summary>
 :x: VariableResponse.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: GetTokenResponse.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: Task.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: DeviceInfo.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: GetTokenRequest.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: TaskResponse.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: PublicKey.java
     </summary>
 
         
@@ -324,16 +346,6 @@
 <details>
     <summary>
 :x: PanInformation.java
-    </summary>
-
-        
-</details>
-
-    
-
-<details>
-    <summary>
-:x: Task.java
     </summary>
 
         
@@ -459,6 +471,18 @@
 
 <details>
     <summary>
+:heavy_check_mark: Command.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+
+<details>
+    <summary>
 :heavy_check_mark: EppMode.java
     </summary>
 
@@ -480,14 +504,15 @@
 </details>
 
     
+### it/pagopa/atmlayer/wf/task/logging/sensitive
 
 <details>
     <summary>
-:heavy_check_mark: Command.java
+:x: SensitiveDataTracer.java
     </summary>
 
         
-#### All Lines Covered!
+#### Lines Missed:
         
 </details>
 
@@ -514,6 +539,10 @@
         
 #### Lines Missed:
         
+- Line #40
+```
+    }
+```
 - Line #51
 ```
                 .contentType("binary/octet-stream")
@@ -558,41 +587,25 @@
         
 #### Lines Missed:
         
-- Line #106
+- Line #107
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #119
+- Line #120
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #144
+- Line #145
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #277
+- Line #319
 ```
     }
 ```
-- Line #342
+- Line #391
 ```
         } catch (NoSuchAlgorithmException e) {
-```
-</details>
-
-    
-
-<details>
-    <summary>
-:x: Tracer.java
-    </summary>
-
-        
-#### Lines Missed:
-        
-- Line #34
-```
-                    isTraceLoggingEnabled = configuration.isEnabled() != null ? configuration.isEnabled() : false;
 ```
 </details>
 
