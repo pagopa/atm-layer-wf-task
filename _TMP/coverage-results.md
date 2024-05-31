@@ -12,6 +12,7 @@
 | Total Number of Lines   | 788     |
 
 
+
 ## Details:
 
     
@@ -171,10 +172,12 @@
 - Line #256
 ```
                 } catch (UnsupportedEncodingException e) {
+
 ```
 - Line #331
 ```
                     } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+
 ```
 - Line #366
 ```
@@ -230,6 +233,16 @@
 
     
 ### it/pagopa/atmlayer/wf/task/client/bean
+
+<details>
+    <summary>
+:x: TokenResponse.java
+    </summary>
+
+        
+</details>
+
+    
 
 <details>
     <summary>
@@ -447,10 +460,10 @@
 
         
 #### Lines Missed:
-        
 - Line #26
 ```
                 .attributesToGet(CONFIGURATION_ID_COL, CONFIGURATION_ENABLED_COL)
+
 ```
 </details>
 
@@ -557,6 +570,18 @@
 
 <details>
     <summary>
+:heavy_check_mark: CommonLogic.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+
+<details>
+    <summary>
 :x: Constants.java
     </summary>
 
@@ -606,6 +631,7 @@
 - Line #391
 ```
         } catch (NoSuchAlgorithmException e) {
+
 ```
 </details>
 

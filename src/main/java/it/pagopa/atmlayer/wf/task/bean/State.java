@@ -36,13 +36,13 @@ public class State {
 	@Schema(hidden = true)
 	private String transactionId;
 
-    @ToString.Exclude
-    @JsonProperty(access = Access.WRITE_ONLY)
-    @Schema(description = "Codice Fiscale dell'utente (dato sensibile)")
+  @ToString.Exclude
+  @JsonProperty(access = Access.WRITE_ONLY)
+  @Schema(description = "Codice Fiscale dell'utente (dato sensibile)")
 	private String fiscalCode;
     
-    @Schema(description = "Informazioni del pan (dato sensibile)")
-    @Valid
-    private List<PanInfo> panInfo;
+  @Schema(description = "Informazioni del pan (dato sensibile)")
+  @Valid
+  private List<PanInfo> panInfo;
     
 }
