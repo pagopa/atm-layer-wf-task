@@ -10,6 +10,7 @@ metadata:
 
 spec:
   {{- if not .Values.autoscaling.enabled }}
+
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
@@ -75,5 +76,6 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+
   strategy:
     type: Recreate
