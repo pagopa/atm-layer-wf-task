@@ -16,7 +16,6 @@ export const thresholdsSettings = {
     'http_req_failed{name:Recupera messaggi di cortesia e posizione debitoria}':['rate<0.01'],
     'http_reqs{name:Recupera messaggi di cortesia e posizione debitoria}':[],
 
-
     //SPONTANEOUS PAYEMENT
     'http_req_duration{name:Seleziona pagamento spontaneo}': ['p(95)<15000'],
     'http_req_waiting{name:Seleziona pagamento spontaneo}':['p(95)<15000'],
