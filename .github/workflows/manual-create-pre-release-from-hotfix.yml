@@ -151,6 +151,7 @@ jobs:
           --build-arg QUARKUS_PROFILE=prod \
           --build-arg APP_NAME=atm-layer-wf-task
 
+
       - name: Commit with "${{ inputs.commit }}:" prefix
         run: |
           git config user.name "GitHub Action"
