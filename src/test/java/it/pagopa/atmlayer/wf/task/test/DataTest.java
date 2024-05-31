@@ -1,6 +1,7 @@
 package it.pagopa.atmlayer.wf.task.test;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,11 +16,14 @@ import it.pagopa.atmlayer.wf.task.bean.enumartive.Channel;
 import it.pagopa.atmlayer.wf.task.bean.enumartive.Command;
 import it.pagopa.atmlayer.wf.task.bean.enumartive.EppMode;
 import it.pagopa.atmlayer.wf.task.bean.enumartive.PeripheralStatus;
+import it.pagopa.atmlayer.wf.task.client.bean.GetTokenResponse;
+import it.pagopa.atmlayer.wf.task.client.bean.PublicKey;
 import it.pagopa.atmlayer.wf.task.client.bean.Task;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.test.bean.Dato;
 import it.pagopa.atmlayer.wf.task.util.Constants;
+import it.pagopa.atmlayer.wf.task.util.Utility;
 
 public class DataTest {
 
@@ -122,12 +126,19 @@ public class DataTest {
         variableResponse.getVariables().put("fee", 2.30);
         variableResponse.getVariables().put("totale", 11.50);
         variableResponse.getVariables().put("variable1", "11.50");
+        variableResponse.getVariables().put(Constants.FUNCTION_ID_CONTEXT_LOG, "FUNCTION_ID");
         variableResponse.getVariables().put(Constants.COMMAND_VARIABLE_VALUE, Command.PRINT_RECEIPT.name());
-        ArrayList<Object> list = new ArrayList<Object>();
+        ArrayList<Object> list = new ArrayList<>();
         Dato elemento = new Dato();
         elemento.setParagrafo("vedi2");
+        elemento.setCircuits(new ArrayList<String>());
+        elemento.getCircuits().add("VISA");
+        elemento.getCircuits().add("MASTERCARD");
         list.add(elemento);
+        
+        
         variableResponse.getVariables().put("pulsanti", list);
+        
 
         Map<String, Object> buttonMap = new HashMap<>();
         buttonMap.put("prop1", "value1");
@@ -151,8 +162,11 @@ public class DataTest {
         ArrayList<Object> list = new ArrayList<Object>();
         Dato elemento = new Dato();
         elemento.setParagrafo("vedi2");
+        elemento.setCircuits(new ArrayList<String>());
+        elemento.getCircuits().add("VISA");
+        elemento.getCircuits().add("MASTERCARD");
         list.add(elemento);
-        
+
         variableResponse.getVariables().put("pulsanti", list);
 
         return variableResponse;
@@ -170,20 +184,14 @@ public class DataTest {
         per.setName("PRINTER");
         per.setStatus(PeripheralStatus.OK);
         perList.add(per);
-        Device deviceInfo = Device.builder().bankId("00001")
-                .branchId("0002")
-                .channel(Channel.ATM)
-                .code("12345")
-                .terminalId("1234567890")
-                .opTimestamp(new Date())
-                .peripherals(perList)
-                .build();
+        Device deviceInfo = Device.builder().bankId("00001").branchId("0002").channel(Channel.ATM).code("1234").terminalId("1234567890").opTimestamp(new Date()).peripherals(perList).build();
         State state = new State();
         state.setDevice(deviceInfo);
         Map<String, Object> variablesData = new HashMap<>();
         variablesData.put("var1", "test");
         state.setData(variablesData);
         state.setFiscalCode("RSSMRA74D22A001Q");
+
         return state;
     }
 
@@ -194,11 +202,7 @@ public class DataTest {
         per.setName("PRINTER");
         per.setStatus(PeripheralStatus.OK);
         perList.add(per);
-        Device deviceInfo = Device.builder().bankId("00001")
-                .channel(Channel.ATM)
-                .opTimestamp(new Date())
-                .peripherals(perList)
-                .build();
+        Device deviceInfo = Device.builder().bankId("00001").channel(Channel.ATM).opTimestamp(new Date()).peripherals(perList).build();
         State state = new State();
         state.setDevice(deviceInfo);
         Map<String, Object> variablesData = new HashMap<>();
@@ -255,18 +259,22 @@ public class DataTest {
         varResponse.getVariables().put(Constants.TIMEOUT_VALUE, 1);
         varResponse.getVariables().put(Constants.COMMAND_VARIABLE_VALUE, "END");
         varResponse.getVariables().put(Constants.OUTCOME_VAR_NAME, "a");
-        varResponse.getVariables().put(Constants.RECEIPT_TEMPLATE, "arrivederci.html");
+        varResponse.getVariables().put(Constants.RECEIPT_TEMPLATE, "riepilogoCommissioni.html");
         varResponse.getVariables().put(Constants.TEMPLATE_TYPE, "INFO");
         varResponse.getVariables().put("company", "Auriga");
         varResponse.getVariables().put("description", "descrizione");
         varResponse.getVariables().put("amount", 10000);
         varResponse.getVariables().put("fee", 2.30);
         varResponse.getVariables().put("totale", 11.50);
-        ArrayList<Object> list = new ArrayList<Object>();
-          Dato elemento = new Dato();
-          elemento.setParagrafo("vedi2");
-          list.add(elemento);
-        
+        ArrayList<Object> list = new ArrayList<>();
+
+        Dato elemento = new Dato();
+        elemento.setParagrafo("vedi2");
+        elemento.setCircuits(new ArrayList<String>());
+        elemento.getCircuits().add("VISA");
+        elemento.getCircuits().add("MASTERCARD");
+        list.add(elemento);
+
         varResponse.getVariables().put("pulsanti", list);
 
         return varResponse;
@@ -305,4 +313,25 @@ public class DataTest {
         return taskResponse;
     }
 
+    public static PublicKey createPublicKeyResponse() {
+        PublicKey key = new PublicKey();
+
+        key.setKty("RSA");
+        key.setE(Base64.getDecoder().decode("AQAB"));
+        key.setUse("enc");
+        key.setKid("d0d654e697da4848b56899fedccb642b/4536def850ac6e9830f");
+        key.setExp(1678975089);
+        key.setIat(1678888689);
+        key.setModulus(Base64.getDecoder().decode("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3iu1kH1foan71+X13MQ6WIRhuTw70zhtXxC5UyHGmNcDabqqrzdKovlPDZt05VuktpP+di0ZtKnwjRxzx2IUwO2s05kT8qI+acfEf4IJR3J6yCrnYmSdVtdb+Oy5VkqbUn/xVLidOED2dfMgvCobfDdiLL1dqp7Ll8i+UUvcDTvQ/c2LwSqHT5vY8n5mXWPRzHundNG8572AqI6DNQSCo3rRFtgP4vwbsYZX5+4o/Jvk4qrBALkfbq1RGmM6kVGokEG53yjlmAuDb2OEOeqYtQxFUulcVYRMZZY5ruuuOst77+U72hT1YHXA/gJexDVsetZnfzgMQUZABw+1ZjFjTwIDAQAB"));
+
+        return key;
+    }
+
+    public static GetTokenResponse createGetTokenResponse() {
+        return GetTokenResponse.builder().token("TOKEN").build();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Utility.getJson(createPublicKeyResponse()));
+    }
 }

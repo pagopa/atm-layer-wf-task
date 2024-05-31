@@ -28,5 +28,5 @@ public class TaskRequest {
     private DeviceInfo deviceInfo;
 
     private Map<String, Object> variables;
-
+    
 }

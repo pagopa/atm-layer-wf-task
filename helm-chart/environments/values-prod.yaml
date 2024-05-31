@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 2
+replicaCount: 4
 
 image:
   repository: 00000000000.dkr.ecr.eu-south-1.amazonaws.com/xxxxxxx
@@ -29,11 +29,13 @@ tracing:
   enableJDBCMonitoring: "false"
 
 cdn:
+  credentialsSecretEnabled: true
   credentialsSecretName: "pagopa-prod-atm-layer-wf-task-cdn-base-path"
   credentialsSecretKeys:
     cdn_base_path: CDN_BASE_PATH
 
 secretProviderClass:
+  enabled: true
   name: atm-layer-wf-task-secrets
   env: prod
 
@@ -99,28 +101,24 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+  limits:
+    cpu: 150m
+    memory: 150Mi
+  requests:
+    cpu: 30m
+    memory: 50Mi
 
 autoscaling:
   enabled: true
   minReplicas: 2
   maxReplicas: 4
   targetCPUUtilizationPercentage: 80
-  targetMemoryUtilizationPercentage: 80
-  memoryLimits: 600Mi
-  memoryRequests: 300Mi
-  cpuLimits: 600m
-  cpuRequest: 300m
+  # targetMemoryUtilizationPercentage: 80
 
 nodeSelector: {}
 

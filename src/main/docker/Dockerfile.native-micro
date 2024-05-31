@@ -1,5 +1,5 @@
 # dependency resolution and compiling
-FROM quay.io/quarkus/ubi-quarkus-mandrel-builder-image:jdk-17 AS builder
+FROM quay.io/quarkus/ubi-quarkus-mandrel-builder-image:jdk-21 AS builder
 WORKDIR /app
 USER quarkus
 COPY --chown=quarkus:quarkus mvnw .
@@ -10,7 +10,7 @@ RUN ./mvnw -B org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline
 COPY src src
 ARG QUARKUS_PROFILE
 ARG APP_NAME
-RUN ./mvnw package -Pnative -Dquarkus.application.name=$APP_NAME -Dquarkus.profile=$QUARKUS_PROFILE -DskipTests=true
+RUN ./mvnw package -Pnative -Dquarkus.application.name=$APP_NAME -Dquarkus.profile=$QUARKUS_PROFILE -DskipTests=true -X
 
 # build native Quarkus
 FROM quay.io/quarkus/quarkus-micro-image:2.0

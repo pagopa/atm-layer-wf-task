@@ -1,5 +1,6 @@
 package it.pagopa.atmlayer.wf.task.bean;
 
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.ToString;
@@ -22,6 +24,7 @@ public class State {
 
 	@NotNull(message = "Device non può essere null")
 	@Schema(required = true)
+	@Valid
 	private Device device;
 
 	@Schema(description = "ID del task che da completato")
@@ -33,9 +36,13 @@ public class State {
 	@Schema(hidden = true)
 	private String transactionId;
 
-    @ToString.Exclude
-    @JsonProperty(access = Access.WRITE_ONLY)
-    @Schema(description = "Codice Fiscale dell'utente (dato sensibile)")
+  @ToString.Exclude
+  @JsonProperty(access = Access.WRITE_ONLY)
+  @Schema(description = "Codice Fiscale dell'utente (dato sensibile)")
 	private String fiscalCode;
-
+    
+  @Schema(description = "Informazioni del pan (dato sensibile)")
+  @Valid
+  private List<PanInfo> panInfo;
+    
 }

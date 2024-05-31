@@ -1,21 +1,34 @@
 
 # Coverage Report: JaCoCo
 
-* quarkus-application
+* TaskResourceTest (QuarkusTest)
       
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 91.06%               |
-| :heavy_check_mark: Number of Lines Covered | 479    |
-| :x: Number of Lines Missed  | 47     |
-| Total Number of Lines   | 526     |
+| Code Coverage %         | 90.86%               |
+| :heavy_check_mark: Number of Lines Covered | 716    |
+| :x: Number of Lines Missed  | 72     |
+| Total Number of Lines   | 788     |
+
 
 
 ## Details:
 
     
 ### it/pagopa/atmlayer/wf/task/bean/exceptions
+
+<details>
+    <summary>
+:heavy_check_mark: ErrorEnum.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
 
 <details>
     <summary>
@@ -38,32 +51,17 @@
 </details>
 
     
-
-<details>
-    <summary>
-:heavy_check_mark: ErrorEnum.java
-    </summary>
-
-        
-#### All Lines Covered!
-        
-</details>
-
-    
-### it/pagopa/atmlayer/wf/task
-
-<details>
-    <summary>
-:x: TaskMicroservice.java
-    </summary>
-
-        
-#### Lines Missed:
-        
-</details>
-
-    
 ### it/pagopa/atmlayer/wf/task/bean
+
+<details>
+    <summary>
+:x: PanInfo.java
+    </summary>
+
+        
+</details>
+
+    
 
 <details>
     <summary>
@@ -79,7 +77,7 @@
 
 <details>
     <summary>
-:x: Device.java
+:x: Template.java
     </summary>
 
         
@@ -89,7 +87,7 @@
 
 <details>
     <summary>
-:x: Template.java
+:x: Device.java
     </summary>
 
         
@@ -158,14 +156,79 @@
         
 #### Lines Missed:
         
-- Line #67
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/service/impl
+
+<details>
+    <summary>
+:x: TaskServiceImpl.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #256
 ```
-		} catch (ProcessingException e) {
+                } catch (UnsupportedEncodingException e) {
+
 ```
-- Line #130
+- Line #331
 ```
-		} catch (ProcessingException e) {
+                    } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+
 ```
+- Line #366
+```
+            } catch (WebApplicationException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
+```
+- Line #585
+```
+            } catch (UnsupportedEncodingException e) {
+```
+</details>
+
+    
+
+<details>
+    <summary>
+:x: S3ObjectStoreServiceImpl.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #24
+```
+    }
+```
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/resource/interceptors
+
+<details>
+    <summary>
+:heavy_check_mark: LogFilter.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task
+
+<details>
+    <summary>
+:x: TaskMicroservice.java
+    </summary>
+
+        
+#### Lines Missed:
+        
 </details>
 
     
@@ -173,17 +236,7 @@
 
 <details>
     <summary>
-:x: DeviceInfo.java
-    </summary>
-
-        
-</details>
-
-    
-
-<details>
-    <summary>
-:x: TaskResponse.java
+:x: TokenResponse.java
     </summary>
 
         
@@ -223,6 +276,66 @@
 
 <details>
     <summary>
+:x: GetTokenResponse.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: Task.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: DeviceInfo.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: GetTokenRequest.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: TaskResponse.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: PublicKey.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
 :x: TaskRequest.java
     </summary>
 
@@ -245,14 +358,60 @@
 
 <details>
     <summary>
-:x: Task.java
+:x: PanInformation.java
     </summary>
 
         
 </details>
 
     
+### it/pagopa/atmlayer/wf/task/database/dynamo/service
+
+<details>
+    <summary>
+:heavy_check_mark: ConfigurationAsyncServiceImpl.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/database/dynamo/entity
+
+<details>
+    <summary>
+:x: Configuration.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+</details>
+
+    
 ### it/pagopa/atmlayer/wf/task/service
+
+<details>
+    <summary>
+:x: ObjectStoreService.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: S3ObjectStoreService.java
+    </summary>
+
+        
+</details>
+
+    
 
 <details>
     <summary>
@@ -292,23 +451,19 @@
 </details>
 
     
-### it/pagopa/atmlayer/wf/task/service/impl
+### it/pagopa/atmlayer/wf/task/database/dynamo/service/contract
 
 <details>
     <summary>
-:x: TaskServiceImpl.java
+:x: ConfigurationService.java
     </summary>
 
         
 #### Lines Missed:
-        
-- Line #234
+- Line #26
 ```
-				} catch (UnsupportedEncodingException e) {
-```
-- Line #473
-```
-			} catch (UnsupportedEncodingException e) {
+                .attributesToGet(CONFIGURATION_ID_COL, CONFIGURATION_ENABLED_COL)
+
 ```
 </details>
 
@@ -318,6 +473,18 @@
 <details>
     <summary>
 :heavy_check_mark: Channel.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:heavy_check_mark: Command.java
     </summary>
 
         
@@ -350,32 +517,56 @@
 </details>
 
     
+### it/pagopa/atmlayer/wf/task/logging/sensitive
 
 <details>
     <summary>
-:heavy_check_mark: Command.java
+:x: SensitiveDataTracer.java
     </summary>
 
         
-#### All Lines Covered!
-        
-</details>
-
-    
-### it/pagopa/atmlayer/wf/task/resource/interceptors
-
-<details>
-    <summary>
-:heavy_check_mark: LogFilter.java
-    </summary>
-
-        
-#### All Lines Covered!
+#### Lines Missed:
         
 </details>
 
     
 ### it/pagopa/atmlayer/wf/task/util
+
+<details>
+    <summary>
+:heavy_check_mark: CommonLogic.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: FileStorageS3Util.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #40
+```
+    }
+```
+- Line #51
+```
+                .contentType("binary/octet-stream")
+```
+- Line #55
+```
+    }
+```
+</details>
+
+    
 
 <details>
     <summary>
@@ -421,30 +612,41 @@
         
 #### Lines Missed:
         
-- Line #47
+- Line #107
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #60
+- Line #120
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #85
+- Line #145
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #181
-```
-        }
-```
-- Line #287
+- Line #319
 ```
     }
+```
+- Line #391
+```
+        } catch (NoSuchAlgorithmException e) {
+
 ```
 </details>
 
     
 ### it/pagopa/atmlayer/wf/task/client
+
+<details>
+    <summary>
+:x: TokenizationRestClient.java
+    </summary>
+
+        
+</details>
+
+    
 
 <details>
     <summary>

@@ -1,5 +1,7 @@
 package it.pagopa.atmlayer.wf.task.util;
 
+import java.util.Map;
+
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.config.spi.Converter;
 
@@ -23,6 +25,39 @@ public interface Properties {
     @WithConverter(ConverterImplement.class)
     @ConfigProperty(name = "html-resources-path")
     String htmlResourcesPath();
+    
+    @ConfigProperty(name = "tokenization-is-mock")
+    boolean tokenizationIsMock();
+    
+    @ConfigProperty(name = "escape")
+    Map<String, String> escape();
+
+    Bucket bucket();
+
+    Resource resource();
+
+    Cloudwatch cloudwatch();
+    interface Bucket {
+        @ConfigProperty(name = "name")
+        String name();
+
+        @ConfigProperty(name = "region")
+        String region();
+
+    }
+
+    interface Resource {
+        @ConfigProperty(name = "pathTemplate")
+        String pathTemplate();
+    }
+
+    interface Cloudwatch {
+        @ConfigProperty(name = "group-name")
+        String groupName();
+
+        @ConfigProperty(name = "stream-name")
+        String streamName();
+    }
 
     public static class ConverterImplement implements Converter<String> {
         @Override
