@@ -14,7 +14,7 @@ export function menu(baseUrl, basePath, token){
 
         const params = {
             headers: headers,
-            tags: { name: 'Menu iniziale'},
+            tags: { name: '1 Menu iniziale'},
         };
 
         const body = mockBodyMenu();

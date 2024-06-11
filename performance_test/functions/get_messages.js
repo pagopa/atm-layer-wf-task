@@ -24,7 +24,7 @@ export function getMessages(baseUrl, basePath, token, menuResponse) {
 
     const params = {
         headers: headers,
-        tags: { name: 'Recupera messaggi di cortesia e posizione debitoria' },
+        tags: { name: '2 Recupera messaggi di cortesia e posizione debitoria' },
     };
 
     const jsonData = JSON.parse(menuResponse).task;

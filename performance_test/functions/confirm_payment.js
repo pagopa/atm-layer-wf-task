@@ -25,7 +25,7 @@ export function confirmPayment(baseUrl, basePath, token, payementDataResponse) {
 
     const params = {
         headers: headers,
-        tags: { name: 'Conferma pagamento avviso' },
+        tags: { name: '6 Conferma pagamento (preclose)' },
     };
 
     const jsonData = JSON.parse(payementDataResponse).task;

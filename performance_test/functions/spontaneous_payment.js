@@ -33,7 +33,7 @@ export function spontaneousPayment(baseUrl, basePath, token, messagesResponse){
 
         const params = {
             headers: headers,
-            tags: { name: 'Seleziona pagamento spontaneo'},
+            tags: { name: '2 Seleziona pagamento spontaneo'},
         };
 
         let paymentButton = jsonData.buttons.find(button => button.id === "pagamentoAvviso");

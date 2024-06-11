@@ -25,7 +25,7 @@ export function reviewPaymentData(baseUrl, basePath, token, payementDataResponse
 
     const params = {
         headers: headers,
-        tags: { name: 'Riepilogo dati avviso' },
+        tags: { name: '5 Attivazione Bollettino' },
     };
 
     const jsonData = JSON.parse(payementDataResponse).task;

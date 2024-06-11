@@ -25,7 +25,7 @@ export function exit(baseUrl, basePath, token, scanPaymentResponse) {
 
     const params = {
         headers: headers,
-        tags: { name: 'Seleziona uscita' },
+        tags: { name: '8 Seleziona uscita' },
     };
 
     const jsonData = JSON.parse(scanPaymentResponse).task;

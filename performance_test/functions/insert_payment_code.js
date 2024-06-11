@@ -26,7 +26,7 @@ export function insertPaymentCode(baseUrl, basePath, token, spontaneousPayementR
 
     const params = {
         headers: headers,
-        tags: { name: 'Inserimento codice bollettino' },
+        tags: { name: '3 Inserimento codice bollettino' },
     };
 
     const jsonData = JSON.parse(spontaneousPayementResponse).task;

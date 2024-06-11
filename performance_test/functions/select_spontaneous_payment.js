@@ -26,12 +26,12 @@ export function selectSpontaneousPayment(baseUrl, basePath, token, messagesRespo
 
     const params = {
         headers: headers,
-        tags: { name: 'Seleziona pagamento spontaneo 2'},
+        tags: { name: '4 Seleziona inserisci dati bollettino'},
     };
 
     let paymentButton = jsonData.buttons.find(button => button.id === "pagamentoAvviso");
 
-    const body = mockedRequestBody(paymentButton.data, jsonData.id);
+    const body = mockedRequestBody((paymentButton.data).data, jsonData.id);
 
     const responseSpsPayment = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
