@@ -1,12 +1,21 @@
 import http from 'k6/http';
 import { check } from 'k6';
-import { mockedRequestBody } from '../utils_function.js';
+import { mockedRequestBody, checkError } from '../utils_function.js';
 
-export function getMessages(baseUrl, basePath, token, menuResponse){
+export function getMessages(baseUrl, basePath, token, menuResponse) {
+
+    let response = JSON.parse(menuResponse);
+
+    if (response.status === 500) {
+        const errorResponse = {
+            status: 500
+        }
+
+        return errorResponse;
+    }
 
     const transactionId = JSON.parse(menuResponse).transactionId;
     const relativePath = `next/trns/${transactionId}`;
-
 
     const headers = {
         'Content-Type': 'application/json',
@@ -15,7 +24,7 @@ export function getMessages(baseUrl, basePath, token, menuResponse){
 
     const params = {
         headers: headers,
-        tags: { name: 'Recupera messaggi di cortesia e posizione debitoria'},
+        tags: { name: 'Recupera messaggi di cortesia e posizione debitoria' },
     };
 
     const jsonData = JSON.parse(menuResponse).task;
@@ -26,17 +35,30 @@ export function getMessages(baseUrl, basePath, token, menuResponse){
 
     const body = mockedRequestBody(nextData, jsonData.id);
 
-    const responseMessages = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
+    let responseMessages = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
-    var count=0;
+    let count = 0;
     while (responseMessages.status === 202 && count < 3) {
         responseMessages = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
         count++;
     }
 
-    check(responseMessages, {
-        'response code was 201' : (res) => res.status === 201,
-    })
+    const hasError = checkError(responseMessages);
 
-    return responseMessages.body;
+    let bodyResponse;
+    if (hasError) {
+        let responseBodyObject = JSON.parse(responseMessages.body);
+        responseBodyObject.status = 500;
+        bodyResponse = JSON.stringify(responseBodyObject);
+    } else {
+        bodyResponse = responseMessages.body;
+    }
+
+    check(responseMessages, {
+        'response code get messages was 201': (res) => !hasError && res.status == 201,
+    });
+
+    console.log("bodyResponse", bodyResponse);
+
+    return bodyResponse;
 }

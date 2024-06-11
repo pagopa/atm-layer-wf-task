@@ -1,3 +1,5 @@
+import { b64decode } from 'k6/encoding';
+
 const terminalId = Math.floor(10000000 + Math.random() * 90000000);
 
 export function mockBodyMenu () {
@@ -39,7 +41,7 @@ export function mockBodyMenu () {
     
                     "name": "Scanner",
     
-                    "status": "OK"
+                    "status": "KO"
     
                 }
     
@@ -89,7 +91,7 @@ export function mockedRequestBody (paymentNotice, taskId) {
     
                     "name": "Scanner",
     
-                    "status": "OK"
+                    "status": "KO"
     
                 }
     
@@ -104,4 +106,30 @@ export function mockedRequestBody (paymentNotice, taskId) {
     }
 
     return JSON.stringify(mock);
+}
+
+export function generateRandom13DigitNumber() {
+    const random13DigitNumber = Math.floor(Math.random() * Math.pow(10, 13));
+
+    return random13DigitNumber.toString().padStart(13, '0');
+}
+
+export function checkError(response) {
+    let jsonBody;
+    try {
+        jsonBody = JSON.parse(response.body);
+    } catch (e) {
+        return;
+    }
+
+    if (jsonBody.task && jsonBody.task.template) {
+        if (jsonBody.task.template.type === "INFO") {
+            const decodedContent = b64decode(jsonBody.task.template.content, "std", "s");
+            return decodedContent.toLowerCase().includes('errore');
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }

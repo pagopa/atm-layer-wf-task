@@ -23,10 +23,40 @@ export const thresholdsSettings = {
     'http_reqs{name:Seleziona pagamento spontaneo}':[],
 
     //PAYMENT SCAN
+    // 'http_req_duration{name:Inserimento codice bollettino}': ['p(95)<15000'],
+    // 'http_req_waiting{name:Inserimento codice bollettino}':['p(95)<15000'],
+    // 'http_req_failed{name:Inserimento codice bollettino}':['rate<0.01'],
+    // 'http_reqs{name:Inserimento codice bollettino}':[],
+
+    //INSERT PAYMENT CODE
     'http_req_duration{name:Inserimento codice bollettino}': ['p(95)<15000'],
     'http_req_waiting{name:Inserimento codice bollettino}':['p(95)<15000'],
     'http_req_failed{name:Inserimento codice bollettino}':['rate<0.01'],
     'http_reqs{name:Inserimento codice bollettino}':[],
+
+    //INSERT FISCALCODE EC
+    'http_req_duration{name:Inserimento codice fiscale ente creditore}': ['p(95)<15000'],
+    'http_req_waiting{name:Inserimento codice fiscale ente creditore}':['p(95)<15000'],
+    'http_req_failed{name:Inserimento codice fiscale ente creditore}':['rate<0.01'],
+    'http_reqs{name:Inserimento codice fiscale ente creditore}':[],
+
+    //REVIEW PAYMENT
+    'http_req_duration{name:Riepilogo dati avviso}': ['p(95)<15000'],
+    'http_req_waiting{name:Riepilogo dati avviso}':['p(95)<15000'],
+    'http_req_failed{name:Riepilogo dati avviso}':['rate<0.01'],
+    'http_reqs{name:Riepilogo dati avviso}':[],
+
+    //CONFIRM PAYMENT
+    'http_req_duration{name:Conferma pagamento avviso}': ['p(95)<15000'],
+    'http_req_waiting{name:Conferma pagamento avviso}':['p(95)<15000'],
+    'http_req_failed{name:Conferma pagamento avviso}':['rate<0.01'],
+    'http_reqs{name:Conferma pagamento avviso}':[],
+
+    //ATHORIZE PAYMENT
+    'http_req_duration{name:Autorizza pagamento avviso}': ['p(95)<15000'],
+    'http_req_waiting{name:Autorizza pagamento avviso}':['p(95)<15000'],
+    'http_req_failed{name:Autorizza pagamento avviso}':['rate<0.01'],
+    'http_reqs{name:Autorizza pagamento avviso}':[],
 
     //EXIT
     'http_req_duration{name:Seleziona uscita}': ['p(95)<15000'],
@@ -62,7 +92,7 @@ export const thresholdsSettings = {
   export const low_load = {
       executor: 'ramping-vus',
       stages: [
-        { duration: '1s', target: 1 },
+        { duration: '50s', target: 1 },
         { duration: '1s', target: 0 },
       ],
     };

@@ -1,8 +1,18 @@
 import http from 'k6/http';
 import { check } from 'k6';
-import { mockedRequestBody } from '../utils_function.js';
+import { mockedRequestBody, checkError } from '../utils_function.js';
 
 export function confirmExit(baseUrl, basePath, token, exitResponse) {
+
+    let responseParsed = JSON.parse(exitResponse);
+
+    if(responseParsed.status === 500) {
+        const errorResponse = {
+            status: 500
+        }
+
+        return errorResponse;
+    }
 
     const transactionId = JSON.parse(exitResponse).transactionId;
 
@@ -20,7 +30,11 @@ export function confirmExit(baseUrl, basePath, token, exitResponse) {
 
     const jsonData = JSON.parse(exitResponse).task;
 
-    const body = mockedRequestBody({}, jsonData.id);
+    const confirmExitDataBody = { 
+        result: "OK"
+    }
+
+    const body = mockedRequestBody({confirmExitDataBody}, jsonData.id);
 
     const response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
@@ -29,9 +43,20 @@ export function confirmExit(baseUrl, basePath, token, exitResponse) {
     console.log('Status Confirm Exit:', response.status);
     console.log('Body Confirm Exit:', response.body);
 
-    check(response, {
-        'response code was 200': (response) => response.status === 200,
-    })
+    const hasError = checkError(response);
 
-    return response.body;
+    let bodyResponse;
+    if (hasError) {
+        let responseBodyObject = JSON.parse(response.body);
+        responseBodyObject.status = 500;
+        bodyResponse = JSON.stringify(responseBodyObject);
+    } else {
+        bodyResponse = response.body;
+    }
+
+    check(response, {
+        'response code confirm exit was 200': (res) => !hasError && res.status == 200,
+    });
+
+    return bodyResponse;
 }

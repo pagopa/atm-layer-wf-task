@@ -1,8 +1,8 @@
 import http from 'k6/http';
 import { check } from 'k6';
-import { mockedRequestBody } from '../utils_function.js';
+import { mockedRequestBody, checkError } from '../utils_function.js';
 
-export function payementScan(baseUrl, basePath, token, spontaneousPayementResponse) {
+export function paymentScan(baseUrl, basePath, token, spontaneousPayementResponse) {
 
     const transactionId = JSON.parse(spontaneousPayementResponse).transactionId;
 
@@ -43,9 +43,11 @@ export function payementScan(baseUrl, basePath, token, spontaneousPayementRespon
         count++;
     }
 
+    const hasError = checkError(response.body); 
+    
     check(response, {
-        'response code was 201': (response) => response.status === 201,
-    })
+        'response code payment scan was 201': (res) => !hasError && res.status == 201,
+    });
 
     return response.body;
 }
