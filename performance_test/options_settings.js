@@ -72,27 +72,18 @@ export const thresholdsSettings = {
   }
   
   export const average_load = {
-    executor: 'ramping-vus',
-    stages: [
-      { duration: '2s', target: 5 },
-      { duration: '10s', target: 10 },
-      { duration: '5m', target: 40 },
-      { duration: '5m', target: 3 },
-      { duration: '2s', target: 0 },
-    ],
+    executor: "per-vu-iterations",
+    vus: 50,
+    iterations: 10,
+    startTime: "0s"
   };
-  
-  // export const average_load = {
-  //   executor: "per-vu-iterations",
-  //   vus: 40,
-  //   iterations: 10,
-  //   startTime: "0s",
-  // };
 
-  export const low_load = {
-      executor: 'ramping-vus',
-      stages: [
-        { duration: '1m', target: 1 },
-        { duration: '1s', target: 0 },
-      ],
-    };
+  export const max_rate = {
+    executor: "constant-arrival-rate",
+    rate: 100,
+    timeUnit: '1s',
+    duration: '2m',
+    startTime: "0s",
+    preAllocatedVUs: 20, // Pre-allocate VUs before starting the test
+    maxVUs: 700, // Maximum number of VUs
+  }; 
