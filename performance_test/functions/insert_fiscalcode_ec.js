@@ -25,7 +25,7 @@ export function insertFiscalcodeEC(baseUrl, basePath, token, spontaneousPayement
 
     const params = {
         headers: headers,
-        tags: { name: '4 Inserimento codice fiscale ente creditore' },
+        tags: { name: '04 Inserimento codice fiscale ente creditore' },
     };
 
     const jsonData = JSON.parse(spontaneousPayementResponse).task;

@@ -14,14 +14,18 @@ export function menu(baseUrl, basePath, token){
 
         const params = {
             headers: headers,
-            tags: { name: '1 Menu iniziale'},
+            tags: { name: '01 Menu iniziale'},
         };
 
         const body = mockBodyMenu();
 
+        let responseBodyObject = JSON.parse(body);
+        responseBodyObject.fiscalcode = "SNNCNA88S04A567U";
+        const bodyWithFC = JSON.stringify(responseBodyObject);
+
     if(token) {
 
-        const responseMenu = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
+        const responseMenu = http.post(`${baseUrl}${basePath}/${relativePath}`, bodyWithFC, params);
 
         console.log(`Menu call request duration: ${responseMenu.timings.duration} ms`);
         console.log('Request Menu:', responseMenu.request);
@@ -30,7 +34,7 @@ export function menu(baseUrl, basePath, token){
 
         var count=0;
         while (responseMenu.status === 202 && count < 3) {
-            responseMenu = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
+            responseMenu = http.post(`${baseUrl}${basePath}/${relativePath}`, bodyWithFC, params);
             count++;
         }
 

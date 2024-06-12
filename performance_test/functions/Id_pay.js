@@ -2,7 +2,7 @@ import http from 'k6/http';
 import { check } from 'k6';
 import { mockedRequestBody, checkError } from '../utils_function.js';
 
-export function spontaneousPayment(baseUrl, basePath, token, messagesResponse){
+export function idPaySelect(baseUrl, basePath, token, messagesResponse){
     
     let response = JSON.parse(messagesResponse);
 
@@ -33,14 +33,14 @@ export function spontaneousPayment(baseUrl, basePath, token, messagesResponse){
 
         const params = {
             headers: headers,
-            tags: { name: '02 Seleziona pagamento spontaneo'},
+            tags: { name: 'Seleziona IdPay'},
         };
 
-        let paymentButton = jsonData.buttons.find(button => button.id === "pagamentoAvviso");
+        let paymentButton = jsonData.buttons.find(button => button.id === "iniziativeIDPay");
         
         while (paymentButton === undefined) {
             jsonData = JSON.parse(http.post(`${baseUrl}${basePath}/${relativePath}`, confirmBody, noTagParams).body).task;
-            paymentButton = jsonData.buttons.find(button => button.id === "pagamentoAvviso");
+            paymentButton = jsonData.buttons.find(button => button.id === "iniziativeIDPay");
             confirmBody = mockedRequestBody(confirmData, jsonData.id);
         }
 
@@ -48,10 +48,10 @@ export function spontaneousPayment(baseUrl, basePath, token, messagesResponse){
 
         const responseSpsPayment = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
-        console.log(`Spontaneous Payement call request duration: ${responseSpsPayment.timings.duration} ms`);
-        console.log('Request Spontaneous Payement:', responseSpsPayment.request);
-        console.log('Status Spontaneous Payement:', responseSpsPayment.status);
-        console.log('Body Spontaneous Payement:', responseSpsPayment.body);
+        console.log(`Seleziona IdPay call request duration: ${responseSpsPayment.timings.duration} ms`);
+        console.log('Request Seleziona IdPay:', responseSpsPayment.request);
+        console.log('Status Seleziona IdPay:', responseSpsPayment.status);
+        console.log('Body Seleziona IdPay:', responseSpsPayment.body);
 
         var count=0;
         while (responseSpsPayment.status === 202 && count < 3) {

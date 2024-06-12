@@ -11,6 +11,9 @@ import { reviewPaymentData } from "./functions/review_payment_data.js";
 import { confirmPayment } from "./functions/confirm_payment.js";
 import { authorizePayment } from "./functions/authorize_payment.js";
 import {spontaneousPayment} from "./functions/spontaneous_payment.js"
+import { feeCalculation } from "./functions/fee_calculation.js";
+import { statusPayment } from "./functions/status_payment.js";
+import { idPaySelect } from "./functions/Id_pay.js";
 
 const baseUrl = `${__ENV.APPLICATION_BASE_URL}`;
 const basePath = `${__ENV.APPLICATION_BASE_PATH}`;
@@ -20,7 +23,7 @@ const cognitoClientSecret = `${__ENV.COGNITO_CLIENT_SECRET}`;
 
 export const options = {
     thresholds: nameThresholds,
-    scenarios: { average_load },
+    scenarios: { low_load },
 };
 
 export function handleSummary(data) {
@@ -35,18 +38,11 @@ export default function () {
     const menuResponse = menu(baseUrl, basePath, token);
     sleep(3);
 
-    // const messagesResponse = getMessages(baseUrl, basePath, token, menuResponse);
-    // sleep(3);
+    // Predisposizione flusso IdPay
+    // const idPaySelectResponse = idPaySelect(baseUrl, basePath, token, menuResponse);
 
     const spontaneousPayementResponse = spontaneousPayment(baseUrl, basePath, token, menuResponse);
     sleep(3);
-
-    // Uncomment this line if you need to include paymentScan
-    // const paymentScanResponse = payementScan(baseUrl, basePath, token, spontaneousPayementResponse);
-    // sleep(3);
-
-    // const selectSpontaneousPaymentResponse = selectSpontaneousPayment(baseUrl, basePath, token, spontaneousPayementResponse);
-    // sleep(3);
 
     const payementCodeResponse = insertPaymentCode(baseUrl, basePath, token, spontaneousPayementResponse);
     sleep(3);
@@ -57,13 +53,19 @@ export default function () {
     const reviewPaymentDataResponse = reviewPaymentData(baseUrl, basePath, token, fiscalcodeECResponse);
     sleep(3);
 
-    const confirmPaymentResponse = confirmPayment(baseUrl, basePath, token, reviewPaymentDataResponse);
+    const feeCalculationResponse = feeCalculation(baseUrl, basePath, token, reviewPaymentDataResponse);
+    sleep(3);
+
+    const confirmPaymentResponse = confirmPayment(baseUrl, basePath, token, feeCalculationResponse);
     sleep(3);
 
     const authorizePaymentResponse = authorizePayment(baseUrl, basePath, token, confirmPaymentResponse);
     sleep(3);
 
-    const exitResponse = exit(baseUrl, basePath, token, authorizePaymentResponse);
+    const statusPaymentResponse = statusPayment(baseUrl, basePath, token, authorizePaymentResponse);
+    sleep(3);
+
+    const exitResponse = exit(baseUrl, basePath, token, statusPaymentResponse);
     confirmExit(baseUrl, basePath, token, exitResponse);
     sleep(3);
 }

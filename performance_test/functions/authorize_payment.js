@@ -26,7 +26,7 @@ export function authorizePayment(baseUrl, basePath, token, payementDataResponse)
 
     const params = {
         headers: headers,
-        tags: { name: '7 Autorizza pagamento (close)' },
+        tags: { name: '08 Autorizza pagamento (close)' },
     };
 
     const jsonData = JSON.parse(payementDataResponse).task;

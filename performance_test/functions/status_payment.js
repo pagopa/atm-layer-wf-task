@@ -2,9 +2,9 @@ import http from 'k6/http';
 import { check } from 'k6';
 import { mockedRequestBody, checkError } from '../utils_function.js';
 
-export function exit(baseUrl, basePath, token, scanPaymentResponse) {
+export function statusPayment(baseUrl, basePath, token, authorizePaymentResponse) {
 
-    let responseParsed = JSON.parse(scanPaymentResponse);
+    let responseParsed = JSON.parse(authorizePaymentResponse);
 
     if(responseParsed.status === 500) {
         const errorResponse = {
@@ -14,7 +14,7 @@ export function exit(baseUrl, basePath, token, scanPaymentResponse) {
         return errorResponse;
     }
 
-    const transactionId = JSON.parse(scanPaymentResponse).transactionId;
+    const transactionId = JSON.parse(authorizePaymentResponse).transactionId;
 
     const relativePath = `next/trns/${transactionId}`;
 
@@ -25,24 +25,24 @@ export function exit(baseUrl, basePath, token, scanPaymentResponse) {
 
     const params = {
         headers: headers,
-        tags: { name: '10 Seleziona uscita' },
+        tags: { name: '09 Ricezione stato pagamento' },
     };
 
-    const jsonData = JSON.parse(scanPaymentResponse).task;
+    const jsonData = JSON.parse(authorizePaymentResponse).task;
 
-    const exitRequestBody = {
-        continue: false,
+    const statusPaymentRequestBody = {
+        result: "OK"
     }
 
-    const body = mockedRequestBody(exitRequestBody, jsonData.id);
+    const body = mockedRequestBody(statusPaymentRequestBody, jsonData.id);
 
     const response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
-    console.log(`Exit call request duration: ${response.timings.duration} ms`);
+    console.log(`Status payment call request duration: ${response.timings.duration} ms`);
 
-    console.log('Request Exit:', response.request);
-    console.log('Status Exit:', response.status);
-    console.log('Body Exit:', response.body);
+    console.log('Request Status payment:', response.request);
+    console.log('Status Status payment:', response.status);
+    console.log('Body Status payment:', response.body);
 
     var count=0;
     while (response.status === 202 && count < 3) {
@@ -62,7 +62,7 @@ export function exit(baseUrl, basePath, token, scanPaymentResponse) {
     }
     
     check(response, {
-        'response code exit was 201': (res) => !hasError && res.status == 201,
+        'response code Status payment was 201': (res) => !hasError && res.status == 201,
     });
 
     return bodyResponse;

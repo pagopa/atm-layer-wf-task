@@ -25,7 +25,7 @@ export function reviewPaymentData(baseUrl, basePath, token, payementDataResponse
 
     const params = {
         headers: headers,
-        tags: { name: '5 Attivazione Bollettino' },
+        tags: { name: '05 Attivazione Bollettino' },
     };
 
     const jsonData = JSON.parse(payementDataResponse).task;
