@@ -1,6 +1,6 @@
 import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
 import { retrieveToken } from "./functions/token_retrieve.js";
-import { nameThresholds, average_load, low_load } from "./options_settings.js";
+import { nameThresholds, average_load } from "./options_settings.js";
 import { menu } from "./functions/menu.js";
 import { exit } from "./functions/exit.js";
 import { sleep } from "k6";
@@ -23,7 +23,7 @@ const cognitoClientSecret = `${__ENV.COGNITO_CLIENT_SECRET}`;
 
 export const options = {
     thresholds: nameThresholds,
-    scenarios: { low_load },
+    scenarios: { average_load },
 };
 
 export function handleSummary(data) {
