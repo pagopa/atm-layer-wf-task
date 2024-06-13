@@ -41,7 +41,7 @@ export function menu(baseUrl, basePath, token){
         const hasError = checkError(responseMenu);
 
         check(responseMenu, {
-            'response code menu was 201': (res) => !hasError && res.status == 201,
+            'response code 01 Menu iniziale was 201': (res) => !hasError && res.status == 201,
         });
 
         return responseMenu.body;

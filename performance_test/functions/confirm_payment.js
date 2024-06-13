@@ -63,7 +63,7 @@ export function confirmPayment(baseUrl, basePath, token, payementDataResponse) {
     }
 
     check(response, {
-        'response code confirm was 201': (res) => !hasError && res.status == 201,
+        'response code 07 Conferma pagamento (preclose) was 201': (res) => !hasError && res.status == 201,
     });
 
     return bodyResponse;

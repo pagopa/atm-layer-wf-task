@@ -65,7 +65,7 @@ export function authorizePayment(baseUrl, basePath, token, payementDataResponse)
     }
 
     check(response, {
-        'response code authorize was 201': (res) => !hasError && res.status == 201,
+        'response code 08 Autorizza pagamento (close) was 201': (res) => !hasError && res.status == 201,
     });
 
     return bodyResponse;

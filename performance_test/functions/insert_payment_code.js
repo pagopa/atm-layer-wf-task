@@ -66,7 +66,7 @@ export function insertPaymentCode(baseUrl, basePath, token, spontaneousPayementR
     }
     
     check(response, {
-        'response code insert payment code was 201': (res) => !hasError && res.status == 201,
+        'response code 03 Inserimento codice bollettino was 201': (res) => !hasError && res.status == 201,
     });
 
     return bodyResponse;

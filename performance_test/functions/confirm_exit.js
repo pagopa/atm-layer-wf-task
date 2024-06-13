@@ -55,7 +55,7 @@ export function confirmExit(baseUrl, basePath, token, exitResponse) {
     }
 
     check(response, {
-        'response code confirm exit was 200': (res) => !hasError && res.status == 200,
+        'response code 11 Conferma uscita was 200': (res) => !hasError && res.status == 200,
     });
 
     return bodyResponse;

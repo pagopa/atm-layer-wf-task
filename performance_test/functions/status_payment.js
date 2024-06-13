@@ -62,7 +62,7 @@ export function statusPayment(baseUrl, basePath, token, authorizePaymentResponse
     }
     
     check(response, {
-        'response code Status payment was 201': (res) => !hasError && res.status == 201,
+        'response code 09 Ricezione stato pagamento was 201': (res) => !hasError && res.status == 201,
     });
 
     return bodyResponse;

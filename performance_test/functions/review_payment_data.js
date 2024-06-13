@@ -64,7 +64,7 @@ export function reviewPaymentData(baseUrl, basePath, token, payementDataResponse
     }
 
     check(response, {
-        'response code review was 201': (res) => !hasError && res.status == 201,
+        'response code 05 Attivazione Bollettino was 201': (res) => !hasError && res.status == 201,
     });
 
     return bodyResponse;

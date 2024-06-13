@@ -65,7 +65,7 @@ export function insertFiscalcodeEC(baseUrl, basePath, token, spontaneousPayement
     }
     
     check(response, {
-        'response code insert fiscalcode EC was 201': (res) => !hasError && res.status == 201,
+        'response code 04 Inserimento codice fiscale ente creditore was 201': (res) => !hasError && res.status == 201,
     });
 
     return bodyResponse;

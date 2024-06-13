@@ -62,7 +62,7 @@ export function exit(baseUrl, basePath, token, scanPaymentResponse) {
     }
     
     check(response, {
-        'response code exit was 201': (res) => !hasError && res.status == 201,
+        'response code 10 Seleziona uscita was 201': (res) => !hasError && res.status == 201,
     });
 
     return bodyResponse;

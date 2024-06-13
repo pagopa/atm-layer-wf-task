@@ -63,7 +63,7 @@ export function feeCalculation(baseUrl, basePath, token, reviewPaymentDataRespon
     }
     
     check(response, {
-        'response code Fee Calculation was 201': (res) => !hasError && res.status == 201,
+        'response code 06 Calcolo commissioni was 201': (res) => !hasError && res.status == 201,
     });
 
     return bodyResponse;

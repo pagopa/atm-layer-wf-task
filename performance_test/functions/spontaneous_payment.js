@@ -71,7 +71,7 @@ export function spontaneousPayment(baseUrl, basePath, token, messagesResponse){
         }
         
         check(responseSpsPayment, {
-            'response code spontaneous payment was 201': (res) => !hasError && res.status == 201,
+            'response code 02 Seleziona pagamento spontaneo was 201': (res) => !hasError && res.status == 201,
         });
 
         return bodyResponse;
