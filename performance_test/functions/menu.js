@@ -27,10 +27,10 @@ export function menu(baseUrl, basePath, token){
 
         const responseMenu = http.post(`${baseUrl}${basePath}/${relativePath}`, bodyWithFC, params);
 
-        console.log(`Menu call request duration: ${responseMenu.timings.duration} ms`);
-        console.log('Request Menu:', responseMenu.request);
-        console.log('Status Menu:', responseMenu.status);
-        console.log('Body Menu:', responseMenu.body);
+        //console.log(`Menu call request duration: ${responseMenu.timings.duration} ms`);
+        //console.log('Request Menu:', responseMenu.request);
+        //console.log('Status Menu:', responseMenu.status);
+        //console.log('Body Menu:', responseMenu.body);
 
         var count=0;
         while (responseMenu.status === 202 && count < 3) {

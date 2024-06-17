@@ -38,11 +38,11 @@ export function statusPayment(baseUrl, basePath, token, authorizePaymentResponse
 
     const response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
-    console.log(`Status payment call request duration: ${response.timings.duration} ms`);
+    //console.log(`Status payment call request duration: ${response.timings.duration} ms`);
 
-    console.log('Request Status payment:', response.request);
-    console.log('Status Status payment:', response.status);
-    console.log('Body Status payment:', response.body);
+    //console.log('Request Status payment:', response.request);
+    //console.log('Status Status payment:', response.status);
+    //console.log('Body Status payment:', response.body);
 
     var count=0;
     while (response.status === 202 && count < 3) {

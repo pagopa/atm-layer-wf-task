@@ -58,7 +58,7 @@ export function getMessages(baseUrl, basePath, token, menuResponse) {
         'response code get messages was 201': (res) => !hasError && res.status == 201,
     });
 
-    console.log("bodyResponse", bodyResponse);
+    //console.log("bodyResponse", bodyResponse);
 
     return bodyResponse;
 }

@@ -30,15 +30,15 @@ export function paymentScan(baseUrl, basePath, token, spontaneousPayementRespons
 
     let response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
-    console.log(`PaymentScan call request duration: ${response.timings.duration} ms`);
+    //console.log(`PaymentScan call request duration: ${response.timings.duration} ms`);
 
-    console.log('Request Scan Payement:', response.request);
-    console.log('Status Scan Payement:', response.status);
-    console.log('Body Scan Payement:', response.body);
+    //console.log('Request Scan Payement:', response.request);
+    //console.log('Status Scan Payement:', response.status);
+    //console.log('Body Scan Payement:', response.body);
     
     var count=0;
     while (response.status === 202 && count < 3) {
-        console.log('Retry Scan Payement:', count+1);
+        //console.log('Retry Scan Payement:', count+1);
         response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
         count++;
     }

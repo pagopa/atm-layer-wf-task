@@ -48,10 +48,10 @@ export function spontaneousPayment(baseUrl, basePath, token, messagesResponse){
 
         const responseSpsPayment = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
-        console.log(`Spontaneous Payement call request duration: ${responseSpsPayment.timings.duration} ms`);
-        console.log('Request Spontaneous Payement:', responseSpsPayment.request);
-        console.log('Status Spontaneous Payement:', responseSpsPayment.status);
-        console.log('Body Spontaneous Payement:', responseSpsPayment.body);
+        //console.log(`Spontaneous Payement call request duration: ${responseSpsPayment.timings.duration} ms`);
+        //console.log('Request Spontaneous Payement:', responseSpsPayment.request);
+        //console.log('Status Spontaneous Payement:', responseSpsPayment.status);
+        //console.log('Body Spontaneous Payement:', responseSpsPayment.body);
 
         var count=0;
         while (responseSpsPayment.status === 202 && count < 3) {

@@ -41,15 +41,15 @@ export function insertPaymentCode(baseUrl, basePath, token, spontaneousPayementR
 
     let response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
-    console.log(`insertPayementCode call request duration: ${response.timings.duration} ms`);
+    //console.log(`insertPayementCode call request duration: ${response.timings.duration} ms`);
 
-    console.log('Request insert code Payement:', response.request);
-    console.log('Status insert code Payement:', response.status);
-    console.log('Body insert code Payement:', response.body);
+    //console.log('Request insert code Payement:', response.request);
+    //console.log('Status insert code Payement:', response.status);
+    //console.log('Body insert code Payement:', response.body);
     
     var count=0;
     while (response.status === 202 && count < 3) {
-        console.log('Retry insert Code:', count+1);
+        //console.log('Retry insert Code:', count+1);
         response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
         count++;
     }

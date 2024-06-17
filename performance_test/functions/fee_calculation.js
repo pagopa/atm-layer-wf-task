@@ -39,11 +39,11 @@ export function feeCalculation(baseUrl, basePath, token, reviewPaymentDataRespon
 
     const response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
-    console.log(`Fee calculation call request duration: ${response.timings.duration} ms`);
+    //console.log(`Fee calculation call request duration: ${response.timings.duration} ms`);
 
-    console.log('Request Fee calculation:', response.request);
-    console.log('Status Fee calculation:', response.status);
-    console.log('Body Fee calculation:', response.body);
+    //console.log('Request Fee calculation:', response.request);
+    //console.log('Status Fee calculation:', response.status);
+    //console.log('Body Fee calculation:', response.body);
 
     var count=0;
     while (response.status === 202 && count < 3) {

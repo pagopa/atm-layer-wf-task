@@ -39,15 +39,15 @@ export function reviewPaymentData(baseUrl, basePath, token, payementDataResponse
 
     let response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
-    console.log(`reviewPaymentData call request duration: ${response.timings.duration} ms`);
+    //console.log(`reviewPaymentData call request duration: ${response.timings.duration} ms`);
 
-    console.log('Request review Payment:', response.request);
-    console.log('Status review Payment:', response.status);
-    console.log('Body review Payment:', response.body);
+    //console.log('Request review Payment:', response.request);
+    //console.log('Status review Payment:', response.status);
+    //console.log('Body review Payment:', response.body);
     
     var count=0;
     while (response.status === 202 && count < 3) {
-        console.log('Retry review Payment:', count+1);
+        //console.log('Retry review Payment:', count+1);
         response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
         count++;
     }

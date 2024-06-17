@@ -18,12 +18,12 @@ export function retrieveToken(cognitoBaseUrl, cognitoClientId, CognitoClientSecr
 
     const response = http.post(`${cognitoBaseUrl}`, body, params);
 
-    console.log(`Token call request duration: ${response.timings.duration} ms`);
-    console.log('Request Token:', response.request);
-    console.log('Status Token:', response.status);
-    console.log('Body Token:', response.body);
+    //console.log(`Token call request duration: ${response.timings.duration} ms`);
+    //console.log('Request Token:', response.request);
+    //console.log('Status Token:', response.status);
+    //console.log('Body Token:', response.body);
 
-    console.log("ACCES TOKEN: ", JSON.parse(response.body).access_token)
+    //console.log("ACCES TOKEN: ", JSON.parse(response.body).access_token)
 
     return JSON.parse(response.body).access_token;
 }

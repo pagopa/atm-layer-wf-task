@@ -40,15 +40,15 @@ export function insertFiscalcodeEC(baseUrl, basePath, token, spontaneousPayement
 
     let response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
-    console.log(`insertFiscalcodeEC call request duration: ${response.timings.duration} ms`);
+    //console.log(`insertFiscalcodeEC call request duration: ${response.timings.duration} ms`);
 
-    console.log('Request insert EC Payement:', response.request);
-    console.log('Status insert EC Payement:', response.status);
-    console.log('Body insert EC Payement:', response.body);
+    //console.log('Request insert EC Payement:', response.request);
+    //console.log('Status insert EC Payement:', response.status);
+    //console.log('Body insert EC Payement:', response.body);
     
     var count=0;
     while (response.status === 202 && count < 3) {
-        console.log('Retry insert EC:', count+1);
+        //console.log('Retry insert EC:', count+1);
         response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
         count++;
     }

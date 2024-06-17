@@ -48,10 +48,10 @@ export function idPaySelect(baseUrl, basePath, token, messagesResponse){
 
         const responseSpsPayment = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
-        console.log(`Seleziona IdPay call request duration: ${responseSpsPayment.timings.duration} ms`);
-        console.log('Request Seleziona IdPay:', responseSpsPayment.request);
-        console.log('Status Seleziona IdPay:', responseSpsPayment.status);
-        console.log('Body Seleziona IdPay:', responseSpsPayment.body);
+        //console.log(`Seleziona IdPay call request duration: ${responseSpsPayment.timings.duration} ms`);
+        //console.log('Request Seleziona IdPay:', responseSpsPayment.request);
+        //console.log('Status Seleziona IdPay:', responseSpsPayment.status);
+        //console.log('Body Seleziona IdPay:', responseSpsPayment.body);
 
         var count=0;
         while (responseSpsPayment.status === 202 && count < 3) {

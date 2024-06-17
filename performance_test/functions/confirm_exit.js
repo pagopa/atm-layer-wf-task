@@ -38,10 +38,10 @@ export function confirmExit(baseUrl, basePath, token, exitResponse) {
 
     const response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
-    console.log(`Confirm Exit call request duration: ${response.timings.duration} ms`);
-    console.log('Request Confirm Exit:', response.request);
-    console.log('Status Confirm Exit:', response.status);
-    console.log('Body Confirm Exit:', response.body);
+    //console.log(`Confirm Exit call request duration: ${response.timings.duration} ms`);
+    //console.log('Request Confirm Exit:', response.request);
+    //console.log('Status Confirm Exit:', response.status);
+    //console.log('Body Confirm Exit:', response.body);
 
     const hasError = checkError(response);
 

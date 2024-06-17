@@ -38,11 +38,11 @@ export function exit(baseUrl, basePath, token, scanPaymentResponse) {
 
     const response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
-    console.log(`Exit call request duration: ${response.timings.duration} ms`);
+    //console.log(`Exit call request duration: ${response.timings.duration} ms`);
 
-    console.log('Request Exit:', response.request);
-    console.log('Status Exit:', response.status);
-    console.log('Body Exit:', response.body);
+    //console.log('Request Exit:', response.request);
+    //console.log('Status Exit:', response.status);
+    //console.log('Body Exit:', response.body);
 
     var count=0;
     while (response.status === 202 && count < 3) {

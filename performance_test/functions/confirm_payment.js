@@ -38,15 +38,15 @@ export function confirmPayment(baseUrl, basePath, token, payementDataResponse) {
 
     let response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
-    console.log(`reviewPaymentData call request duration: ${response.timings.duration} ms`);
+    //console.log(`reviewPaymentData call request duration: ${response.timings.duration} ms`);
 
-    console.log('Request confirm Payement:', response.request);
-    console.log('Status confirm Payement:', response.status);
-    console.log('Body confirm Payement:', response.body);
+    //console.log('Request confirm Payement:', response.request);
+    //console.log('Status confirm Payement:', response.status);
+    //console.log('Body confirm Payement:', response.body);
     
     var count=0;
     while (response.status === 202 && count < 3) {
-        console.log('Retry confirm payment:', count+1);
+        //console.log('Retry confirm payment:', count+1);
         response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
         count++;
     }
