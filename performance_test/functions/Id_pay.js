@@ -62,7 +62,7 @@ export function idPaySelect(baseUrl, basePath, token, messagesResponse){
         const hasError = checkError(responseSpsPayment);
 
         let bodyResponse;
-        if (hasError) {
+        if (hasError || count == 3) {
             let responseBodyObject = JSON.parse(responseSpsPayment.body);
             responseBodyObject.status = 500;
             bodyResponse = JSON.stringify(responseBodyObject);

@@ -36,7 +36,7 @@ export function confirmExit(baseUrl, basePath, token, exitResponse) {
 
     const body = mockedRequestBody({confirmExitDataBody}, jsonData.id);
 
-    const response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
+    let response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
     //console.log(`Confirm Exit call request duration: ${response.timings.duration} ms`);
     //console.log('Request Confirm Exit:', response.request);
@@ -46,7 +46,7 @@ export function confirmExit(baseUrl, basePath, token, exitResponse) {
     const hasError = checkError(response);
 
     let bodyResponse;
-    if (hasError) {
+    if (hasError || count == 3) {
         let responseBodyObject = JSON.parse(response.body);
         responseBodyObject.status = 500;
         bodyResponse = JSON.stringify(responseBodyObject);

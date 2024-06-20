@@ -16,7 +16,7 @@ export function retrieveToken(cognitoBaseUrl, cognitoClientId, CognitoClientSecr
         tags: { name: 'TokenRetrieve' }
     };
 
-    const response = http.post(`${cognitoBaseUrl}`, body, params);
+    let response = http.post(`${cognitoBaseUrl}`, body, params);
 
     //console.log(`Token call request duration: ${response.timings.duration} ms`);
     //console.log('Request Token:', response.request);

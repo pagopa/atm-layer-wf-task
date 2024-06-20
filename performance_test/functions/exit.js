@@ -36,7 +36,7 @@ export function exit(baseUrl, basePath, token, scanPaymentResponse) {
 
     const body = mockedRequestBody(exitRequestBody, jsonData.id);
 
-    const response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
+    let response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
     //console.log(`Exit call request duration: ${response.timings.duration} ms`);
 
@@ -53,7 +53,7 @@ export function exit(baseUrl, basePath, token, scanPaymentResponse) {
     const hasError = checkError(response);
 
     let bodyResponse;
-    if (hasError) {
+    if (hasError || count == 3) {
         let responseBodyObject = JSON.parse(response.body);
         responseBodyObject.status = 500;
         bodyResponse = JSON.stringify(responseBodyObject);

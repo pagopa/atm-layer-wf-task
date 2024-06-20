@@ -37,7 +37,7 @@ export function feeCalculation(baseUrl, basePath, token, reviewPaymentDataRespon
 
     const body = mockedRequestBody(feeCalculationRequestBody, jsonData.id);
 
-    const response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
+    let response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
     //console.log(`Fee calculation call request duration: ${response.timings.duration} ms`);
 
@@ -54,7 +54,7 @@ export function feeCalculation(baseUrl, basePath, token, reviewPaymentDataRespon
     const hasError = checkError(response);
 
     let bodyResponse;
-    if (hasError) {
+    if (hasError || count == 3) {
         let responseBodyObject = JSON.parse(response.body);
         responseBodyObject.status = 500;
         bodyResponse = JSON.stringify(responseBodyObject);

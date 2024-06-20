@@ -46,7 +46,7 @@ export function getMessages(baseUrl, basePath, token, menuResponse) {
     const hasError = checkError(responseMessages);
 
     let bodyResponse;
-    if (hasError) {
+    if (hasError || count == 3) {
         let responseBodyObject = JSON.parse(responseMessages.body);
         responseBodyObject.status = 500;
         bodyResponse = JSON.stringify(responseBodyObject);

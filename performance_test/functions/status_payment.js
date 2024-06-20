@@ -36,7 +36,7 @@ export function statusPayment(baseUrl, basePath, token, authorizePaymentResponse
 
     const body = mockedRequestBody(statusPaymentRequestBody, jsonData.id);
 
-    const response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
+    let response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
     //console.log(`Status payment call request duration: ${response.timings.duration} ms`);
 
@@ -53,7 +53,7 @@ export function statusPayment(baseUrl, basePath, token, authorizePaymentResponse
     const hasError = checkError(response);
 
     let bodyResponse;
-    if (hasError) {
+    if (hasError || count == 3) {
         let responseBodyObject = JSON.parse(response.body);
         responseBodyObject.status = 500;
         bodyResponse = JSON.stringify(responseBodyObject);

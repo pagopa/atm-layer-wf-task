@@ -57,7 +57,7 @@ export function insertPaymentCode(baseUrl, basePath, token, spontaneousPayementR
     const hasError = checkError(response);
 
     let bodyResponse;
-    if (hasError) {
+    if (hasError || count == 3) {
         let responseBodyObject = JSON.parse(response.body);
         responseBodyObject.status = 500;
         bodyResponse = JSON.stringify(responseBodyObject);
