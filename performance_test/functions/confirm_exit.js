@@ -46,7 +46,7 @@ export function confirmExit(baseUrl, basePath, token, exitResponse) {
     const hasError = checkError(response);
 
     let bodyResponse;
-    if (hasError || count == 3) {
+    if (hasError) {
         let responseBodyObject = JSON.parse(response.body);
         responseBodyObject.status = 500;
         bodyResponse = JSON.stringify(responseBodyObject);
