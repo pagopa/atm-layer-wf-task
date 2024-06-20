@@ -25,7 +25,7 @@ logLevel: DEBUG
 
 tracing:
   enabled: "true"
-  endpointBasePath: "http://jaeger-collector.default.svc.cluster.local:4317"
+  endpointBasePath: "http://15.160.150.167:16686/search"
   enableJDBCMonitoring: "false"
 
 cdn:
