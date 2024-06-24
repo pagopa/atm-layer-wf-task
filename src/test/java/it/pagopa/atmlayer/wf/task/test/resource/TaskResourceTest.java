@@ -23,7 +23,6 @@ import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
 import it.pagopa.atmlayer.wf.task.client.TokenizationRestClient;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
-import it.pagopa.atmlayer.wf.task.logging.latency.LatencyTracer;
 import it.pagopa.atmlayer.wf.task.resource.TaskResource;
 import it.pagopa.atmlayer.wf.task.test.DataTest;
 import jakarta.ws.rs.ProcessingException;
@@ -50,10 +49,6 @@ class TaskResourceTest {
         @RestClient
         @MockitoConfig(convertScopes = true)
         TokenizationRestClient tokenizationRestClient;
-
-        @InjectMock
-        @MockitoConfig(convertScopes = true)
-        LatencyTracer latencyTracer;
 
         @Test
         void startProcessOk() {
@@ -161,6 +156,7 @@ class TaskResourceTest {
                 Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createTaskResponseNoForm(1, DataTest.createVariableResponseWithData())));
+
 
                 Response response = given().body(DataTest.createStateRequestStartWithoutDeviceData())
                                 .contentType(MediaType.APPLICATION_JSON).when()
@@ -318,7 +314,6 @@ class TaskResourceTest {
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/complete/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa")
                                 .then().extract().response();
-
                 Assertions.assertEquals(200, response.statusCode());
 
                 response = given().body(DataTest.createStateRequestNext())
