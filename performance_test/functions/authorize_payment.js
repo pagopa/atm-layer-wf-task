@@ -1,10 +1,11 @@
 import http from 'k6/http';
 import { check } from 'k6';
 import { mockedRequestBody, checkError } from '../utils_function.js';
+import { b64decode } from 'k6/encoding';
 
-export function exit(baseUrl, basePath, token, scanPaymentResponse) {
+export function authorizePayment(baseUrl, basePath, token, payementDataResponse) {
 
-    let responseParsed = JSON.parse(scanPaymentResponse);
+    let responseParsed = JSON.parse(payementDataResponse);
 
     if(responseParsed.status === 500) {
         const errorResponse = {
@@ -14,7 +15,7 @@ export function exit(baseUrl, basePath, token, scanPaymentResponse) {
         return errorResponse;
     }
 
-    const transactionId = JSON.parse(scanPaymentResponse).transactionId;
+    const transactionId = JSON.parse(payementDataResponse).transactionId;
 
     const relativePath = `next/trns/${transactionId}`;
 
@@ -25,32 +26,34 @@ export function exit(baseUrl, basePath, token, scanPaymentResponse) {
 
     const params = {
         headers: headers,
-        tags: { name: '10 Seleziona uscita' },
+        tags: { name: '08 Autorizza pagamento (close)' },
     };
 
-    const jsonData = JSON.parse(scanPaymentResponse).task;
+    const jsonData = JSON.parse(payementDataResponse).task;
 
-    const exitRequestBody = {
-        continue: false,
+    const payementDataBody = {
+        continue: true,
+        result: "OK"
     }
 
-    const body = mockedRequestBody(exitRequestBody, jsonData.id);
+    const body = mockedRequestBody(payementDataBody, jsonData.id);
 
     let response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
-    //console.log(`Exit call request duration: ${response.timings.duration} ms`);
+    //console.log(`reviewPaymentData call request duration: ${response.timings.duration} ms`);
 
-    //console.log('Request Exit:', response.request);
-    //console.log('Status Exit:', response.status);
-    //console.log('Body Exit:', response.body);
+    //console.log('Request authorize Payement:', response.request);
+    //console.log('Status authorize Payement:', response.status);
+    //console.log('Body authorize Payement:', response.body);
 
-    var count=0;
+    var count = 0;
     while (response.status === 202 && count < 3) {
+        //console.log('Retry authorize payment:', count + 1);
         response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
         count++;
     }
 
-    const hasError = checkError(response);
+    let hasError = checkError(response);
 
     let bodyResponse;
     if (hasError || count == 3) {
@@ -60,9 +63,9 @@ export function exit(baseUrl, basePath, token, scanPaymentResponse) {
     } else {
         bodyResponse = response.body;
     }
-    
+
     check(response, {
-        'response code 10 Seleziona uscita was 201': (res) => !hasError && res.status == 201,
+        'response code 08 Autorizza pagamento (close) was 201': (res) => !hasError && res.status == 201,
     });
 
     return bodyResponse;

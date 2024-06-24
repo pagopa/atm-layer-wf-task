@@ -20,7 +20,11 @@ import lombok.extern.slf4j.Slf4j;
 @RegisterForReflection
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Slf4j
+<<<<<<<< HEAD:src/main/java/it/pagopa/atmlayer/wf/task/logging/sensitive/SensitiveDataTracer.java
 public class SensitiveDataTracer {
+========
+public class ClearDataTracer {
+>>>>>>>> 14d5e85 (Dev latency):src/main/java/it/pagopa/atmlayer/wf/task/logging/sensitive/ClearDataTracer.java
 
     @Inject
     private static S3ObjectStoreServiceImpl objectStoreServiceImpl;

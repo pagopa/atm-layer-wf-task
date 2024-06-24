@@ -80,6 +80,12 @@ public class LogFilter extends CommonLogic implements ContainerRequestFilter, Co
             }
             log.info("============== RESPONSE ==============");
             MDC.remove(Constants.TRANSACTION_ID_LOG_CONFIGURATION);
+            
+            if (URI.contains("main")) {
+                logElapsedTime("TaskResource.createMainScene", requestContext.getProperty(Constants.START_TIME));
+            } else if (URI.contains("next")) {
+                logElapsedTime("TaskResource.createNextScene", requestContext.getProperty(Constants.START_TIME));
+            }
         }
     }
 
