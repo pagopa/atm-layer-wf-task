@@ -29,9 +29,6 @@ class IntegrationTest {
         NEWMAN = new GenericContainer<>(new ImageFromDockerfile()
                 .withDockerfile(Paths.get("src/test/resources/integration-test/Dockerfile-postman")))
                 .withFileSystemBind("src/test/resources/integration-test/output", "/output", BindMode.READ_WRITE)
-                .withEnv("AWS_ACCESS_KEY_ID", "test")
-                .withEnv("AWS_SECRET_ACCESS_KEY", "test")
-                .withEnv("AWS_REGION", "test")
                 .withAccessToHost(true)
                 .withStartupCheckStrategy(new OneShotStartupCheckStrategy().withTimeout(Duration.ofSeconds(120)));
     }
