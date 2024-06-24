@@ -51,8 +51,6 @@ class TaskResourceTest {
         @MockitoConfig(convertScopes = true)
         TokenizationRestClient tokenizationRestClient;
         
-        
-        
 
         @Test
         void startProcessOk() {
@@ -315,36 +313,6 @@ class TaskResourceTest {
                                 .then().extract().response();
 
                 Assertions.assertEquals(201, response.statusCode());
-        }
-        
-        @Test
-        void next2TaskOk() {
-            
-            Mockito.when(processRestClient.complete(Mockito.any(TaskRequest.class)))
-            .thenReturn(RestResponse.status(Status.OK));
-
-                Mockito.when(processRestClient.next2Tasks(Mockito.any(TaskRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createVariableResponseNoData()));
-                
-                
-
-                Response response = given().body(DataTest.createStateRequestNext())
-                                .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/complete/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa")
-                                .then().extract().response();
-                Assertions.assertEquals(200, response.statusCode());
-                
-                response = given().body(DataTest.createStateRequestNext())
-                        .contentType(MediaType.APPLICATION_JSON).when()
-                        .post("/next2/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa")
-                        .then().extract().response();
-
-        Assertions.assertEquals(201, response.statusCode());
         }
 
         @Test

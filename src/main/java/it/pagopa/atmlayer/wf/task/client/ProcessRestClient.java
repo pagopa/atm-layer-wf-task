@@ -20,15 +20,6 @@ public interface ProcessRestClient {
     @POST
     @Path("/next")
     RestResponse<TaskResponse> nextTasks(TaskRequest taskRequest);
-    
-    @POST
-    @Path("/complete")
-    RestResponse complete(TaskRequest taskRequest);
-    
-    @POST
-    @Path("/next2")
-    RestResponse<TaskResponse> next2Tasks(TaskRequest taskRequest);    
-    
 
     @POST
     @Path("/variables")
