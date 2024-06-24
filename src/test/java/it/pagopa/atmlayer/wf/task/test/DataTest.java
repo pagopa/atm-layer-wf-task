@@ -27,7 +27,7 @@ import it.pagopa.atmlayer.wf.task.util.Utility;
 
 public class DataTest {
 
-    public static TaskResponse createTaskResponse(int numberOfTasks, VariableResponse variableResponse) {
+    public static TaskResponse createTaskResponse(int numberOfTasks) {
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setTasks(new ArrayList<Task>());
         for (int i = 0; i <= numberOfTasks; i++) {
@@ -43,15 +43,11 @@ public class DataTest {
         templateMap.put(Constants.RECEIPT_TEMPLATE, "riepilogoCommissioni.html");
         taskResponse.getTasks().get(0).setVariables(templateMap);
         taskResponse.setTransactionId("1000");
-        if (variableResponse.getVariables() != null)
-            taskResponse.getTasks().get(0).getVariables().putAll(variableResponse.getVariables());
-        if (variableResponse.getButtons() != null)
-            taskResponse.getTasks().get(0).getVariables().putAll(variableResponse.getButtons());
 
         return taskResponse;
     }
 
-    public static TaskResponse createTaskResponseMissingReceipt(int numberOfTasks, VariableResponse variableResponse) {
+    public static TaskResponse createTaskResponseMissingReceipt(int numberOfTasks) {
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setTasks(new ArrayList<Task>());
         for (int i = 0; i <= numberOfTasks; i++) {
@@ -64,15 +60,11 @@ public class DataTest {
 
         taskResponse.getTasks().get(0).setForm("riepilogoCommissioni.html");
         taskResponse.setTransactionId("1000");
-        taskResponse.getTasks().get(0).setVariables(variableResponse.getVariables());
-        if (variableResponse.getButtons() != null)
-            taskResponse.getTasks().get(0).getVariables().putAll(variableResponse.getButtons());
-
 
         return taskResponse;
     }
 
-    public static TaskResponse createTaskResponseNoForm(int numberOfTasks, VariableResponse variableResponse) {
+    public static TaskResponse createTaskResponseNoForm(int numberOfTasks) {
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setTasks(new ArrayList<Task>());
         for (int i = 0; i <= numberOfTasks; i++) {
@@ -88,13 +80,10 @@ public class DataTest {
         taskResponse.getTasks().get(0).setVariables(templateMap);
         taskResponse.setTransactionId("1000");
 
-        taskResponse.getTasks().get(0).getVariables().putAll(variableResponse.getVariables());
-        taskResponse.getTasks().get(0).getVariables().putAll(variableResponse.getButtons());
-
         return taskResponse;
     }
 
-    public static TaskResponse createTaskResponseMissingHtml(int numberOfTasks, VariableResponse variableResponse) {
+    public static TaskResponse createTaskResponseMissingHtml(int numberOfTasks) {
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setTasks(new ArrayList<Task>());
         for (int i = 0; i <= numberOfTasks; i++) {
@@ -107,9 +96,6 @@ public class DataTest {
 
         taskResponse.getTasks().get(0).setForm("test.html");
         taskResponse.setTransactionId("1000");
-
-        taskResponse.getTasks().get(0).setVariables(variableResponse.getVariables());
-        taskResponse.getTasks().get(0).getVariables().putAll(variableResponse.getButtons());
 
         return taskResponse;
     }
@@ -188,12 +174,6 @@ public class DataTest {
 
     public static VariableResponse createVariableResponseNoButtons() {
         VariableResponse variableResponse = new VariableResponse();
-        variableResponse.setVariables(new HashMap<String, Object>());
-        variableResponse.getVariables().put("company", "Auriga");
-        variableResponse.getVariables().put("description", "descrizione");
-        variableResponse.getVariables().put("amount", 10000);
-        variableResponse.getVariables().put("fee", 2.30);
-        variableResponse.getVariables().put("totale", 2.30);
         return variableResponse;
     }
 
@@ -319,9 +299,10 @@ public class DataTest {
         return varResponse;
     }
 
-    public static TaskResponse createTaskResponseNoVariablesRequest(int numberOfTasks, VariableResponse variableResponse) {
-        TaskResponse taskResponse = createTaskResponse(numberOfTasks, variableResponse);
-        taskResponse.getTasks().get(0).setForm("arrivederci.html");     
+    public static TaskResponse createTaskResponseNoVariablesRequest(int numberOfTasks) {
+        TaskResponse taskResponse = createTaskResponse(numberOfTasks);
+        taskResponse.getTasks().get(0).setForm("arrivederci.html");
+        taskResponse.getTasks().get(0).setVariables(null);
         return taskResponse;
     }
 
