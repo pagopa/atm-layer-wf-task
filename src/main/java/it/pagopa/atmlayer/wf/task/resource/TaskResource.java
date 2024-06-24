@@ -263,7 +263,9 @@ public class TaskResource extends CommonLogic{
             }
 
             return response;
-        
+        } catch (ProcessingException e) {
+            log.error("Unable to establish connection", e);
+            throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
         } finally {
             logElapsedTime(CREATE_NEXT_SCENE_LOG_ID , start);
         }
