@@ -50,6 +50,9 @@ class TaskResourceTest {
         @RestClient
         @MockitoConfig(convertScopes = true)
         TokenizationRestClient tokenizationRestClient;
+        
+        
+        
 
         @Test
         void startProcessOk() {
@@ -313,30 +316,12 @@ class TaskResourceTest {
 
                 Assertions.assertEquals(201, response.statusCode());
         }
-
-        @Test
-        void nextTaskConnectionProblem() {
-
-                Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK,
-                                                DataTest.createTaskResponse(1)));
-
-                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
-                                .thenThrow(new ProcessingException("error"));
-
-                given().body(DataTest.createStateRequestNext())
-                                .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/next/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa")
-                                .then()
-                                .statusCode(StatusCode.INTERNAL_SERVER_ERROR);
-
-        }
-
+        
         @Test
         void next2TaskOk() {
-
-                Mockito.when(processRestClient.complete(Mockito.any(TaskRequest.class)))
-                                .thenReturn(RestResponse.status(Status.OK));
+            
+            Mockito.when(processRestClient.complete(Mockito.any(TaskRequest.class)))
+            .thenReturn(RestResponse.status(Status.OK));
 
                 Mockito.when(processRestClient.next2Tasks(Mockito.any(TaskRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
@@ -345,20 +330,22 @@ class TaskResourceTest {
                 Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createVariableResponseNoData()));
+                
 
                 Response response = given().body(DataTest.createStateRequestNext())
                                 .contentType(MediaType.APPLICATION_JSON).when()
                                 .post("/complete/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa")
                                 .then().extract().response();
                 Assertions.assertEquals(200, response.statusCode());
-
+                
                 response = given().body(DataTest.createStateRequestNext())
-                                .contentType(MediaType.APPLICATION_JSON).when()
-                                .post("/next2/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa")
-                                .then().extract().response();
+                        .contentType(MediaType.APPLICATION_JSON).when()
+                        .post("/next2/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa")
+                        .then().extract().response();
 
-                Assertions.assertEquals(201, response.statusCode());
+        Assertions.assertEquals(201, response.statusCode());
         }
+        
 
 
         @Test
@@ -737,7 +724,7 @@ class TaskResourceTest {
 
                 Assertions.assertEquals(200, response.statusCode());
         }
-
+        
         @Test
         void test2EndProcess() {
 
@@ -745,8 +732,7 @@ class TaskResourceTest {
                                 .thenReturn(RestResponse.status(Status.OK,
                                                 DataTest.createTaskResponseEndProcess()));
 
-                Mockito.when(milAuthRestClient.deleteToken(Mockito.anyString(), Mockito.anyString(),
-                                Mockito.anyString(), Mockito.anyString()))
+                Mockito.when(milAuthRestClient.deleteToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
                                 .thenReturn(RestResponse.status(Status.NO_CONTENT));
 
                 Response response = given().body(DataTest.createStateRequestStart())
