@@ -2,6 +2,7 @@ package it.pagopa.atmlayer.wf.task.client.bean;
 
 import java.util.Date;
 
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -55,7 +56,7 @@ public class DeviceInfo {
     /*
      * Type of device.
      */
-    @Schema(description = "Identificativo del tipo di device")
+    @Schema(description = "Identificativo del tipo di device", implementation = DeviceType.class, enumeration = "[\"ATM\", \"KIOSK\"]", type = SchemaType.STRING, format = "string")
     private DeviceType channel;
 
 }

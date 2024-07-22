@@ -16,10 +16,10 @@ import lombok.Data;
 public class Template {
 
     @JsonView(ObscureView.class)
-    @Schema(description = "Rappresenta il Base64 della pagina HTML da visualizzare")
+    @Schema(description = "Rappresenta il Base64 della pagina HTML da visualizzare", maxLength = 100000, format = "string")
     private String content;
 
-    @Schema(description = "Tipo di visualizzazione della schermata HTML", example = "FULL_SCREEN")
+    @Schema(description = "Tipo di visualizzazione della schermata HTML", example = "FULL_SCREEN", maxLength = 11, format = "string")
     private String type;
 
 }
