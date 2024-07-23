@@ -86,8 +86,17 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 
     @RestClient
     TokenizationRestClient tokenizationClient;
+    
+    /*
+     * Variabile che indica se si sta eseguendo una comunicazione esterna
+     */
+    Boolean externalComm = false;
 
-    @Override
+    public Boolean getExternalComm() {
+		return externalComm;
+	}
+
+	@Override
     public Scene buildFirst(String functionId, State state) {
         /*
          * new Thread(() -> {
@@ -203,12 +212,24 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                 atmTask.setId(workingTask.getId());
                 Map<String, Object> workingVariables = variableResponse.getVariables();
 
-                // Aggiungo al contesto dei log la functionId
-                if (workingVariables != null && workingVariables.get(Constants.FUNCTION_ID_CONTEXT_LOG) != null) {
-                    MDC.put(Constants.FUNCTION_ID_CONTEXT_LOG,
-                            (String) workingVariables.get(Constants.FUNCTION_ID_CONTEXT_LOG));
-                }
-
+                
+				if (workingVariables != null) {
+					/*
+					 * Aggiunto al contesto dei log il function id
+					 */
+					if (workingVariables.get(Constants.FUNCTION_ID_CONTEXT_LOG) != null) {
+						MDC.put(Constants.FUNCTION_ID_CONTEXT_LOG,
+								(String) workingVariables.get(Constants.FUNCTION_ID_CONTEXT_LOG));
+					}
+					/*
+					 * Recupero variabile che indica se si è eseguita una comunicazione esterna
+					 */
+					if (workingVariables.get(Constants.EXTERNAL_COMM) != null) {
+						externalComm = (Boolean) workingVariables.get(Constants.EXTERNAL_COMM);
+						workingVariables.remove(Constants.EXTERNAL_COMM);
+					}
+				}
+                
                 manageReceipt(workingVariables, atmTask);
 
                 manageVariables(workingVariables, atmTask, variableRequest);

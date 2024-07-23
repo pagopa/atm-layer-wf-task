@@ -1,32 +1,27 @@
 <?xml version="1.0"?>
-<project
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>it.pagopa.atmlayer</groupId>
   <artifactId>workflow-task</artifactId>
   <version>1.3.0-dev.30</version>
   <properties>
-    <jacoco.version>0.8.11</jacoco.version>
+    <apache.common.text.version>1.11.0</apache.common.text.version>
     <compiler-plugin.version>3.11.0</compiler-plugin.version>
+    <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
+    <jacoco.version>0.8.11</jacoco.version>
+    <lombok.version>1.18.30</lombok.version>
     <maven.compiler.release>21</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
+    <quarkus-amazon-services.version>2.12.2</quarkus-amazon-services.version>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
-    <lombok.version>1.18.28</lombok.version>
-    <skipITs>true</skipITs>
-    <surefire-plugin.version>3.1.2</surefire-plugin.version>
-    <lombok.version>1.18.30</lombok.version>
+    <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <quarkus.platform.version>3.8.1</quarkus.platform.version>
     <skipITs>true</skipITs>
-    <surefire-plugin.version>3.1.2</surefire-plugin.version>
-    <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
-    <quarkus-amazon-services.version>2.12.2</quarkus-amazon-services.version>
-    <apache.common.text.version>1.11.0</apache.common.text.version>
-    <sonarsource.scanner.version>3.11.0.3922</sonarsource.scanner.version>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonarsource.scanner.version>3.11.0.3922</sonarsource.scanner.version>
+    <surefire-plugin.version>3.1.2</surefire-plugin.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -44,6 +39,13 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+        <groupId>${quarkus.platform.group-id}</groupId>
+        <artifactId>quarkus-amazon-services-bom</artifactId>
+        <version>${quarkus.platform.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <dependencies>
@@ -54,7 +56,6 @@
     <dependency>
       <groupId>jakarta.validation</groupId>
       <artifactId>jakarta.validation-api</artifactId>
-      <version>3.0.2</version>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -67,6 +68,10 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-smallrye-openapi</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkiverse.amazonservices</groupId>
+      <artifactId>quarkus-amazon-lambda</artifactId>
     </dependency>
     <dependency>
       <groupId>io.rest-assured</groupId>
@@ -88,7 +93,6 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5-mockito</artifactId>
       <scope>test</scope>
-      <!-- To avoid Quarkus bug with Mockito -->
       <exclusions>
         <exclusion>
           <groupId>org.mockito</groupId>
@@ -96,7 +100,6 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <!-- To avoid Quarkus bug with Mockito -->
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
@@ -119,8 +122,7 @@
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.10.1</version>
-    </dependency>
+      </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-opentelemetry</artifactId>
@@ -164,7 +166,6 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
-      <version>${apache.common.text.version}</version>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>

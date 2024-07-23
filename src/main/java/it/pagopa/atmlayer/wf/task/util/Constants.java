@@ -1,5 +1,9 @@
 package it.pagopa.atmlayer.wf.task.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access=AccessLevel.PRIVATE)
 public class Constants {
 
     public static final String TIMEOUT_VARIABLES = "onTimeout";
@@ -47,5 +51,7 @@ public class Constants {
     public static final String PAN_INFO = "panInfo";
 
     public static final String START_TIME = "startTime";
+    
+    public static final String EXTERNAL_COMM = "externalComm";
 
 }

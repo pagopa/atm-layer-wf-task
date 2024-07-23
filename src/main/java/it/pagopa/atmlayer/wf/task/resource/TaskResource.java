@@ -22,7 +22,8 @@ import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorException;
 import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorResponse;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeEnum;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeResponse;
-import it.pagopa.atmlayer.wf.task.service.TaskService;
+import it.pagopa.atmlayer.wf.task.client.lambda.LatencyLoggingLambdaClient;
+import it.pagopa.atmlayer.wf.task.service.impl.TaskServiceImpl;
 import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Constants;
 import jakarta.inject.Inject;
@@ -48,13 +49,16 @@ import lombok.extern.slf4j.Slf4j;
 public class TaskResource extends CommonLogic{
 
 	@Inject
-	TaskService taskService;
+	TaskServiceImpl taskService;
 	
 	@Inject
     Validator validator;
 
 	@Inject
 	Tracer tracer;
+	
+	@Inject
+	LatencyLoggingLambdaClient latencyLoggingLambdaClient;
 
 	@SecurityRequirement(name = "bearerAuth")
 	@Path("/main")
@@ -89,6 +93,7 @@ public class TaskResource extends CommonLogic{
 			log.error("Unable to establish connection", e);
 			throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
 		} finally {
+			latencyLoggingLambdaClient.log(start, System.currentTimeMillis(), taskService.getExternalComm());
 			logElapsedTime(CREATE_MAIN_SCENE_LOG_ID , start);
 		}
 
@@ -165,8 +170,9 @@ public class TaskResource extends CommonLogic{
 			log.error("Unable to establish connection", e);
 			throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
 		} finally {
+			latencyLoggingLambdaClient.log(start, System.currentTimeMillis(), taskService.getExternalComm());
 			logElapsedTime(CREATE_NEXT_SCENE_LOG_ID , start);
 		}
-
+		
 	}
 }
