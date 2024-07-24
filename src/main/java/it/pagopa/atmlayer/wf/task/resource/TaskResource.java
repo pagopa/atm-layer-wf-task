@@ -93,7 +93,7 @@ public class TaskResource extends CommonLogic{
 			log.error("Unable to establish connection", e);
 			throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
 		} finally {
-			latencyLoggingLambdaClient.log(start, System.currentTimeMillis(), taskService.getExternalComm());
+			latencyLoggingLambdaClient.log(start, System.currentTimeMillis(), true);
 			logElapsedTime(CREATE_MAIN_SCENE_LOG_ID , start);
 		}
 

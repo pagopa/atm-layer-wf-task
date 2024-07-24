@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.crypto.BadPaddingException;
@@ -147,7 +148,14 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
         TaskRequest taskRequest = buildTaskRequest(state, transactionId, null);
         RestResponse<TaskResponse> restTaskResponse = null;
         long start = System.currentTimeMillis();
-
+        
+        if (!Objects.isNull(taskRequest.getVariables())) {
+        	taskRequest.getVariables().put(Constants.EXTERNAL_COMM, false);
+        } else {
+        	taskRequest.setVariables(new HashMap<>());
+        	taskRequest.getVariables().put(Constants.EXTERNAL_COMM, false);
+        }
+        
         try {
             log.info("Calling next task: [{}]", taskRequest);
             restTaskResponse = processRestClient.nextTasks(taskRequest);
