@@ -1,7 +1,7 @@
 
 # Coverage Report: JaCoCo
 
-* TaskResourceTest (QuarkusTest)
+* TaskResourceOverrideConfigTest (QuarkusTest)
       
       
 | Outcome                 | Value                                                               |
