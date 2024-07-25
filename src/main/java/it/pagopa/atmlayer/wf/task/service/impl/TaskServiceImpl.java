@@ -13,6 +13,7 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -212,7 +213,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             if (!Objects.isNull(variableRequest.getVariables())){
             	variableRequest.getVariables().add(Constants.EXTERNAL_COMM);
             } else {
-            	variableRequest.setVariables(Collections.emptySet());
+            	variableRequest.setVariables(new HashSet<>());
             	variableRequest.getVariables().add(Constants.EXTERNAL_COMM);
             }
 
