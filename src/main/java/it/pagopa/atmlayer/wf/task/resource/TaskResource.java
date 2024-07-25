@@ -1,6 +1,7 @@
 package it.pagopa.atmlayer.wf.task.resource;
 
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SecuritySchemeType;
@@ -93,7 +94,7 @@ public class TaskResource extends CommonLogic{
 			log.error("Unable to establish connection", e);
 			throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
 		} finally {
-			latencyLoggingLambdaClient.log(start, System.currentTimeMillis(), true);
+			CompletableFuture.runAsync(() -> latencyLoggingLambdaClient.log(start, System.currentTimeMillis(), true));
 			logElapsedTime(CREATE_MAIN_SCENE_LOG_ID , start);
 		}
 
@@ -170,7 +171,7 @@ public class TaskResource extends CommonLogic{
 			log.error("Unable to establish connection", e);
 			throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
 		} finally {
-			latencyLoggingLambdaClient.log(start, System.currentTimeMillis(), taskService.getExternalComm());
+			CompletableFuture.runAsync(() -> latencyLoggingLambdaClient.log(start, System.currentTimeMillis(), taskService.getExternalComm()));
 			logElapsedTime(CREATE_NEXT_SCENE_LOG_ID , start);
 		}
 		
