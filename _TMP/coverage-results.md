@@ -1,15 +1,15 @@
 
 # Coverage Report: JaCoCo
 
-* IntegrationTest (QuarkusTest)
+* TaskResourceTest (QuarkusTest)
       
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 90.17%               |
-| :heavy_check_mark: Number of Lines Covered | 743    |
-| :x: Number of Lines Missed  | 81     |
-| Total Number of Lines   | 824     |
+| Code Coverage %         | 90.55%               |
+| :heavy_check_mark: Number of Lines Covered | 747    |
+| :x: Number of Lines Missed  | 78     |
+| Total Number of Lines   | 825     |
 
 
 ## Details:
@@ -168,23 +168,23 @@
         
 #### Lines Missed:
         
-- Line #279
+- Line #280
 ```
                         });
 ```
-- Line #322
+- Line #323
 ```
                 } catch (UnsupportedEncodingException e) {
 ```
-- Line #397
+- Line #398
 ```
                     } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 ```
-- Line #432
+- Line #433
 ```
             } catch (WebApplicationException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
 ```
-- Line #651
+- Line #652
 ```
             } catch (UnsupportedEncodingException e) {
 ```
@@ -452,6 +452,10 @@
         
 #### All Lines Covered!
         
+- Line #23
+```
+				.latencyType(externalComm.equals(Boolean.valueOf(true)) ? EXTERNAL : INTERNAL)
+```
 </details>
 
     
@@ -541,10 +545,6 @@
         
 #### Lines Missed:
         
-- Line #60
-```
-                });
-```
 </details>
 
     
