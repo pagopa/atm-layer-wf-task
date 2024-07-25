@@ -182,6 +182,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             scene.setTask(manageOkResponse(restTaskResponse.getEntity()));
             return scene;
         } else if (restTaskResponse.getStatus() == 202) {
+        	externalComm = true;
             log.info("Retrieved process: [{}]", restTaskResponse.getEntity());
             scene.setOutcome(new OutcomeResponse(OutcomeEnum.PROCESSING));
             return scene;
