@@ -8,7 +8,6 @@ import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.services.lambda.LambdaAsyncClient;
 import software.amazon.awssdk.services.lambda.model.InvocationType;
 import software.amazon.awssdk.services.lambda.model.InvokeRequest;
-import software.amazon.awssdk.services.lambda.model.LambdaException;
 
 /**
  * This class represents an entry point to lambda functions defined into AWS. It

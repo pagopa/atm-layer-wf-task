@@ -3,7 +3,6 @@ package it.pagopa.atmlayer.wf.task.bean;
 import java.util.List;
 import java.util.Map;
 
-
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.media.Schema.False;
