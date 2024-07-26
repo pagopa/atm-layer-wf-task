@@ -12,6 +12,7 @@
 | :x: Number of Lines Missed  | 78     |
 | Total Number of Lines   | 825     |
 
+
 ## Details:
 
     
@@ -198,6 +199,20 @@
 #### Lines Missed:
         
 - Line #256
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/service/impl
+
+<details>
+    <summary>
+:x: TaskServiceImpl.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #256
 ```
                 } catch (UnsupportedEncodingException e) {
 ```
@@ -208,10 +223,16 @@
 
 - Line #366
 - Line #366
+- Line #366
 ```
             } catch (WebApplicationException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
 ```
 - Line #652
+```
+            } catch (UnsupportedEncodingException e) {
+            } catch (WebApplicationException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
+```
+- Line #585
 ```
             } catch (UnsupportedEncodingException e) {
             } catch (WebApplicationException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
@@ -288,7 +309,6 @@
 <details>
     <summary>
 :x: VariableRequest.java
-
     </summary>
 
         
@@ -461,18 +481,6 @@
 ### it/pagopa/atmlayer/wf/task/database/dynamo/service
 ### it/pagopa/atmlayer/wf/task/database/dynamo/service
 
-<details>
-    <summary>
-:heavy_check_mark: ConfigurationAsyncServiceImpl.java
-    </summary>
-
-        
-#### All Lines Covered!
-        
-</details>
-
-    
-### it/pagopa/atmlayer/wf/task/database/dynamo/entity
 
 <details>
     <summary>
@@ -491,8 +499,24 @@
 <details>
     <summary>
 :x: Configuration.java
+:heavy_check_mark: ConfigurationAsyncServiceImpl.java
     </summary>
 
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/database/dynamo/entity
+
+<details>
+    <summary>
+:x: Configuration.java
+    </summary>
+
+        
+#### Lines Missed:
         
 #### Lines Missed:
         
@@ -608,6 +632,7 @@
 </details>
 
     
+### it/pagopa/atmlayer/wf/task/database/dynamo/service/contract
 ### it/pagopa/atmlayer/wf/task/database/dynamo/service/contract
 ### it/pagopa/atmlayer/wf/task/database/dynamo/service/contract
 

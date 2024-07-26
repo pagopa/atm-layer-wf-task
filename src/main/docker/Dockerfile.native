@@ -14,7 +14,7 @@
 # docker run -i --rm -p 8080:8080 quarkus/workflow-process
 #
 ###
-FROM quay.io/quarkus/ubi-quarkus-graalvmce-builder-image:22.3-java17 AS build
+FROM quay.io/quarkus/ubi-quarkus-graalvmce-builder-image:22.3-java17@sha256:610d2607ac44366410c3a37ed8c052c41b68f5913d86226a288509898e03dc9c AS build
 COPY --chown=quarkus:quarkus mvnw /code/mvnw
 COPY --chown=quarkus:quarkus .mvn /code/.mvn
 COPY --chown=quarkus:quarkus pom.xml /code/
@@ -27,7 +27,7 @@ ARG APP_NAME
 RUN ./mvnw package -Pnative -Dquarkus.application.name=$APP_NAME -Dquarkus.profile=$QUARKUS_PROFILE
 
 ## Stage 2 : create the docker final image
-FROM quay.io/quarkus/quarkus-micro-image:2.0
+FROM quay.io/quarkus/quarkus-micro-image:2.0@sha256:38c75e7b4f5b2a60da4300d7d0c2751e8df806e816d1b434b07e8bbd62cfe8d0
 WORKDIR /work/
 COPY --from=build /code/target/*-runner /work/application
 
