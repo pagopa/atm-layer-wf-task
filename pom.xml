@@ -4,7 +4,6 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>it.pagopa.atmlayer</groupId>
   <artifactId>workflow-task</artifactId>
-  <version>1.8.1-dev.4</version>
   <version>1.9.2</version>
   <properties>
     <apache.common.text.version>1.11.0</apache.common.text.version>
