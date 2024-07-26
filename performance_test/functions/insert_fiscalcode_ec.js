@@ -2,9 +2,9 @@ import http from 'k6/http';
 import { check } from 'k6';
 import { mockedRequestBody, checkError } from '../utils_function.js';
 
-export function exit(baseUrl, basePath, token, scanPaymentResponse) {
+export function insertFiscalcodeEC(baseUrl, basePath, token, spontaneousPayementResponse) {
 
-    let responseParsed = JSON.parse(scanPaymentResponse);
+    let responseParsed = JSON.parse(spontaneousPayementResponse);
 
     if(responseParsed.status === 500) {
         const errorResponse = {
@@ -14,7 +14,7 @@ export function exit(baseUrl, basePath, token, scanPaymentResponse) {
         return errorResponse;
     }
 
-    const transactionId = JSON.parse(scanPaymentResponse).transactionId;
+    const transactionId = JSON.parse(spontaneousPayementResponse).transactionId;
 
     const relativePath = `next/trns/${transactionId}`;
 
@@ -25,27 +25,30 @@ export function exit(baseUrl, basePath, token, scanPaymentResponse) {
 
     const params = {
         headers: headers,
-        tags: { name: '10 Seleziona uscita' },
+        tags: { name: '04 Inserimento codice fiscale ente creditore' },
     };
 
-    const jsonData = JSON.parse(scanPaymentResponse).task;
+    const jsonData = JSON.parse(spontaneousPayementResponse).task;
 
-    const exitRequestBody = {
-        continue: false,
+    const scanPaymentRequestBody = {
+        continue: true,
+        result: "OK",
+        codiceEnte:  "00000000201"
     }
 
-    const body = mockedRequestBody(exitRequestBody, jsonData.id);
+    const body = mockedRequestBody(scanPaymentRequestBody, jsonData.id);
 
     let response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
-    //console.log(`Exit call request duration: ${response.timings.duration} ms`);
+    //console.log(`insertFiscalcodeEC call request duration: ${response.timings.duration} ms`);
 
-    //console.log('Request Exit:', response.request);
-    //console.log('Status Exit:', response.status);
-    //console.log('Body Exit:', response.body);
-
+    //console.log('Request insert EC Payement:', response.request);
+    //console.log('Status insert EC Payement:', response.status);
+    //console.log('Body insert EC Payement:', response.body);
+    
     var count=0;
     while (response.status === 202 && count < 3) {
+        //console.log('Retry insert EC:', count+1);
         response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
         count++;
     }
@@ -62,7 +65,7 @@ export function exit(baseUrl, basePath, token, scanPaymentResponse) {
     }
     
     check(response, {
-        'response code 10 Seleziona uscita was 201': (res) => !hasError && res.status == 201,
+        'response code 04 Inserimento codice fiscale ente creditore was 201': (res) => !hasError && res.status == 201,
     });
 
     return bodyResponse;

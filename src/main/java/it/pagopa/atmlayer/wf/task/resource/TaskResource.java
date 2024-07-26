@@ -1,12 +1,17 @@
 package it.pagopa.atmlayer.wf.task.resource;
 
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.SecuritySchemeType;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityScheme;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.RestResponse.Status;
 
@@ -18,7 +23,8 @@ import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorException;
 import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorResponse;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeEnum;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeResponse;
-import it.pagopa.atmlayer.wf.task.service.TaskService;
+import it.pagopa.atmlayer.wf.task.client.lambda.LatencyLoggingLambdaClient;
+import it.pagopa.atmlayer.wf.task.service.impl.TaskServiceImpl;
 import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Constants;
 import jakarta.inject.Inject;
@@ -31,22 +37,34 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.ProcessingException;
 import lombok.extern.slf4j.Slf4j;
 
+@SecurityScheme(
+        securitySchemeName = "bearerAuth",
+        type = SecuritySchemeType.HTTP,
+        scheme = "bearer",
+        bearerFormat = "JWT",
+		description = "RFC8725 Compliant JWT"
+    )
+@Tag(name = "Workflow", description = "Gestione del task nel workflow")
 @Path("/api/v1/tasks")
 @Slf4j
 public class TaskResource extends CommonLogic{
 
 	@Inject
-	TaskService taskService;
+	TaskServiceImpl taskService;
 	
 	@Inject
     Validator validator;
 
 	@Inject
 	Tracer tracer;
+	
+	@Inject
+	LatencyLoggingLambdaClient latencyLoggingLambdaClient;
 
+	@SecurityRequirement(name = "bearerAuth")
 	@Path("/main")
 	@POST
-	@Operation(summary = "Restituisce la scena principale della funzione selezionata.", description = "CREATE della scena prinicpale con la lista dei task dato l'ID della funzione selezionata.")
+	@Operation(operationId = "createMainScene", summary = "Restituisce la scena principale della funzione selezionata.", description = "CREATE della scena prinicpale con la lista dei task dato l'ID della funzione selezionata.")
 	@APIResponse(responseCode = "200", description = "Operazione eseguita con successo. Il processo è terminato.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
 	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. Restituisce l'oggetto Task nel body della risposta.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
 	@APIResponse(responseCode = "202", description = "Operazione eseguita con successo. Il processo è in esecuzione.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
@@ -54,7 +72,7 @@ public class TaskResource extends CommonLogic{
 	@APIResponse(responseCode = "400", description = "Richiesta malformata, la descrizione può fornire dettagli sull'errore.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
 	@APIResponse(responseCode = "500", description = "Errore generico, la descrizione può fornire dettagli sull'errore.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
 	public RestResponse<Scene> createMainScene(
-			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
+			@Schema(format = "String", implementation = State.class)	@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 		
 		long start = System.currentTimeMillis();
 		
@@ -76,6 +94,7 @@ public class TaskResource extends CommonLogic{
 			log.error("Unable to establish connection", e);
 			throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
 		} finally {
+			CompletableFuture.runAsync(() -> latencyLoggingLambdaClient.log(start, System.currentTimeMillis(), true));
 			logElapsedTime(CREATE_MAIN_SCENE_LOG_ID , start);
 		}
 
@@ -93,9 +112,10 @@ public class TaskResource extends CommonLogic{
         }
 	}
 
+	@SecurityRequirement(name = "bearerAuth")
 	@Path("/next/trns/{transactionId}")
 	@POST
-	@Operation(summary = "Restituisce la scena successiva con la lista dei task dato l'ID del flusso.", description = "CREATE dello step successivo a quello corrente dato l'ID del flusso.")
+	@Operation(operationId = "createNextScene", summary = "Restituisce la scena successiva con la lista dei task dato l'ID del flusso.", description = "CREATE dello step successivo a quello corrente dato l'ID del flusso.")
 	@APIResponse(responseCode = "200", description = "Operazione eseguita con successo. Il processo è terminato.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
 	@APIResponse(responseCode = "201", description = "Operazione eseguita con successo. Restituisce l'oggetto Task nel body della risposta.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
 	@APIResponse(responseCode = "202", description = "Operazione eseguita con successo. Il processo è in esecuzione.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)))
@@ -103,8 +123,8 @@ public class TaskResource extends CommonLogic{
 	@APIResponse(responseCode = "400", description = "Richiesta malformata, la descrizione può fornire dettagli sull'errore.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
 	@APIResponse(responseCode = "500", description = "Errore generico, la descrizione può fornire dettagli sull'errore.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
 	public RestResponse<Scene> createNextScene(
-			@Parameter(description = "ID della transazione") @NotNull @PathParam("transactionId") String transactionId,
-			@Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
+			@Schema(format = "String", maxLength = 36) @Parameter(description = "ID della transazione")  @NotNull @PathParam("transactionId") String transactionId,
+			@Schema(format = "String", implementation = State.class) @Parameter(description = "Il body della richiesta con lo stato del dispositivo, delle periferiche e dei tesk eseguiti") @NotNull State state) {
 
 		long start = System.currentTimeMillis();
 		validateRequest(state);   
@@ -151,8 +171,9 @@ public class TaskResource extends CommonLogic{
 			log.error("Unable to establish connection", e);
 			throw new ErrorException(ErrorEnum.CONNECTION_PROBLEM);
 		} finally {
+			CompletableFuture.runAsync(() -> latencyLoggingLambdaClient.log(start, System.currentTimeMillis(), taskService.getExternalComm()));
 			logElapsedTime(CREATE_NEXT_SCENE_LOG_ID , start);
 		}
-
+		
 	}
 }

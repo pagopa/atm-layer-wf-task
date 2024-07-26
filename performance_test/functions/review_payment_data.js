@@ -2,9 +2,9 @@ import http from 'k6/http';
 import { check } from 'k6';
 import { mockedRequestBody, checkError } from '../utils_function.js';
 
-export function exit(baseUrl, basePath, token, scanPaymentResponse) {
+export function reviewPaymentData(baseUrl, basePath, token, payementDataResponse) {
 
-    let responseParsed = JSON.parse(scanPaymentResponse);
+    let responseParsed = JSON.parse(payementDataResponse);
 
     if(responseParsed.status === 500) {
         const errorResponse = {
@@ -14,7 +14,7 @@ export function exit(baseUrl, basePath, token, scanPaymentResponse) {
         return errorResponse;
     }
 
-    const transactionId = JSON.parse(scanPaymentResponse).transactionId;
+    const transactionId = JSON.parse(payementDataResponse).transactionId;
 
     const relativePath = `next/trns/${transactionId}`;
 
@@ -25,44 +25,46 @@ export function exit(baseUrl, basePath, token, scanPaymentResponse) {
 
     const params = {
         headers: headers,
-        tags: { name: '10 Seleziona uscita' },
+        tags: { name: '05 Attivazione Bollettino' },
     };
 
-    const jsonData = JSON.parse(scanPaymentResponse).task;
+    const jsonData = JSON.parse(payementDataResponse).task;
 
-    const exitRequestBody = {
-        continue: false,
+    const payementDataBody = {
+        continue: true,
+        goBack: false
     }
 
-    const body = mockedRequestBody(exitRequestBody, jsonData.id);
+    const body = mockedRequestBody(payementDataBody, jsonData.id);
 
     let response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
-    //console.log(`Exit call request duration: ${response.timings.duration} ms`);
+    //console.log(`reviewPaymentData call request duration: ${response.timings.duration} ms`);
 
-    //console.log('Request Exit:', response.request);
-    //console.log('Status Exit:', response.status);
-    //console.log('Body Exit:', response.body);
-
+    //console.log('Request review Payment:', response.request);
+    //console.log('Status review Payment:', response.status);
+    //console.log('Body review Payment:', response.body);
+    
     var count=0;
     while (response.status === 202 && count < 3) {
+        //console.log('Retry review Payment:', count+1);
         response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
         count++;
     }
 
     const hasError = checkError(response);
-
+    
     let bodyResponse;
     if (hasError || count == 3) {
         let responseBodyObject = JSON.parse(response.body);
         responseBodyObject.status = 500;
-        bodyResponse = JSON.stringify(responseBodyObject);
+        bodyResponse = JSON.stringify(response);
     } else {
         bodyResponse = response.body;
     }
-    
+
     check(response, {
-        'response code 10 Seleziona uscita was 201': (res) => !hasError && res.status == 201,
+        'response code 05 Attivazione Bollettino was 201': (res) => !hasError && res.status == 201,
     });
 
     return bodyResponse;

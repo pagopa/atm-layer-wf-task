@@ -25,7 +25,7 @@ logLevel: DEBUG
 
 tracing:
   enabled: "true"
-  endpointBasePath: "http://jaeger-collector.default.svc.cluster.local:4317"
+  endpointBasePath: "http://jeager-manual-trace-ecs-priv-b19cfd091be2d616.elb.eu-south-1.amazonaws.com:4317"
   enableJDBCMonitoring: "false"
 
 cdn:
@@ -110,13 +110,13 @@ resources:
     cpu: 650m
     memory: 150Mi
   requests:
-    cpu: 30m
+    cpu: 100m
     memory: 50Mi
 
 autoscaling:
   enabled: false
-  minReplicas: 1
-  maxReplicas: 1
+  minReplicas: 2
+  maxReplicas: 5
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 

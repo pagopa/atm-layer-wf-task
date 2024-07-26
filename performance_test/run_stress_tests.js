@@ -1,6 +1,6 @@
 import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
 import { retrieveToken } from "./functions/token_retrieve.js";
-import { nameThresholds, average_load } from "./options_settings.js";
+import { nameThresholds, max_rate } from "./options_settings.js";
 import { menu } from "./functions/menu.js";
 import { exit } from "./functions/exit.js";
 import { sleep } from "k6";
@@ -23,12 +23,12 @@ const cognitoClientSecret = `${__ENV.COGNITO_CLIENT_SECRET}`;
 
 export const options = {
     thresholds: nameThresholds,
-    scenarios: { average_load },
+    scenarios: { max_rate },
 };
 
 export function handleSummary(data) {
     return {
-        "performance_summary.html": htmlReport(data),
+        "stress_summary.html": htmlReport(data),
     };
 }
 
@@ -36,36 +36,36 @@ export default function () {
     const token = retrieveToken(cognitoBaseUrl, cognitoClientId, cognitoClientSecret);
     
     const menuResponse = menu(baseUrl, basePath, token);
-    sleep(3);
+    
 
     // Predisposizione flusso IdPay
     // const idPaySelectResponse = idPaySelect(baseUrl, basePath, token, menuResponse);
 
-    const spontaneousPayementResponse = spontaneousPayment(baseUrl, basePath, token, menuResponse);
-    sleep(3);
+//    const spontaneousPayementResponse = spontaneousPayment(baseUrl, basePath, token, menuResponse);
+//
+//
+//    const payementCodeResponse = insertPaymentCode(baseUrl, basePath, token, spontaneousPayementResponse);
+//
+//
+//    const fiscalcodeECResponse = insertFiscalcodeEC(baseUrl, basePath, token, payementCodeResponse);
+//
+//
+//    const reviewPaymentDataResponse = reviewPaymentData(baseUrl, basePath, token, fiscalcodeECResponse);
+//
+//
+//    const feeCalculationResponse = feeCalculation(baseUrl, basePath, token, reviewPaymentDataResponse);
+//
+//
+//    const confirmPaymentResponse = confirmPayment(baseUrl, basePath, token, feeCalculationResponse);
+//
+//
+//    const authorizePaymentResponse = authorizePayment(baseUrl, basePath, token, confirmPaymentResponse);
+//
+//
+//    const statusPaymentResponse = statusPayment(baseUrl, basePath, token, authorizePaymentResponse);
+//
+//
+//    const exitResponse = exit(baseUrl, basePath, token, statusPaymentResponse);
+//    confirmExit(baseUrl, basePath, token, exitResponse);
 
-    const payementCodeResponse = insertPaymentCode(baseUrl, basePath, token, spontaneousPayementResponse);
-    sleep(3);
-
-    const fiscalcodeECResponse = insertFiscalcodeEC(baseUrl, basePath, token, payementCodeResponse);
-    sleep(3);
-
-    const reviewPaymentDataResponse = reviewPaymentData(baseUrl, basePath, token, fiscalcodeECResponse);
-    sleep(3);
-
-    const feeCalculationResponse = feeCalculation(baseUrl, basePath, token, reviewPaymentDataResponse);
-    sleep(3);
-
-    const confirmPaymentResponse = confirmPayment(baseUrl, basePath, token, feeCalculationResponse);
-    sleep(3);
-
-    const authorizePaymentResponse = authorizePayment(baseUrl, basePath, token, confirmPaymentResponse);
-    sleep(3);
-
-    const statusPaymentResponse = statusPayment(baseUrl, basePath, token, authorizePaymentResponse);
-    sleep(3);
-
-    const exitResponse = exit(baseUrl, basePath, token, statusPaymentResponse);
-    confirmExit(baseUrl, basePath, token, exitResponse);
-    sleep(3);
 }
