@@ -40,6 +40,12 @@ export const thresholdsSettings = {
     'http_req_failed{name:06 Calcolo commissioni}':['rate<0.01'],
     'http_reqs{name:06 Calcolo commissioni}':[],
 
+    //SPONTANEOUS PAYEMENT
+    'http_req_duration{name:Seleziona pagamento spontaneo}': ['p(95)<15000'],
+    'http_req_waiting{name:Seleziona pagamento spontaneo}':['p(95)<15000'],
+    'http_req_failed{name:Seleziona pagamento spontaneo}':['rate<0.01'],
+    'http_reqs{name:Seleziona pagamento spontaneo}':[],
+
     //CONFIRM PAYMENT
     'http_req_duration{name:07 Conferma pagamento (preclose)}': ['avg<3700'],
     'http_req_waiting{name:07 Conferma pagamento (preclose)}':['avg<3700'],

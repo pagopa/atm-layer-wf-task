@@ -2,6 +2,7 @@
 # Coverage Report: JaCoCo
 
 * TaskResourceTest (QuarkusTest)
+* TaskResourceTest (QuarkusTest)
       
       
 | Outcome                 | Value                                                               |
@@ -11,11 +12,22 @@
 | :x: Number of Lines Missed  | 78     |
 | Total Number of Lines   | 825     |
 
-
 ## Details:
 
     
 ### it/pagopa/atmlayer/wf/task/bean/exceptions
+
+<details>
+    <summary>
+:heavy_check_mark: ErrorEnum.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
 
 <details>
     <summary>
@@ -77,6 +89,7 @@
 <details>
     <summary>
 :x: Template.java
+:x: Template.java
     </summary>
 
         
@@ -86,6 +99,7 @@
 
 <details>
     <summary>
+:x: Device.java
 :x: Device.java
     </summary>
 
@@ -168,11 +182,22 @@
         
 #### Lines Missed:
         
-- Line #280
-```
-                        });
-```
-- Line #323
+
+- Line #256
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/service/impl
+
+<details>
+    <summary>
+:x: TaskServiceImpl.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #256
 ```
                 } catch (UnsupportedEncodingException e) {
 ```
@@ -180,11 +205,18 @@
 ```
                     } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 ```
-- Line #433
+
+- Line #366
+- Line #366
 ```
             } catch (WebApplicationException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
 ```
 - Line #652
+```
+            } catch (UnsupportedEncodingException e) {
+            } catch (WebApplicationException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
+```
+- Line #585
 ```
             } catch (UnsupportedEncodingException e) {
 ```
@@ -195,6 +227,7 @@
 <details>
     <summary>
 :x: S3ObjectStoreServiceImpl.java
+:x: S3ObjectStoreServiceImpl.java
     </summary>
 
         
@@ -204,9 +237,16 @@
 ```
     }
 ```
+#### Lines Missed:
+        
+- Line #24
+```
+    }
+```
 </details>
 
     
+### it/pagopa/atmlayer/wf/task/resource/interceptors
 ### it/pagopa/atmlayer/wf/task/resource/interceptors
 
 <details>
@@ -248,6 +288,7 @@
 <details>
     <summary>
 :x: VariableRequest.java
+
     </summary>
 
         
@@ -258,6 +299,67 @@
 <details>
     <summary>
 :x: VariableResponse.java
+
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: GetTokenResponse.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: Task.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: DeviceInfo.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: GetTokenRequest.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: TaskResponse.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: PublicKey.java
     </summary>
 
         
@@ -357,9 +459,24 @@
 
     
 ### it/pagopa/atmlayer/wf/task/database/dynamo/service
+### it/pagopa/atmlayer/wf/task/database/dynamo/service
 
 <details>
     <summary>
+:heavy_check_mark: ConfigurationAsyncServiceImpl.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/database/dynamo/entity
+
+<details>
+    <summary>
+:x: Configuration.java
 :heavy_check_mark: ConfigurationAsyncServiceImpl.java
     </summary>
 
@@ -379,10 +496,32 @@
         
 #### Lines Missed:
         
+#### Lines Missed:
+        
 </details>
 
     
 ### it/pagopa/atmlayer/wf/task/service
+
+<details>
+    <summary>
+:x: ObjectStoreService.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: S3ObjectStoreService.java
+    </summary>
+
+        
+</details>
+
+    
 
 <details>
     <summary>
@@ -470,9 +609,11 @@
 
     
 ### it/pagopa/atmlayer/wf/task/database/dynamo/service/contract
+### it/pagopa/atmlayer/wf/task/database/dynamo/service/contract
 
 <details>
     <summary>
+:x: ConfigurationService.java
 :x: ConfigurationService.java
     </summary>
 
@@ -491,6 +632,18 @@
 <details>
     <summary>
 :heavy_check_mark: Channel.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:heavy_check_mark: Command.java
     </summary>
 
         
@@ -536,13 +689,16 @@
 
     
 ### it/pagopa/atmlayer/wf/task/logging/sensitive
+### it/pagopa/atmlayer/wf/task/logging/sensitive
 
 <details>
     <summary>
 :x: SensitiveDataTracer.java
+:x: SensitiveDataTracer.java
     </summary>
 
         
+#### Lines Missed:
 #### Lines Missed:
         
 </details>
@@ -633,21 +789,26 @@
 #### Lines Missed:
         
 - Line #107
+- Line #107
 ```
         } catch (JsonProcessingException e) {
 ```
+- Line #120
 - Line #120
 ```
         } catch (JsonProcessingException e) {
 ```
 - Line #145
+- Line #145
 ```
         } catch (JsonProcessingException e) {
 ```
 - Line #319
+- Line #319
 ```
     }
 ```
+- Line #391
 - Line #391
 ```
         } catch (NoSuchAlgorithmException e) {
