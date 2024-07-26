@@ -17,13 +17,13 @@ import lombok.Data;
 @Schema(description = "Oggetto che rappresenta un Errore")
 public class ErrorResponse {
 
-    @Schema(description = "Codice di errore HTTP della chiamata")
+    @Schema(description = "Codice di errore HTTP della chiamata", minimum = "200", maximum = "500")
     private int status;
 
-    @Schema(description = "Codice che identifica l'errore")
+    @Schema(description = "Codice che identifica l'errore", example = "GENERIC_ERROR", format = "String", maxLength = 24)
     private String errorCode;
 
-    @Schema(description = "Descrizione dell'errore")
+    @Schema(description = "Descrizione dell'errore", example = "Could not connect to other microservices", format = "String", maxLength = 40)
     private String description;
 
 }

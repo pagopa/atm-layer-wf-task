@@ -7,10 +7,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 90.86%               |
-| :heavy_check_mark: Number of Lines Covered | 716    |
-| :x: Number of Lines Missed  | 72     |
-| Total Number of Lines   | 788     |
+| Code Coverage %         | 90.55%               |
+| :heavy_check_mark: Number of Lines Covered | 747    |
+| :x: Number of Lines Missed  | 78     |
+| Total Number of Lines   | 825     |
 
 
 ## Details:
@@ -183,6 +183,21 @@
         
 #### Lines Missed:
         
+
+- Line #256
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/service/impl
+
+<details>
+    <summary>
+:x: TaskServiceImpl.java
+    </summary>
+
+        
+#### Lines Missed:
+        
 - Line #256
 </details>
 
@@ -201,13 +216,20 @@
 ```
                 } catch (UnsupportedEncodingException e) {
 ```
-- Line #331
+- Line #398
 ```
                     } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 ```
+
+- Line #366
 - Line #366
 - Line #366
 ```
+            } catch (WebApplicationException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
+```
+- Line #652
+```
+            } catch (UnsupportedEncodingException e) {
             } catch (WebApplicationException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
 ```
 - Line #585
@@ -297,6 +319,7 @@
 <details>
     <summary>
 :x: VariableResponse.java
+
     </summary>
 
         
@@ -458,18 +481,6 @@
 ### it/pagopa/atmlayer/wf/task/database/dynamo/service
 ### it/pagopa/atmlayer/wf/task/database/dynamo/service
 
-<details>
-    <summary>
-:heavy_check_mark: ConfigurationAsyncServiceImpl.java
-    </summary>
-
-        
-#### All Lines Covered!
-        
-</details>
-
-    
-### it/pagopa/atmlayer/wf/task/database/dynamo/entity
 
 <details>
     <summary>
@@ -488,8 +499,24 @@
 <details>
     <summary>
 :x: Configuration.java
+:heavy_check_mark: ConfigurationAsyncServiceImpl.java
     </summary>
 
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/database/dynamo/entity
+
+<details>
+    <summary>
+:x: Configuration.java
+    </summary>
+
+        
+#### Lines Missed:
         
 #### Lines Missed:
         
@@ -578,6 +605,34 @@
 </details>
 
     
+### it/pagopa/atmlayer/wf/task/client/lambda
+
+<details>
+    <summary>
+:heavy_check_mark: LatencyLoggingLambdaClient.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+- Line #23
+```
+				.latencyType(externalComm.equals(Boolean.valueOf(true)) ? EXTERNAL : INTERNAL)
+```
+</details>
+
+    
+
+<details>
+    <summary>
+:x: LatencyLoggingRequest.java
+    </summary>
+
+        
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/database/dynamo/service/contract
 ### it/pagopa/atmlayer/wf/task/database/dynamo/service/contract
 ### it/pagopa/atmlayer/wf/task/database/dynamo/service/contract
 
@@ -690,6 +745,22 @@
 
 <details>
     <summary>
+:x: LambdaAsynchronousClient.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #30
+```
+		} catch (SdkException e) {
+```
+</details>
+
+    
+
+<details>
+    <summary>
 :x: FileStorageS3Util.java
     </summary>
 
@@ -717,8 +788,6 @@
 :x: Constants.java
     </summary>
 
-        
-#### Lines Missed:
         
 </details>
 
@@ -768,7 +837,6 @@
 - Line #391
 ```
         } catch (NoSuchAlgorithmException e) {
-
 ```
 </details>
 

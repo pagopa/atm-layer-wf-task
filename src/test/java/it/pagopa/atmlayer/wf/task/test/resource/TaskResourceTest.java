@@ -2,6 +2,8 @@ package it.pagopa.atmlayer.wf.task.test.resource;
 
 import static io.restassured.RestAssured.given;
 
+import java.util.regex.Pattern;
+
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.RestResponse.StatusCode;
@@ -55,7 +57,8 @@ class TaskResourceTest {
         @Test
         void startProcessOk() {
 
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                Pattern regexp = Pattern.compile("^[A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z]$");
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(),
                                 Mockito.anyString(), Mockito.anyString()))
                                 .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
@@ -850,7 +853,7 @@ class TaskResourceTest {
 
         @Test
         void startProcessOKCFGetToken() {
-                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
+                Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(),
                                 Mockito.anyString(), Mockito.anyString()))
                                 .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 

@@ -13,9 +13,12 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.crypto.BadPaddingException;
@@ -86,8 +89,17 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 
     @RestClient
     TokenizationRestClient tokenizationClient;
+    
+    /*
+     * Variabile che indica se si sta eseguendo una comunicazione esterna
+     */
+    Boolean externalComm = false;
 
-    @Override
+    public Boolean getExternalComm() {
+		return externalComm;
+	}
+
+	@Override
     public Scene buildFirst(String functionId, State state) {
         /*
          * new Thread(() -> {
@@ -138,7 +150,14 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
         TaskRequest taskRequest = buildTaskRequest(state, transactionId, null);
         RestResponse<TaskResponse> restTaskResponse = null;
         long start = System.currentTimeMillis();
-
+        
+        if (!Objects.isNull(taskRequest.getVariables())) {
+        	taskRequest.getVariables().put(Constants.EXTERNAL_COMM, false);
+        } else {
+        	taskRequest.setVariables(new HashMap<>());
+        	taskRequest.getVariables().put(Constants.EXTERNAL_COMM, false);
+        }
+        
         try {
             log.info("Calling next task: [{}]", taskRequest);
             restTaskResponse = processRestClient.nextTasks(taskRequest);
@@ -163,6 +182,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             scene.setTask(manageOkResponse(restTaskResponse.getEntity()));
             return scene;
         } else if (restTaskResponse.getStatus() == 202) {
+        	externalComm = true;
             log.info("Retrieved process: [{}]", restTaskResponse.getEntity());
             scene.setOutcome(new OutcomeResponse(OutcomeEnum.PROCESSING));
             return scene;
@@ -171,59 +191,106 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
         }
     }
 
+    /**
+     * Gestisce la risposta OK recuperando il primo task ordinato per priorità, 
+     * chiamando il servizio di recupero variabili e processando la risposta.
+     *
+     * @param response la risposta del task contenente la lista dei task
+     * @return il task ATM elaborato
+     * @throws ErrorException se si verifica un errore nel recupero delle variabili o nel processo
+     */
     private it.pagopa.atmlayer.wf.task.bean.Task manageOkResponse(TaskResponse response) {
         it.pagopa.atmlayer.wf.task.bean.Task atmTask = null;
-        // Recupero il primo task ordinato per priorità
-        Collections.sort(response.getTasks(), Comparator.comparingInt(Task::getPriority));
 
-        if (!response.getTasks().isEmpty()) {
-            Task workingTask = response.getTasks().get(0);
+        Optional<Task> optionalTask = response.getTasks().stream()
+                                              .min(Comparator.comparingInt(Task::getPriority));
+
+        if (optionalTask.isPresent()) {
+            Task workingTask = optionalTask.get();
             atmTask = new it.pagopa.atmlayer.wf.task.bean.Task();
             VariableRequest variableRequest = createVariableRequestForTemplate(workingTask, atmTask);
             log.info("Calling retrieve variables for task id: [{}]", workingTask.getId());
-            RestResponse<VariableResponse> restVariableResponse = null;
-            long start = System.currentTimeMillis();
-            try {
-                log.info("Retrieving variables: [{}]", variableRequest);
-                restVariableResponse = processRestClient.retrieveVariables(variableRequest);
-            } catch (WebApplicationException e) {
-                log.error("Error calling process service", e);
-                if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
-                    throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
-                }
-                throw new ErrorException(ErrorEnum.PROCESS_ERROR);
-            } finally {
-                logElapsedTime(RETRIEVE_VARIABLES_LOG_ID, start);
-            }
-
-            if (restVariableResponse.getStatus() == 200) {
-
-                VariableResponse variableResponse = restVariableResponse.getEntity();
-                log.info("Retrieved variables: [{}]", variableResponse);
-                atmTask.setId(workingTask.getId());
-                Map<String, Object> workingVariables = variableResponse.getVariables();
-
-                // Aggiungo al contesto dei log la functionId
-                if (workingVariables != null && workingVariables.get(Constants.FUNCTION_ID_CONTEXT_LOG) != null) {
-                    MDC.put(Constants.FUNCTION_ID_CONTEXT_LOG,
-                            (String) workingVariables.get(Constants.FUNCTION_ID_CONTEXT_LOG));
-                }
-
-                manageReceipt(workingVariables, atmTask);
-
-                manageVariables(workingVariables, atmTask, variableRequest);
-
-                updateTemplate(atmTask);
-
-                setButtonInAtmTask(atmTask, variableResponse.getButtons());
-            } else if (restVariableResponse.getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
-                throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
+            
+            if (!Objects.isNull(variableRequest.getVariables())){
+            	variableRequest.getVariables().add(Constants.EXTERNAL_COMM);
             } else {
-                throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+            	variableRequest.setVariables(new HashSet<>());
+            	variableRequest.getVariables().add(Constants.EXTERNAL_COMM);
             }
+
+            RestResponse<VariableResponse> restVariableResponse = retrieveVariables(variableRequest);
+
+            processVariableResponse(restVariableResponse, workingTask, atmTask, variableRequest);
         }
+
         return atmTask;
     }
+
+    /**
+     * Recupera le variabili dal servizio di processo.
+     *
+     * @param variableRequest la richiesta delle variabili
+     * @return la risposta contenente le variabili
+     * @throws ErrorException se si verifica un errore nel recupero delle variabili o nel processo
+     */
+    private RestResponse<VariableResponse> retrieveVariables(VariableRequest variableRequest) {
+        RestResponse<VariableResponse> restVariableResponse;
+        long start = System.currentTimeMillis();
+        try {
+            log.info("Retrieving variables: [{}]", variableRequest);
+            restVariableResponse = processRestClient.retrieveVariables(variableRequest);
+        } catch (WebApplicationException e) {
+            log.error("Error calling process service", e);
+            if (e.getResponse().getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
+                throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
+            }
+            throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+        } finally {
+            logElapsedTime(RETRIEVE_VARIABLES_LOG_ID, start);
+        }
+        return restVariableResponse;
+    }
+
+    /**
+     * Processa la risposta delle variabili e aggiorna il task ATM di conseguenza.
+     *
+     * @param restVariableResponse la risposta REST contenente le variabili
+     * @param workingTask il task attualmente in lavorazione
+     * @param atmTask il task ATM da aggiornare
+     * @param variableRequest la richiesta delle variabili
+     * @throws ErrorException se lo stato della risposta non è OK
+     */
+    private void processVariableResponse(RestResponse<VariableResponse> restVariableResponse,
+                                         Task workingTask, it.pagopa.atmlayer.wf.task.bean.Task atmTask,
+                                         VariableRequest variableRequest) {
+        if (restVariableResponse.getStatus() == 200) {
+            VariableResponse variableResponse = restVariableResponse.getEntity();
+            log.info("Retrieved variables: [{}]", variableResponse);
+            atmTask.setId(workingTask.getId());
+            Map<String, Object> workingVariables = variableResponse.getVariables();
+
+            if (workingVariables != null) {
+                Optional.ofNullable(workingVariables.get(Constants.FUNCTION_ID_CONTEXT_LOG))
+                        .ifPresent(functionId -> MDC.put(Constants.FUNCTION_ID_CONTEXT_LOG, (String) functionId));
+
+                Optional.ofNullable(workingVariables.get(Constants.EXTERNAL_COMM))
+                        .ifPresent(flagExt -> {
+                            this.externalComm = (Boolean) flagExt;
+                            workingVariables.remove(Constants.EXTERNAL_COMM);
+                        });
+            }
+
+            manageReceipt(workingVariables, atmTask);
+            manageVariables(workingVariables, atmTask, variableRequest);
+            updateTemplate(atmTask);
+            setButtonInAtmTask(atmTask, variableResponse.getButtons());
+        } else if (restVariableResponse.getStatus() == Status.INTERNAL_SERVER_ERROR.getStatusCode()) {
+            throw new ErrorException(ErrorEnum.GET_VARIABLES_ERROR);
+        } else {
+            throw new ErrorException(ErrorEnum.PROCESS_ERROR);
+        }
+    }
+
 
     private void manageReceipt(Map<String, Object> workingVariables, it.pagopa.atmlayer.wf.task.bean.Task atmTask) {
 

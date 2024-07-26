@@ -1,8 +1,8 @@
 import http from 'k6/http';
 import { check } from 'k6';
-import { mockedRequestBody } from '../utils_function.js';
+import { mockedRequestBody, checkError } from '../utils_function.js';
 
-export function payementScan(baseUrl, basePath, token, spontaneousPayementResponse) {
+export function paymentScan(baseUrl, basePath, token, spontaneousPayementResponse) {
 
     const transactionId = JSON.parse(spontaneousPayementResponse).transactionId;
 
@@ -30,22 +30,24 @@ export function payementScan(baseUrl, basePath, token, spontaneousPayementRespon
 
     let response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
 
-    console.log(`PaymentScan call request duration: ${response.timings.duration} ms`);
+    //console.log(`PaymentScan call request duration: ${response.timings.duration} ms`);
 
-    console.log('Request Scan Payement:', response.request);
-    console.log('Status Scan Payement:', response.status);
-    console.log('Body Scan Payement:', response.body);
+    //console.log('Request Scan Payement:', response.request);
+    //console.log('Status Scan Payement:', response.status);
+    //console.log('Body Scan Payement:', response.body);
     
     var count=0;
     while (response.status === 202 && count < 3) {
-        console.log('Retry Scan Payement:', count+1);
+        //console.log('Retry Scan Payement:', count+1);
         response = http.post(`${baseUrl}${basePath}/${relativePath}`, body, params);
         count++;
     }
 
+    const hasError = checkError(response.body); 
+    
     check(response, {
-        'response code was 201': (response) => response.status === 201,
-    })
+        'response code payment scan was 201': (res) => !hasError && res.status == 201,
+    });
 
     return response.body;
 }

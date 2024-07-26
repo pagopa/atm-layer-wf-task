@@ -15,10 +15,10 @@ import lombok.Data;
 @RegisterForReflection
 public class OutcomeResponse {
 
-    @Schema(required = true, description = "Risultato dell'operazione")
+    @Schema(required = true, description = "Risultato dell'operazione", format = "String", maxLength = 10)
     private String result;
 
-    @Schema(required = true, description = "Descrizione dell'esito dell'operazione")
+    @Schema(required = true, description = "Descrizione dell'esito dell'operazione", format = "String", maxLength = 36)
     private String description;
 
     @JsonIgnore
