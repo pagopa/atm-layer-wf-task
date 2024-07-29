@@ -151,12 +151,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
         RestResponse<TaskResponse> restTaskResponse = null;
         long start = System.currentTimeMillis();
         
-        if (!Objects.isNull(taskRequest.getVariables())) {
-        	taskRequest.getVariables().put(Constants.EXTERNAL_COMM, false);
-        } else {
-        	taskRequest.setVariables(new HashMap<>());
-        	taskRequest.getVariables().put(Constants.EXTERNAL_COMM, false);
-        }
+        taskRequest.getVariables().put(Constants.EXTERNAL_COMM, false);
         
         try {
             log.info("Calling next task: [{}]", taskRequest);
