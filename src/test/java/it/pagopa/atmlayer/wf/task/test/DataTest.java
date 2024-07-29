@@ -159,6 +159,7 @@ public class DataTest {
         variableResponse.getVariables().put("amount", 10000);
         variableResponse.getVariables().put("fee", 2.30);
         variableResponse.getVariables().put("totale", 2.30);
+        variableResponse.getVariables().put("externalComm", true);
         ArrayList<Object> list = new ArrayList<Object>();
         Dato elemento = new Dato();
         elemento.setParagrafo("vedi2");
