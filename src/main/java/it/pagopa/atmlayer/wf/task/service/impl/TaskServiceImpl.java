@@ -152,6 +152,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
         long start = System.currentTimeMillis();
         
         taskRequest.getVariables().put(Constants.EXTERNAL_COMM, false);
+
         
         try {
             log.info("Calling next task: [{}]", taskRequest);

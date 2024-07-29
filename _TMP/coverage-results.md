@@ -12,6 +12,7 @@
 | Total Number of Lines   | 824     |
 
 
+
 ## Details:
 
     
@@ -168,19 +169,6 @@
         
 #### Lines Missed:
         
-- Line #318
-```
-                } catch (UnsupportedEncodingException e) {
-```
-- Line #394
-```
-                    } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-```
-- Line #430
-```
-            } catch (WebApplicationException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
-```
-- Line #649
 ```
             } catch (UnsupportedEncodingException e) {
 ```
@@ -254,6 +242,7 @@
 <details>
     <summary>
 :x: VariableResponse.java
+
     </summary>
 
         
@@ -465,6 +454,34 @@
 </details>
 
     
+### it/pagopa/atmlayer/wf/task/client/lambda
+
+<details>
+    <summary>
+:heavy_check_mark: LatencyLoggingLambdaClient.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+- Line #23
+```
+				.latencyType(externalComm.equals(Boolean.valueOf(true)) ? EXTERNAL : INTERNAL)
+```
+</details>
+
+    
+
+<details>
+    <summary>
+:x: LatencyLoggingRequest.java
+    </summary>
+
+        
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/database/dynamo/service/contract
 ### it/pagopa/atmlayer/wf/task/database/dynamo/service/contract
 
 <details>
@@ -558,6 +575,22 @@
         
 #### All Lines Covered!
         
+</details>
+
+    
+
+<details>
+    <summary>
+:x: LambdaAsynchronousClient.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+- Line #30
+```
+		} catch (SdkException e) {
+```
 </details>
 
     
