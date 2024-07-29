@@ -6,11 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 90.78%               |
-| :heavy_check_mark: Number of Lines Covered | 748    |
-| :x: Number of Lines Missed  | 76     |
-| Total Number of Lines   | 824     |
-
+| Code Coverage %         | 90.18%               |
+| :heavy_check_mark: Number of Lines Covered | 744    |
+| :x: Number of Lines Missed  | 81     |
+| Total Number of Lines   | 825     |
 
 
 ## Details:
@@ -169,6 +168,23 @@
         
 #### Lines Missed:
         
+- Line #280
+```
+                        });
+```
+- Line #323
+```
+                } catch (UnsupportedEncodingException e) {
+```
+- Line #398
+```
+                    } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+```
+- Line #433
+```
+            } catch (WebApplicationException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
+```
+- Line #652
 ```
             } catch (UnsupportedEncodingException e) {
 ```
@@ -242,7 +258,6 @@
 <details>
     <summary>
 :x: VariableResponse.java
-
     </summary>
 
         
@@ -454,34 +469,6 @@
 </details>
 
     
-### it/pagopa/atmlayer/wf/task/client/lambda
-
-<details>
-    <summary>
-:heavy_check_mark: LatencyLoggingLambdaClient.java
-    </summary>
-
-        
-#### All Lines Covered!
-        
-- Line #23
-```
-				.latencyType(externalComm.equals(Boolean.valueOf(true)) ? EXTERNAL : INTERNAL)
-```
-</details>
-
-    
-
-<details>
-    <summary>
-:x: LatencyLoggingRequest.java
-    </summary>
-
-        
-</details>
-
-    
-### it/pagopa/atmlayer/wf/task/database/dynamo/service/contract
 ### it/pagopa/atmlayer/wf/task/database/dynamo/service/contract
 
 <details>
@@ -575,22 +562,6 @@
         
 #### All Lines Covered!
         
-</details>
-
-    
-
-<details>
-    <summary>
-:x: LambdaAsynchronousClient.java
-    </summary>
-
-        
-#### Lines Missed:
-        
-- Line #30
-```
-		} catch (SdkException e) {
-```
 </details>
 
     
