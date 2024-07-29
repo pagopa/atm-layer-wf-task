@@ -151,12 +151,8 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
         RestResponse<TaskResponse> restTaskResponse = null;
         long start = System.currentTimeMillis();
         
-        if (!Objects.isNull(taskRequest.getVariables())) {
-        	taskRequest.getVariables().put(Constants.EXTERNAL_COMM, false);
-        } else {
-        	taskRequest.setVariables(new HashMap<>());
-        	taskRequest.getVariables().put(Constants.EXTERNAL_COMM, false);
-        }
+        taskRequest.getVariables().put(Constants.EXTERNAL_COMM, false);
+
         
         try {
             log.info("Calling next task: [{}]", taskRequest);
@@ -390,6 +386,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                 log.info("Calling to get public key.");
                 long start = System.currentTimeMillis();
                 publicKeyResponse = tokenizationClient.getKey();
+                externalComm = true;
                 logElapsedTime(CREATE_MAIN_SCENE_LOG_ID, start);
 
                 if (publicKeyResponse.getStatus() == 200) {
@@ -425,6 +422,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                     getTokenResponse = tokenizationClient.getToken(GetTokenRequest.builder()
                             .encryptedPan(Utility.encryptRSA(panInfo.getPan().getBytes(), rsaPublicKey))
                             .kid(publicKeyResponse.getEntity().getKid()).build());
+                    externalComm = true;
                     log.info("GetToken executed successfully. Status code: {}", getTokenResponse.getStatus());
                     panInformation.setPan(getTokenResponse.getEntity().getToken());
                 } else {
