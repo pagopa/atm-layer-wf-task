@@ -594,7 +594,47 @@ class TaskResourceTest {
 
                 Assertions.assertEquals(202, response.statusCode());
         }
+        
+        @Test
+        void testReturn202ProcessOnNextNoCF() {
+        		Mockito.when(milAuthClient.getTokenFromMil(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(DataTest.getTokenResponse());
+            
+                Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
+                                .thenReturn(RestResponse.status(Status.ACCEPTED,
+                                                DataTest.createTaskResponseEndProcess()));
 
+                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createvaVariableResponseDefaultVariables()));
+
+                Response response = given().body(DataTest.createStateRequestNextWithoutFiscalCode())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/next/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa").then()
+                                .extract().response();
+
+                Assertions.assertEquals(202, response.statusCode());
+        }
+
+        @Test
+        void testReturn202ProcessOnNextEmptyCF() {
+        		Mockito.when(milAuthClient.getTokenFromMil(anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(DataTest.getTokenResponse());
+            
+                Mockito.when(processRestClient.nextTasks(Mockito.any(TaskRequest.class)))
+                                .thenReturn(RestResponse.status(Status.ACCEPTED,
+                                                DataTest.createTaskResponseEndProcess()));
+
+                Mockito.when(processRestClient.retrieveVariables(Mockito.any(VariableRequest.class)))
+                                .thenReturn(RestResponse.status(Status.OK,
+                                                DataTest.createvaVariableResponseDefaultVariables()));
+
+                Response response = given().body(DataTest.createStateRequestNextFiscalCodeEmpty())
+                                .contentType(MediaType.APPLICATION_JSON).when()
+                                .post("/next/trns/{transactionId}", "00001-0002-1234-1234567890-aaaaaaaaaaaaa").then()
+                                .extract().response();
+
+                Assertions.assertEquals(202, response.statusCode());
+        }
+        
         @Test
         void testReturn202ProcessOnStart() {
 

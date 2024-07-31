@@ -219,7 +219,21 @@ public class DataTest {
         state.setTaskId("1");
         return state;
     }
+    
+    public static State createStateRequestNextWithoutFiscalCode() {
+        State state = createStateRequestStart();
+        state.setTaskId("1");
+        state.setFiscalCode(null);
+        return state;
+    }
 
+    public static State createStateRequestNextFiscalCodeEmpty() {
+        State state = createStateRequestStart();
+        state.setTaskId("1");
+        state.setFiscalCode("");
+        return state;
+    }
+    
     public static State createStateRequestNextNoBranchId() {
         State state = createStateRequestNext();
         state.getDevice().setBranchId(null);
