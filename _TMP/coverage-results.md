@@ -6,11 +6,10 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 90.78%               |
-| :heavy_check_mark: Number of Lines Covered | 748    |
-| :x: Number of Lines Missed  | 76     |
-| Total Number of Lines   | 824     |
-
+| Code Coverage %         | 90.69%               |
+| :heavy_check_mark: Number of Lines Covered | 750    |
+| :x: Number of Lines Missed  | 77     |
+| Total Number of Lines   | 827     |
 
 
 ## Details:
@@ -163,12 +162,41 @@
 
 <details>
     <summary>
+:x: TokenServiceImpl.java
+    </summary>
+
+        
+#### Lines Missed:
+        
+</details>
+
+    
+
+<details>
+    <summary>
 :x: TaskServiceImpl.java
     </summary>
 
         
 #### Lines Missed:
         
+- Line #139
+```
+					})
+```
+- Line #341
+```
+                } catch (UnsupportedEncodingException e) {
+```
+- Line #417
+```
+                    } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+```
+- Line #453
+```
+            } catch (WebApplicationException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
+```
+- Line #672
 ```
             } catch (UnsupportedEncodingException e) {
 ```
@@ -204,6 +232,19 @@
 </details>
 
     
+### it/pagopa/atmlayer/wf/task/client/bean/enumerative
+
+<details>
+    <summary>
+:heavy_check_mark: RequiredVariables.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
 ### it/pagopa/atmlayer/wf/task
 
 <details>
@@ -218,6 +259,16 @@
 
     
 ### it/pagopa/atmlayer/wf/task/client/bean
+
+<details>
+    <summary>
+:x: AuthParameters.java
+    </summary>
+
+        
+</details>
+
+    
 
 <details>
     <summary>
@@ -242,7 +293,6 @@
 <details>
     <summary>
 :x: VariableResponse.java
-
     </summary>
 
         
@@ -263,6 +313,16 @@
 <details>
     <summary>
 :x: Task.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: RequestHeaders.java
     </summary>
 
         
@@ -341,6 +401,16 @@
 </details>
 
     
+
+<details>
+    <summary>
+:x: Token.java
+    </summary>
+
+        
+</details>
+
+    
 ### it/pagopa/atmlayer/wf/task/database/dynamo/service
 
 <details>
@@ -392,6 +462,16 @@
 <details>
     <summary>
 :x: TaskService.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: TokenService.java
     </summary>
 
         
@@ -454,48 +534,16 @@
 </details>
 
     
-### it/pagopa/atmlayer/wf/task/client/lambda
+### it/pagopa/atmlayer/wf/task/database/dynamo/service/contract
 
 <details>
     <summary>
-:heavy_check_mark: LatencyLoggingLambdaClient.java
+:heavy_check_mark: ConfigurationService.java
     </summary>
 
         
 #### All Lines Covered!
         
-- Line #23
-```
-				.latencyType(externalComm.equals(Boolean.valueOf(true)) ? EXTERNAL : INTERNAL)
-```
-</details>
-
-    
-
-<details>
-    <summary>
-:x: LatencyLoggingRequest.java
-    </summary>
-
-        
-</details>
-
-    
-### it/pagopa/atmlayer/wf/task/database/dynamo/service/contract
-### it/pagopa/atmlayer/wf/task/database/dynamo/service/contract
-
-<details>
-    <summary>
-:x: ConfigurationService.java
-    </summary>
-
-        
-#### Lines Missed:
-        
-- Line #26
-```
-                .attributesToGet(CONFIGURATION_ID_COL, CONFIGURATION_ENABLED_COL)
-```
 </details>
 
     
@@ -558,10 +606,41 @@
         
 #### Lines Missed:
         
-- Line #60
+- Line #59
 ```
                 });
 ```
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/client
+
+<details>
+    <summary>
+:x: TokenizationRestClient.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: MilAuthClient.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: ProcessRestClient.java
+    </summary>
+
+        
 </details>
 
     
@@ -569,27 +648,15 @@
 
 <details>
     <summary>
-:heavy_check_mark: CommonLogic.java
-    </summary>
-
-        
-#### All Lines Covered!
-        
-</details>
-
-    
-
-<details>
-    <summary>
-:x: LambdaAsynchronousClient.java
+:x: CommonLogic.java
     </summary>
 
         
 #### Lines Missed:
         
-- Line #30
+- Line #98
 ```
-		} catch (SdkException e) {
+				});
 ```
 </details>
 
@@ -685,37 +752,6 @@
 ```
         } catch (NoSuchAlgorithmException e) {
 ```
-</details>
-
-    
-### it/pagopa/atmlayer/wf/task/client
-
-<details>
-    <summary>
-:x: TokenizationRestClient.java
-    </summary>
-
-        
-</details>
-
-    
-
-<details>
-    <summary>
-:x: MilAuthRestClient.java
-    </summary>
-
-        
-</details>
-
-    
-
-<details>
-    <summary>
-:x: ProcessRestClient.java
-    </summary>
-
-        
 </details>
 
     
