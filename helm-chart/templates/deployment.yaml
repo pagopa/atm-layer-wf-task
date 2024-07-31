@@ -68,6 +68,22 @@ spec:
                   name: {{ .Values.cdn.credentialsSecretName }}
                   key: {{ .Values.cdn.credentialsSecretKeys.cdn_base_path }}
             {{- end }}
+            - name: MIL_AUTHENTICATOR_AUTH_CLIENT_CREDENTIALS
+              value: "{{ .Values.milAuth.clientCredentials }}"
+            - name: MIL_BASE_PATH
+              value: "{{ .Values.milBasePath }}"
+            {{- if .Values.milAuth.credentialsSecretEnabled }}
+            - name: MIL_AUTHENTICATOR_MIL_AUTH_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.milAuth.credentialsSecretName }}
+                  key: {{ .Values.milAuth.credentialsSecretKeys.clientId }}
+            - name: MIL_AUTHENTICATOR_MIL_AUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.milAuth.credentialsSecretName }}
+                  key: {{ .Values.milAuth.credentialsSecretKeys.clientSecret }}
+            {{- end }}
           volumeMounts:
           {{- if .Values.secretProviderClass.enabled }}
           - name: secrets-store-inline
