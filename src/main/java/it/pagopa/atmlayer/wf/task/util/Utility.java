@@ -434,14 +434,4 @@ public class Utility {
         }
         return result;
     }
-
-    public static String tracerJobTimeLeft() {
-        LocalTime oraCorrente = LocalTime.now();
-        LocalTime oraAggiornata = oraCorrente.plusHours(1);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-
-        return oraAggiornata.format(formatter);
-    }
-
 }

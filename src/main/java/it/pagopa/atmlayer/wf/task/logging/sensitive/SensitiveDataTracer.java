@@ -49,7 +49,6 @@ public class SensitiveDataTracer {
                     }
                     
                     log.info("isTraceLoggingEnabled: {}", isTraceLoggingEnabled);
-                    log.info("Next tracer job starts at {}", Utility.tracerJobTimeLeft());
                     if (isTraceLoggingEnabled.booleanValue() && messageBuilder.length() > 0) {
                         objectStoreServiceImpl.writeLog(messageBuilder.toString().replace("\\{\\}", ""));
                         messageBuilder.setLength(0);
