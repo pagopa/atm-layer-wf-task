@@ -42,6 +42,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
+import io.smallrye.mutiny.Uni;
 import it.pagopa.atmlayer.wf.task.bean.Button;
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.PanInfo;
@@ -54,9 +55,10 @@ import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorEnum;
 import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorException;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeEnum;
 import it.pagopa.atmlayer.wf.task.bean.outcome.OutcomeResponse;
-import it.pagopa.atmlayer.wf.task.client.MilAuthRestClient;
+import it.pagopa.atmlayer.wf.task.client.MilAuthClient;
 import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
 import it.pagopa.atmlayer.wf.task.client.TokenizationRestClient;
+import it.pagopa.atmlayer.wf.task.client.bean.AuthParameters;
 import it.pagopa.atmlayer.wf.task.client.bean.DeviceInfo;
 import it.pagopa.atmlayer.wf.task.client.bean.DeviceType;
 import it.pagopa.atmlayer.wf.task.client.bean.GetTokenRequest;
@@ -66,14 +68,17 @@ import it.pagopa.atmlayer.wf.task.client.bean.PublicKey;
 import it.pagopa.atmlayer.wf.task.client.bean.Task;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
+import it.pagopa.atmlayer.wf.task.client.bean.Token;
 import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.service.TaskService;
+import it.pagopa.atmlayer.wf.task.service.TokenService;
 import it.pagopa.atmlayer.wf.task.util.CommonLogic;
 import it.pagopa.atmlayer.wf.task.util.Constants;
 import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.WebApplicationException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -85,10 +90,13 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
     ProcessRestClient processRestClient;
 
     @RestClient
-    MilAuthRestClient milAuthRestClient;
+    MilAuthClient milAuthClient;
 
     @RestClient
     TokenizationRestClient tokenizationClient;
+    
+    @Inject
+    TokenService tokenService;
     
     /*
      * Variabile che indica se si sta eseguendo una comunicazione esterna
@@ -112,18 +120,32 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             data = state.getData();
         }
 
-        state.getData().put("millAccessToken", getToken(state));
         Scene scene = buildSceneStart(functionId, state.getTransactionId(), state);
         scene.setTransactionId(state.getTransactionId());
         return scene;
     }
 
     @Override
-    public Scene buildNext(String transactionId, State state) {
-        Scene scene = buildSceneNext(transactionId, state);
-        scene.setTransactionId(transactionId);
-        return scene;
-    }
+	public Scene buildNext(String transactionId, State state) {
+    	TokenResponse tokenResponse = new TokenResponse();
+    	Uni<Token> tokenComm = null;
+		if (!Objects.isNull(state.getFiscalCode()) && !state.getFiscalCode().isEmpty()) {
+			tokenComm = tokenService.generateToken(AuthParameters.builder().terminalId(state.getDevice().getBankId() + state.getDevice().getCode())
+					.transactionId(transactionId).acquirerId(state.getDevice().getBankId()).channel(state.getDevice().getChannel().name())
+					.build())
+					.onItem().invoke(succ -> {
+						log.info("Retrieved token: [{}]", succ.getAccessToken());
+						tokenResponse.setAccessToken(succ.getAccessToken());
+					})
+					.onFailure().invoke(e -> log.warn("MilAuth has encountered an error: ", e.getMessage()));
+			state.getData().put("millAccessToken", tokenResponse.getAccessToken());
+			traceMilAuthClientComm(state, state.getDevice(), tokenComm);
+		}
+
+		Scene scene = buildSceneNext(transactionId, state);
+		scene.setTransactionId(transactionId);
+		return scene;
+	}
 
     private Scene buildSceneStart(String functionId, String transactionId, State state) {
         TaskRequest taskRequest = buildTaskRequest(state, transactionId, functionId);
@@ -667,64 +689,6 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
                 workingVariables.keySet().removeAll(variableRequest.getVariables());
             }
         }
-    }
-
-    /**
-     * Return the token created and save it in Redis cache managed by MilAuth.
-     * 
-     * @param state
-     */
-    private String getToken(State state) {
-        Device device = state.getDevice();
-        log.info("Calling milAuth get Token.");
-        String token = null;
-        long start = System.currentTimeMillis();
-
-        try (RestResponse<TokenResponse> restTokenResponse = milAuthRestClient.getToken(device.getBankId(),
-                device.getChannel().name(), state.getFiscalCode(), device.getTerminalId(), state.getTransactionId());) {
-
-            if (restTokenResponse != null) {
-                if (restTokenResponse.getStatus() == 200) {
-                    token = restTokenResponse.getEntity().getAccess_token();
-                    log.info("Retrieved token: [{}]", token);
-                } else {
-                    log.warn("Calling milAuth Status: [{}]", restTokenResponse.getStatus());
-                }
-            }
-            traceMilAuthClientComm(state, device, restTokenResponse);
-        } catch (WebApplicationException e) {
-            log.error("Error calling milAuth get Token service", e);
-        } finally {
-            logElapsedTime(GET_TOKEN_LOG_ID, start);
-        }
-        return token;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void deleteToken(State state) {
-        Device device = state.getDevice();
-        log.info("Calling milAuth delete Token.");
-        long start = System.currentTimeMillis();
-
-        try {
-            RestResponse<Object> response = milAuthRestClient.deleteToken(device.getBankId(),
-                    device.getChannel().name(), device.getTerminalId(), state.getTransactionId());
-            log.info("Token deleted correctly. Status code: {}", response.getStatus());
-        } catch (WebApplicationException e) {
-            log.warn("MilAuth error in delete Token service", e);
-            switch (e.getResponse().getStatus()) {
-                case RestResponse.StatusCode.NOT_FOUND -> log.warn("MilAuth error. Token not present in cache.");
-                case RestResponse.StatusCode.INTERNAL_SERVER_ERROR ->
-                    log.warn("MilAuth error. Redis unavailable or a generic error occured.");
-                default -> log.warn("Delete token response with an unknown status {}", e.getResponse().getStatus());
-            }
-        } finally {
-            logElapsedTime(DELETE_TOKEN_LOG_ID, start);
-        }
-
     }
 
 }

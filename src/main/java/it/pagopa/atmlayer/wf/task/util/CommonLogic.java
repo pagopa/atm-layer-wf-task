@@ -6,10 +6,13 @@ import java.util.stream.Collectors;
 
 import org.jboss.resteasy.reactive.RestResponse;
 
+import io.netty.handler.codec.http.HttpStatusClass;
+import io.smallrye.mutiny.Uni;
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.PanInfo;
 import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.client.bean.PublicKey;
+import it.pagopa.atmlayer.wf.task.client.bean.Token;
 import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import it.pagopa.atmlayer.wf.task.logging.sensitive.SensitiveDataTracer;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -72,33 +75,29 @@ public class CommonLogic {
             SensitiveDataTracer.trace(transactionId, messageBuilder.toString());
     }
 
-    protected void traceMilAuthClientComm(State state, Device device,
-            RestResponse<TokenResponse> restTokenResponse) {
-            String milAuthClientAddress = System.getenv("MIL_AUTH_SERVICE_ADDRESS");
-            String transactionId = state.getTransactionId();
-            StringBuilder requestMessageBuilder = new StringBuilder(" REQUEST POST URI: ")
-                    .append(milAuthClientAddress).append("/token - HEADERS: ")
-                    .append("{AcquirerId: ").append(Objects.toString(device.getBankId()))
-                    .append(" Channel: ").append(device.getChannel().name())
-                    .append(" FiscalCode: ").append(Objects.toString(state.getFiscalCode()))
-                    .append(" TerminalId: ").append(Objects.toString(device.getTerminalId()))
-                    .append(" TransactionId: ").append(transactionId).append("}");
+	protected void traceMilAuthClientComm(State state, Device device, Uni<Token> tokenResponse) {
+		String milAuthClientAddress = System.getenv("MIL_BASE_PATH");
+		String transactionId = state.getTransactionId();
+		StringBuilder requestMessageBuilder = new StringBuilder(" REQUEST POST URI: ").append(milAuthClientAddress)
+				.append("/token - HEADERS: ").append("{AcquirerId: ").append(Objects.toString(device.getBankId()))
+				.append(" Channel: ").append(device.getChannel().name()).append(" FiscalCode: ")
+				.append(Objects.toString(state.getFiscalCode())).append(" TerminalId: ")
+				.append(Objects.toString(device.getTerminalId())).append(" TransactionId: ").append(transactionId)
+				.append("}");
 
-            SensitiveDataTracer.trace(transactionId, requestMessageBuilder.toString());
+		SensitiveDataTracer.trace(transactionId, requestMessageBuilder.toString());
 
-            if (restTokenResponse != null) {
-                StringBuilder responseMessageBuilder = new StringBuilder(" RESPONSE POST URI: ")
-                        .append(milAuthClientAddress).append("/token - STATUS: ")
-                        .append(restTokenResponse.getStatus());
-                if (restTokenResponse.getEntity() != null) {
-                    responseMessageBuilder.append(" - BODY: Access token: ")
-                            .append(restTokenResponse.getEntity().getAccess_token());
-                }
-                SensitiveDataTracer.trace(transactionId, responseMessageBuilder.toString());
-            } else {
-                SensitiveDataTracer.trace(transactionId, " - Error while communicating with MilAuthenticator. . .");
-            }
-    }
+		tokenResponse.onFailure().invoke(e -> SensitiveDataTracer.trace(transactionId,
+				" - Error while communicating with MilAuthenticator. . .")).onItem().invoke(succ -> {
+					StringBuilder responseMessageBuilder = new StringBuilder(" RESPONSE POST URI: ")
+							.append(milAuthClientAddress).append("/token - STATUS: ").append(200);
+					if (!Objects.isNull(succ)) {
+						responseMessageBuilder.append(" - BODY: Access token: ").append(succ.getAccessToken());
+					}
+					SensitiveDataTracer.trace(transactionId, responseMessageBuilder.toString());
+				});
+
+	}
 
     protected void tracePanInfoAndKey(String transactionId, RestResponse<PublicKey> restPanTokenizationKeyResponse, List<PanInfo> panInfoList) {
             String tokenizetionClientAddress = System.getenv("TOKENIZATION_ADDRESS");

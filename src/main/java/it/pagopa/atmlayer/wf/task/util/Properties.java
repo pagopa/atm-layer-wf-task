@@ -36,7 +36,8 @@ public interface Properties {
 
     Resource resource();
 
-    Cloudwatch cloudwatch();
+    MilAuth milAuth();
+    
     interface Bucket {
         @ConfigProperty(name = "name")
         String name();
@@ -50,13 +51,16 @@ public interface Properties {
         @ConfigProperty(name = "pathTemplate")
         String pathTemplate();
     }
-
-    interface Cloudwatch {
-        @ConfigProperty(name = "group-name")
-        String groupName();
-
-        @ConfigProperty(name = "stream-name")
-        String streamName();
+    
+    interface MilAuth {
+    	@ConfigProperty(name = "client-id")
+        String clientId();
+    	
+        @ConfigProperty(name = "client-secret")
+        String clientSecret();
+        
+        @ConfigProperty(name = "grant-type")
+        String grantType();
     }
 
     public static class ConverterImplement implements Converter<String> {

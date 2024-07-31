@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import io.smallrye.mutiny.Uni;
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.Peripheral;
 import it.pagopa.atmlayer.wf.task.bean.State;
@@ -20,6 +21,7 @@ import it.pagopa.atmlayer.wf.task.client.bean.GetTokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.PublicKey;
 import it.pagopa.atmlayer.wf.task.client.bean.Task;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
+import it.pagopa.atmlayer.wf.task.client.bean.Token;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.test.bean.Dato;
 import it.pagopa.atmlayer.wf.task.util.Constants;
@@ -332,6 +334,12 @@ public class DataTest {
         return GetTokenResponse.builder().token("TOKEN").build();
     }
 
+    public static Uni<Token> getTokenResponse() {
+    	Token token = new Token();
+        token.setAccessToken("test");
+        return Uni.createFrom().voidItem().replaceWith(token);
+    }
+    
     public static void main(String[] args) {
         System.out.println(Utility.getJson(createPublicKeyResponse()));
     }
