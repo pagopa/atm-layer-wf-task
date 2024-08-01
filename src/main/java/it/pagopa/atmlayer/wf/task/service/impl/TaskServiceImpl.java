@@ -129,7 +129,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
     	TokenResponse tokenResponse = new TokenResponse();
     	Uni<Token> tokenComm = null;
 		if (!Objects.isNull(state.getFiscalCode()) && !state.getFiscalCode().isEmpty()) {
-			tokenComm = tokenService.generateToken(AuthParameters.builder().terminalId(state.getDevice().getBankId() + state.getDevice().getCode())
+			tokenComm = tokenService.generateToken(AuthParameters.builder().terminalId(!Objects.isNull(state.getDevice().getTerminalId()) ? state.getDevice().getTerminalId() : state.getDevice().getBankId() + state.getDevice().getCode())
 					.transactionId(transactionId).acquirerId(state.getDevice().getBankId()).channel(state.getDevice().getChannel().name())
 					.build())
 					.onItem().invoke(succ -> {
