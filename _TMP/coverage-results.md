@@ -1,15 +1,15 @@
 
 # Coverage Report: JaCoCo
 
-* TaskResourceTest (QuarkusTest)
+* TaskResourceOverrideConfigTest (QuarkusTest)
       
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 90.7%               |
-| :heavy_check_mark: Number of Lines Covered | 751    |
+| Code Coverage %         | 90.71%               |
+| :heavy_check_mark: Number of Lines Covered | 752    |
 | :x: Number of Lines Missed  | 77     |
-| Total Number of Lines   | 828     |
+| Total Number of Lines   | 829     |
 
 
 ## Details:
@@ -184,19 +184,19 @@
 ```
 					})
 ```
-- Line #340
+- Line #342
 ```
                 } catch (UnsupportedEncodingException e) {
 ```
-- Line #416
+- Line #418
 ```
                     } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 ```
-- Line #452
+- Line #454
 ```
             } catch (WebApplicationException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
 ```
-- Line #671
+- Line #673
 ```
             } catch (UnsupportedEncodingException e) {
 ```
