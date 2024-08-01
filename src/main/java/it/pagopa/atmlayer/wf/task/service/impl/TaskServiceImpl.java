@@ -139,6 +139,8 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 					.onFailure().invoke(e -> log.warn("MilAuth has encountered an error: ", e.getMessage()));
 			state.getData().put("millAccessToken", tokenResponse.getAccessToken());
 			traceMilAuthClientComm(state, state.getDevice(), tokenComm);
+		} else {
+			log.debug("Fiscal code not found!");
 		}
 
 		Scene scene = buildSceneNext(transactionId, state);
