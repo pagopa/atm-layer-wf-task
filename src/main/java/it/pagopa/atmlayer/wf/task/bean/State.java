@@ -9,8 +9,6 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema.False;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.validation.Valid;

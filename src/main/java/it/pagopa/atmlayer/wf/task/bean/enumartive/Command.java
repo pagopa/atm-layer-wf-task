@@ -10,6 +10,7 @@ public enum Command {
 	GET_IBAN, // Recupero iban
 	GET_PAN, // Recupero PAN
 	NEXT, // Richiesta next step della transazione
-	AUTHENTICATION // Fase di autenticazione dell'utente
+	AUTHENTICATION, // Fase di autenticazione dell'utente
+	GET_CF // Recupero codice fiscale
 	
 }

@@ -14,7 +14,6 @@ import it.pagopa.atmlayer.wf.task.client.MilAuthClient;
 import it.pagopa.atmlayer.wf.task.client.bean.AuthParameters;
 import it.pagopa.atmlayer.wf.task.client.bean.RequestHeaders;
 import it.pagopa.atmlayer.wf.task.client.bean.Token;
-import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.enumerative.RequiredVariables;
 import it.pagopa.atmlayer.wf.task.service.TokenService;
 import it.pagopa.atmlayer.wf.task.util.Properties;

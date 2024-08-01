@@ -8,7 +8,6 @@ import io.quarkus.scheduler.Scheduled;
 import it.pagopa.atmlayer.wf.task.database.dynamo.service.ConfigurationAsyncServiceImpl;
 import it.pagopa.atmlayer.wf.task.database.dynamo.service.contract.ConfigurationService;
 import it.pagopa.atmlayer.wf.task.service.impl.S3ObjectStoreServiceImpl;
-import it.pagopa.atmlayer.wf.task.util.Utility;
 import jakarta.inject.Inject;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

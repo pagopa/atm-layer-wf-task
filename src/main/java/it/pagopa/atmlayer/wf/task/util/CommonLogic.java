@@ -6,14 +6,12 @@ import java.util.stream.Collectors;
 
 import org.jboss.resteasy.reactive.RestResponse;
 
-import io.netty.handler.codec.http.HttpStatusClass;
 import io.smallrye.mutiny.Uni;
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.PanInfo;
 import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.client.bean.PublicKey;
 import it.pagopa.atmlayer.wf.task.client.bean.Token;
-import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import it.pagopa.atmlayer.wf.task.logging.sensitive.SensitiveDataTracer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
