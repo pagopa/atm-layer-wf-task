@@ -118,7 +118,11 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
             state.setData(new HashMap<String, Object>());
             data = state.getData();
         }
-
+        
+        log.info("TOKENIZATION_ADDRESS: " + System.getenv("TOKENIZATION_ADDRESS"));
+        log.info("MIL_BASE_PATH: " + System.getenv("MIL_BASE_PATH"));
+        log.info("MIL_AUTHENTICATOR_MIL_AUTH_CLIENT_ID: " + System.getenv("MIL_AUTHENTICATOR_MIL_AUTH_CLIENT_ID"));
+        
         Scene scene = buildSceneStart(functionId, state.getTransactionId(), state);
         scene.setTransactionId(state.getTransactionId());
         return scene;
