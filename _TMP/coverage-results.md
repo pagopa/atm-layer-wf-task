@@ -1,15 +1,15 @@
 
 # Coverage Report: JaCoCo
 
-* IntegrationTest (QuarkusTest)
+* TaskResourceTest (QuarkusTest)
       
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 90.69%               |
-| :heavy_check_mark: Number of Lines Covered | 750    |
+| Code Coverage %         | 90.7%               |
+| :heavy_check_mark: Number of Lines Covered | 751    |
 | :x: Number of Lines Missed  | 77     |
-| Total Number of Lines   | 827     |
+| Total Number of Lines   | 828     |
 
 
 ## Details:
@@ -180,23 +180,23 @@
         
 #### Lines Missed:
         
-- Line #139
+- Line #138
 ```
 					})
 ```
-- Line #341
+- Line #340
 ```
                 } catch (UnsupportedEncodingException e) {
 ```
-- Line #417
+- Line #416
 ```
                     } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 ```
-- Line #453
+- Line #452
 ```
             } catch (WebApplicationException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
 ```
-- Line #672
+- Line #671
 ```
             } catch (UnsupportedEncodingException e) {
 ```
@@ -606,7 +606,7 @@
         
 #### Lines Missed:
         
-- Line #59
+- Line #58
 ```
                 });
 ```
@@ -654,7 +654,7 @@
         
 #### Lines Missed:
         
-- Line #98
+- Line #96
 ```
 				});
 ```
@@ -732,23 +732,23 @@
         
 #### Lines Missed:
         
-- Line #107
+- Line #105
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #120
+- Line #118
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #145
+- Line #143
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #319
+- Line #317
 ```
     }
 ```
-- Line #391
+- Line #389
 ```
         } catch (NoSuchAlgorithmException e) {
 ```
