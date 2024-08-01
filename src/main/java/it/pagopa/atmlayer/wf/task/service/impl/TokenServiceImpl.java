@@ -8,6 +8,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.jboss.resteasy.reactive.RestResponse;
 
 import io.smallrye.mutiny.Uni;
 import it.pagopa.atmlayer.wf.task.client.MilAuthClient;
@@ -34,7 +35,7 @@ public class TokenServiceImpl implements TokenService {
 	Properties properties;
 
 	@Override
-	public Uni<Token> generateToken(AuthParameters authParameters) {
+	public RestResponse<Token> generateToken(AuthParameters authParameters) {
 		log.info("Mil auth request starting. . .");
 		RequestHeaders headers = prepareAuthHeaders(authParameters);
 		String body = prepareAuthBody(authParameters);

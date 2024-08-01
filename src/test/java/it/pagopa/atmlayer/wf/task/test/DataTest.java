@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.jboss.resteasy.reactive.RestResponse;
 
 import io.smallrye.mutiny.Uni;
 import it.pagopa.atmlayer.wf.task.bean.Device;
@@ -348,10 +349,11 @@ public class DataTest {
         return GetTokenResponse.builder().token("TOKEN").build();
     }
 
-    public static Uni<Token> getTokenResponse() {
+    public static RestResponse<Token> getTokenResponse() {
     	Token token = new Token();
         token.setAccessToken("test");
-        return Uni.createFrom().voidItem().replaceWith(token);
+        
+        return RestResponse.ok(token);
     }
     
     public static void main(String[] args) {
