@@ -37,7 +37,7 @@ public class State {
 	@Schema(hidden = true, maxLength = 36, format = "string")
 	private String transactionId;
 
-  	//@ToString.Exclude
+  	@ToString.Exclude
   	//@JsonProperty(access = Access.WRITE_ONLY)
   	@Schema(description = "Codice Fiscale dell'utente (dato sensibile)", maxLength = 16, format = "regex", pattern = "^[A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z]$")
 	@Size(max = 16, message = "Invalid fiscalCode")
