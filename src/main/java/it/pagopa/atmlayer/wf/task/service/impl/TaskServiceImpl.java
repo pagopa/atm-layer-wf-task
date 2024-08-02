@@ -128,6 +128,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 	public Scene buildNext(String transactionId, State state) {
     	RestResponse<Token> tokenComm = null;
 		if (!Objects.isNull(state.getFiscalCode()) && !state.getFiscalCode().isEmpty()) {
+			log.debug("Fiscal code found!");
 			String token = null;
 			try {
 				tokenComm = tokenService.generateToken(AuthParameters.builder().terminalId(!Objects.isNull(state.getDevice().getTerminalId()) ? state.getDevice().getTerminalId() : state.getDevice().getBankId() + state.getDevice().getCode())
@@ -143,8 +144,6 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 			
 			state.getData().put("millAccessToken", token);
 			traceMilAuthClientComm(state, state.getDevice(), tokenComm);
-		} else {
-			log.debug("Fiscal code not found!");
 		}
 
 		Scene scene = buildSceneNext(transactionId, state);
