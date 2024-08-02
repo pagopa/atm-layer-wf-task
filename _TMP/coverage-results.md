@@ -1,14 +1,14 @@
 
 # Coverage Report: JaCoCo
 
-* TaskResourceTest (QuarkusTest)
+* TaskResourceOverrideConfigTest (QuarkusTest)
       
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 91.61%               |
-| :heavy_check_mark: Number of Lines Covered | 764    |
-| :x: Number of Lines Missed  | 70     |
+| Code Coverage %         | 91.13%               |
+| :heavy_check_mark: Number of Lines Covered | 760    |
+| :x: Number of Lines Missed  | 74     |
 | Total Number of Lines   | 834     |
 
 
