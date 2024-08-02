@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.jboss.resteasy.reactive.RestResponse;
 
-import io.smallrye.mutiny.Uni;
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.PanInfo;
 import it.pagopa.atmlayer.wf.task.bean.State;

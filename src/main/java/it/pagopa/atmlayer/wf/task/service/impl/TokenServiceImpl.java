@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse;
 
-import io.smallrye.mutiny.Uni;
 import it.pagopa.atmlayer.wf.task.client.MilAuthClient;
 import it.pagopa.atmlayer.wf.task.client.bean.AuthParameters;
 import it.pagopa.atmlayer.wf.task.client.bean.RequestHeaders;
