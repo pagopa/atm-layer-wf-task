@@ -133,6 +133,8 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 						.transactionId(transactionId).acquirerId(state.getDevice().getBankId()).channel(state.getDevice().getChannel().name()).build());
 	        } catch (WebApplicationException e) {
 	        	log.warn("Calling milAuth Status: [{}]", e.getResponse().getStatus());
+	        } finally {
+	        	externalComm = true;
 	        }
 			
 			if (tokenComm != null && tokenComm.getStatus() == 200) {
