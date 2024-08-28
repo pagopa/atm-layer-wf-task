@@ -18,7 +18,7 @@ public class AuthorizationFilter implements ContainerRequestFilter {
         String clientId = getClientId(requestContext);
         String apiKey = requestContext.getHeaders().get("x-api-key") != null ? String.valueOf(requestContext.getHeaders().get("x-api-key").getFirst()) : null;
 
-        if (apiKey != null && !apiKey.isEmpty() && clientId !=null && !clientId.equals(apiKey)) {
+        if (clientId !=null && !clientId.equals(apiKey)) {
             throw new ErrorException(ErrorEnum.API_KEY_MISMATCH);
         }
     }
