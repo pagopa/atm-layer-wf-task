@@ -1,15 +1,15 @@
 
 # Coverage Report: JaCoCo
 
-* IntegrationTest (QuarkusTest)
+* TaskResourceTest (QuarkusTest)
       
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 91.59%               |
-| :heavy_check_mark: Number of Lines Covered | 762    |
-| :x: Number of Lines Missed  | 70     |
-| Total Number of Lines   | 832     |
+| Code Coverage %         | 91.12%               |
+| :heavy_check_mark: Number of Lines Covered | 780    |
+| :x: Number of Lines Missed  | 76     |
+| Total Number of Lines   | 856     |
 
 
 ## Details:
@@ -254,6 +254,19 @@
 
         
 #### Lines Missed:
+        
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/configuration
+
+<details>
+    <summary>
+:heavy_check_mark: AuthorizationFilter.java
+    </summary>
+
+        
+#### All Lines Covered!
         
 </details>
 
@@ -747,6 +760,10 @@
 - Line #389
 ```
         } catch (NoSuchAlgorithmException e) {
+```
+- Line #451
+```
+        } catch (JsonProcessingException e) {
 ```
 </details>
 
