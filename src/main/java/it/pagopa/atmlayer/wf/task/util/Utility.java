@@ -13,15 +13,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,6 +23,10 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorEnum;
+import it.pagopa.atmlayer.wf.task.bean.exceptions.ErrorException;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.core.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -54,6 +51,9 @@ public class Utility {
             .build();
 
     private static final String CDN_GET_FILE = "CDN.getResource";
+
+    private static final String HEADER_AUTHORIZATION = "Authorization";
+    private static final String CLAIM_CLIENT_ID = "client_id";
 
     /*
      * Caratteri di escape standard HTML
@@ -431,5 +431,34 @@ public class Utility {
             }
         }
         return result;
+    }
+
+    public static String getClientId(ContainerRequestContext containerRequestContext) {
+        String authorization = containerRequestContext.getHeaderString(HEADER_AUTHORIZATION);
+        if ( authorization != null && !authorization.isEmpty()) {
+            String middlePart = extractTokenMiddlePart(authorization);
+            return getPayload(middlePart).get(CLAIM_CLIENT_ID).asText();
+        }
+        return null;
+    }
+
+    public static JsonNode getPayload(String base64String) {
+        String payload = new String(Base64.getUrlDecoder().decode(base64String));
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = null;
+        try {
+            rootNode = objectMapper.readTree(payload);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return rootNode;
+    }
+
+    public static String extractTokenMiddlePart(String token) {
+        String[] parts = token.split("\\.");
+        if (parts.length != 3) {
+            throw new IllegalArgumentException("Invalid token format");
+        }
+        return parts[1];
     }
 }

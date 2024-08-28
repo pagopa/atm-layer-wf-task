@@ -1,9 +1,8 @@
 package it.pagopa.atmlayer.wf.task.test.utility;
 
 import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -17,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -199,6 +199,38 @@ class UtilityTest {
         String html = "<?xml version=\"1.0\" encoding=\"iso-8859-1\" ?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\"><head><link rel=\"stylesheet\" href=\"css/emulatore.css\" /></head><body><img id=\"logo\" src=\"https://d2xduy7tbgu2d3.cloudfront.net/files/ICON/default_logo.svg\"/><h1>Servizi di pubblica utilit&agrave;</h1><h2>Riepilogo del pagamento</h2><table id=\"table\"><thead><tr><th><span>${company}</span></th><th class=\"right\"><span>${amount} &euro;</span></th></tr></thead><tbody><tr><td><span>Commissioni</span></td><td class=\"right\"><span>${fee} &euro;</span></td></tr></tbody><tfoot><tr><td><span class=\"large\">Totale</span></td><td class=\"right\"><span class=\"large\">${totale} &euro;</span></td></tr></tfoot></table><button class=\"negative\" data-fdk=\"S4\" id=\"back\"><span>Indietro</span></button><button class=\"negative\" id=\"exit\"><span>Esci</span></button><button class=\"positive\" data-fdk=\"S8\" id=\"confirm\"><span>Paga  ${totale} &euro;</span></button><for object=\"pulsante\" list=\"pulsanti\"><button class=\"negative\" data-fdk=\"S${pulsante.i}\" id=\"${pulsante}\"><span>${pulsante}</span><span>${pulsante.paragrafo}</span></button></for></body></html>";
         String newHtml = Utility.escape(html, null);
         assertFalse(Utility.ESCAPE_CHARACTER.values().stream().anyMatch(value -> newHtml.contains(value)));
+    }
+
+    @Test
+    void testExtractTokenMiddlePart_ValidToken() {
+        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+        String middlePart = Utility.extractTokenMiddlePart(token);
+        assertEquals("eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ", middlePart);
+    }
+
+    @Test
+    void testExtractTokenMiddlePart_InvalidToken() {
+        String invalidToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ";
+        assertThrows(IllegalArgumentException.class, () -> {
+            Utility.extractTokenMiddlePart(invalidToken);
+        });
+    }
+
+    @Test
+    void testGetPayload_ValidBase64String() {
+        String base64String = "eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ";
+        JsonNode payload = Utility.getPayload(base64String);
+        assertNotNull(payload);
+        assertEquals("1234567890", payload.get("sub").asText());
+        assertEquals("John Doe", payload.get("name").asText());
+        assertEquals(1516239022, payload.get("iat").asInt());
+    }
+
+    @Test
+    void testExtractTokenMiddlePart_NullToken() {
+        assertThrows(NullPointerException.class, () -> {
+            Utility.extractTokenMiddlePart(null);
+        });
     }
 
 }
