@@ -6,9 +6,9 @@
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 91.59%               |
-| :heavy_check_mark: Number of Lines Covered | 784    |
-| :x: Number of Lines Missed  | 72     |
+| Code Coverage %         | 91.71%               |
+| :heavy_check_mark: Number of Lines Covered | 785    |
+| :x: Number of Lines Missed  | 71     |
 | Total Number of Lines   | 856     |
 
 
@@ -162,11 +162,11 @@
 
 <details>
     <summary>
-:x: TokenServiceImpl.java
+:heavy_check_mark: TokenServiceImpl.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
 </details>
 
