@@ -130,7 +130,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 			String token = null;
 			try {
 				tokenComm = tokenService.generateToken(AuthParameters.builder().terminalId(!Objects.isNull(state.getDevice().getTerminalId()) ? state.getDevice().getTerminalId() : state.getDevice().getBankId() + state.getDevice().getCode())
-						.transactionId(transactionId).acquirerId(state.getDevice().getBankId()).channel(state.getDevice().getChannel().name()).build());
+						.transactionId(transactionId).acquirerId(state.getDevice().getBankId()).channel(state.getDevice().getChannel().name()).fiscalCode(state.getFiscalCode()).build());
 	        } catch (WebApplicationException e) {
 	        	log.warn("Calling milAuth Status: [{}]", e.getResponse().getStatus());
 	        } finally {
