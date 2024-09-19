@@ -44,6 +44,16 @@ secretProviderClass:
   name: atm-layer-wf-task-secrets
   env: dev
 
+milBasePath: https://mil-u-apim.azure-api.net/mil-auth
+
+milAuth:
+  clientCredentials: client_credentials
+  credentialsSecretEnabled: true
+  credentialsSecretName: "pagopa-dev-atm-layer-wf-task-mil-auth"
+  credentialsSecretKeys:
+    clientId: CLIENT_ID
+    clientSecret: CLIENT_SECRET
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true

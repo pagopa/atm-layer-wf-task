@@ -11,7 +11,8 @@ public enum ErrorEnum {
     GET_VARIABLES_ERROR("VARIABLE_ERROR", "Error retrieve variables on next step", 500),
     PROCESS_ERROR("PROCESS_ERROR", "Error while running the process", 209),
     CONNECTION_PROBLEM("CONNECTION_PROBLEM", "Could not connect to other microservices", 500),
-    MALFORMED_REQUEST("MALFORMED_REQUEST", "Request not valid", 400);
+    MALFORMED_REQUEST("MALFORMED_REQUEST", "Request not valid", 400),
+    API_KEY_MISMATCH("API_KEY_MISMATCH", "API key and CLIENT_ID does not match", 403);
 
     private final String errorCode;
     private final String description;

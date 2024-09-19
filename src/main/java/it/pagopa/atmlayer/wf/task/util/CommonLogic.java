@@ -10,7 +10,7 @@ import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.PanInfo;
 import it.pagopa.atmlayer.wf.task.bean.State;
 import it.pagopa.atmlayer.wf.task.client.bean.PublicKey;
-import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
+import it.pagopa.atmlayer.wf.task.client.bean.Token;
 import it.pagopa.atmlayer.wf.task.logging.sensitive.SensitiveDataTracer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -73,7 +73,7 @@ public class CommonLogic {
     }
 
     protected void traceMilAuthClientComm(State state, Device device,
-            RestResponse<TokenResponse> restTokenResponse) {
+            RestResponse<Token> restTokenResponse) {
             String milAuthClientAddress = System.getenv("MIL_AUTH_SERVICE_ADDRESS");
             String transactionId = state.getTransactionId();
             StringBuilder requestMessageBuilder = new StringBuilder(" REQUEST POST URI: ")
@@ -92,7 +92,7 @@ public class CommonLogic {
                         .append(restTokenResponse.getStatus());
                 if (restTokenResponse.getEntity() != null) {
                     responseMessageBuilder.append(" - BODY: Access token: ")
-                            .append(restTokenResponse.getEntity().getAccess_token());
+                            .append(restTokenResponse.getEntity().getAccessToken());
                 }
                 SensitiveDataTracer.trace(transactionId, responseMessageBuilder.toString());
             } else {

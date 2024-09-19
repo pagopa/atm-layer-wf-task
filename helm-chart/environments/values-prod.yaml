@@ -21,6 +21,16 @@ processService:
 
 milAuthServiceAddress: http://pagopa-prod-atm-layer-mil-authenticator.pagopa.svc.cluster.local:8080
 
+milBasePath: https://mil-u-apim.azure-api.net/mil-auth
+
+milAuth:
+  clientCredentials: client_credentials
+  credentialsSecretEnabled: true
+  credentialsSecretName: "pagopa-prod-atm-layer-wf-task-mil-auth"
+  credentialsSecretKeys:
+    clientId: CLIENT_ID
+    clientSecret: CLIENT_SECRET
+
 logLevel: DEBUG
 
 tracing:
