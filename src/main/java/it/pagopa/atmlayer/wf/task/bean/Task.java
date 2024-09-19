@@ -45,7 +45,7 @@ public class Task {
 	@Schema(description = "Template html", implementation = Template.class)
 	private Template template;
 
-	@Schema(description = "Comando da eseguire", implementation = Command.class, enumeration = "[\"AUTHORIZE\", \"PRINT_RECEIPT\", \"SCAN_BIIL_DATA\", \"SCAN_FISCAL_CODE\", \"END\", \"GET_IBAN\", \"GET_PAN\", \"NEXT\" ]", type = SchemaType.STRING)
+	@Schema(description = "Comando da eseguire", implementation = Command.class, enumeration = "[\"AUTHORIZE\", \"PRINT_RECEIPT\", \"SCAN_BIIL_DATA\", \"SCAN_FISCAL_CODE\", \"END\", \"GET_IBAN\", \"GET_PAN\", \"NEXT\", \"AUTHENTICATION\", \"GET_CF\" ]", type = SchemaType.STRING)
 	private Command command;
 
 	@Schema(description = "Template dello scontrino", maxLength = 100000, format = "string")

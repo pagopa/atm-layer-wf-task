@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.jboss.resteasy.reactive.RestResponse;
 
+import io.smallrye.mutiny.Uni;
 import it.pagopa.atmlayer.wf.task.bean.Device;
 import it.pagopa.atmlayer.wf.task.bean.Peripheral;
 import it.pagopa.atmlayer.wf.task.bean.State;
@@ -20,6 +22,7 @@ import it.pagopa.atmlayer.wf.task.client.bean.GetTokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.PublicKey;
 import it.pagopa.atmlayer.wf.task.client.bean.Task;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskResponse;
+import it.pagopa.atmlayer.wf.task.client.bean.Token;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableResponse;
 import it.pagopa.atmlayer.wf.task.test.bean.Dato;
 import it.pagopa.atmlayer.wf.task.util.Constants;
@@ -217,7 +220,21 @@ public class DataTest {
         state.setTaskId("1");
         return state;
     }
+    
+    public static State createStateRequestNextWithoutFiscalCode() {
+        State state = createStateRequestStart();
+        state.setTaskId("1");
+        state.setFiscalCode(null);
+        return state;
+    }
 
+    public static State createStateRequestNextFiscalCodeEmpty() {
+        State state = createStateRequestStart();
+        state.setTaskId("1");
+        state.setFiscalCode("");
+        return state;
+    }
+    
     public static State createStateRequestNextNoBranchId() {
         State state = createStateRequestNext();
         state.getDevice().setBranchId(null);
@@ -332,6 +349,13 @@ public class DataTest {
         return GetTokenResponse.builder().token("TOKEN").build();
     }
 
+    public static RestResponse<Token> getTokenResponse() {
+    	Token token = new Token();
+        token.setAccessToken("test");
+        
+        return RestResponse.ok(token);
+    }
+    
     public static void main(String[] args) {
         System.out.println(Utility.getJson(createPublicKeyResponse()));
     }

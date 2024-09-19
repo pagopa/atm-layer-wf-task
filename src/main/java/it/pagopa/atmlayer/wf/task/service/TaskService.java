@@ -24,11 +24,4 @@ public interface TaskService {
     Scene buildNext(String transactionId, State state);
 
 
-    /**
-	 * Execute delete Token from Redis cache managed by MilAuth.
-	 * 
-	 * @param state
-	 */
-    void deleteToken(State state);
-
 }

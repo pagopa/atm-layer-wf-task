@@ -161,7 +161,6 @@ public class TaskResource extends CommonLogic{
 			} else if (scene.getTask() == null) {
 				scene.setOutcome(new OutcomeResponse(OutcomeEnum.END));
 				response = RestResponse.status(Status.OK, scene);
-				taskService.deleteToken(state);
 			} else {
 				response = RestResponse.status(Status.CREATED, scene);
 			}

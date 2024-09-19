@@ -9,5 +9,8 @@ public enum Command {
 	END, // Fine della transazione
 	GET_IBAN, // Recupero iban
 	GET_PAN, // Recupero PAN
-	NEXT // Recupero PAN
+	NEXT, // Richiesta next step della transazione
+	AUTHENTICATION, // Fase di autenticazione dell'utente
+	GET_CF // Recupero codice fiscale
+	
 }

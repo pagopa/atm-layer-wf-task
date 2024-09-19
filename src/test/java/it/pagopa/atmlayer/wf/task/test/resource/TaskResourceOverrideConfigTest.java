@@ -19,12 +19,10 @@ import io.quarkus.test.junit.QuarkusTestProfile;
 import io.quarkus.test.junit.TestProfile;
 import io.quarkus.test.junit.mockito.MockitoConfig;
 import io.restassured.response.Response;
-import it.pagopa.atmlayer.wf.task.client.MilAuthRestClient;
 import it.pagopa.atmlayer.wf.task.client.ProcessRestClient;
 import it.pagopa.atmlayer.wf.task.client.TokenizationRestClient;
 import it.pagopa.atmlayer.wf.task.client.bean.GetTokenRequest;
 import it.pagopa.atmlayer.wf.task.client.bean.TaskRequest;
-import it.pagopa.atmlayer.wf.task.client.bean.TokenResponse;
 import it.pagopa.atmlayer.wf.task.client.bean.VariableRequest;
 import it.pagopa.atmlayer.wf.task.logging.sensitive.SensitiveDataTracer;
 import it.pagopa.atmlayer.wf.task.resource.TaskResource;
@@ -37,11 +35,6 @@ import jakarta.ws.rs.core.Response.Status;
 @TestInstance(Lifecycle.PER_CLASS)
 @TestProfile(TaskResourceOverrideConfigTest.BuildTimeValueChangeTestProfile.class)
 class TaskResourceOverrideConfigTest {
-
-    @InjectMock
-    @RestClient
-    @MockitoConfig(convertScopes = true)
-    MilAuthRestClient milAuthRestClient;
 
     @InjectMock
     @RestClient
@@ -64,10 +57,6 @@ class TaskResourceOverrideConfigTest {
     @Test
     void test() {
         SensitiveDataTracer.setIsTraceLoggingEnabled(true);
-
-        Mockito.when(milAuthRestClient.getToken(Mockito.anyString(), Mockito.anyString(), Mockito.any(),
-                Mockito.anyString(), Mockito.anyString()))
-                .thenReturn(RestResponse.status(Status.OK, new TokenResponse("****fiscalcode****")));
 
         Mockito.when(processRestClient.startProcess(Mockito.any(TaskRequest.class)))
                 .thenReturn(RestResponse.status(Status.OK,

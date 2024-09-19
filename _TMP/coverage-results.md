@@ -1,15 +1,15 @@
 
 # Coverage Report: JaCoCo
 
-* IntegrationTest (QuarkusTest)
+* TaskResourceTest (QuarkusTest)
       
       
 | Outcome                 | Value                                                               |
 |-------------------------|---------------------------------------------------------------------|
-| Code Coverage %         | 90.18%               |
-| :heavy_check_mark: Number of Lines Covered | 744    |
-| :x: Number of Lines Missed  | 81     |
-| Total Number of Lines   | 825     |
+| Code Coverage %         | 91.71%               |
+| :heavy_check_mark: Number of Lines Covered | 785    |
+| :x: Number of Lines Missed  | 71     |
+| Total Number of Lines   | 856     |
 
 
 ## Details:
@@ -162,29 +162,41 @@
 
 <details>
     <summary>
+:heavy_check_mark: TokenServiceImpl.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
+
+<details>
+    <summary>
 :x: TaskServiceImpl.java
     </summary>
 
         
 #### Lines Missed:
         
-- Line #280
+- Line #134
 ```
-                        });
+	        } catch (WebApplicationException e) {
 ```
-- Line #323
+- Line #345
 ```
                 } catch (UnsupportedEncodingException e) {
 ```
-- Line #398
+- Line #421
 ```
                     } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 ```
-- Line #433
+- Line #457
 ```
             } catch (WebApplicationException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
 ```
-- Line #652
+- Line #676
 ```
             } catch (UnsupportedEncodingException e) {
 ```
@@ -220,6 +232,19 @@
 </details>
 
     
+### it/pagopa/atmlayer/wf/task/client/bean/enumerative
+
+<details>
+    <summary>
+:heavy_check_mark: RequiredVariables.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
 ### it/pagopa/atmlayer/wf/task
 
 <details>
@@ -233,7 +258,30 @@
 </details>
 
     
+### it/pagopa/atmlayer/wf/task/configuration
+
+<details>
+    <summary>
+:heavy_check_mark: AuthorizationFilter.java
+    </summary>
+
+        
+#### All Lines Covered!
+        
+</details>
+
+    
 ### it/pagopa/atmlayer/wf/task/client/bean
+
+<details>
+    <summary>
+:x: AuthParameters.java
+    </summary>
+
+        
+</details>
+
+    
 
 <details>
     <summary>
@@ -278,6 +326,16 @@
 <details>
     <summary>
 :x: Task.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: RequestHeaders.java
     </summary>
 
         
@@ -356,6 +414,16 @@
 </details>
 
     
+
+<details>
+    <summary>
+:x: Token.java
+    </summary>
+
+        
+</details>
+
+    
 ### it/pagopa/atmlayer/wf/task/database/dynamo/service
 
 <details>
@@ -407,6 +475,16 @@
 <details>
     <summary>
 :x: TaskService.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: TokenService.java
     </summary>
 
         
@@ -473,16 +551,12 @@
 
 <details>
     <summary>
-:x: ConfigurationService.java
+:heavy_check_mark: ConfigurationService.java
     </summary>
 
         
-#### Lines Missed:
+#### All Lines Covered!
         
-- Line #26
-```
-                .attributesToGet(CONFIGURATION_ID_COL, CONFIGURATION_ENABLED_COL)
-```
 </details>
 
     
@@ -545,10 +619,41 @@
         
 #### Lines Missed:
         
-- Line #60
+- Line #58
 ```
                 });
 ```
+</details>
+
+    
+### it/pagopa/atmlayer/wf/task/client
+
+<details>
+    <summary>
+:x: TokenizationRestClient.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: MilAuthClient.java
+    </summary>
+
+        
+</details>
+
+    
+
+<details>
+    <summary>
+:x: ProcessRestClient.java
+    </summary>
+
+        
 </details>
 
     
@@ -636,57 +741,30 @@
         
 #### Lines Missed:
         
-- Line #107
+- Line #105
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #120
+- Line #118
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #145
+- Line #143
 ```
         } catch (JsonProcessingException e) {
 ```
-- Line #319
+- Line #317
 ```
     }
 ```
-- Line #391
+- Line #389
 ```
         } catch (NoSuchAlgorithmException e) {
 ```
-</details>
-
-    
-### it/pagopa/atmlayer/wf/task/client
-
-<details>
-    <summary>
-:x: TokenizationRestClient.java
-    </summary>
-
-        
-</details>
-
-    
-
-<details>
-    <summary>
-:x: MilAuthRestClient.java
-    </summary>
-
-        
-</details>
-
-    
-
-<details>
-    <summary>
-:x: ProcessRestClient.java
-    </summary>
-
-        
+- Line #451
+```
+        } catch (JsonProcessingException e) {
+```
 </details>
 
     
