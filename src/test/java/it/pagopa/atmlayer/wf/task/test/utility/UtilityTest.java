@@ -102,7 +102,7 @@ class UtilityTest {
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date date = sdf.parse("2023-10-31T16:30:00");
         State state = new State();
-        Device device = Device.builder().bankId("06789").branchId("12345").channel(Channel.ATM).code("0001").terminalId("64874412").opTimestamp(date).build();
+        Device device = Device.builder().bankId("06789").branchId("12345").channel(Channel.ATM).code("0001").terminalId("64874412").build();
         state.setDevice(device);
         assertEquals(state, Utility.getObject(json, State.class));
     }

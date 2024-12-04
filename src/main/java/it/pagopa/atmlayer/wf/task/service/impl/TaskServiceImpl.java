@@ -372,8 +372,7 @@ public class TaskServiceImpl extends CommonLogic implements TaskService {
 
     private DeviceInfo convertDeviceInDeviceInfo(Device device) {
         return DeviceInfo.builder().bankId(device.getBankId()).branchId(device.getBranchId()).code(device.getCode())
-                .terminalId(device.getTerminalId()).channel(DeviceType.valueOf(device.getChannel().name()))
-                .opTimestamp(device.getOpTimestamp()).build();
+                .terminalId(device.getTerminalId()).channel(DeviceType.valueOf(device.getChannel().name())).build();
     }
 
     private TaskRequest buildTaskRequest(State state, String transactionId, String functionId) {

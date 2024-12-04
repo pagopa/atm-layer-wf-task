@@ -48,12 +48,6 @@ public class DeviceInfo {
     private String terminalId;
 
     /*
-     * Terminal operation timestamp.
-     */
-    @Schema(description = "Timestamp della richiesta", format = "timestamp", pattern = "yyyy-MM-ddTHH:mm:ss", example = "2023-10-31T17:30:00")
-    private Date opTimestamp;
-
-    /*
      * Type of device.
      */
     @Schema(description = "Identificativo del tipo di device", implementation = DeviceType.class, enumeration = "[\"ATM\", \"KIOSK\"]", type = SchemaType.STRING, format = "string")

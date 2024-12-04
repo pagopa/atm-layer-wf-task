@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
+import java.time.Instant;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
@@ -172,7 +173,7 @@ public class Utility {
         return (device.getBankId() + "-" + (device.getBranchId() != null ? device.getBranchId() : "") + "-"
                 + (device.getCode() != null ? device.getCode() : "") + "-"
                 + (device.getTerminalId() != null ? device.getTerminalId() : "") + "-"
-                + (device.getOpTimestamp().getTime()) + "-" + UUID.randomUUID().toString())
+                + (Instant.now().toEpochMilli()) + "-" + UUID.randomUUID().toString())
                 .substring(0, Constants.TRANSACTION_ID_LENGTH);
     }
 

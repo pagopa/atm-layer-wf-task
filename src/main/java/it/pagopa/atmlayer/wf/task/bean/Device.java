@@ -58,15 +58,9 @@ public class Device {
 	private String terminalId;
 
 	/*
-	 * Terminal operation timestamp.
-	 */
-	@Schema(description = "Timestamp della richiesta", implementation = Date.class, example="2018-03-20", maxLength = 23)
-	private Date opTimestamp;
-
-	/*
 	 * Terminal channel.
 	 */
-	@Schema(description = "Identificativo del canale del dispositivo", enumeration = "[\"ATM\", \"KIOSK\"]", type = SchemaType.STRING)
+	@Schema(description = "Identificativo del canale del dispositivo", implementation = Channel.class, enumeration = "[\"ATM\", \"KIOSK\"]", type = SchemaType.STRING)
 	private Channel channel;
 
 	@Schema(description = "Lista delle periferiche del device", type = SchemaType.ARRAY, maxItems = 10000)

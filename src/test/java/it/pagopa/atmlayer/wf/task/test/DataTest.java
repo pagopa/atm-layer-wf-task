@@ -188,7 +188,7 @@ public class DataTest {
         per.setName("PRINTER");
         per.setStatus(PeripheralStatus.OK);
         perList.add(per);
-        Device deviceInfo = Device.builder().bankId("00001").branchId("0002").channel(Channel.ATM).code("1234").terminalId("1234567890").opTimestamp(new Date()).peripherals(perList).build();
+        Device deviceInfo = Device.builder().bankId("00001").branchId("0002").channel(Channel.ATM).code("1234").terminalId("1234567890").peripherals(perList).build();
         State state = new State();
         state.setDevice(deviceInfo);
         Map<String, Object> variablesData = new HashMap<>();
@@ -206,7 +206,7 @@ public class DataTest {
         per.setName("PRINTER");
         per.setStatus(PeripheralStatus.OK);
         perList.add(per);
-        Device deviceInfo = Device.builder().bankId("00001").channel(Channel.ATM).opTimestamp(new Date()).peripherals(perList).build();
+        Device deviceInfo = Device.builder().bankId("00001").channel(Channel.ATM).peripherals(perList).build();
         State state = new State();
         state.setDevice(deviceInfo);
         Map<String, Object> variablesData = new HashMap<>();
